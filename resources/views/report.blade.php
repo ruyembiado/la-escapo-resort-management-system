@@ -16,9 +16,9 @@
                         <div class="row align-items-center justify-content-between">
                             <div class="col mr-2 text-center">
                                 <div class="col-auto">
-                                    <i class="fa fa-book fa-5x text-dark"></i>
+                                    <i class="fa fa-book fa-5x text-success"></i>
                                 </div>
-                                <div class="text-dark text-uppercase mb-1 mt-3">
+                                <div class="text-success text-uppercase mb-1 mt-3">
                                     <strong>Daily Report</strong>
                                 </div>
                                 <a class="btn btn-sm btn-secondary mt-2" href="{{ route('daily.report') }}">View Report</a>
@@ -35,9 +35,9 @@
                         <div class="row align-items-center justify-content-between">
                             <div class="col mr-2 text-center">
                                 <div class="col-auto">
-                                    <i class="fa fa-book fa-5x text-dark"></i>
+                                    <i class="fa fa-book fa-5x text-success"></i>
                                 </div>
-                                <div class="text-dark text-uppercase mb-1 mt-3">
+                                <div class="text-success text-uppercase mb-1 mt-3">
                                     <strong>Weekly Report</strong>
                                 </div>
 
@@ -67,9 +67,9 @@
                         <div class="row align-items-center justify-content-between">
                             <div class="col mr-2 text-center">
                                 <div class="col-auto">
-                                    <i class="fa fa-book fa-5x text-dark"></i>
+                                    <i class="fa fa-book fa-5x text-success"></i>
                                 </div>
-                                <div class="text-dark text-uppercase mb-1 mt-3">
+                                <div class="text-success text-uppercase mb-1 mt-3">
                                     <strong>Monthly Report</strong>
                                 </div>
                                 <a class="btn btn-sm btn-secondary mt-2"
@@ -89,9 +89,9 @@
                         <div class="row align-items-center justify-content-between">
                             <div class="col mr-2 text-center">
                                 <div class="col-auto">
-                                    <i class="fa fa-book fa-5x text-dark"></i>
+                                    <i class="fa fa-book fa-5x text-success"></i>
                                 </div>
-                                <div class="text-dark text-uppercase mb-1 mt-3">
+                                <div class="text-success text-uppercase mb-1 mt-3">
                                     <strong>Yearly Report</strong>
                                 </div>
                                 <a class="btn btn-sm btn-secondary mt-2"

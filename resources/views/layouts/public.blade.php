@@ -21,12 +21,12 @@
 <body>
     <div class="wrapper">
         <div class="main">
-            <nav class="navbar-expand px-4 py-1 shadow-sm">
+            <nav class="navbar-expand bg-dark px-4 py-1 shadow-sm">
                 <div class="col-10 m-auto d-flex justify-content-between flex-wrap align-items-center">
                     <a href="{{ url('/') }}" class="">
                         <div class="d-flex flex-wrap align-items-center">
-                            <img src="{{ asset('public/img/logo.jpg') }}" width="70" alt="laescapo-logo">
-                            <h5 class="ms-2 mb-0 text-dark">LA ESCAPO RESORT</h5>
+                            <img style="border-radius: 100%;" src="{{ asset('public/img/logo.jpg') }}" width="60" alt="laescapo-logo">
+                            <h5 class="ms-2 mb-0 text-light">LA ESCAPO RESORT</h5>
                         </div>
                     </a>
                     <div class="d-flex align-items-center gap-5">
@@ -64,7 +64,7 @@
 
             @yield('content')
 
-            <footer class="footer py-2 shadow text-center bg-light text-dark">
+            <footer class="footer py-2 shadow text-center bg-light text-light bg-dark">
                 <div class="m-auto">
                     <div class="">© 2025 LA ESCAPO. All rights reserved.</div>
                 </div>

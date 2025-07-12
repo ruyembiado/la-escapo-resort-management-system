@@ -27,6 +27,10 @@ body {
     height: 100vh;
 }
 
+main.content {
+    height: 100%;
+}
+
 .main {
     display: flex;
     flex-direction: column;
@@ -160,11 +164,11 @@ a.sidebar-link:hover {
 
 .navbar {
     box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
-    background-color: #F9FDCE;
+    /* background-color: #F9FDCE; */
 }
 
 .bg-theme-secondary {
-    background-color: #F9FDCE;
+    background-color: #A8E298;
 }
 
 .navbar-expand .navbar-collapse {
@@ -291,7 +295,7 @@ h1.home-title {
 }
 
 #sidebar {
-    background-color: #2558A2 !important;
+    background-color: #055B00 !important;
 }
 
 @media print {
