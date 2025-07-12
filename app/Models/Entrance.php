@@ -18,6 +18,7 @@ class Entrance extends Model
         'age',
         'fee',
         'total_payment',
+        'payment_status',
     ];
 
     public function visitor()

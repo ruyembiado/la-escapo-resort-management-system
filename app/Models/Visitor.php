@@ -22,7 +22,9 @@ class Visitor extends Model
         'age',
         'members',
         'address',
-        'date_visit'
+        'date_visit',
+        'check_in',
+        'check_out',
     ];
 
     public function entrance()

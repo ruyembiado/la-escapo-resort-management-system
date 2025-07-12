@@ -38,6 +38,7 @@
                             <th>Name</th>
                             <th>Description</th>
                             <th>Total Payment</th>
+                            <th>Status</th>
                             <th>Date Created</th>
                             <th>Action</th>
                         </tr>
@@ -66,11 +67,16 @@
                                         </thead>
                                         <tbody>
                                             @foreach ($categories as $index => $cat)
-                                                @if (!empty($members[$index]))
+                                                @php
+                                                    $memberValue = $members[$index] ?? null;
+                                                @endphp
+                                                @if (!is_null($memberValue) && $memberValue !== 'null' && (int) $memberValue > 0)
                                                     <tr>
                                                         <td style="padding: 8px;">{{ $cat }}</td>
                                                         <td style="padding: 8px;">{{ $members[$index] }}</td>
-                                                        <td style="padding: 8px;">{{ $ages[$index] ?? 'N/A' }}</td>
+                                                        <td style="padding: 8px;">
+                                                            {{ !isset($ages[$index]) || $ages[$index] === null || $ages[$index] === '' || $ages[$index] === 'null' ? 'N/A' : $ages[$index] }}
+                                                        </td>
                                                         <td style="padding: 8px;">
                                                             ₱{{ number_format((float) ($members[$index] ?? 0) * (float) ($fees[$index] ?? 0), 2) }}
                                                         </td>
@@ -78,17 +84,26 @@
                                                 @endif
                                             @endforeach
                                         </tbody>
+
                                     </table>
                                 </td>
                                 <td>₱ {{ number_format($entrance->total_payment, 2) }}</td>
+                                <td>
+                                    @if ($entrance->payment_status === 'pending')
+                                        <span class="badge bg-danger">{{ ucfirst($entrance->payment_status) }}</span>
+                                    @else
+                                        <span class="badge bg-success">{{ ucfirst($entrance->payment_status) }}</span>
+                                    @endif
+                                </td>
                                 <td>{{ \Carbon\Carbon::parse($entrance->created_at)->format('F j, Y') }}</td>
                                 <td>
                                     <div class="d-flex align-items-center justify-c gap-2">
                                         <a href="#" class="btn btn-warning btn-sm" data-bs-toggle="modal"
                                             data-bs-target="#editEntranceModal" data-id="{{ $entrance->id }}"
                                             data-visitor-id="{{ $entrance->visitor_id }}"
-                                            data-total-members="{{ $entrance->members }}"
-                                            data-total-payment="{{ $entrance->total_payment }}">
+                                            data-total-members='@json(json_decode($entrance->members))'
+                                            data-total-payment="{{ $entrance->total_payment }}"
+                                            data-payment-status="{{ $entrance->payment_status }}">
                                             Edit
                                         </a>
                                         <form action="{{ route('entrance.destroy', $entrance->id) }}" method="POST">
@@ -144,6 +159,16 @@
                                     <label for="members">Total Members</label>
                                     <div class="col-4">
                                         <input readonly type="number" id="total_members" class="form-control" required>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="members">Payment Status</label>
+                                    <div class="col-12">
+                                        <select name="payment_status" class="form-control" id="payment_status">
+                                            <option value="">Select Status</option>
+                                            <option value="pending">Pending</option>
+                                            <option value="paid">Paid</option>
+                                        </select>
                                     </div>
                                 </div>
                             </div>
@@ -290,6 +315,16 @@
                                     <div class="col-4">
                                         <input readonly type="number" id="edit_total_members" class="form-control"
                                             required>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="members">Payment Status</label>
+                                    <div class="col-12">
+                                        <select name="payment_status" class="form-control" id="edit_payment_status">
+                                            <option value="">Select Status</option>
+                                            <option value="pending">Pending</option>
+                                            <option value="paid">Paid</option>
+                                        </select>
                                     </div>
                                 </div>
                             </div>
@@ -520,35 +555,38 @@
                 const visitorId = button.getAttribute('data-visitor-id');
                 const entranceId = button.getAttribute('data-id');
                 const totalPayment = button.getAttribute('data-total-payment');
+                const paymentStatus = button.getAttribute('data-payment-status');
 
+                // DEBUG: Log what you get
+                console.log("Total Members:", totalMembersArray);
+
+                // Set hidden fields
                 document.getElementById('edit_entrance_id').value = entranceId;
                 $('#edit_visitor_id').val(visitorId).trigger('change');
                 $('#_visitor_id').val(visitorId);
+                $('#edit_payment_status').val(paymentStatus);
 
-                // Target all members inputs
-                const memberInputs = document.querySelectorAll(
-                    '#editEntranceModal input[name="members[]"]');
-                const feeInputs = document.querySelectorAll('#editEntranceModal input[name="fee[]"]');
-                const subTotalInputs = document.querySelectorAll(
-                    '#editEntranceModal input[id="sub-total"]');
+                // All members[] inputs inside the modal
+                const memberInputs = editModal.querySelectorAll('input[name="members[]"]');
+                const feeInputs = editModal.querySelectorAll('input[name="fee[]"]');
+                const subTotalInputs = editModal.querySelectorAll('input[id="sub-total"]');
 
-                editTotalMembers = 0;
                 let totalPaymentCalculated = 0;
+                let totalMembers = 0;
 
                 memberInputs.forEach((input, index) => {
-                    const memberCount = parseInt(totalMembersArray[index]) || 0;
-                    const fee = parseFloat(feeInputs[index].value) || 0;
-                    const subTotal = memberCount * fee;
+                    let raw = totalMembersArray[index];
+                    let members = (raw === "null" || raw === null) ? "0" : parseInt(raw) || 0;
+                    input.value = members;
+                    const fee = parseFloat(feeInputs[index]?.value || 0);
+                    const subtotal = members * fee;
 
-                    input.value = memberCount;
-                    subTotalInputs[index].value = subTotal.toFixed(2);
-
-                    editTotalMembers += memberCount;
-                    totalPaymentCalculated += subTotal;
+                    subTotalInputs[index].value = subtotal.toFixed(2);
+                    totalPaymentCalculated += subtotal;
+                    totalMembers += members || 0;
                 });
 
-                // Update total members and payment
-                document.getElementById('edit_total_members').value = editTotalMembers;
+                document.getElementById('edit_total_members').value = totalMembers;
                 document.getElementById('edit_total_payment').value = totalPaymentCalculated.toFixed(2);
             });
         }
@@ -564,15 +602,14 @@
             });
         });
 
-        // Get total members based on selected visitor for edit form
+        // Get total members from selected visitor for edit form
         $('#edit_visitor_id').on('change', function() {
-            var visitor_id = $(this).val();
+            const visitor_id = $(this).val();
             if (visitor_id) {
-                var baseUrl = window.location.origin;
-                var pathParts = window.location.pathname.split('/');
-                var folderName = pathParts[1];
-                var url = window.location.origin + '/' + folderName + '/get-visitor-members/' +
-                    visitor_id;
+                const baseUrl = window.location.origin;
+                const pathParts = window.location.pathname.split('/');
+                const folderName = pathParts[1];
+                const url = `${baseUrl}/${folderName}/get-visitor-members/${visitor_id}`;
 
                 $.ajax({
                     url: url,
@@ -598,7 +635,6 @@
 
         function resetEditMemberInputs() {
             $('#editEntranceModal input[name="members[]"]').each(function() {
-                $(this).val('');
                 $(this).attr('max', editTotalMembers);
                 $(this).prop('readonly', false);
             });
@@ -623,7 +659,6 @@
             });
 
             $('#edit_total_payment').val(totalPayment.toFixed(2));
-            // Don't update editTotalMembers here - it should only come from visitor data
         }
 
         function updateMemberInputLimitsEditForm() {

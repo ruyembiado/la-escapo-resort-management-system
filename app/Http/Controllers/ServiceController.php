@@ -34,25 +34,26 @@ class ServiceController extends Controller
             'age' => 'nullable|array',
             'fee' => 'nullable|array',
             'total_payment' => 'required',
+            'payment_status' => 'nullable',
         ]);
 
         $categories = $request->input('category');
         $members = $request->input('members');
-        $ages = $request->input('age');
-        $fees = $request->input('fee');
+        $ages = $request->input('age', []);
+        $fees = $request->input('fee', []);
 
         $filteredCategories = [];
         $filteredMembers = [];
         $filteredAges = [];
         $filteredFees = [];
 
-        foreach ($members as $index => $count) {
-            if (!empty($count) && is_numeric($count)) {
-                $filteredCategories[] = $categories[$index] ?? null;
-                $filteredMembers[] = $count;
-                $filteredAges[] = $ages[$index] ?? null;
-                $filteredFees[] = $fees[$index] ?? null;
-            }
+        $count = count($members);
+
+        for ($i = 0; $i < $count; $i++) {
+            $filteredCategories[] = isset($categories[$i]) && $categories[$i] !== null ? $categories[$i] : 'null';
+            $filteredMembers[] = isset($members[$i]) && $members[$i] !== null ? $members[$i] : 'null';
+            $filteredAges[] = isset($ages[$i]) && $ages[$i] !== null ? $ages[$i] : 'null';
+            $filteredFees[] = isset($fees[$i]) && $fees[$i] !== null ? $fees[$i] : 'null';
         }
 
         Entrance::create([
@@ -62,6 +63,7 @@ class ServiceController extends Controller
             'age' => json_encode($filteredAges),
             'fee' => json_encode($filteredFees),
             'total_payment' => $request->total_payment,
+            'payment_status' => $request->payment_status ?? 'pending',
         ]);
 
         return redirect()->route('entrances')->with('success', 'Entrance added successfully.');
@@ -76,25 +78,27 @@ class ServiceController extends Controller
             'age' => 'nullable|array',
             'fee' => 'nullable|array',
             'total_payment' => 'required',
+            'payment_status' => 'nullable',
+            'entrance_id' => 'required|exists:entrances,id',
         ]);
 
         $categories = $request->input('category');
         $members = $request->input('members');
-        $ages = $request->input('age');
-        $fees = $request->input('fee');
+        $ages = $request->input('age', []);
+        $fees = $request->input('fee', []);
 
         $filteredCategories = [];
         $filteredMembers = [];
         $filteredAges = [];
         $filteredFees = [];
 
-        foreach ($members as $index => $count) {
-            if (!empty($count) && is_numeric($count)) {
-                $filteredCategories[] = $categories[$index] ?? null;
-                $filteredMembers[] = $count;
-                $filteredAges[] = $ages[$index] ?? null;
-                $filteredFees[] = $fees[$index] ?? null;
-            }
+        $count = count($members);
+
+        for ($i = 0; $i < $count; $i++) {
+            $filteredCategories[] = isset($categories[$i]) && $categories[$i] !== null ? $categories[$i] : 'null';
+            $filteredMembers[] = isset($members[$i]) && $members[$i] !== null ? $members[$i] : 'null';
+            $filteredAges[] = isset($ages[$i]) && $ages[$i] !== null ? $ages[$i] : 'null';
+            $filteredFees[] = isset($fees[$i]) && $fees[$i] !== null ? $fees[$i] : 'null';
         }
 
         $entrance = Entrance::findOrFail($request->entrance_id);
@@ -105,6 +109,7 @@ class ServiceController extends Controller
             'age' => json_encode($filteredAges),
             'fee' => json_encode($filteredFees),
             'total_payment' => $request->total_payment,
+            'payment_status' => $request->payment_status ?? 'pending',
         ]);
 
         return redirect()->route('entrances')->with('success', 'Entrance updated successfully.');
@@ -326,6 +331,7 @@ class ServiceController extends Controller
             'meal_items.*.quantity' => 'nullable|integer|min:0',
             'meal_items.*.subtotal' => 'nullable|numeric',
             'total_payment' => 'required|numeric',
+            'payment_status' => 'nullable',
         ]);
 
         $itemNames = [];
@@ -348,6 +354,7 @@ class ServiceController extends Controller
             'fee'           => json_encode($fees),
             'quantity'      => json_encode($quantities),
             'total_payment' => $request->total_payment,
+            'payment_status' => $request->payment_status ?? 'pending',
         ]);
 
         return redirect()->route('meals')->with('success', 'Meal(s) added successfully.');

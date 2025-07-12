@@ -40,10 +40,12 @@
                             <th>Name</th>
                             <th>Sex</th>
                             <th>Age</th>
-                            <th class="text-start">Members</th>
+                            {{-- <th class="text-start">Members</th> --}}
                             <th class="text-start">Contact No.</th>
                             <th>Address</th>
-                            <th>Date</th>
+                            <th>Check-In Time</th>
+                            <th>Check-Out Time</th>
+                            {{-- <th>Date</th> --}}
                             {{-- <th>Date Created</th> --}}
                             <th>Action</th>
                         </tr>
@@ -56,10 +58,24 @@
                                 </td>
                                 <td class="text-start">{{ $visitor->gender }}</td>
                                 <td class="text-start">{{ $visitor->age }}</td>
-                                <td class="text-start">{{ $visitor->members }}</td>
+                                {{-- <td class="text-start">{{ $visitor->members }}</td> --}}
                                 <td class="text-start">{{ $visitor->contact_number }}</td>
                                 <td>{{ $visitor->address }}</td>
-                                <td>{{ \Carbon\Carbon::parse($visitor->date_visit)->format('F j, Y') }}</td>
+                                <td class="text-start">
+                                    @if ($visitor->check_in)
+                                        {{ \Carbon\Carbon::createFromFormat('H:i', $visitor->check_in)->format('g:i A') }}
+                                    @else
+                                        Not Checked In
+                                    @endif
+                                </td>
+                                <td class="text-start">
+                                    @if ($visitor->check_out)
+                                        {{ \Carbon\Carbon::createFromFormat('H:i', $visitor->check_out)->format('g:i A') }}
+                                    @else
+                                        Not Checked Out
+                                    @endif
+                                </td>
+                                {{-- <td>{{ \Carbon\Carbon::parse($visitor->date_visit)->format('F j, Y') }}</td> --}}
                                 {{-- <td>{{ \Carbon\Carbon::parse($visitor->created_at)->format('F j, Y \a\t h:i A') }}</td> --}}
                                 <td>
                                     <div class="d-flex align-items-center justify-c gap-2">
@@ -71,7 +87,9 @@
                                             data-contact_number="{{ $visitor->contact_number }}"
                                             data-gender="{{ $visitor->gender }}" data-age="{{ $visitor->age }}"
                                             data-members="{{ $visitor->members }}" data-address="{{ $visitor->address }}"
-                                            data-date_visit="{{ $visitor->date_visit }}">
+                                            data-date_visit="{{ $visitor->date_visit }}"
+                                            data-check_in="{{ $visitor->check_in }}"
+                                            data-check_out="{{ $visitor->check_out }}">
                                             Edit
                                         </a>
                                         <form action="{{ route('visitor.destroy', $visitor->id) }}" method="POST">
@@ -107,10 +125,22 @@
                     <div class="modal-body">
                         <!-- Visitor Name -->
 
-                        <div class="form-group mb-2 col-3">
-                            <label for="date_visit">Date</label>
-                            <input type="date" name="date_visit" value="{{ now()->toDateString() }}"
-                                class="form-control" required />
+                        <div class="form-group mb-2">
+                            <div class="d-flex align-items-center gap-3">
+                                <div class="col-4 date-visit">
+                                    <label for="date_visit">Date</label>
+                                    <input type="date" name="date_visit" value="{{ now()->toDateString() }}"
+                                        class="form-control" required />
+                                </div>
+                                <div class="col-3 date-visit">
+                                    <label for="check_in">Check-In Time</label>
+                                    <input type="time" name="check_in" value="" class="form-control" required />
+                                </div>
+                                <div class="col-3 date-visit">
+                                    <label for="check_out">Check-Out Time</label>
+                                    <input type="time" name="check_out" value="" class="form-control" />
+                                </div>
+                            </div>
                         </div>
 
                         <div class="form-group mb-2">
@@ -189,71 +219,87 @@
                     <div class="modal-body">
                         <input type="hidden" name="visitor_id" id="visitor_id">
 
-                        <div class="form-group mb-2 col-3">
-                            <label for="date_visit">Date Visit</label>
-                            <input type="date" name="date_visit" id="edit_date_visit" class="form-control" required>
-                        </div>
-
                         <div class="form-group mb-2">
                             <div class="d-flex align-items-center gap-3">
-                                <div class="col-4 first-name">
-                                    <label for="first_name">First Name</label>
-                                    <input type="text" name="first_name" id="edit_first_name" class="form-control"
-                                        required>
+                                <div class="col-4 date-visit">
+                                    <label for="date_visit">Date</label>
+                                    <input type="date" name="date_visit" id="edit_date_visit" value=""
+                                        class="form-control" required />
                                 </div>
-                                <div class="col-3 middle-name">
-                                    <label for="middle_name">Middle Name</label>
-                                    <input type="text" name="middle_name" id="edit_middle_name" class="form-control">
+                                <div class="col-3 date-visit">
+                                    <label for="check_in">Check-In Time</label>
+                                    <input type="time" name="check_in" id="edit_check_in" value=""
+                                        class="form-control" required />
                                 </div>
-                                <div class="col-4 last-name">
-                                    <label for="last_name">Last Name</label>
-                                    <input type="text" name="last_name" id="edit_last_name" class="form-control"
-                                        required>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-group mb-2">
-                            <div class="d-flex align-items-center gap-3">
-                                <div class="contact_number col-3">
-                                    <label for="contact_number">Contact No.</label>
-                                    <input type="text" name="contact_number" id="edit_contact_number"
-                                        class="form-control" required>
-                                </div>
-
-                                <div class="gender col-3">
-                                    <label for="gender">Gender</label>
-                                    <select name="gender" id="edit_gender" class="form-control" required>
-                                        <option value="">Select gender</option>
-                                        <option value="Male">Male</option>
-                                        <option value="Female">Female</option>
-                                    </select>
-                                </div>
-
-                                <div class="age col-2">
-                                    <label for="age">Age</label>
-                                    <input type="number" name="age" id="edit_age" class="form-control" required>
-                                </div>
-
-                                <div class="members col-2">
-                                    <label for="members">Members</label>
-                                    <input type="number" name="members" id="edit_members" class="form-control"
-                                        required>
+                                <div class="col-3 date-visit">
+                                    <label for="check_out">Check-Out Time</label>
+                                    <input type="time" name="check_out" id="edit_check_out" value=""
+                                        class="form-control" />
                                 </div>
                             </div>
-                        </div>
 
-                        <div class="form-group mb-2">
-                            <label for="address">Address</label>
-                            <textarea name="address" id="edit_address" class="form-control" required></textarea>
-                        </div>
+                            <div class="form-group mb-2">
+                                <div class="d-flex align-items-center gap-3">
+                                    <div class="col-4 first-name">
+                                        <label for="first_name">First Name</label>
+                                        <input type="text" name="first_name" id="edit_first_name"
+                                            class="form-control" required>
+                                    </div>
+                                    <div class="col-3 middle-name">
+                                        <label for="middle_name">Middle Name</label>
+                                        <input type="text" name="middle_name" id="edit_middle_name"
+                                            class="form-control">
+                                    </div>
+                                    <div class="col-4 last-name">
+                                        <label for="last_name">Last Name</label>
+                                        <input type="text" name="last_name" id="edit_last_name" class="form-control"
+                                            required>
+                                    </div>
+                                </div>
+                            </div>
 
+                            <div class="form-group mb-2">
+                                <div class="d-flex align-items-center gap-3">
+                                    <div class="contact_number col-3">
+                                        <label for="contact_number">Contact No.</label>
+                                        <input type="text" name="contact_number" id="edit_contact_number"
+                                            class="form-control" required>
+                                    </div>
+
+                                    <div class="gender col-3">
+                                        <label for="gender">Gender</label>
+                                        <select name="gender" id="edit_gender" class="form-control" required>
+                                            <option value="">Select gender</option>
+                                            <option value="Male">Male</option>
+                                            <option value="Female">Female</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="age col-2">
+                                        <label for="age">Age</label>
+                                        <input type="number" name="age" id="edit_age" class="form-control"
+                                            required>
+                                    </div>
+
+                                    <div class="members col-2">
+                                        <label for="members">Members</label>
+                                        <input type="number" name="members" id="edit_members" class="form-control"
+                                            required>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group mb-2">
+                                <label for="address">Address</label>
+                                <textarea name="address" id="edit_address" class="form-control" required></textarea>
+                            </div>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-primary">Update Visitor</button>
+                        </div>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-primary">Update Visitor</button>
-                    </div>
-                </div>
             </form>
         </div>
     </div>
@@ -277,6 +323,8 @@
             var members = button.getAttribute('data-members');
             var address = button.getAttribute('data-address');
             var date_visit = button.getAttribute('data-date_visit');
+            var check_in = button.getAttribute('data-check_in');
+            var check_out = button.getAttribute('data-check_out');
 
             // Log the data to the console for debugging
             console.log("Edit Modal Data:", {
@@ -289,7 +337,9 @@
                 age,
                 members,
                 address,
-                date_visit
+                date_visit,
+                check_in,
+                check_out,
             });
 
             // Set the values of the modal fields
@@ -303,6 +353,8 @@
             document.getElementById('edit_members').value = members;
             document.getElementById('edit_address').value = address;
             document.getElementById('edit_date_visit').value = date_visit;
+            document.getElementById('edit_check_in').value = check_in;
+            document.getElementById('edit_check_out').value = check_out;
         });
     });
 </script>

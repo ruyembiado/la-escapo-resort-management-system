@@ -41,6 +41,7 @@ class VisitorController extends Controller
             'members' => 'required',
             'address' => 'required',
             'date_visit' => 'required',
+            'check_in' => 'required',
         ]);
 
         // Log the request data
@@ -71,6 +72,7 @@ class VisitorController extends Controller
             'members' => 'required',
             'address' => 'required',
             'date_visit' => 'required',
+            'check_in' => 'required',
         ]);
 
         // Log the request data
