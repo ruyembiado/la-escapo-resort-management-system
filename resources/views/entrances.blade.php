@@ -60,7 +60,7 @@
                                         <thead>
                                             <tr>
                                                 <th style="padding: 5px;">Category</th>
-                                                <th style="padding: 5px;">No. of Members</th>
+                                                {{-- <th style="padding: 5px;">Quantity</th> --}}
                                                 <th style="padding: 5px;">Age</th>
                                                 <th style="padding: 5px;">Sub-total</th>
                                             </tr>
@@ -73,7 +73,7 @@
                                                 @if (!is_null($memberValue) && $memberValue !== 'null' && (int) $memberValue > 0)
                                                     <tr>
                                                         <td style="padding: 8px;">{{ $cat }}</td>
-                                                        <td style="padding: 8px;">{{ $members[$index] }}</td>
+                                                        {{-- <td style="padding: 8px;">{{ $members[$index] }}</td> --}}
                                                         <td style="padding: 8px;">
                                                             {{ !isset($ages[$index]) || $ages[$index] === null || $ages[$index] === '' || $ages[$index] === 'null' ? 'N/A' : $ages[$index] }}
                                                         </td>
@@ -155,10 +155,10 @@
                                 <div class="form-group">
                                     <small id="remaining_members_note" class="text-muted"></small>
                                 </div>
-                                <div class="form-group">
-                                    <label for="members">Total Members</label>
-                                    <div class="col-4">
-                                        <input readonly type="number" id="total_members" class="form-control" required>
+                                <div class="form-group col-1">
+                                    <label for="age">Age</label>
+                                    <div class="">
+                                        <input readonly type="text" id="age" class="form-control" required>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -179,7 +179,7 @@
                                 <thead>
                                     <tr class="bg-secondary text-light">
                                         <th style="padding: 10px;">CATEGORY</th>
-                                        <th style="padding: 10px;">NO. OF MEMBERS</th>
+                                        <th style="padding: 10px;">QUANTITY</th>
                                         <th style="padding: 10px;">AGE</th>
                                         <th style="padding: 10px;">FEE</th>
                                         <th style="padding: 10px;">SUB-TOTAL</th>
@@ -190,39 +190,33 @@
                                         $categories = [
                                             [
                                                 'name' => 'Children',
-                                                'age' => '7-11',
+                                                'age' => '0-11',
                                                 'checked' => false,
                                                 'price' => '50.00',
                                             ],
                                             [
                                                 'name' => 'Student',
-                                                'age' => '12-18',
+                                                'age' => '12-21',
                                                 'checked' => false,
                                                 'price' => '70.00',
                                             ],
                                             [
                                                 'name' => 'Regular',
-                                                'age' => '',
+                                                'age' => '22-59',
                                                 'checked' => false,
                                                 'price' => '100.00',
                                             ],
                                             [
                                                 'name' => 'PWD',
-                                                'age' => '',
+                                                'age' => 'Any',
                                                 'checked' => false,
                                                 'price' => '50.00',
                                             ],
                                             [
                                                 'name' => 'Senior Citizen',
-                                                'age' => '60-70',
+                                                'age' => '60+',
                                                 'checked' => false,
                                                 'price' => '50.00',
-                                            ],
-                                            [
-                                                'name' => 'Adult',
-                                                'age' => '',
-                                                'checked' => false,
-                                                'price' => '100.00',
                                             ],
                                         ];
                                     @endphp
@@ -237,8 +231,8 @@
                                                 </div>
                                             </td>
                                             <td width="25%" style="padding: 5px;">
-                                                <input class="form-control" type="number" name="members[]" min="0"
-                                                    value="">
+                                                <input class="form-control" readonly type="number" name="members[]"
+                                                    min="0" value="">
                                             </td>
                                             <td style="padding: 5px;">
                                                 <input class="form-control" type="text" name="age[]"
@@ -310,11 +304,10 @@
                                 <div class="form-group">
                                     <small id="remaining_members_note" class="text-muted"></small>
                                 </div>
-                                <div class="form-group">
-                                    <label for="members">Total Members</label>
-                                    <div class="col-4">
-                                        <input readonly type="number" id="edit_total_members" class="form-control"
-                                            required>
+                                <div class="form-group col-1">
+                                    <label for="members">Age</label>
+                                    <div class="">
+                                        <input readonly type="text" id="edit_age" class="form-control" required>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -335,7 +328,7 @@
                                 <thead>
                                     <tr class="bg-secondary text-light">
                                         <th style="padding: 10px;">CATEGORY</th>
-                                        <th style="padding: 10px;">NO. OF MEMBERS</th>
+                                        <th style="padding: 10px;">QUANTITY</th>
                                         <th style="padding: 10px;">AGE</th>
                                         <th style="padding: 10px;">FEE</th>
                                         <th style="padding: 10px;">SUB-TOTAL</th>
@@ -345,28 +338,34 @@
                                     @php
                                         $categories = [
                                             [
-                                                'name' => 'Adult',
-                                                'age' => '18-59',
+                                                'name' => 'Children',
+                                                'age' => '0-11',
                                                 'checked' => false,
-                                                'price' => '150.00',
+                                                'price' => '50.00',
+                                            ],
+                                            [
+                                                'name' => 'Student',
+                                                'age' => '12-21',
+                                                'checked' => false,
+                                                'price' => '70.00',
+                                            ],
+                                            [
+                                                'name' => 'Regular',
+                                                'age' => '22-59',
+                                                'checked' => false,
+                                                'price' => '100.00',
+                                            ],
+                                            [
+                                                'name' => 'PWD',
+                                                'age' => 'Any',
+                                                'checked' => false,
+                                                'price' => '50.00',
                                             ],
                                             [
                                                 'name' => 'Senior Citizen',
                                                 'age' => '60+',
                                                 'checked' => false,
-                                                'price' => '100.00',
-                                            ],
-                                            [
-                                                'name' => 'Children (Below 10 yo)',
-                                                'age' => '',
-                                                'checked' => false,
-                                                'price' => '100.00',
-                                            ],
-                                            [
-                                                'name' => 'Infant  (Below 2 Feet)',
-                                                'age' => '',
-                                                'checked' => false,
-                                                'price' => '0.00',
+                                                'price' => '50.00',
                                             ],
                                         ];
                                     @endphp
@@ -382,8 +381,8 @@
                                                 </div>
                                             </td>
                                             <td width="25%" style="padding: 5px;">
-                                                <input class="form-control" type="number" name="members[]"
-                                                    min="0" value="">
+                                                <input class="form-control" readonly type="number" name="members[]"
+                                                    value="">
                                             </td>
                                             <td style="padding: 5px;">
                                                 <input class="form-control" type="text" name="age[]"
@@ -450,7 +449,10 @@
                     url: url,
                     method: 'GET',
                     success: function(response) {
-                        $('#total_members').val(response.members).trigger('input');
+                        const age = response.age || 0;
+                        const isPwd = response.is_pwd || false;
+                        $('#age').val(response.age).trigger('input');
+                        autoCategorizeByAge(age, isPwd);
                     }
                 });
             } else {
@@ -468,9 +470,40 @@
 
         // When any members[] input changes
         $(document).on('input', '#addEntranceModal input[name="members[]"]', function() {
-            updateMemberInputLimitsAddForm();
+            // updateMemberInputLimitsAddForm();
             updateSubtotalsAndTotalAddForm();
         });
+
+        function autoCategorizeByAge(age, isPwd) {
+            // Reset all
+            $('#addEntranceModal input[name="members[]"]').each(function() {
+                $(this).val('');
+                $(this).prop('readonly', true);
+            });
+
+            let categoryIndex = -1;
+
+            if (isPwd) {
+                categoryIndex = 3; // PWD
+            } else if (age >= 0 && age <= 11) {
+                categoryIndex = 0; // Children
+            } else if (age >= 12 && age <= 21) {
+                categoryIndex = 1; // Student
+            } else if (age >= 22 && age <= 59) {
+                categoryIndex = 2; // Regular
+            } else if (age >= 60) {
+                categoryIndex = 4; // Senior Citizen
+            }
+
+            if (categoryIndex >= 0) {
+                const row = $('#addEntranceModal tbody tr').eq(categoryIndex);
+                const memberInput = row.find('input[name="members[]"]');
+                memberInput.val(1);
+                memberInput.prop('readonly', true);
+            }
+
+            updateSubtotalsAndTotalAddForm();
+        }
 
         function resetMemberInputs() {
             $('#addEntranceModal input[name="members[]"]').each(function() {
@@ -480,45 +513,45 @@
             });
         }
 
-        function updateMemberInputLimitsAddForm() {
-            let used = 0;
+        // function updateMemberInputLimitsAddForm() {
+        //     let used = 0;
 
-            // First, calculate the total used
-            $('#addEntranceModal input[name="members[]"]').each(function() {
-                used += parseInt($(this).val()) || 0;
-            });
+        //     // First, calculate the total used
+        //     $('#addEntranceModal input[name="members[]"]').each(function() {
+        //         used += parseInt($(this).val()) || 0;
+        //     });
 
-            if (used > totalMembers) {
-                // Reset all to 0 if over limit
-                $('#addEntranceModal input[name="members[]"]').each(function() {
-                    $(this).val(0);
-                    $(this).attr('max', totalMembers);
-                    $(this).prop('readonly', totalMembers === 0);
-                });
+        //     if (used > totalMembers) {
+        //         // Reset all to 0 if over limit
+        //         $('#addEntranceModal input[name="members[]"]').each(function() {
+        //             $(this).val(0);
+        //             $(this).attr('max', totalMembers);
+        //             $(this).prop('readonly', totalMembers === 0);
+        //         });
 
-                // Optional: show feedback
-                alert('Total members exceeded. All inputs have been reset to 0.');
-                return;
-            }
+        //         // Optional: show feedback
+        //         alert('Total members exceeded. All inputs have been reset to 0.');
+        //         return;
+        //     }
 
-            // Otherwise, set max per input dynamically
-            let remaining = totalMembers - used;
+        //     // Otherwise, set max per input dynamically
+        //     let remaining = totalMembers - used;
 
-            $('#addEntranceModal input[name="members[]"]').each(function() {
-                let currentVal = parseInt($(this).val()) || 0;
-                let max = currentVal + remaining;
-                $(this).attr('max', max);
-                $(this).prop('readonly', totalMembers === 0);
-            });
+        //     $('#addEntranceModal input[name="members[]"]').each(function() {
+        //         let currentVal = parseInt($(this).val()) || 0;
+        //         let max = currentVal + remaining;
+        //         $(this).attr('max', max);
+        //         $(this).prop('readonly', totalMembers === 0);
+        //     });
 
-            // Lock further increments if full
-            if (remaining <= 0) {
-                $('#addEntranceModal input[name="members[]"]').each(function() {
-                    let val = parseInt($(this).val()) || 0;
-                    $(this).attr('max', val); // lock to current value
-                });
-            }
-        }
+        //     // Lock further increments if full
+        //     if (remaining <= 0) {
+        //         $('#addEntranceModal input[name="members[]"]').each(function() {
+        //             let val = parseInt($(this).val()) || 0;
+        //             $(this).attr('max', val); // lock to current value
+        //         });
+        //     }
+        // }
 
         function updateSubtotalsAndTotalAddForm() {
             let totalPayment = 0;
@@ -586,8 +619,8 @@
                     totalMembers += members || 0;
                 });
 
-                document.getElementById('edit_total_members').value = totalMembers;
-                document.getElementById('edit_total_payment').value = totalPaymentCalculated.toFixed(2);
+                // document.getElementById('edit_total_members').value = totalMembers;
+                document.getElementById('edit_total_payment').value = totalPayment;
             });
         }
 
@@ -615,28 +648,28 @@
                     url: url,
                     method: 'GET',
                     success: function(response) {
-                        editTotalMembers = parseInt(response.members) || 0;
-                        $('#edit_total_members').val(editTotalMembers);
+                        age = parseInt(response.age) || 0;
+                        $('#edit_age').val(age);
                         resetEditMemberInputs();
                     }
                 });
             } else {
-                editTotalMembers = 0;
-                $('#edit_total_members').val('');
+                age = 0;
+                $('#edit_age').val('');
                 resetEditMemberInputs();
             }
         });
 
         // When any members[] input changes in edit form
         $(document).on('input', '#editEntranceModal input[name="members[]"]', function() {
-            updateMemberInputLimitsEditForm();
+            // updateMemberInputLimitsEditForm();
             updateEditSubtotalsAndTotal();
         });
 
         function resetEditMemberInputs() {
             $('#editEntranceModal input[name="members[]"]').each(function() {
-                $(this).attr('max', editTotalMembers);
-                $(this).prop('readonly', false);
+                $(this).attr('max', 1);
+                $(this).prop('readonly', true);
             });
         }
 
@@ -661,44 +694,44 @@
             $('#edit_total_payment').val(totalPayment.toFixed(2));
         }
 
-        function updateMemberInputLimitsEditForm() {
-            let used = 0;
+        // function updateMemberInputLimitsEditForm() {
+        //     let used = 0;
 
-            // First, calculate the total used
-            $('#editEntranceModal input[name="members[]"]').each(function() {
-                used += parseInt($(this).val()) || 0;
-            });
+        //     // First, calculate the total used
+        //     $('#editEntranceModal input[name="members[]"]').each(function() {
+        //         used += parseInt($(this).val()) || 0;
+        //     });
 
-            if (used > editTotalMembers) {
-                // Reset all to 0 if over limit
-                $('#editEntranceModal input[name="members[]"]').each(function() {
-                    $(this).val(0);
-                });
+        //     if (used > editTotalMembers) {
+        //         // Reset all to 0 if over limit
+        //         $('#editEntranceModal input[name="members[]"]').each(function() {
+        //             $(this).val(0);
+        //         });
 
-                // Recalculate totals
-                updateEditSubtotalsAndTotal();
+        //         // Recalculate totals
+        //         updateEditSubtotalsAndTotal();
 
-                // Optional: show feedback
-                alert('Total members exceeded. All inputs have been reset to 0.');
-                return;
-            }
+        //         // Optional: show feedback
+        //         alert('Total members exceeded. All inputs have been reset to 0.');
+        //         return;
+        //     }
 
-            // Otherwise, set max per input dynamically
-            let remaining = editTotalMembers - used;
+        //     // Otherwise, set max per input dynamically
+        //     let remaining = editTotalMembers - used;
 
-            $('#editEntranceModal input[name="members[]"]').each(function() {
-                let currentVal = parseInt($(this).val()) || 0;
-                let max = currentVal + remaining;
-                $(this).attr('max', max);
-            });
+        //     $('#editEntranceModal input[name="members[]"]').each(function() {
+        //         let currentVal = parseInt($(this).val()) || 0;
+        //         let max = currentVal + remaining;
+        //         $(this).attr('max', max);
+        //     });
 
-            // Lock further increments if full
-            if (remaining <= 0) {
-                $('#editEntranceModal input[name="members[]"]').each(function() {
-                    let val = parseInt($(this).val()) || 0;
-                    $(this).attr('max', val); // lock to current value
-                });
-            }
-        }
+        //     // Lock further increments if full
+        //     if (remaining <= 0) {
+        //         $('#editEntranceModal input[name="members[]"]').each(function() {
+        //             let val = parseInt($(this).val()) || 0;
+        //             $(this).attr('max', val); // lock to current value
+        //         });
+        //     }
+        // }
     });
 </script>

@@ -17,10 +17,10 @@
                             <div class="col mr-2">
                                 <div class="text-xs font-weight-bold text-dark text-uppercase mb-1">
                                     Visitors | Today</div>
-                                <div class="h3 mb-0 font-weight-bold text-primary">{{ $visitorsToday }}</div>
+                                <div class="h3 mb-0 font-weight-bold text-success">{{ $visitorsToday }}</div>
                             </div>
                             <div class="col-auto">
-                                <i class="fa fa-users fa-2x text-primary"></i>
+                                <i class="fa fa-users fa-2x text-success"></i>
                             </div>
                         </div>
                     </div>
@@ -36,10 +36,10 @@
                             <div class="col mr-2">
                                 <div class="text-xs font-weight-bold text-dark text-uppercase mb-1">
                                     Visitors | This Week</div>
-                                <div class="h3 mb-0 font-weight-bold text-primary">{{ $visitorsThisWeek }}</div>
+                                <div class="h3 mb-0 font-weight-bold text-success">{{ $visitorsThisWeek }}</div>
                             </div>
                             <div class="col-auto">
-                                <i class="fa fa-users fa-2x text-primary"></i>
+                                <i class="fa fa-users fa-2x text-success"></i>
                             </div>
                         </div>
                     </div>
@@ -55,10 +55,10 @@
                             <div class="col mr-2">
                                 <div class="text-xs font-weight-bold text-dark text-uppercase mb-1">
                                     Visitors | This Month</div>
-                                <div class="h3 mb-0 font-weight-bold text-primary">{{ $visitorsThisMonth }}</div>
+                                <div class="h3 mb-0 font-weight-bold text-success">{{ $visitorsThisMonth }}</div>
                             </div>
                             <div class="col-auto">
-                                <i class="fa fa-users fa-2x text-primary"></i>
+                                <i class="fa fa-users fa-2x text-success"></i>
                             </div>
                         </div>
                     </div>
@@ -74,10 +74,10 @@
                             <div class="col mr-2">
                                 <div class="text-xs font-weight-bold text-dark text-uppercase mb-1">
                                     Visitors | This Year</div>
-                                <div class="h3 mb-0 font-weight-bold text-primary">{{ $visitorsThisYear }}</div>
+                                <div class="h3 mb-0 font-weight-bold text-success">{{ $visitorsThisYear }}</div>
                             </div>
                             <div class="col-auto">
-                                <i class="fa fa-users fa-2x text-primary"></i>
+                                <i class="fa fa-users fa-2x text-success"></i>
                             </div>
                         </div>
                     </div>
@@ -169,7 +169,7 @@
                 datasets: [{
                     label: 'Total Visitors',
                     data: {!! json_encode($visitorsPerMonth) !!},
-                    backgroundColor: '#4e73df',
+                    backgroundColor: '#198754',
                     borderRadius: 4,
                 }]
             },

@@ -89,7 +89,8 @@
                                             data-members="{{ $visitor->members }}" data-address="{{ $visitor->address }}"
                                             data-date_visit="{{ $visitor->date_visit }}"
                                             data-check_in="{{ $visitor->check_in }}"
-                                            data-check_out="{{ $visitor->check_out }}">
+                                            data-check_out="{{ $visitor->check_out }}"
+                                            data-is_pwd="{{ $visitor->is_pwd }}">
                                             Edit
                                         </a>
                                         <form action="{{ route('visitor.destroy', $visitor->id) }}" method="POST">
@@ -181,9 +182,17 @@
                                     <input type="number" name="age" class="form-control" required>
                                 </div>
 
+                                <div class="is_pwd">
+                                    <label class="form-check-label" for="is_pwd">
+                                        Is PWD?
+                                    </label>
+                                    <input class="form-check-input" type="checkbox" name="is_pwd" id="is_pwd"
+                                        value="1">
+                                </div>
+
                                 <div class="members col-2">
-                                    <label for="members">Members</label>
-                                    <input type="number" name="members" min="1" value="1"
+                                    {{-- <label for="members">Members</label> --}}
+                                    <input type="hidden" name="members" min="1" value="1"
                                         class="form-control" required>
                                 </div>
                             </div>
@@ -281,9 +290,17 @@
                                             required>
                                     </div>
 
+                                    <div class="is_pwd">
+                                    <label class="form-check-label" for="is_pwd">
+                                        Is PWD?
+                                    </label>
+                                    <input class="form-check-input" type="checkbox" name="is_pwd" id="edit_is_pwd"
+                                        value="1">
+                                </div>
+
                                     <div class="members col-2">
-                                        <label for="members">Members</label>
-                                        <input type="number" name="members" id="edit_members" class="form-control"
+                                        {{-- <label for="members">Members</label> --}}
+                                        <input type="hidden" name="members" id="edit_members" class="form-control"
                                             required>
                                     </div>
                                 </div>
@@ -325,6 +342,7 @@
             var date_visit = button.getAttribute('data-date_visit');
             var check_in = button.getAttribute('data-check_in');
             var check_out = button.getAttribute('data-check_out');
+            var is_pwd = button.getAttribute('data-is_pwd');
 
             // Log the data to the console for debugging
             console.log("Edit Modal Data:", {
@@ -340,6 +358,7 @@
                 date_visit,
                 check_in,
                 check_out,
+                is_pwd,
             });
 
             // Set the values of the modal fields
@@ -355,6 +374,7 @@
             document.getElementById('edit_date_visit').value = date_visit;
             document.getElementById('edit_check_in').value = check_in;
             document.getElementById('edit_check_out').value = check_out;
+            document.getElementById('edit_is_pwd').checked = is_pwd == '1' ? true : false;
         });
     });
 </script>

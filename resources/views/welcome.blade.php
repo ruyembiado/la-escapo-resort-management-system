@@ -25,16 +25,6 @@
                     <div class="home-description text-light">
                         <i>Let La Escapo take you to a unique experience</i>
                     </div>
-
-                    @if (!auth()->check())
-                        <div class="auth-buttons d-flex gap-3">
-                            <!-- Button to toggle the Login Offcanvas -->
-                            <button class="btn btn-light" type="button" data-bs-toggle="offcanvas"
-                                data-bs-target="#loginOffcanvas" aria-controls="loginOffcanvas">
-                                Login
-                            </button>
-                        </div>
-                    @endif
                 </div>
             </div>
         </div>

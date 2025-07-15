@@ -35,7 +35,7 @@
                         <tr>
                             <th>No.</th>
                             <th>Name</th>
-                            <th>No. of Members</th>
+                            {{-- <th>No. of Members</th> --}}
                             <th>Entrance Fee</th>
                             {{-- <th>Accommodation</th>
                             <th>Cottage Rental</th> --}}
@@ -50,7 +50,7 @@
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $visitor->first_name . ' ' . $visitor->middle_name . ' ' . $visitor->last_name }}
                                 </td>
-                                <td class="text-center">{{ $visitor->members }}</td>
+                                {{-- <td class="text-center">{{ $visitor->members }}</td> --}}
                                 <td>
                                     {{ $visitor->entrance ? '₱' . number_format($visitor->entrance->total_payment, 2) : 'N/A' }}
                                 </td>

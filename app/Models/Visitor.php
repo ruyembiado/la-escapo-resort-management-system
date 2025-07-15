@@ -25,6 +25,7 @@ class Visitor extends Model
         'date_visit',
         'check_in',
         'check_out',
+        'is_pwd'
     ];
 
     public function entrance()

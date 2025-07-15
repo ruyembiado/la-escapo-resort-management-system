@@ -28,7 +28,8 @@ body {
 }
 
 main.content {
-    height: 100%;
+    min-height: fit-content;
+    height: 100vh;
 }
 
 .main {

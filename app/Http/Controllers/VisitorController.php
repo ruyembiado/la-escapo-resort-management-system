@@ -42,6 +42,7 @@ class VisitorController extends Controller
             'address' => 'required',
             'date_visit' => 'required',
             'check_in' => 'required',
+            'is_pwd' => 'nullable',
         ]);
 
         // Log the request data
@@ -73,6 +74,7 @@ class VisitorController extends Controller
             'address' => 'required',
             'date_visit' => 'required',
             'check_in' => 'required',
+            'is_pwd' => 'nullable',
         ]);
 
         // Log the request data
@@ -81,6 +83,10 @@ class VisitorController extends Controller
 
         try {
             $visitor->update($request->all());
+            if ($request->is_pwd == null) {
+                $visitor->is_pwd = 0;
+                $visitor->save();
+            }
             Log::info('Visitor updated:', $visitor->toArray());
         } catch (\Exception $e) {
             Log::error('Error updating visitor: ' . $e->getMessage());
@@ -100,6 +106,8 @@ class VisitorController extends Controller
         $visitor = Visitor::findOrFail($visitor_id);
         return response()->json([
             'members' => $visitor->members,
+            'age' => $visitor->age,
+            'is_pwd' => $visitor->is_pwd,
         ]);
     }
 }
