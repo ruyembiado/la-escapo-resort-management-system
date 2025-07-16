@@ -18,6 +18,7 @@
                             <th>Name</th>
                             <th>Description</th>
                             <th>Total Payment</th>
+                            <th>Status</th>
                             <th>Date Created</th>
                             <th>Action</th>
                         </tr>
@@ -60,6 +61,13 @@
                                     </table>
                                 </td>
                                 <td>₱ {{ number_format($beverage->total_payment, 2) }}</td>
+                                <td>
+                                    @if ($beverage->payment_status === 'pending')
+                                        <span class="badge bg-danger">{{ ucfirst($beverage->payment_status) }}</span>
+                                    @else
+                                        <span class="badge bg-success">{{ ucfirst($beverage->payment_status) }}</span>
+                                    @endif
+                                </td>
                                 <td>{{ \Carbon\Carbon::parse($beverage->created_at)->format('F j, Y') }}</td>
                                 <td>
                                     <div class="d-flex align-items-center justify-c gap-2">
@@ -70,7 +78,8 @@
                                                 'fee' => $fee,
                                                 'quantity' => $quantity,
                                             ]); ?>'
-                                            data-total-payment="{{ $beverage->total_payment }}">
+                                            data-total-payment="{{ $beverage->total_payment }}"
+                                            data-payment-status="{{ $beverage->payment_status }}">
                                             Edit
                                         </a>
                                         <form action="{{ route('beverage.destroy', $beverage->id) }}" method="POST">
@@ -92,7 +101,8 @@
     </div>
 
     <!-- Add Meals Modal -->
-    <div class="modal fade" id="addBeverages" tabindex="-1" role="dialog" aria-labelledby="addBeveragesLabel" aria-hidden="true">
+    <div class="modal fade" id="addBeverages" tabindex="-1" role="dialog" aria-labelledby="addBeveragesLabel"
+        aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
             <form action="{{ route('beverage.store') }}" method="POST">
                 @csrf
@@ -116,6 +126,16 @@
                                                 {{ \Carbon\Carbon::parse($visitor->date_visit)->format('F j, Y') }}
                                             </option>
                                         @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="members">Payment Status</label>
+                                <div class="col-12">
+                                    <select name="payment_status" class="form-control" id="payment_status">
+                                        <option value="">Select Status</option>
+                                        <option value="pending">Pending</option>
+                                        <option value="paid">Paid</option>
                                     </select>
                                 </div>
                             </div>
@@ -210,8 +230,8 @@
     </div>
 
     <!-- Edit Meals Modal -->
-    <div class="modal fade" id="editBeveragesModal" tabindex="-1" role="dialog" aria-labelledby="editBeveragesModalLabel"
-        aria-hidden="true">
+    <div class="modal fade" id="editBeveragesModal" tabindex="-1" role="dialog"
+        aria-labelledby="editBeveragesModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
             <form action="{{ route('beverage.update') }}" method="POST">
                 @csrf
@@ -239,6 +259,16 @@
                                             </option>
                                         @endforeach
                                     </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="members">Payment Status</label>
+                                    <div class="col-12">
+                                        <select name="payment_status" class="form-control" id="edit_payment_status">
+                                            <option value="">Select Status</option>
+                                            <option value="pending">Pending</option>
+                                            <option value="paid">Paid</option>
+                                        </select>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -358,10 +388,12 @@
             const visitorId = button.getAttribute('data-visitor-id');
             const items = JSON.parse(button.getAttribute('data-items'));
             const totalPayment = button.getAttribute('data-total-payment');
+            const paymentStatus = button.getAttribute('data-payment-status');
 
             // Set hidden inputs
             $('#edit_beverage_id').val(mealId);
             $('#edit_visitor_id_hidden').val(visitorId);
+            $('#edit_payment_status').val(paymentStatus);
 
             // Set visitor select
             $('#edit_visitor_id').val(visitorId).trigger('change');

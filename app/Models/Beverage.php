@@ -17,6 +17,7 @@ class Beverage extends Model
         'fee',
         'quantity',
         'total_payment',
+        'payment_status',
     ];
 
     public function visitor()

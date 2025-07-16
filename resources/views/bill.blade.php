@@ -37,10 +37,13 @@
                             <th>Name</th>
                             {{-- <th>No. of Members</th> --}}
                             <th>Entrance Fee</th>
+                            <th>Status</th>
                             {{-- <th>Accommodation</th>
                             <th>Cottage Rental</th> --}}
                             <th>Meals</th>
+                            <th>Status</th>
                             <th>Beverages</th>
+                            <th>Status</th>
                             <th>Total Payment</th>
                         </tr>
                     </thead>
@@ -54,17 +57,56 @@
                                 <td>
                                     {{ $visitor->entrance ? '₱' . number_format($visitor->entrance->total_payment, 2) : 'N/A' }}
                                 </td>
+                                <td>
+                                    @if ($visitor->entrance)
+                                        @if ($visitor->entrance->payment_status === 'pending')
+                                            <span
+                                                class="badge bg-danger">{{ ucfirst($visitor->entrance->payment_status) }}</span>
+                                        @elseif ($visitor->entrance->payment_status === 'paid')
+                                            <span
+                                                class="badge bg-success">{{ ucfirst($visitor->entrance->payment_status) }}</span>
+                                        @endif
+                                    @else
+                                        N/A
+                                    @endif
+                                </td>
                                 {{-- <td>
                                     {{ $visitor->accommodation ? '₱' . number_format($visitor->accommodation->total_payment, 2) : 'N/A' }}
                                 </td>
                                 <td>
                                     {{ $visitor->cottage ? '₱' . number_format($visitor->cottage->total_payment, 2) : 'N/A' }}
                                 </td> --}}
-                                 <td>
+                                <td>
                                     {{ $visitor->meal ? '₱' . number_format($visitor->meal->total_payment, 2) : 'N/A' }}
                                 </td>
-                                 <td>
+                                <td>
+                                    @if ($visitor->meal)
+                                        @if ($visitor->meal->payment_status === 'pending')
+                                            <span
+                                                class="badge bg-danger">{{ ucfirst($visitor->meal->payment_status) }}</span>
+                                        @elseif ($visitor->meal->payment_status === 'paid')
+                                            <span
+                                                class="badge bg-success">{{ ucfirst($visitor->meal->payment_status) }}</span>
+                                        @endif
+                                    @else
+                                        N/A
+                                    @endif
+                                </td>
+                                <td>
                                     {{ $visitor->beverage ? '₱' . number_format($visitor->beverage->total_payment, 2) : 'N/A' }}
+                                </td>
+                                <td>
+                                    @if ($visitor->beverage)
+                                        @if ($visitor->beverage->payment_status === 'pending')
+                                            <span
+                                                class="badge bg-danger">{{ ucfirst($visitor->beverage->payment_status) }}</span>
+                                        @elseif ($visitor->beverage->payment_status === 'paid')
+                                            <span
+                                                class="badge bg-success">{{ ucfirst($visitor->beverage->payment_status) }}</span>
+                                        @endif
+                                    @else
+                                        N/A
+                                    @endif
                                 </td>
                                 @php
                                     $grand_total =

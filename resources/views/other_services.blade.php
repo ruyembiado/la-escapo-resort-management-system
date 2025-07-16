@@ -4,11 +4,11 @@
     <!-- Start the content section -->
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text">Visitor's Billing Payments</h1>
+        <h1 class="h3 mb-0 text">Services</h1>
     </div>
 
     <div class="row">
-    <!-- Entrance Fee -->
+    <!-- Kawa Hot Bath -->
     <div class="col-xl-3 col-md-6 mb-4">
         <div class="card shadow h-100 py-2">
             <div class="card-body">
@@ -19,7 +19,7 @@
                                 <i class="fa fa-door-open fa-5x text-success"></i>
                             </div>
                             <div class="text-success text-uppercase mb-1 mt-3">
-                                <strong>Entrance Fee</strong>
+                                <strong>Kawa Hot Bath</strong>
                             </div>
                             <a class="btn btn-sm btn-secondary mt-2" href="{{ url('/entrances') }}">View</a>
                         </div>
@@ -29,7 +29,7 @@
         </div>
     </div>
 
-    <!-- Other Services -->
+    <!-- Water Tubing -->
     <div class="col-xl-3 col-md-6 mb-4">
         <div class="card shadow h-100 py-2">
             <div class="card-body">
@@ -40,9 +40,9 @@
                                 <i class="fa fa-bell fa-5x text-success"></i>
                             </div>
                             <div class="text-success text-uppercase mb-1 mt-3">
-                                <strong>Services</strong>
+                                <strong>Water Tubing</strong>
                             </div>
-                            <a class="btn btn-sm btn-secondary mt-2" href="{{ route('other.services') }}">View</a>
+                            <a class="btn btn-sm btn-secondary mt-2" href="{{ route('meals') }}">View</a>
                         </div>
                     </div>
                 </div>
@@ -50,7 +50,7 @@
         </div>
     </div>
 
-    <!-- Meals -->
+    <!-- Picnic Table -->
     <div class="col-xl-3 col-md-6 mb-4">
         <div class="card shadow h-100 py-2">
             <div class="card-body">
@@ -61,7 +61,7 @@
                                 <i class="fa fa-utensils fa-5x text-success"></i>
                             </div>
                             <div class="text-success text-uppercase mb-1 mt-3">
-                                <strong>Meals</strong>
+                                <strong>Picnic Table</strong>
                             </div>
                             <a class="btn btn-sm btn-secondary mt-2" href="{{ route('meals') }}">View</a>
                         </div>
@@ -71,7 +71,7 @@
         </div>
     </div>
 
-    <!-- Beverages -->
+    <!-- Massage -->
     <div class="col-xl-3 col-md-6 mb-4">
         <div class="card shadow h-100 py-2">
             <div class="card-body">
@@ -82,9 +82,30 @@
                                 <i class="fa fa-mug-hot fa-5x text-success"></i>
                             </div>
                             <div class="text-success text-uppercase mb-1 mt-3">
-                                <strong>Beverages</strong>
+                                <strong>Massage</strong>
                             </div>
                             <a class="btn btn-sm btn-secondary mt-2" href="{{ route('beverages') }}">View</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Overnight Accomodation -->
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card shadow h-100 py-2">
+            <div class="card-body">
+                <div class="d-flex h-100 flex-column justify-content-center">
+                    <div class="row align-items-center justify-content-between">
+                        <div class="col mr-2 text-center">
+                            <div class="col-auto">
+                                <i class="fa fa-mug-hot fa-5x text-success"></i>
+                            </div>
+                            <div class="text-success text-uppercase mb-1 mt-3">
+                                <strong>Overnight Accomodation</strong>
+                            </div>
+                            <a class="btn btn-sm btn-secondary mt-2" href="{{ route('accommodations') }}">View</a>
                         </div>
                     </div>
                 </div>

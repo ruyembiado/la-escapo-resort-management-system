@@ -43,6 +43,7 @@ Route::middleware(['auth'])->group(function () {
 
     // ServiceController routes
     Route::get('/services', [ServiceController::class, 'index'])->name('services');
+    Route::get('/other-services', [ServiceController::class, 'other_services'])->name('other.services');
     // entrances
     Route::get('/entrances', [ServiceController::class, 'entrances'])->name('entrances');
     Route::post('/add-entrance', [ServiceController::class, 'storeEntrance'])->name('entrance.store');

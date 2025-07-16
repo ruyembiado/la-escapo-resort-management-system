@@ -17,6 +17,11 @@ class ServiceController extends Controller
         return view('services');
     }
 
+    public function other_services()
+    {
+        return view('other_services');
+    }
+
     public function entrances()
     {
         $visitors = Visitor::orderBy('created_at', 'desc')->limit(50)->get();
@@ -370,6 +375,7 @@ class ServiceController extends Controller
             'meal_items.*.price' => 'required|numeric',
             'meal_items.*.quantity' => 'required|integer|min:0',
             'total_payment' => 'required|numeric',
+            'payment_status' => 'nullable',
         ]);
 
         $meal = Meal::findOrFail($request->meal_id);
@@ -397,6 +403,7 @@ class ServiceController extends Controller
             'quantity' => json_encode($quantities),
             'subtotal' => json_encode($subtotals),
             'total_payment' => $request->input('total_payment'),
+            'payment_status' => $request->payment_status ?? 'pending',
         ]);
 
         return redirect()->route('meals')->with('success', 'Meal record updated successfully.');
@@ -427,6 +434,7 @@ class ServiceController extends Controller
             'beverage_items.*.quantity' => 'nullable|integer|min:0',
             'beverage_items.*.subtotal' => 'nullable|numeric',
             'total_payment' => 'required|numeric',
+            'payment_status' => 'nullable',
         ]);
 
         $itemNames = [];
@@ -449,6 +457,7 @@ class ServiceController extends Controller
             'fee'           => json_encode($fees),
             'quantity'      => json_encode($quantities),
             'total_payment' => $request->total_payment,
+            'payment_status' => $request->payment_status ?? 'pending',
         ]);
 
         return redirect()->route('beverages')->with('success', 'Beverage(s) added successfully.');
@@ -464,6 +473,7 @@ class ServiceController extends Controller
             'beverage_items.*.price' => 'required|numeric',
             'beverage_items.*.quantity' => 'required|integer|min:0',
             'total_payment' => 'required|numeric',
+            'payment_status' => 'nullable',
         ]);
 
         $beverage = Beverage::findOrFail($request->beverage_id);
@@ -491,6 +501,7 @@ class ServiceController extends Controller
             'quantity' => json_encode($quantities),
             'subtotal' => json_encode($subtotals),
             'total_payment' => $request->input('total_payment'),
+            'payment_status' => $request->payment_status ?? 'pending',
         ]);
 
         return redirect()->route('beverages')->with('success', 'Beverage record updated successfully.');

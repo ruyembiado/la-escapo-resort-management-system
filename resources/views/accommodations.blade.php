@@ -3,7 +3,7 @@
 @section('content')
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text">Accommodations</h1>
+        <h1 class="h3 mb-0 text">Overnight Accommodations</h1>
         <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addAccommodationModal">Add
             Accommodation</a>
     </div>
