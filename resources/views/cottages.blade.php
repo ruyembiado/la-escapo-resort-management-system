@@ -64,7 +64,7 @@
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="btn btn-danger btn-sm"
-                                                onclick="return confirm('Are you sure you want to delete this cottage rental?')">
+                                                onclick="return confirm('Are you sure you want to delete this cottage rental record?')">
                                                 Delete
                                             </button>
                                         </form>

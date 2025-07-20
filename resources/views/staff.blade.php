@@ -117,7 +117,7 @@
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="btn btn-danger btn-sm"
-                                                onclick="return confirm('Are you sure you want to delete this staff?')">
+                                                onclick="return confirm('Are you sure you want to delete this staff record?')">
                                                 Delete
                                             </button>
                                         </form>

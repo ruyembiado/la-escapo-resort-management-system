@@ -4,8 +4,9 @@
     <!-- Start the content section -->
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text">Entrances</h1>
-        <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addEntranceModal">Add Entrance Fee</a>
+        <h1 class="h3 mb-0 text">Kawa Hot Bath</h1>
+        <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addKawaBathModal">Add Kawa Hot Bath
+            Fee</a>
     </div>
 
     <!-- Content Row -->
@@ -44,16 +45,16 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($entrances as $entrance)
+                        @foreach ($kawaBaths as $kawabath)
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
-                                <td>{{ $entrance->visitor->first_name }} {{ $entrance->visitor->middle_name }}
-                                    {{ $entrance->visitor->last_name }}</td>
+                                <td>{{ $kawabath->visitor->first_name }} {{ $kawabath->visitor->middle_name }}
+                                    {{ $kawabath->visitor->last_name }}</td>
                                 @php
-                                    $categories = json_decode($entrance->category, true);
-                                    $members = json_decode($entrance->members, true);
-                                    $ages = json_decode($entrance->age, true);
-                                    $fees = json_decode($entrance->fee, true);
+                                    $categories = json_decode($kawabath->category, true);
+                                    $members = json_decode($kawabath->members, true);
+                                    $ages = json_decode($kawabath->age, true);
+                                    $fees = json_decode($kawabath->fee, true);
                                 @endphp
                                 <td style="padding: 10px;">
                                     <table style="width: 100%; border-collapse: collapse;">
@@ -84,33 +85,32 @@
                                                 @endif
                                             @endforeach
                                         </tbody>
-
                                     </table>
                                 </td>
-                                <td>₱ {{ number_format($entrance->total_payment, 2) }}</td>
+                                <td>₱ {{ number_format($kawabath->total_payment, 2) }}</td>
                                 <td>
-                                    @if ($entrance->payment_status === 'pending')
-                                        <span class="badge bg-danger">{{ ucfirst($entrance->payment_status) }}</span>
+                                    @if ($kawabath->payment_status === 'pending')
+                                        <span class="badge bg-danger">{{ ucfirst($kawabath->payment_status) }}</span>
                                     @else
-                                        <span class="badge bg-success">{{ ucfirst($entrance->payment_status) }}</span>
+                                        <span class="badge bg-success">{{ ucfirst($kawabath->payment_status) }}</span>
                                     @endif
                                 </td>
-                                <td>{{ \Carbon\Carbon::parse($entrance->created_at)->format('F j, Y') }}</td>
+                                <td>{{ \Carbon\Carbon::parse($kawabath->created_at)->format('F j, Y') }}</td>
                                 <td>
                                     <div class="d-flex align-items-center justify-c gap-2">
                                         <a href="#" class="btn btn-warning btn-sm" data-bs-toggle="modal"
-                                            data-bs-target="#editEntranceModal" data-id="{{ $entrance->id }}"
-                                            data-visitor-id="{{ $entrance->visitor_id }}"
-                                            data-total-members='@json(json_decode($entrance->members))'
-                                            data-total-payment="{{ $entrance->total_payment }}"
-                                            data-payment-status="{{ $entrance->payment_status }}">
+                                            data-bs-target="#editKawaBathModal" data-id="{{ $kawabath->id }}"
+                                            data-visitor-id="{{ $kawabath->visitor_id }}"
+                                            data-total-members='@json(json_decode($kawabath->members))'
+                                            data-total-payment="{{ $kawabath->total_payment }}"
+                                            data-payment-status="{{ $kawabath->payment_status }}">
                                             Edit
                                         </a>
-                                        <form action="{{ route('entrance.destroy', $entrance->id) }}" method="POST">
+                                        <form action="{{ route('kawabath.destroy', $kawabath->id) }}" method="POST">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="btn btn-danger btn-sm"
-                                                onclick="return confirm('Are you sure you want to delete this entrance record?')">
+                                                onclick="return confirm('Are you sure you want to delete this kawa hot bath record?')">
                                                 Delete
                                             </button>
                                         </form>
@@ -125,15 +125,15 @@
     </div>
     <!-- Content Row -->
 
-    <!-- Add Entrance Fee Modal -->
-    <div class="modal fade" id="addEntranceModal" tabindex="-1" role="dialog" aria-labelledby="addEntranceModalLabel"
+    <!-- Add Kawa Hot Bath Fee Modal -->
+    <div class="modal fade" id="addKawaBathModal" tabindex="-1" role="dialog" aria-labelledby="addKawaBathModalLabel"
         aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
-            <form action="{{ route('entrance.store') }}" method="POST">
+            <form action="{{ route('kawabath.store') }}" method="POST">
                 @csrf
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="addEntranceModalLabel">Add Entrance Fee</h5>
+                        <h5 class="modal-title" id="addKawaBathModalLabel">Add Kawa Hot Bath Fee</h5>
                     </div>
                     <div class="modal-body">
                         <div class="form-group mb-3">
@@ -161,7 +161,7 @@
                                         <input readonly type="text" id="age" class="form-control" required>
                                     </div>
                                 </div>
-                                <div class="form-group">
+                                <div class="form-group col-2">
                                     <label for="members">Payment Status</label>
                                     <div class="col-12">
                                         <select name="payment_status" class="form-control" id="payment_status">
@@ -169,6 +169,13 @@
                                             <option value="pending">Pending</option>
                                             <option value="paid">Paid</option>
                                         </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="service_title">Service</label>
+                                    <div class="col-12">
+                                        <input type="text" name="service_title" id="service_title" value="Kawa Hot Bath" class="form-control"
+                                            readonly>
                                     </div>
                                 </div>
                             </div>
@@ -225,7 +232,8 @@
                                         <tr>
                                             <td width="30%" style="padding: 5px;">
                                                 <div class="d-flex align-items-center gap-1">
-                                                    <input type="hidden" name="category[]" value="{{ $category['name'] }}"
+                                                    <input type="hidden" name="category[]"
+                                                        value="{{ $category['name'] }}"
                                                         {{ $category['checked'] ? 'checked' : '' }}>
                                                     <span>{{ $category['name'] }}</span>
                                                 </div>
@@ -264,25 +272,25 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-primary">Add Entrance Fee</button>
+                        <button type="submit" class="btn btn-primary">Add Kawa Hot Bath Fee</button>
                     </div>
                 </div>
             </form>
         </div>
     </div>
 
-    <!-- Edit Entrance Fee Modal -->
-    <div class="modal fade" id="editEntranceModal" tabindex="-1" role="dialog"
-        aria-labelledby="editEntranceModalLabel" aria-hidden="true">
+    <!-- Edit Kawa Hot Bath Fee Modal -->
+    <div class="modal fade" id="editKawaBathModal" tabindex="-1" role="dialog"
+        aria-labelledby="editKawaBathModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
-            <form action="{{ route('entrance.update') }}" method="POST">
-                <input type="hidden" name="entrance_id" id="edit_entrance_id">
+            <form action="{{ route('kawabath.update') }}" method="POST">
+                <input type="hidden" name="kawabath_id" id="edit_kawabath_id">
                 <input type="hidden" name="visitor_id" id="_visitor_id">
                 @csrf
                 @method('PUT')
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="editEntranceModalLabel">Edit Entrance Fee</h5>
+                        <h5 class="modal-title" id="editKawaBathModalLabel">Edit Kawa Hot Bath Fee</h5>
                     </div>
                     <div class="modal-body">
                         <div class="form-group mb-3">
@@ -414,7 +422,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-primary">Update Entrance Fee</button>
+                        <button type="submit" class="btn btn-primary">Update Kawa Hot Bath Fee</button>
                     </div>
                 </div>
             </form>
@@ -425,13 +433,13 @@
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         // Initialize Select2 for visitor_name for add form
-        $('#addEntranceModal').on('shown.bs.modal', function() {
+        $('#addKawaBathModal').on('shown.bs.modal', function() {
             $('#visitor_name').select2({
                 theme: 'bootstrap4',
                 width: '100%',
                 placeholder: "Select a visitor",
                 allowClear: true,
-                dropdownParent: $('#addEntranceModal')
+                dropdownParent: $('#addKawaBathModal')
             });
         });
 
@@ -469,14 +477,14 @@
         });
 
         // When any members[] input changes
-        $(document).on('input', '#addEntranceModal input[name="members[]"]', function() {
+        $(document).on('input', '#addKawaBathModal input[name="members[]"]', function() {
             // updateMemberInputLimitsAddForm();
             updateSubtotalsAndTotalAddForm();
         });
 
         function autoCategorizeByAge(age, isPwd) {
             // Reset all
-            $('#addEntranceModal input[name="members[]"]').each(function() {
+            $('#addKawaBathModal input[name="members[]"]').each(function() {
                 $(this).val('');
                 $(this).prop('readonly', true);
             });
@@ -496,7 +504,7 @@
             }
 
             if (categoryIndex >= 0) {
-                const row = $('#addEntranceModal tbody tr').eq(categoryIndex);
+                const row = $('#addKawaBathModal tbody tr').eq(categoryIndex);
                 const memberInput = row.find('input[name="members[]"]');
                 memberInput.val(1);
                 memberInput.prop('readonly', true);
@@ -506,7 +514,7 @@
         }
 
         function resetMemberInputs() {
-            $('#addEntranceModal input[name="members[]"]').each(function() {
+            $('#addKawaBathModal input[name="members[]"]').each(function() {
                 $(this).val('');
                 $(this).attr('max', totalMembers);
                 $(this).prop('readonly', false);
@@ -517,13 +525,13 @@
         //     let used = 0;
 
         //     // First, calculate the total used
-        //     $('#addEntranceModal input[name="members[]"]').each(function() {
+        //     $('#addKawaBathModal input[name="members[]"]').each(function() {
         //         used += parseInt($(this).val()) || 0;
         //     });
 
         //     if (used > totalMembers) {
         //         // Reset all to 0 if over limit
-        //         $('#addEntranceModal input[name="members[]"]').each(function() {
+        //         $('#addKawaBathModal input[name="members[]"]').each(function() {
         //             $(this).val(0);
         //             $(this).attr('max', totalMembers);
         //             $(this).prop('readonly', totalMembers === 0);
@@ -537,7 +545,7 @@
         //     // Otherwise, set max per input dynamically
         //     let remaining = totalMembers - used;
 
-        //     $('#addEntranceModal input[name="members[]"]').each(function() {
+        //     $('#addKawaBathModal input[name="members[]"]').each(function() {
         //         let currentVal = parseInt($(this).val()) || 0;
         //         let max = currentVal + remaining;
         //         $(this).attr('max', max);
@@ -546,7 +554,7 @@
 
         //     // Lock further increments if full
         //     if (remaining <= 0) {
-        //         $('#addEntranceModal input[name="members[]"]').each(function() {
+        //         $('#addKawaBathModal input[name="members[]"]').each(function() {
         //             let val = parseInt($(this).val()) || 0;
         //             $(this).attr('max', val); // lock to current value
         //         });
@@ -556,7 +564,7 @@
         function updateSubtotalsAndTotalAddForm() {
             let totalPayment = 0;
 
-            $('#addEntranceModal tbody tr').each(function() {
+            $('#addKawaBathModal tbody tr').each(function() {
                 const memberInput = $(this).find('input[name="members[]"]');
                 const feeInput = $(this).find('input[name="fee[]"]');
                 const subtotalInput = $(this).find('input[id="sub-total"]');
@@ -577,7 +585,7 @@
 {{-- EDIT FORM SCRIPT --}}
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        const editModal = document.getElementById('editEntranceModal');
+        const editModal = document.getElementById('editKawaBathModal');
         let editTotalMembers = 0; // Track total members for edit form
 
         if (editModal) {
@@ -586,7 +594,7 @@
 
                 const totalMembersArray = JSON.parse(button.getAttribute('data-total-members') || '[]');
                 const visitorId = button.getAttribute('data-visitor-id');
-                const entranceId = button.getAttribute('data-id');
+                const kawabathId = button.getAttribute('data-id');
                 const totalPayment = button.getAttribute('data-total-payment');
                 const paymentStatus = button.getAttribute('data-payment-status');
 
@@ -594,7 +602,7 @@
                 console.log("Total Members:", totalMembersArray);
 
                 // Set hidden fields
-                document.getElementById('edit_entrance_id').value = entranceId;
+                document.getElementById('edit_kawabath_id').value = kawabathId;
                 $('#edit_visitor_id').val(visitorId).trigger('change');
                 $('#_visitor_id').val(visitorId);
                 $('#edit_payment_status').val(paymentStatus);
@@ -625,13 +633,13 @@
         }
 
         // Initialize Select2 for visitor_name for edit form
-        $('#editEntranceModal').on('shown.bs.modal', function() {
+        $('#editKawaBathModal').on('shown.bs.modal', function() {
             $('#edit_visitor_id').select2({
                 theme: 'bootstrap4',
                 width: '100%',
                 placeholder: "Select a visitor",
                 allowClear: true,
-                dropdownParent: $('#editEntranceModal')
+                dropdownParent: $('#editKawaBathModal')
             });
         });
 
@@ -661,13 +669,13 @@
         });
 
         // When any members[] input changes in edit form
-        $(document).on('input', '#editEntranceModal input[name="members[]"]', function() {
+        $(document).on('input', '#editKawaBathModal input[name="members[]"]', function() {
             // updateMemberInputLimitsEditForm();
             updateEditSubtotalsAndTotal();
         });
 
         function resetEditMemberInputs() {
-            $('#editEntranceModal input[name="members[]"]').each(function() {
+            $('#editKawaBathModal input[name="members[]"]').each(function() {
                 $(this).attr('max', 1);
                 $(this).prop('readonly', true);
             });
@@ -677,7 +685,7 @@
             let totalPayment = 0;
             let currentTotalMembers = 0;
 
-            $('#editEntranceModal tbody tr').each(function() {
+            $('#editKawaBathModal tbody tr').each(function() {
                 const memberInput = $(this).find('input[name="members[]"]');
                 const feeInput = $(this).find('input[name="fee[]"]');
                 const subtotalInput = $(this).find('input[id="sub-total"]');
@@ -698,13 +706,13 @@
         //     let used = 0;
 
         //     // First, calculate the total used
-        //     $('#editEntranceModal input[name="members[]"]').each(function() {
+        //     $('#editKawaBathModal input[name="members[]"]').each(function() {
         //         used += parseInt($(this).val()) || 0;
         //     });
 
         //     if (used > editTotalMembers) {
         //         // Reset all to 0 if over limit
-        //         $('#editEntranceModal input[name="members[]"]').each(function() {
+        //         $('#editKawaBathModal input[name="members[]"]').each(function() {
         //             $(this).val(0);
         //         });
 
@@ -719,7 +727,7 @@
         //     // Otherwise, set max per input dynamically
         //     let remaining = editTotalMembers - used;
 
-        //     $('#editEntranceModal input[name="members[]"]').each(function() {
+        //     $('#editKawaBathModal input[name="members[]"]').each(function() {
         //         let currentVal = parseInt($(this).val()) || 0;
         //         let max = currentVal + remaining;
         //         $(this).attr('max', max);
@@ -727,7 +735,7 @@
 
         //     // Lock further increments if full
         //     if (remaining <= 0) {
-        //         $('#editEntranceModal input[name="members[]"]').each(function() {
+        //         $('#editKawaBathModal input[name="members[]"]').each(function() {
         //             let val = parseInt($(this).val()) || 0;
         //             $(this).attr('max', val); // lock to current value
         //         });

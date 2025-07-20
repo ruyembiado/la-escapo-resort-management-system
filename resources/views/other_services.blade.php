@@ -21,7 +21,7 @@
                             <div class="text-success text-uppercase mb-1 mt-3">
                                 <strong>Kawa Hot Bath</strong>
                             </div>
-                            <a class="btn btn-sm btn-secondary mt-2" href="{{ url('/entrances') }}">View</a>
+                            <a class="btn btn-sm btn-secondary mt-2" href="{{ url('/kawa-hot-baths') }}">View</a>
                         </div>
                     </div>
                 </div>
@@ -42,7 +42,7 @@
                             <div class="text-success text-uppercase mb-1 mt-3">
                                 <strong>Water Tubing</strong>
                             </div>
-                            <a class="btn btn-sm btn-secondary mt-2" href="{{ route('meals') }}">View</a>
+                            <a class="btn btn-sm btn-secondary mt-2" href="{{ url('/water-tubings') }}">View</a>
                         </div>
                     </div>
                 </div>
