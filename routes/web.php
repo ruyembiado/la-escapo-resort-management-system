@@ -57,6 +57,12 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/water-tubing/update', [ServiceController::class, 'updateWaterTubing'])->name('watertubing.update');
     Route::delete('/delete-water-tubing/{id}', [ServiceController::class, 'destroyWaterTubing'])->name('watertubing.destroy');
 
+    // Picnic Tables
+    Route::get('/picnic-tables', [ServiceController::class, 'picnicTables'])->name('picnictables');
+    Route::post('/add-picnic-table', [ServiceController::class, 'storePicnicTable'])->name('picnictable.store');
+    Route::put('/picnic-table/update', [ServiceController::class, 'updatePicnicTable'])->name('picnictable.update');
+    Route::delete('/delete-picnic-table/{id}', [ServiceController::class, 'destroyPicnicTable'])->name('picnictable.destroy');
+
     // Entrances
     Route::get('/entrances', [ServiceController::class, 'entrances'])->name('entrances');
     Route::post('/add-entrance', [ServiceController::class, 'storeEntrance'])->name('entrance.store');

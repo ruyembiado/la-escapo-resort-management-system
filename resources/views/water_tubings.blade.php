@@ -61,7 +61,6 @@
                                         <thead>
                                             <tr>
                                                 <th style="padding: 5px;">Category</th>
-                                                {{-- <th style="padding: 5px;">Quantity</th> --}}
                                                 <th style="padding: 5px;">Age</th>
                                                 <th style="padding: 5px;">Sub-total</th>
                                             </tr>
@@ -326,6 +325,13 @@
                                             <option value="pending">Pending</option>
                                             <option value="paid">Paid</option>
                                         </select>
+                                    </div>
+                                </div>
+                                <div class="form-group col-2">
+                                    <label for="service_title">Service</label>
+                                    <div class="col-12">
+                                        <input type="text" name="service_title" id="service_title" value="Water Tubing" class="form-control"
+                                            readonly>
                                     </div>
                                 </div>
                             </div>

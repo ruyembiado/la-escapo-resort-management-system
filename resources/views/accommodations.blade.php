@@ -5,7 +5,7 @@
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text">Overnight Accommodations</h1>
         <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addAccommodationModal">Add
-            Accommodation</a>
+            Overnight Accommodation</a>
     </div>
 
     <!-- Content Row -->
@@ -19,6 +19,7 @@
                             <th>Name</th>
                             <th>Rooms</th>
                             <th>Total Payment</th>
+                            <th>Status</th>
                             <th>Date Created</th>
                             <th>Action</th>
                         </tr>
@@ -41,14 +42,21 @@
                                     </ul>
                                 </td>
                                 <td>₱ {{ number_format($accommodation->total_payment, 2) }}</td>
+                                <td>
+                                    @if ($accommodation->payment_status === 'pending')
+                                        <span class="badge bg-danger">{{ ucfirst($accommodation->payment_status) }}</span>
+                                    @else
+                                        <span class="badge bg-success">{{ ucfirst($accommodation->payment_status) }}</span>
+                                    @endif
+                                </td>
                                 <td>{{ \Carbon\Carbon::parse($accommodation->created_at)->format('F j, Y') }}</td>
                                 <td>
                                     <div class="d-flex align-items-center justify-c gap-2">
                                         <a href="#" class="btn btn-warning btn-sm" data-bs-toggle="modal"
                                             data-bs-target="#editAccommodationModal" data-id="{{ $accommodation->id }}"
                                             data-visitor-id="{{ $accommodation->visitor_id }}"
-                                            data-rooms="{{ $accommodation->room }}"
-                                            data-fees="{{ $accommodation->fee }}"
+                                            data-num-night="{{ $accommodation->num_nights }}"
+                                            data-rooms="{{ $accommodation->room }}" data-fees="{{ $accommodation->fee }}" data-payment-status="{{ $accommodation->payment_status }}"
                                             data-total-payment="{{ $accommodation->total_payment }}">
                                             Edit
                                         </a>
@@ -57,7 +65,7 @@
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="btn btn-danger btn-sm"
-                                                onclick="return confirm('Are you sure you want to delete this accommodation record?')">
+                                                onclick="return confirm('Are you sure you want to delete this overnight accommodation record?')">
                                                 Delete
                                             </button>
                                         </form>
@@ -79,23 +87,51 @@
                 @csrf
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="addAccommodationModalLabel">Add Accommodation</h5>
+                        <h5 class="modal-title" id="addAccommodationModalLabel">Add Overnight Accommodation</h5>
                     </div>
                     <div class="modal-body">
                         <div class="form-group mb-3">
-                            <div class="form-group">
-                                <label for="visitor_id">Name</label>
-                                <select name="visitor_id" class="form-control select2" id="visitor_name" required
-                                    data-placeholder="Select a visitor">
-                                    <option></option>
-                                    @foreach ($visitors as $visitor)
-                                        <option value="{{ $visitor->id }}">{{ $visitor->first_name }}
-                                            {{ $visitor->middle_name }}
-                                            {{ $visitor->last_name }} -
-                                            {{ \Carbon\Carbon::parse($visitor->date_visit)->format('F j, Y') }}
-                                        </option>
-                                    @endforeach
-                                </select>
+                            <div class="d-flex align-items-start gap-1">
+                                <div class="form-group col-6">
+                                    <label for="visitor_id">Name</label>
+                                    <select name="visitor_id" class="form-control select2" id="visitor_name" required
+                                        data-placeholder="Select a visitor">
+                                        <option></option>
+                                        @foreach ($visitors as $visitor)
+                                            <option value="{{ $visitor->id }}">{{ $visitor->first_name }}
+                                                {{ $visitor->middle_name }}
+                                                {{ $visitor->last_name }} -
+                                                {{ \Carbon\Carbon::parse($visitor->date_visit)->format('F j, Y') }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="form-group col-2">
+                                    <label for="members">Payment Status</label>
+                                    <div class="col-12">
+                                        <select name="payment_status" class="form-control" id="edit_payment_status">
+                                            <option value="">Select Status</option>
+                                            <option value="pending">Pending</option>
+                                            <option value="paid">Paid</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group col-4">
+                                    <label for="service_title">Service</label>
+                                    <div class="col-12">
+                                        <input type="text" name="service_title" id="service_title"
+                                            value="Overnight Accommodation" class="form-control" readonly="">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group mb-3">
+                            <div class="form-group col-2">
+                                <label for="num_nights">No. of Nights</label>
+                                <div class="col-12">
+                                    <input type="number" name="num_nights" class="form-control" id="num_nights"
+                                        min="1" required>
+                                </div>
                             </div>
                         </div>
 
@@ -106,26 +142,23 @@
                                         <th style="padding: 10px;">SELECT</th>
                                         <th style="padding: 10px;">ROOM</th>
                                         <th style="padding: 10px;">FEE</th>
+                                        <th style="padding: 10px;">SUB-TOTAL</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @php
                                         $rooms = [
                                             [
-                                                'name' => 'ROOM 1 (Good for 5 Persons)',
-                                                'price' => '2000.00',
-                                            ],
-                                            [
-                                                'name' => 'ROOM 2 (Good for 3 Persons)',
-                                                'price' => '1500.00',
-                                            ],
-                                            [
-                                                'name' => 'ROOM 3 (Good for 10 Persons)',
-                                                'price' => '4000.00',
-                                            ],
-                                            [
-                                                'name' => 'ROOM 4 (Good for 2 Persons)',
+                                                'name' => '(Good for 2 Persons)',
                                                 'price' => '1000.00',
+                                            ],
+                                            [
+                                                'name' => '(Good for 5 Persons)',
+                                                'price' => '2500.00',
+                                            ],
+                                            [
+                                                'name' => '(Good for 10 Persons)',
+                                                'price' => '5000.00',
                                             ],
                                         ];
                                     @endphp
@@ -137,12 +170,16 @@
                                                     class="room-checkbox">
                                             </td>
                                             <td width="" style="padding: 5px;">
-                                                <input class="form-control" name="rooms[]" type="text" value="{{ $room['name'] }}"
-                                                    readonly>
+                                                <input class="form-control" name="rooms[]" type="text"
+                                                    value="{{ $room['name'] }}" readonly>
                                             </td>
                                             <td width="15%" style="padding: 5px;">
                                                 <input class="form-control room-fee" type="text" name="fees[]"
                                                     min="0" value="{{ $room['price'] }}" readonly>
+                                            </td>
+                                            <td width="15%">
+                                                <input type="text" readonly id="sub-total" class="form-control"
+                                                    value="" readonly>
                                             </td>
                                         </tr>
                                     @endforeach
@@ -162,7 +199,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-primary">Add Accommodation</button>
+                        <button type="submit" class="btn btn-primary">Add Overnight Accommodation</button>
                     </div>
                 </div>
             </form>
@@ -179,21 +216,49 @@
                 @method('PUT')
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="editAccommodationModalLabel">Edit Accommodation</h5>
+                        <h5 class="modal-title" id="editAccommodationModalLabel">Edit Overnight Accommodation</h5>
                     </div>
                     <div class="modal-body">
                         <div class="form-group mb-3">
-                            <div class="form-group">
-                                <label for="visitor_id">Name</label>
-                                <select disabled name="visitor_id" class="form-control" id="edit_visitor_id">
-                                    @foreach ($visitors as $visitor)
-                                        <option value="{{ $visitor->id }}">{{ $visitor->first_name }}
-                                            {{ $visitor->middle_name }}
-                                            {{ $visitor->last_name }} -
-                                            {{ \Carbon\Carbon::parse($visitor->date_visit)->format('F j, Y') }}
-                                        </option>
-                                    @endforeach
-                                </select>
+                            <div class="d-flex align-items-start gap-1">
+                                <div class="form-group">
+                                    <label for="visitor_id">Name</label>
+                                    <select disabled name="visitor_id" class="form-control" id="edit_visitor_id">
+                                        @foreach ($visitors as $visitor)
+                                            <option value="{{ $visitor->id }}">{{ $visitor->first_name }}
+                                                {{ $visitor->middle_name }}
+                                                {{ $visitor->last_name }} -
+                                                {{ \Carbon\Carbon::parse($visitor->date_visit)->format('F j, Y') }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="form-group col-2">
+                                    <label for="members">Payment Status</label>
+                                    <div class="col-12">
+                                        <select name="edit_payment_status" class="form-control" id="edit_payment_status">
+                                            <option value="">Select Status</option>
+                                            <option value="pending">Pending</option>
+                                            <option value="paid">Paid</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group col-4">
+                                    <label for="service_title">Service</label>
+                                    <div class="col-12">
+                                        <input type="text" name="service_title" id="service_title"
+                                            value="Overnight Accommodation" class="form-control" readonly="">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group mb-3">
+                            <div class="form-group col-2">
+                                <label for="num_nights">No. of Nights</label>
+                                <div class="col-12">
+                                    <input type="number" name="edit_num_nights" class="form-control" id="edit_num_nights"
+                                        min="1" value="1" required>
+                                </div>
                             </div>
                         </div>
 
@@ -204,26 +269,23 @@
                                         <th style="padding: 10px;">SELECT</th>
                                         <th style="padding: 10px;">ROOM</th>
                                         <th style="padding: 10px;">FEE</th>
+                                        <th style="padding: 10px;">SUB-TOTAL</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @php
                                         $rooms = [
                                             [
-                                                'name' => 'ROOM 1 (Good for 5 Persons)',
-                                                'price' => '2000.00',
-                                            ],
-                                            [
-                                                'name' => 'ROOM 2 (Good for 3 Persons)',
-                                                'price' => '1500.00',
-                                            ],
-                                            [
-                                                'name' => 'ROOM 3 (Good for 10 Persons)',
-                                                'price' => '4000.00',
-                                            ],
-                                            [
-                                                'name' => 'ROOM 4 (Good for 2 Persons)',
+                                                'name' => '(Good for 2 Persons)',
                                                 'price' => '1000.00',
+                                            ],
+                                            [
+                                                'name' => '(Good for 5 Persons)',
+                                                'price' => '2500.00',
+                                            ],
+                                            [
+                                                'name' => '(Good for 10 Persons)',
+                                                'price' => '5000.00',
                                             ],
                                         ];
                                     @endphp
@@ -235,13 +297,17 @@
                                                     class="edit-room-checkbox">
                                             </td>
                                             <td width="" style="padding: 5px;">
-                                                <input class="form-control" name="edit_rooms[]" type="text" value="{{ $room['name'] }}"
-                                                    readonly>
+                                                <input class="form-control" name="edit_rooms[]" type="text"
+                                                    value="{{ $room['name'] }}" readonly>
                                             </td>
                                             <td width="15%" style="padding: 5px;">
                                                 <input class="form-control edit-room-fee" type="text"
                                                     name="edit_fees[]" min="0" value="{{ $room['price'] }}"
                                                     readonly>
+                                            </td>
+                                            <td width="15%">
+                                                <input type="text" readonly id="sub-total" class="form-control"
+                                                    value="" readonly>
                                             </td>
                                         </tr>
                                     @endforeach
@@ -261,7 +327,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-primary">Update Accommodation</button>
+                        <button type="submit" class="btn btn-primary">Update Overnight Accommodation</button>
                     </div>
                 </div>
             </form>
@@ -271,7 +337,49 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // Initialize Select2 for visitor_name for add form
+        function updateTotalPayment() {
+            const numNights = parseInt($('#num_nights').val()) || 1;
+            const editNumNights = parseInt($('#edit_num_nights').val()) || 1;
+
+            // Add Modal
+            let total = 0;
+            $('#addAccommodationModal tbody tr').each(function() {
+                const checkbox = $(this).find('.room-checkbox');
+                const fee = parseFloat($(this).find('.room-fee').val()) || 0;
+                const subTotalInput = $(this).find('input[id="sub-total"]');
+
+                if (checkbox.is(':checked')) {
+                    const subTotal = fee * numNights;
+                    subTotalInput.val(subTotal.toFixed(2));
+                    total += subTotal;
+                } else {
+                    subTotalInput.val('');
+                }
+            });
+            $('#total_payment').val(total.toFixed(2));
+
+            // Edit Modal
+            let editTotal = 0;
+            $('#editAccommodationModal tbody tr').each(function() {
+                const checkbox = $(this).find('.edit-room-checkbox');
+                const fee = parseFloat($(this).find('.edit-room-fee').val()) || 0;
+                const subTotalInput = $(this).find('input[id="sub-total"]');
+
+                if (checkbox.is(':checked')) {
+                    const subTotal = fee * editNumNights;
+                    subTotalInput.val(subTotal.toFixed(2));
+                    editTotal += subTotal;
+                } else {
+                    subTotalInput.val('');
+                }
+            });
+            $('#edit_total_payment').val(editTotal.toFixed(2));
+        }
+
+        // Trigger recalculation
+        $(document).on('change', '.room-checkbox, #num_nights', updateTotalPayment);
+        $(document).on('change', '.edit-room-checkbox', updateTotalPayment);
+
         $('#addAccommodationModal').on('shown.bs.modal', function() {
             $('#visitor_name').select2({
                 theme: 'bootstrap4',
@@ -281,48 +389,24 @@
                 dropdownParent: $('#addAccommodationModal')
             });
 
-            // Reset form when modal is shown
+            // Reset
             $('#total_payment').val('0.00');
+            $('#num_nights').val(1);
             $('.room-checkbox').prop('checked', false);
+            $('input[id="sub-total"]').val('');
         });
 
-        // Calculate total payment when rooms are selected in add form
-        $(document).on('change', '.room-checkbox, .edit-room-checkbox', updateTotalPayment);
-
-        // Function to update total payment for both add and edit forms
-        function updateTotalPayment() {
-            let total = 0;
-
-            // Calculate for add form
-            $('#addAccommodationModal .room-checkbox:checked').each(function() {
-                const fee = parseFloat($(this).closest('tr').find('.room-fee').val()) || 0;
-                total += fee;
-            });
-
-            $('#total_payment').val(total.toFixed(2));
-
-            // Calculate for edit form
-            let editTotal = 0;
-            $('#editAccommodationModal .edit-room-checkbox:checked').each(function() {
-                const fee = parseFloat($(this).closest('tr').find('.edit-room-fee').val()) || 0;
-                editTotal += fee;
-            });
-
-            $('#edit_total_payment').val(editTotal.toFixed(2));
-        }
-
-        // Edit modal functionality with error handling
         $('#editAccommodationModal').on('show.bs.modal', function(event) {
             const button = event.relatedTarget;
             const modal = $(this);
 
             try {
-                // Get basic data
                 const accommodationId = button.getAttribute('data-id');
                 const visitorId = button.getAttribute('data-visitor-id');
                 const totalPayment = button.getAttribute('data-total-payment');
+                const numNights = button.getAttribute('data-num-night') || 1;
+                const paymentStatus = button.getAttribute('data-payment-status');
 
-                // Safely parse JSON data with fallback to empty arrays
                 let rooms = [];
                 let fees = [];
 
@@ -331,25 +415,21 @@
                     fees = JSON.parse(button.getAttribute('data-fees') || '[]');
                 } catch (e) {
                     console.error('Error parsing JSON:', e);
-                    rooms = [];
-                    fees = [];
                 }
 
-                // Set form values
                 modal.find('#edit_accommodation_id').val(accommodationId);
                 modal.find('#edit_visitor_id').val(visitorId).trigger('change');
                 modal.find('#edit_total_payment').val(totalPayment);
-
-                // Reset all checkboxes
+                modal.find('#edit_num_nights').val(numNights);
+                modal.find('#edit_payment_status').val(paymentStatus);
                 modal.find('.edit-room-checkbox').prop('checked', false);
+                modal.find('input[id="sub-total"]').val('');
 
-                // Check the rooms that were previously selected
-                rooms.forEach((room) => {
+                rooms.forEach(room => {
                     modal.find('.edit-room-checkbox[value="' + room + '"]').prop('checked',
                         true);
                 });
 
-                // Update the total payment display
                 updateTotalPayment();
 
             } catch (error) {
@@ -359,7 +439,6 @@
             }
         });
 
-        // Form submission validation
         $('#submit-accommodation, #submit-edit-accommodation').on('click', function(e) {
             const form = $(this).closest('form');
             const checkedBoxes = form.find('.room-checkbox:checked, .edit-room-checkbox:checked');
@@ -370,5 +449,11 @@
                 return false;
             }
         });
+
+        // Recalculate when number of nights in edit modal changes
+        $('#edit_num_nights').on('input', updateTotalPayment);
+
+        // Initial call
+        updateTotalPayment();
     });
 </script>

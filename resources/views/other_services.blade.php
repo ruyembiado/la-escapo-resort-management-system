@@ -16,7 +16,7 @@
                     <div class="row align-items-center justify-content-between">
                         <div class="col mr-2 text-center">
                             <div class="col-auto">
-                                <i class="fa fa-door-open fa-5x text-success"></i>
+                                <i class="fa fa-hot-tub-person fa-5x text-success"></i>
                             </div>
                             <div class="text-success text-uppercase mb-1 mt-3">
                                 <strong>Kawa Hot Bath</strong>
@@ -37,7 +37,7 @@
                     <div class="row align-items-center justify-content-between">
                         <div class="col mr-2 text-center">
                             <div class="col-auto">
-                                <i class="fa fa-bell fa-5x text-success"></i>
+                                <i class="fa fa-water fa-5x text-success"></i>
                             </div>
                             <div class="text-success text-uppercase mb-1 mt-3">
                                 <strong>Water Tubing</strong>
@@ -58,12 +58,12 @@
                     <div class="row align-items-center justify-content-between">
                         <div class="col mr-2 text-center">
                             <div class="col-auto">
-                                <i class="fa fa-utensils fa-5x text-success"></i>
+                                <i class="fa fa-table fa-5x text-success"></i>
                             </div>
                             <div class="text-success text-uppercase mb-1 mt-3">
                                 <strong>Picnic Table</strong>
                             </div>
-                            <a class="btn btn-sm btn-secondary mt-2" href="{{ route('meals') }}">View</a>
+                            <a class="btn btn-sm btn-secondary mt-2" href="{{ route('picnictables') }}">View</a>
                         </div>
                     </div>
                 </div>
@@ -79,7 +79,7 @@
                     <div class="row align-items-center justify-content-between">
                         <div class="col mr-2 text-center">
                             <div class="col-auto">
-                                <i class="fa fa-mug-hot fa-5x text-success"></i>
+                                <i class="fa fa-spa fa-5x text-success"></i>
                             </div>
                             <div class="text-success text-uppercase mb-1 mt-3">
                                 <strong>Massage</strong>
@@ -100,7 +100,7 @@
                     <div class="row align-items-center justify-content-between">
                         <div class="col mr-2 text-center">
                             <div class="col-auto">
-                                <i class="fa fa-mug-hot fa-5x text-success"></i>
+                                <i class="fa fa-bed fa-5x text-success"></i>
                             </div>
                             <div class="text-success text-uppercase mb-1 mt-3">
                                 <strong>Overnight Accomodation</strong>

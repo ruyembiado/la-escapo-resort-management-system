@@ -10,6 +10,7 @@ use App\Models\Entrance;
 use App\Models\KawaBath;
 use Illuminate\Http\Request;
 use App\Models\Accommodation;
+use App\Models\PicnicTable;
 use App\Models\WaterTubing;
 
 class ServiceController extends Controller
@@ -141,8 +142,10 @@ class ServiceController extends Controller
     {
         $request->validate([
             'visitor_id' => 'required|exists:visitors,id',
+            'num_nights' => 'required',
             'rooms' => 'required|array',
             'fees' => 'required|array',
+            'payment_status' => 'required',
             'total_payment' => 'required',
         ]);
 
@@ -169,20 +172,24 @@ class ServiceController extends Controller
 
         Accommodation::create([
             'visitor_id' => $request->visitor_id,
+            'num_nights' => $request->num_nights,
             'room' => json_encode($filteredRooms),
             'fee' => json_encode($filteredFees),
+            'payment_status' => $request->payment_status ?? 'pending',
             'total_payment' => $request->total_payment,
         ]);
 
-        return redirect()->route('accommodations')->with('success', 'Accommodation added successfully.');
+        return redirect()->route('accommodations')->with('success', 'Overnight Accommodation added successfully.');
     }
 
     public function updateAccommodation(Request $request)
     {
         $request->validate([
             'accommodation_id' => 'required|exists:accommodations,id',
+            'edit_num_nights' => 'required',
             'edit_rooms' => 'required|array',
             'edit_fees' => 'required|array',
+            'edit_payment_status' => 'required',
             'total_payment' => 'required',
         ]);
 
@@ -202,19 +209,21 @@ class ServiceController extends Controller
 
         $accommodation = Accommodation::findOrFail($request->accommodation_id);
         $accommodation->update([
+            'num_nights' => $request->edit_num_nights,
             'room' => json_encode($filteredRooms),
             'fee' => json_encode($filteredFees),
+            'payment_status' => $request->edit_payment_status,
             'total_payment' => $request->total_payment,
         ]);
 
-        return redirect()->route('accommodations')->with('success', 'Accommodation updated successfully.');
+        return redirect()->route('accommodations')->with('success', 'Overnight Accommodation record updated successfully.');
     }
 
     public function destroyAccommodation($id)
     {
         $accommodation = Accommodation::findOrFail($id);
         $accommodation->delete();
-        return redirect()->route('accommodations')->with('success', 'Accommodation deleted successfully.');
+        return redirect()->route('accommodations')->with('success', 'Overnight Accommodation record deleted successfully.');
     }
 
     public function cottages()
@@ -724,5 +733,64 @@ class ServiceController extends Controller
         $waterTubing = WaterTubing::findOrFail($id);
         $waterTubing->delete();
         return redirect()->route('watertubings')->with('success', 'Water Tubing record deleted successfully.');
+    }
+
+    public function picnictables()
+    {
+        $visitors = Visitor::orderBy('created_at', 'desc')->limit(100)->get();
+        $picnicTables = PicnicTable::orderBy('created_at', 'desc')->with('visitor')->get();
+
+        return view('picnic_tables', compact('visitors', 'picnicTables'));
+    }
+
+    public function storePicnicTable(Request $request)
+    {
+        $request->validate([
+            'visitor_id' => 'required|exists:visitors,id',
+            'quantity' => 'required',
+            'fee' => 'required',
+            'total_payment' => 'required',
+            'payment_status' => 'nullable',
+        ]);
+
+        PicnicTable::create([
+            'visitor_id' => $request->visitor_id,
+            'quantity' => $request->quantity,
+            'fee' => $request->fee,
+            'total_payment' => $request->total_payment,
+            'payment_status' => $request->payment_status ?? 'pending',
+        ]);
+
+        return redirect()->route('picnictables')->with('success', 'Picnic Table fee added successfully.');
+    }
+
+    public function updatePicnicTable(Request $request)
+    {
+        $request->validate([
+            'visitor_id' => 'required|exists:visitors,id',
+            'quantity' => 'required',
+            'fee' => 'required',
+            'total_payment' => 'required',
+            'payment_status' => 'nullable',
+            'picnic_table_id' => 'required|exists:picnic_tables,id',
+        ]);
+
+        $picnictable = PicnicTable::findOrFail($request->picnic_table_id);
+        $picnictable->update([
+            'visitor_id' => $request->visitor_id,
+            'quantity' => $request->quantity,
+            'fee' => $request->fee,
+            'total_payment' => $request->total_payment,
+            'payment_status' => $request->payment_status ?? 'pending',
+        ]);
+
+        return redirect()->route('picnictables')->with('success', 'Picnic Table record updated successfully.');
+    }
+
+    public function destroyPicnicTable($id)
+    {
+        $picnictable = PicnicTable::findOrFail($id);
+        $picnictable->delete();
+        return redirect()->route('picnictables')->with('success', 'Picnic Table record deleted successfully.');
     }
 }

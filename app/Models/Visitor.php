@@ -52,4 +52,19 @@ class Visitor extends Model
     {
         return $this->hasOne(Beverage::class, 'visitor_id');
     }
+
+    public function kawabath()
+    {
+        return $this->hasOne(KawaBath::class, 'visitor_id');
+    }
+
+    public function watertubing()
+    {
+        return $this->hasOne(WaterTubing::class, 'visitor_id');
+    }
+
+    public function picnictable()
+    {
+        return $this->hasOne(PicnicTable::class, 'visitor_id');
+    }
 }

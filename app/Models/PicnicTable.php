@@ -5,19 +5,18 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Accommodation extends Model
+class PicnicTable extends Model
 {
     use HasFactory;
 
-    protected $table = 'accommodations';
+    protected $table = 'picnic_tables';
 
     protected $fillable = [
         'visitor_id',
-        'num_nights',
-        'room',
+        'quantity',
         'fee',
-        'payment_status',
         'total_payment',
+        'payment_status',
     ];
 
     public function visitor()

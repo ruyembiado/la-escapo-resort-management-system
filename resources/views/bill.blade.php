@@ -35,14 +35,19 @@
                         <tr>
                             <th>No.</th>
                             <th>Name</th>
-                            {{-- <th>No. of Members</th> --}}
                             <th>Entrance Fee</th>
                             <th>Status</th>
-                            {{-- <th>Accommodation</th>
-                            <th>Cottage Rental</th> --}}
                             <th>Meals</th>
                             <th>Status</th>
                             <th>Beverages</th>
+                            <th>Status</th>
+                            <th>Kawa Hot Bath</th>
+                            <th>Status</th>
+                            <th>Water Tubing</th>
+                            <th>Status</th>
+                            <th>Picnic Table</th>
+                            <th>Status</th>
+                            <th>Accommodation</th>
                             <th>Status</th>
                             <th>Total Payment</th>
                         </tr>
@@ -53,7 +58,6 @@
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $visitor->first_name . ' ' . $visitor->middle_name . ' ' . $visitor->last_name }}
                                 </td>
-                                {{-- <td class="text-center">{{ $visitor->members }}</td> --}}
                                 <td>
                                     {{ $visitor->entrance ? '₱' . number_format($visitor->entrance->total_payment, 2) : 'N/A' }}
                                 </td>
@@ -70,12 +74,6 @@
                                         N/A
                                     @endif
                                 </td>
-                                {{-- <td>
-                                    {{ $visitor->accommodation ? '₱' . number_format($visitor->accommodation->total_payment, 2) : 'N/A' }}
-                                </td>
-                                <td>
-                                    {{ $visitor->cottage ? '₱' . number_format($visitor->cottage->total_payment, 2) : 'N/A' }}
-                                </td> --}}
                                 <td>
                                     {{ $visitor->meal ? '₱' . number_format($visitor->meal->total_payment, 2) : 'N/A' }}
                                 </td>
@@ -108,15 +106,81 @@
                                         N/A
                                     @endif
                                 </td>
+                                <td>
+                                    {{ $visitor->kawabath ? '₱' . number_format($visitor->kawabath->total_payment, 2) : 'N/A' }}
+                                </td>
+                                <td>
+                                    @if ($visitor->kawabath)
+                                        @if ($visitor->kawabath->payment_status === 'pending')
+                                            <span
+                                                class="badge bg-danger">{{ ucfirst($visitor->kawabath->payment_status) }}</span>
+                                        @elseif ($visitor->kawabath->payment_status === 'paid')
+                                            <span
+                                                class="badge bg-success">{{ ucfirst($visitor->kawabath->payment_status) }}</span>
+                                        @endif
+                                    @else
+                                        N/A
+                                    @endif
+                                </td>
+                                <td>
+                                    {{ $visitor->watertubing ? '₱' . number_format($visitor->watertubing->total_payment, 2) : 'N/A' }}
+                                </td>
+                                <td>
+                                    @if ($visitor->watertubing)
+                                        @if ($visitor->watertubing->payment_status === 'pending')
+                                            <span
+                                                class="badge bg-danger">{{ ucfirst($visitor->watertubing->payment_status) }}</span>
+                                        @elseif ($visitor->watertubing->payment_status === 'paid')
+                                            <span
+                                                class="badge bg-success">{{ ucfirst($visitor->watertubing->payment_status) }}</span>
+                                        @endif
+                                    @else
+                                        N/A
+                                    @endif
+                                </td>
+                                <td>
+                                    {{ $visitor->picnictable ? '₱' . number_format($visitor->picnictable->total_payment, 2) : 'N/A' }}
+                                </td>
+                                <td>
+                                    @if ($visitor->picnictable)
+                                        @if ($visitor->picnictable->payment_status === 'pending')
+                                            <span
+                                                class="badge bg-danger">{{ ucfirst($visitor->picnictable->payment_status) }}</span>
+                                        @elseif ($visitor->picnictable->payment_status === 'paid')
+                                            <span
+                                                class="badge bg-success">{{ ucfirst($visitor->picnictable->payment_status) }}</span>
+                                        @endif
+                                    @else
+                                        N/A
+                                    @endif
+                                </td>
+                                <td>
+                                    {{ $visitor->accommodation ? '₱' . number_format($visitor->accommodation->total_payment, 2) : 'N/A' }}
+                                </td>
+                                <td>
+                                    @if ($visitor->accommodation)
+                                        @if ($visitor->accommodation->payment_status === 'pending')
+                                            <span
+                                                class="badge bg-danger">{{ ucfirst($visitor->accommodation->payment_status) }}</span>
+                                        @elseif ($visitor->accommodation->payment_status === 'paid')
+                                            <span
+                                                class="badge bg-success">{{ ucfirst($visitor->accommodation->payment_status) }}</span>
+                                        @endif
+                                    @else
+                                        N/A
+                                    @endif
+                                </td>
                                 @php
                                     $grand_total =
                                         ($visitor->entrance->total_payment ?? 0) +
-                                        // ($visitor->accommodation->total_payment ?? 0) +
-                                        // ($visitor->cottage->total_payment ?? 0) +
                                         ($visitor->meal->total_payment ?? 0) +
-                                        ($visitor->beverage->total_payment ?? 0);
+                                        ($visitor->beverage->total_payment ?? 0) +
+                                        ($visitor->kawabath->total_payment ?? 0) +
+                                        ($visitor->watertubing->total_payment ?? 0) +
+                                        ($visitor->picnictable->total_payment ?? 0)+
+                                        ($visitor->accommodation->total_payment ?? 0);
                                 @endphp
-                                <td>₱{{ number_format($grand_total, 2) }}</td>
+                                <td><b>₱{{ number_format($grand_total, 2) }}</b></td>
 
                             </tr>
                         @endforeach
