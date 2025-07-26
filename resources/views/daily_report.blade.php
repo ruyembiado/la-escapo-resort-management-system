@@ -61,8 +61,11 @@
                             <tr>
                                 <th>No. of Visitors</th>
                                 <th>Entrance Fee</th>
-                                {{-- <th>Accommodation</th>
-                                <th>Cottage Rental</th> --}}
+                                <th>Kawa Hot Bath</th>
+                                <th>Water Tubing</th>
+                                <th>Picnic Table</th>
+                                <th>Massage</th>
+                                <th>Accommodation</th>
                                 <th>Meals</th>
                                 <th>Beverages</th>
                                 <th>Total</th>
@@ -71,20 +74,23 @@
                         <tbody>
                             @if ($report['visitors'] == 0)
                                 <tr>
-                                    <td colspan="7" class="text-center">No data available for this date.</td>
+                                    <td colspan="10" class="text-center">No data available for this date.</td>
                                 </tr>
                             @else
                                 <tr>
                                     <td>{{ $report['visitors'] }}</td>
                                     <td>₱{{ number_format($report['entrance_fee'], 2) }}</td>
-                                    {{-- <td>₱{{ number_format($report['accommodation'], 2) }}</td>
-                                    <td>₱{{ number_format($report['rental'], 2) }}</td> --}}
+                                    <td>₱{{ number_format($report['kawabath'], 2) }}</td>
+                                    <td>₱{{ number_format($report['watertubing'], 2) }}</td>
+                                    <td>₱{{ number_format($report['picnictable'], 2) }}</td>
+                                    <td>₱{{ number_format($report['massage'], 2) }}</td>
+                                    <td>₱{{ number_format($report['accommodation'], 2) }}</td>
                                     <td>₱{{ number_format($report['meal'], 2) }}</td>
                                     <td>₱{{ number_format($report['beverage'], 2) }}</td>
                                     <td>₱{{ number_format($report['total'], 2) }}</td>
                                 </tr>
                                 <tr class="bg-light">
-                                    <td colspan="6" class="text-start h6">Grand Total:</td>
+                                    <td colspan="9" class="text-start h6">Grand Total:</td>
                                     <td class="h6">₱{{ number_format($report['total'], 2) }}</td>
                                 </tr>
                             @endif

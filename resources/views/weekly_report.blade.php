@@ -108,8 +108,11 @@
                                 <th>Day</th>
                                 <th>No. of Visitors</th>
                                 <th>Entrance Fee</th>
-                                {{-- <th>Accommodation</th>
-                                <th>Cottage Rental</th> --}}
+                                <th>Kawa Hot Bath</th>
+                                <th>Water Tubing</th>
+                                <th>Picnic Table</th>
+                                <th>Massage</th>
+                                <th>Accommodation</th>
                                 <th>Meals</th>
                                 <th>Beverages</th>
                                 <th>Total</th>
@@ -118,7 +121,7 @@
                         <tbody>
                             @if ($report->isEmpty())
                                 <tr>
-                                    <td colspan="8" class="text-center">No data available for this week.</td>
+                                    <td colspan="11" class="text-center">No data available for this week.</td>
                                 </tr>
                             @else
                                 @foreach ($report as $weekNumber => $weekDays)
@@ -127,8 +130,11 @@
                                             <td>{{ $dayName }}</td>
                                             <td>{{ $dayData['visitors'] }}</td>
                                             <td>₱{{ number_format($dayData['entrance_fee'], 2) }}</td>
-                                            {{-- <td>₱{{ number_format($dayData['accommodation'], 2) }}</td>
-                                            <td>₱{{ number_format($dayData['rental'], 2) }}</td> --}}
+                                            <td>₱{{ number_format($dayData['kawabath'], 2) }}</td>
+                                            <td>₱{{ number_format($dayData['watertubing'], 2) }}</td>
+                                            <td>₱{{ number_format($dayData['picnictable'], 2) }}</td>
+                                            <td>₱{{ number_format($dayData['massage'], 2) }}</td>
+                                            <td>₱{{ number_format($dayData['accommodation'], 2) }}</td>
                                             <td>₱{{ number_format($dayData['meal'], 2) }}</td>
                                             <td>₱{{ number_format($dayData['beverage'], 2) }}</td>
                                             <td>₱{{ number_format($dayData['total'], 2) }}</td>
@@ -138,11 +144,14 @@
                                 <tr class="bg-light">
                                     <td class="text-start h6">Grand Total</td>
                                     <td class="h6">{{ $grandTotal['visitors'] }}</td>
-                                    <td class="h6">₱{{ number_format($grandTotal['entrance_fee'], 2) }}</td>
-                                    {{-- <td class="h6">₱{{ number_format($grandTotal['accommodation'], 2) }}</td>
-                                    <td class="h6">₱{{ number_format($grandTotal['rental'], 2) }}</td> --}}
-                                    <td class="h6">₱{{ number_format($grandTotal['meal'], 2) }}</td>
-                                    <td class="h6">₱{{ number_format($grandTotal['beverage'], 2) }}</td>
+                                    <td>₱{{ number_format($grandTotal['entrance_fee'], 2) }}</td>
+                                    <td>₱{{ number_format($grandTotal['kawabath'], 2) }}</td>
+                                    <td>₱{{ number_format($grandTotal['watertubing'], 2) }}</td>
+                                    <td>₱{{ number_format($grandTotal['picnictable'], 2) }}</td>
+                                    <td>₱{{ number_format($grandTotal['massage'], 2) }}</td>
+                                    <td>₱{{ number_format($grandTotal['accommodation'], 2) }}</td>
+                                    <td>₱{{ number_format($grandTotal['meal'], 2) }}</td>
+                                    <td>₱{{ number_format($grandTotal['beverage'], 2) }}</td>
                                     <td class="h6">₱{{ number_format($grandTotal['total'], 2) }}</td>
                                 </tr>
                             @endif

@@ -16,7 +16,7 @@ class ReportController extends Controller
     public function dailyReport(Request $request)
     {
         $date = $request->input('date') ?? Carbon::today()->toDateString();
-        $visitors = Visitor::with('entrance', 'accommodation', 'cottage', 'meal', 'beverage')
+        $visitors = Visitor::with('entrance', 'accommodation', 'cottage', 'meal', 'beverage', 'kawabath', 'watertubing', 'picnictable', 'massage')
             ->whereDate('date_visit', $date)
             ->get();
 
@@ -29,7 +29,6 @@ class ReportController extends Controller
         }
 
         $totalEntrance = $visitors->sum(function ($visitor) {
-            // Ensure 'entrance' exists and sum total_payment safely
             return $visitor->entrance ? (float) ($visitor->entrance->total_payment ?? 0) : 0;
         });
 
@@ -49,6 +48,22 @@ class ReportController extends Controller
             return $visitor->beverage ? (float) ($visitor->beverage->total_payment ?? 0) : 0;
         });
 
+        $totalKawabath = $visitors->sum(function ($visitor) {
+            return $visitor->kawabath ? (float) ($visitor->kawabath->total_payment ?? 0) : 0;
+        });
+
+        $totalWatertubing = $visitors->sum(function ($visitor) {
+            return $visitor->watertubing ? (float) ($visitor->watertubing->total_payment ?? 0) : 0;
+        });
+
+        $totalPicnicTable = $visitors->sum(function ($visitor) {
+            return $visitor->picnictable ? (float) ($visitor->picnictable->total_payment ?? 0) : 0;
+        });
+
+        $totalMassage = $visitors->sum(function ($visitor) {
+            return $visitor->massage ? (float) ($visitor->massage->total_payment ?? 0) : 0;
+        });
+
         // Final report
         $report = [
             'visitors' => $totalVisitors,
@@ -57,7 +72,11 @@ class ReportController extends Controller
             'rental' => $totalRental,
             'meal' => $totalMeal,
             'beverage' => $totalBeverage,
-            'total' => $totalEntrance + $totalAccommodation + $totalRental + $totalMeal + $totalBeverage,
+            'kawabath' => $totalKawabath,
+            'watertubing' => $totalWatertubing,
+            'picnictable' => $totalPicnicTable,
+            'massage' => $totalMassage,
+            'total' => $totalEntrance + $totalAccommodation + $totalRental + $totalMeal + $totalBeverage + $totalKawabath + $totalWatertubing + $totalPicnicTable + $totalMassage,
         ];
 
         $dayName = Carbon::parse($date)->format('l');
@@ -78,7 +97,7 @@ class ReportController extends Controller
         $startDate = Carbon::createFromDate($selectedYear, $selectedMonth, 1)->startOfMonth();
         $endDate = $startDate->copy()->endOfMonth();
 
-        $visitors = Visitor::with('entrance', 'accommodation', 'cottage', 'meal', 'beverage')
+        $visitors = Visitor::with('entrance', 'accommodation', 'cottage', 'meal', 'beverage', 'kawabath', 'watertubing', 'picnictable', 'massage')
             ->whereDate('date_visit', '>=', $startDate)
             ->whereDate('date_visit', '<=', $endDate)
             ->get();
@@ -94,6 +113,10 @@ class ReportController extends Controller
             $accommodation = $visitor->accommodation->total_payment ?? 0;
             $rental = $visitor->cottage->total_payment ?? 0;
             $meal = $visitor->meal->total_payment ?? 0;
+            $kawabath = $visitor->kawabath->total_payment ?? 0;
+            $watertubing = $visitor->watertubing->total_payment ?? 0;
+            $picnictable = $visitor->picnictable->total_payment ?? 0;
+            $massage = $visitor->massage->total_payment ?? 0;
             $beverage = $visitor->beverage->total_payment ?? 0;
 
             if (!$report->has($weekNumber)) {
@@ -110,6 +133,10 @@ class ReportController extends Controller
                     'rental' => 0,
                     'meal' => 0,
                     'beverage' => 0,
+                    'massage' => 0,
+                    'watertubing' => 0,
+                    'picnictable' => 0,
+                    'kawabath' => 0,
                     'total' => 0,
                 ]);
             }
@@ -122,7 +149,11 @@ class ReportController extends Controller
             $dayData['rental'] += (float) $rental;
             $dayData['meal'] += (float) $meal;
             $dayData['beverage'] += (float) $beverage;
-            $dayData['total'] = $dayData['entrance_fee'] + $dayData['accommodation'] + $dayData['rental'] + $dayData['meal'] + $dayData['beverage'];
+            $dayData['massage'] += (float) $massage;
+            $dayData['watertubing'] += (float) $watertubing;
+            $dayData['picnictable'] += (float) $picnictable;
+            $dayData['kawabath'] += (float) $kawabath;
+            $dayData['total'] = $dayData['entrance_fee'] + $dayData['accommodation'] + $dayData['rental'] + $dayData['meal'] + $dayData['beverage'] + $dayData['massage'] + $dayData['watertubing'] + $dayData['picnictable'] + $dayData['kawabath'];
 
             $weekData->put($dayName, $dayData);
             $report->put($weekNumber, $weekData);
@@ -142,6 +173,10 @@ class ReportController extends Controller
                 'rental' => $weekDays->sum('rental'),
                 'meal' => $weekDays->sum('meal'),
                 'beverage' => $weekDays->sum('beverage'),
+                'massage' => $weekDays->sum('massage'),
+                'watertubing' => $weekDays->sum('watertubing'),
+                'picnictable' => $weekDays->sum('picnictable'),
+                'kawabath' => $weekDays->sum('kawabath'),
                 'total' => $weekDays->sum('total'),
             ];
         });
@@ -153,6 +188,10 @@ class ReportController extends Controller
             'rental' => $weeklyTotal->sum('rental'),
             'meal' => $weeklyTotal->sum('meal'),
             'beverage' => $weeklyTotal->sum('beverage'),
+            'massage' => $weeklyTotal->sum('massage'),
+            'watertubing' => $weeklyTotal->sum('watertubing'),
+            'picnictable' => $weeklyTotal->sum('picnictable'),
+            'kawabath' => $weeklyTotal->sum('kawabath'),
             'total' => $weeklyTotal->sum('total'),
         ];
 
