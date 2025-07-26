@@ -67,4 +67,9 @@ class Visitor extends Model
     {
         return $this->hasOne(PicnicTable::class, 'visitor_id');
     }
+
+    public function massage()
+    {
+        return $this->hasOne(Massage::class, 'visitor_id');
+    }
 }

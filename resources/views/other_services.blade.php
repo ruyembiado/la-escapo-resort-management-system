@@ -84,7 +84,7 @@
                             <div class="text-success text-uppercase mb-1 mt-3">
                                 <strong>Massage</strong>
                             </div>
-                            <a class="btn btn-sm btn-secondary mt-2" href="{{ route('beverages') }}">View</a>
+                            <a class="btn btn-sm btn-secondary mt-2" href="{{ route('massages') }}">View</a>
                         </div>
                     </div>
                 </div>

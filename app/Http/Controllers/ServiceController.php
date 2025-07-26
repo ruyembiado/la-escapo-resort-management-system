@@ -10,6 +10,7 @@ use App\Models\Entrance;
 use App\Models\KawaBath;
 use Illuminate\Http\Request;
 use App\Models\Accommodation;
+use App\Models\Massage;
 use App\Models\PicnicTable;
 use App\Models\WaterTubing;
 
@@ -792,5 +793,114 @@ class ServiceController extends Controller
         $picnictable = PicnicTable::findOrFail($id);
         $picnictable->delete();
         return redirect()->route('picnictables')->with('success', 'Picnic Table record deleted successfully.');
+    }
+
+    public function massages()
+    {
+        $visitors = Visitor::orderBy('created_at', 'desc')->limit(100)->get();
+        $massages = Massage::orderBy('created_at', 'desc')->with('visitor')->get();
+
+        return view('massages', compact('visitors', 'massages'));
+    }
+
+    public function storeMassage(Request $request)
+    {
+        $request->validate([
+            'visitor_id' => 'required|exists:visitors,id',
+            'category' => 'required|array',
+            'members' => 'required|array',
+            'age' => 'nullable|array',
+            'fee' => 'nullable|array',
+            'total_payment' => 'required',
+            'no_of_hours' => 'required',
+            'payment_status' => 'nullable',
+        ]);
+
+        $categories = $request->input('category');
+        $members = $request->input('members');
+        $ages = $request->input('age', []);
+        $fees = $request->input('fee', []);
+
+        $filteredCategories = [];
+        $filteredMembers = [];
+        $filteredAges = [];
+        $filteredFees = [];
+
+        $count = count($members);
+
+        for ($i = 0; $i < $count; $i++) {
+            $filteredCategories[] = isset($categories[$i]) && $categories[$i] !== null ? $categories[$i] : 'null';
+            $filteredMembers[] = isset($members[$i]) && $members[$i] !== null ? $members[$i] : 'null';
+            $filteredAges[] = isset($ages[$i]) && $ages[$i] !== null ? $ages[$i] : 'null';
+            $filteredFees[] = isset($fees[$i]) && $fees[$i] !== null ? $fees[$i] : 'null';
+        }
+
+        Massage::create([
+            'visitor_id' => $request->visitor_id,
+            'category' => json_encode($filteredCategories),
+            'members' => json_encode($filteredMembers),
+            'age' => json_encode($filteredAges),
+            'fee' => json_encode($filteredFees),
+            'total_payment' => $request->total_payment,
+            'no_of_hours' => $request->no_of_hours,
+            'payment_status' => $request->payment_status ?? 'pending',
+        ]);
+
+        return redirect()->route('massages')->with('success', 'Massage fee added successfully.');
+    }
+
+    public function updateMassage(Request $request)
+    {
+        $request->validate([
+            'visitor_id' => 'required|exists:visitors,id',
+            'category' => 'required|array',
+            'members' => 'required|array',
+            'age' => 'nullable|array',
+            'fee' => 'nullable|array',
+            'total_payment' => 'required',
+            'payment_status' => 'nullable',
+            'no_of_hours' => 'required',
+            'massage_id' => 'required|exists:massages,id',
+        ]);
+
+        $categories = $request->input('category');
+        $members = $request->input('members');
+        $ages = $request->input('age', []);
+        $fees = $request->input('fee', []);
+
+        $filteredCategories = [];
+        $filteredMembers = [];
+        $filteredAges = [];
+        $filteredFees = [];
+
+        $count = count($members);
+
+        for ($i = 0; $i < $count; $i++) {
+            $filteredCategories[] = isset($categories[$i]) && $categories[$i] !== null ? $categories[$i] : 'null';
+            $filteredMembers[] = isset($members[$i]) && $members[$i] !== null ? $members[$i] : 'null';
+            $filteredAges[] = isset($ages[$i]) && $ages[$i] !== null ? $ages[$i] : 'null';
+            $filteredFees[] = isset($fees[$i]) && $fees[$i] !== null ? $fees[$i] : 'null';
+        }
+
+        $massage = Massage::findOrFail($request->massage_id);
+        $massage->update([
+            'visitor_id' => $request->visitor_id,
+            'category' => json_encode($filteredCategories),
+            'members' => json_encode($filteredMembers),
+            'age' => json_encode($filteredAges),
+            'fee' => json_encode($filteredFees),
+            'total_payment' => $request->total_payment,
+            'no_of_hours' => $request->no_of_hours,
+            'payment_status' => $request->payment_status ?? 'pending',
+        ]);
+
+        return redirect()->route('massages')->with('success', 'Massage record updated successfully.');
+    }
+
+    public function destroyMassage($id)
+    {
+        $massages = Massage::findOrFail($id);
+        $massages->delete();
+        return redirect()->route('massages')->with('success', 'Massage record deleted successfully.');
     }
 }

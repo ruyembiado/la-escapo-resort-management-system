@@ -57,6 +57,12 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/water-tubing/update', [ServiceController::class, 'updateWaterTubing'])->name('watertubing.update');
     Route::delete('/delete-water-tubing/{id}', [ServiceController::class, 'destroyWaterTubing'])->name('watertubing.destroy');
 
+    // Massages
+    Route::get('/massages', [ServiceController::class, 'massages'])->name('massages');
+    Route::post('/add-massage', [ServiceController::class, 'storeMassage'])->name('massage.store');
+    Route::put('/massage/update', [ServiceController::class, 'updateMassage'])->name('massage.update');
+    Route::delete('/delete-massage/{id}', [ServiceController::class, 'destroyMassage'])->name('massage.destroy');
+
     // Picnic Tables
     Route::get('/picnic-tables', [ServiceController::class, 'picnicTables'])->name('picnictables');
     Route::post('/add-picnic-table', [ServiceController::class, 'storePicnicTable'])->name('picnictable.store');
@@ -68,16 +74,19 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/add-entrance', [ServiceController::class, 'storeEntrance'])->name('entrance.store');
     Route::put('/entrance/update', [ServiceController::class, 'updateEntrance'])->name('entrance.update');
     Route::delete('/delete-entrance/{id}', [ServiceController::class, 'destroyEntrance'])->name('entrance.destroy');
+    
     // accommodations
     Route::get('/accommodations', [ServiceController::class, 'accommodations'])->name('accommodations');
     Route::post('/accommodation', [ServiceController::class, 'storeAccommodation'])->name('accommodation.store');
     Route::put('/accommodation/update', [ServiceController::class, 'updateAccommodation'])->name('accommodation.update');
     Route::delete('/delete-accommodation/{id}', [ServiceController::class, 'destroyAccommodation'])->name('accommodation.destroy');
+
     // cottages
     // Route::get('/cottages', [ServiceController::class, 'cottages'])->name('cottages');
     // Route::post('/cottage', [ServiceController::class, 'storeCottage'])->name('cottage.store');
     // Route::put('/cottage/update', [ServiceController::class, 'updateCottage'])->name('cottage.update');
     // Route::delete('/delete-cottage/{id}', [ServiceController::class, 'destroyCottage'])->name('cottage.destroy');
+    
     // Meals
     Route::get('/meals', [ServiceController::class, 'meals'])->name('meals');
     Route::post('/meal', [ServiceController::class, 'storeMeal'])->name('meal.store');

@@ -9,7 +9,7 @@ class BillController extends Controller
 {
     public function index(Request $request)
     {
-        $visitors = Visitor::orderBy('created_at', 'desc')->with('entrance', 'accommodation', 'cottage', 'meal', 'beverage', 'kawabath', 'watertubing', 'picnictable')->get();
+        $visitors = Visitor::orderBy('created_at', 'desc')->with('entrance', 'accommodation', 'cottage', 'meal', 'beverage', 'kawabath', 'watertubing', 'picnictable', 'massage')->get();
         return view('bill', compact('visitors'));
     }
 }

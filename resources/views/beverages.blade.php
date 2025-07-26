@@ -128,15 +128,15 @@
                                         @endforeach
                                     </select>
                                 </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="members">Payment Status</label>
-                                <div class="col-12">
-                                    <select name="payment_status" class="form-control" id="payment_status">
-                                        <option value="">Select Status</option>
-                                        <option value="pending">Pending</option>
-                                        <option value="paid">Paid</option>
-                                    </select>
+                                <div class="form-group">
+                                    <label for="members">Payment Status</label>
+                                    <div class="col-12">
+                                        <select name="payment_status" class="form-control" id="payment_status">
+                                            <option value="">Select Status</option>
+                                            <option value="pending">Pending</option>
+                                            <option value="paid">Paid</option>
+                                        </select>
+                                    </div>
                                 </div>
                             </div>
                         </div>
