@@ -85,8 +85,11 @@
                                 <th>Week</th>
                                 <th>No. of Visitors</th>
                                 <th>Entrance Fee</th>
-                                {{-- <th>Accommodation</th>
-                                <th>Cottage Rental</th> --}}
+                                <th>Kawa Hot Bath</th>
+                                <th>Water Tubing</th>
+                                <th>Picnic Table</th>
+                                <th>Massage</th>
+                                <th>Accommodation</th>
                                 <th>Meals</th>
                                 <th>Beverages</th>
                                 <th>Total</th>
@@ -95,7 +98,7 @@
                         <tbody>
                             @if ($weeklyBreakdown->isEmpty())
                                 <tr>
-                                    <td colspan="8" class="text-center">No data available for this month.</td>
+                                    <td colspan="11" class="text-center">No data available for this month.</td>
                                 </tr>
                             @else
                                 @foreach ($weeklyBreakdown as $weekNumber => $weekData)
@@ -103,8 +106,11 @@
                                         <td>Week {{ $weekNumber }}</td>
                                         <td>{{ $weekData['visitors'] }}</td>
                                         <td>₱{{ number_format($weekData['entrance_fee'], 2) }}</td>
-                                        {{-- <td>₱{{ number_format($weekData['accommodation'], 2) }}</td>
-                                        <td>₱{{ number_format($weekData['rental'], 2) }}</td> --}}
+                                        <td>₱{{ number_format($weekData['kawabath'], 2) }}</td>
+                                        <td>₱{{ number_format($weekData['watertubing'], 2) }}</td>
+                                        <td>₱{{ number_format($weekData['picnictable'], 2) }}</td>
+                                        <td>₱{{ number_format($weekData['massage'], 2) }}</td>
+                                        <td>₱{{ number_format($weekData['accommodation'], 2) }}</td>
                                         <td>₱{{ number_format($weekData['meal'], 2) }}</td>
                                         <td>₱{{ number_format($weekData['beverage'], 2) }}</td>
                                         <td>₱{{ number_format($weekData['total'], 2) }}</td>
@@ -114,8 +120,11 @@
                                     <td class="h6">Grand Total:</td>
                                     <td class="h6">{{ $weeklyBreakdown->sum('visitors') }}</td>
                                     <td class="h6">₱{{ number_format($weeklyBreakdown->sum('entrance_fee'), 2) }}</td>
-                                    {{-- <td class="h6">₱{{ number_format($weeklyBreakdown->sum('accommodation'), 2) }}</td>
-                                    <td class="h6">₱{{ number_format($weeklyBreakdown->sum('rental'), 2) }}</td> --}}
+                                    <td class="h6">₱{{ number_format($weeklyBreakdown->sum('kawabath'), 2) }}</td>
+                                    <td class="h6">₱{{ number_format($weeklyBreakdown->sum('watertubing'), 2) }}</td>
+                                    <td class="h6">₱{{ number_format($weeklyBreakdown->sum('picnictable'), 2) }}</td>
+                                    <td class="h6">₱{{ number_format($weeklyBreakdown->sum('massage'), 2) }}</td>
+                                    <td class="h6">₱{{ number_format($weeklyBreakdown->sum('accommodation'), 2) }}</td>
                                     <td class="h6">₱{{ number_format($weeklyBreakdown->sum('meal'), 2) }}</td>
                                     <td class="h6">₱{{ number_format($weeklyBreakdown->sum('beverage'), 2) }}</td>
                                     <td class="h6">₱{{ number_format($weeklyBreakdown->sum('total'), 2) }}</td>

@@ -69,8 +69,11 @@
                                 <th>Month</th>
                                 <th>No. of Visitors</th>
                                 <th>Entrance Fee</th>
-                                {{-- <th>Accommodation</th>
-                                <th>Cottage Rental</th> --}}
+                                <th>Kawa Hot Bath</th>
+                                <th>Water Tubing</th>
+                                <th>Picnic Table</th>
+                                <th>Massage</th>
+                                <th>Accommodation</th>
                                 <th>Meals</th>
                                 <th>Beverages</th>
                                 <th>Total</th>
@@ -79,7 +82,7 @@
                         <tbody>
                             @if ($monthlyBreakdown->isEmpty())
                                 <tr>
-                                    <td colspan="8" class="text-center">No data available for this year.</td>
+                                    <td colspan="11" class="text-center">No data available for this year.</td>
                                 </tr>
                             @else
                                 @foreach ($monthlyBreakdown as $monthNumber => $monthData)
@@ -87,8 +90,11 @@
                                         <td>{{ $monthData['month_name'] }}</td>
                                         <td>{{ $monthData['visitors'] }}</td>
                                         <td>₱{{ number_format($monthData['entrance_fee'], 2) }}</td>
-                                        {{-- <td>₱{{ number_format($monthData['accommodation'], 2) }}</td>
-                                        <td>₱{{ number_format($monthData['rental'], 2) }}</td> --}}
+                                        <td>₱{{ number_format($monthData['kawabath'], 2) }}</td>
+                                        <td>₱{{ number_format($monthData['watertubing'], 2) }}</td>
+                                        <td>₱{{ number_format($monthData['picnictable'], 2) }}</td>
+                                        <td>₱{{ number_format($monthData['massage'], 2) }}</td>
+                                        <td>₱{{ number_format($monthData['accommodation'], 2) }}</td>
                                         <td>₱{{ number_format($monthData['meal'], 2) }}</td>
                                         <td>₱{{ number_format($monthData['beverage'], 2) }}</td>
                                         <td>₱{{ number_format($monthData['total'], 2) }}</td>
@@ -98,8 +104,12 @@
                                     <td class="h6">Grand Total:</td>
                                     <td class="h6">{{ $monthlyBreakdown->sum('visitors') }}</td>
                                     <td class="h6">₱{{ number_format($monthlyBreakdown->sum('entrance_fee'), 2) }}</td>
-                                    {{-- <td class="h6">₱{{ number_format($monthlyBreakdown->sum('accommodation'), 2) }}</td>
-                                    <td class="h6">₱{{ number_format($monthlyBreakdown->sum('rental'), 2) }}</td> --}}
+                                    <td class="h6">₱{{ number_format($monthlyBreakdown->sum('kawabath'), 2) }}</td>
+                                    <td class="h6">₱{{ number_format($monthlyBreakdown->sum('watertubing'), 2) }}</td>
+                                    <td class="h6">₱{{ number_format($monthlyBreakdown->sum('picnictable'), 2) }}</td>
+                                    <td class="h6">₱{{ number_format($monthlyBreakdown->sum('massage'), 2) }}</td>
+                                    <td class="h6">₱{{ number_format($monthlyBreakdown->sum('accommodation'), 2) }}
+                                    </td>
                                     <td class="h6">₱{{ number_format($monthlyBreakdown->sum('meal'), 2) }}</td>
                                     <td class="h6">₱{{ number_format($monthlyBreakdown->sum('beverage'), 2) }}</td>
                                     <td class="h6">₱{{ number_format($monthlyBreakdown->sum('total'), 2) }}</td>

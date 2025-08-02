@@ -217,7 +217,7 @@ class ReportController extends Controller
         $startDate = Carbon::createFromDate($selectedYear, $selectedMonth, 1)->startOfMonth();
         $endDate = $startDate->copy()->endOfMonth();
 
-        $visitors = Visitor::with('entrance', 'accommodation', 'cottage', 'meal', 'beverage')
+        $visitors = Visitor::with('entrance', 'accommodation', 'cottage', 'meal', 'beverage', 'kawabath', 'watertubing', 'picnictable', 'massage')
             ->whereDate('date_visit', '>=', $startDate)
             ->whereDate('date_visit', '<=', $endDate)
             ->get();
@@ -230,6 +230,10 @@ class ReportController extends Controller
             'rental' => 0,
             'meal' => 0,
             'beverage' => 0,
+            'massage' => 0,
+            'watertubing' => 0,
+            'picnictable' => 0,
+            'kawabath' => 0,
             'total' => 0,
         ];
 
@@ -238,12 +242,16 @@ class ReportController extends Controller
             $monthlyData['visitors'] += (int) $visitor->members;
             $monthlyData['entrance_fee'] += (float) ($visitor->entrance->total_payment ?? 0);
             $monthlyData['accommodation'] += (float) ($visitor->accommodation->total_payment ?? 0);
-            $monthlyData['rental'] += (float) ($visitor->cottage->total_payment ?? 0);
+            $monthlyData['rental'] += (float) ($visitor->rental->total_payment ?? 0);
             $monthlyData['meal'] += (float) ($visitor->meal->total_payment ?? 0);
             $monthlyData['beverage'] += (float) ($visitor->beverage->total_payment ?? 0);
+            $monthlyData['massage'] += (float) ($visitor->massage->total_payment ?? 0);
+            $monthlyData['watertubing'] += (float) ($visitor->watertubing->total_payment ?? 0);
+            $monthlyData['picnictable'] += (float) ($visitor->picnictable->total_payment ?? 0);
+            $monthlyData['kawabath'] += (float) ($visitor->kawabath->total_payment ?? 0);
         }
 
-        $monthlyData['total'] = $monthlyData['entrance_fee'] + $monthlyData['accommodation'] + $monthlyData['rental'] + $monthlyData['meal'] + $monthlyData['beverage'];
+        $monthlyData['total'] = $monthlyData['entrance_fee'] + $monthlyData['accommodation'] + $monthlyData['rental'] + $monthlyData['meal'] + $monthlyData['beverage'] + $monthlyData['massage'] + $monthlyData['watertubing'] + $monthlyData['picnictable'] + $monthlyData['kawabath'];
 
         // Also group by week for weekly breakdown within the month
         $weeklyBreakdown = $visitors->groupBy(function ($visitor) {
@@ -256,6 +264,10 @@ class ReportController extends Controller
                 'rental' => 0,
                 'meal' => 0,
                 'beverage' => 0,
+                'massage' => 0,
+                'watertubing' => 0,
+                'picnictable' => 0,
+                'kawabath' => 0,
                 'total' => 0,
             ];
 
@@ -265,10 +277,14 @@ class ReportController extends Controller
                 $weekData['accommodation'] += (float) ($visitor->accommodation->total_payment ?? 0);
                 $weekData['rental'] += (float) ($visitor->cottage->total_payment ?? 0);
                 $weekData['meal'] += (float) ($visitor->meal->total_payment ?? 0);
+                $weekData['massage'] += (float) ($visitor->massage->total_payment ?? 0);
+                $weekData['watertubing'] += (float) ($visitor->watertubing->total_payment ?? 0);
+                $weekData['picnictable'] += (float) ($visitor->picnictable->total_payment ?? 0);
+                $weekData['kawabath'] += (float) ($visitor->kawabath->total_payment ?? 0);
                 $weekData['beverage'] += (float) ($visitor->beverage->total_payment ?? 0);
             }
 
-            $weekData['total'] = $weekData['entrance_fee'] + $weekData['accommodation'] + $weekData['rental'] + $weekData['meal'] + $weekData['beverage'];
+            $weekData['total'] = $weekData['entrance_fee'] + $weekData['accommodation'] + $weekData['rental'] + $weekData['meal'] + $weekData['beverage'] + $weekData['massage'] + $weekData['watertubing'] + $weekData['picnictable'] + $weekData['kawabath'];
 
             return $weekData;
         });
@@ -291,7 +307,7 @@ class ReportController extends Controller
         $startDate = Carbon::createFromDate($selectedYear, 1, 1)->startOfYear();
         $endDate = $startDate->copy()->endOfYear();
 
-        $visitors = Visitor::with('entrance', 'accommodation', 'cottage', 'meal', 'beverage')
+        $visitors = Visitor::with('entrance', 'accommodation', 'cottage', 'meal', 'beverage', 'kawabath', 'watertubing', 'picnictable', 'massage')
             ->whereBetween('date_visit', [$startDate, $endDate])
             ->get();
 
@@ -303,6 +319,10 @@ class ReportController extends Controller
             'rental' => 0,
             'meal' => 0,
             'beverage' => 0,
+            'massage' => 0,
+            'watertubing' => 0,
+            'picnictable' => 0,
+            'kawabath' => 0,
             'total' => 0,
         ];
 
@@ -317,6 +337,10 @@ class ReportController extends Controller
                 'rental' => 0,
                 'meal' => 0,
                 'beverage' => 0,
+                'massage' => 0,
+                'watertubing' => 0,
+                'picnictable' => 0,
+                'kawabath' => 0,
                 'total' => 0,
                 'month_name' => Carbon::create()->month($monthNumber)->format('F')
             ];
@@ -328,9 +352,13 @@ class ReportController extends Controller
                 $monthData['rental'] += (float) ($visitor->cottage->total_payment ?? 0);
                 $monthData['meal'] += (float) ($visitor->meal->total_payment ?? 0);
                 $monthData['beverage'] += (float) ($visitor->beverage->total_payment ?? 0);
+                $monthData['massage'] += (float) ($visitor->massage->total_payment ?? 0);
+                $monthData['watertubing'] += (float) ($visitor->watertubing->total_payment ?? 0);
+                $monthData['picnictable'] += (float) ($visitor->picnictable->total_payment ?? 0);
+                $monthData['kawabath'] += (float) ($visitor->kawabath->total_payment ?? 0);
             }
 
-            $monthData['total'] = $monthData['entrance_fee'] + $monthData['accommodation'] + $monthData['rental'] + $monthData['meal'] + $monthData['beverage'];
+            $monthData['total'] = $monthData['entrance_fee'] + $monthData['accommodation'] + $monthData['rental'] + $monthData['meal'] + $monthData['beverage'] + $monthData['massage'] + $monthData['watertubing'] + $monthData['picnictable'] + $monthData['kawabath'];
 
             return $monthData;
         });
@@ -343,8 +371,12 @@ class ReportController extends Controller
             $yearlyData['rental'] += $monthData['rental'];
             $yearlyData['meal'] += $monthData['meal'];
             $yearlyData['beverage'] += $monthData['beverage'];
+            $yearlyData['massage'] += $monthData['massage'];
+            $yearlyData['watertubing'] += $monthData['watertubing'];
+            $yearlyData['picnictable'] += $monthData['picnictable'];
+            $yearlyData['kawabath'] += $monthData['kawabath'];
         }
-        $yearlyData['total'] = $yearlyData['entrance_fee'] + $yearlyData['accommodation'] + $yearlyData['rental'] + $yearlyData['meal'] + $yearlyData['beverage'];
+        $yearlyData['total'] = $yearlyData['entrance_fee'] + $yearlyData['accommodation'] + $yearlyData['rental'] + $yearlyData['meal'] + $yearlyData['beverage'] + $yearlyData['massage'] + $yearlyData['watertubing'] + $yearlyData['picnictable'] + $yearlyData['kawabath'];
 
         // Sort monthly breakdown by month number (01-12)
         $monthlyBreakdown = $monthlyBreakdown->sortBy(function ($item, $key) {
