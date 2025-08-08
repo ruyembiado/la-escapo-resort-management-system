@@ -2,17 +2,40 @@
 @section('content')
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0">Daily Report</h1>
+        <h1 class="h3 mb-0">Daily Income Report</h1>
     </div>
 
     <div class="card shadow mb-4">
         <div class="card-body">
             <div class="d-flex justify-content-between align-items-start mb-4">
-                <form method="GET" action="{{ route('daily.report') }}" class="d-print-none">
-                    <div class="d-flex flex-column align-items-start" style="width: auto;">
-                        <label for="date" class="mb-0">Select Date:</label>
-                        <input type="date" name="date" value="{{ $date }}"
-                            class="form-control form-control-sm" style="width: auto;" onchange="this.form.submit()" />
+                <form method="GET" action="{{ route('daily.income.report') }}" class="d-print-none">
+                    <div class="d-flex gap-2 align-items-center">
+                        <div class="d-flex flex-column">
+                            <label for="year" class="form-label mb-0">Select Year:</label>
+                            <select name="year" id="year" class="form-control form-control-sm"
+                                onchange="this.form.submit()">
+                                @for ($y = date('Y'); $y >= 2024; $y--)
+                                    <option value="{{ $y }}"
+                                        {{ request('year', $selected_year) == $y ? 'selected' : '' }}>
+                                        {{ $y }}
+                                    </option>
+                                @endfor
+                            </select>
+                        </div>
+
+                        <!-- Month Selector -->
+                        <div class="d-flex flex-column">
+                            <label for="month" class="form-label mb-0">Select Month:</label>
+                            <select name="month" id="month" class="form-control form-control-sm"
+                                onchange="this.form.submit()">
+                                @foreach (range(1, 12) as $month)
+                                    <option value="{{ $month }}"
+                                        {{ request('month', $selected_month) == $month ? 'selected' : '' }}>
+                                        {{ \Carbon\Carbon::create()->month($month)->format('F') }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
                     </div>
                 </form>
 
@@ -42,56 +65,39 @@
                     </tr>
                     <tr>
                         <td class="text-center">
-                            <h2 class="mb-0">Daily Report</h2>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div class="date mb-1 text-start">
-                                <p class="m-0">Day: {{ \Carbon\Carbon::parse($date)->format('l') }}</p>
-                                <p class="m-0">Date: {{ \Carbon\Carbon::parse($date)->format('F d, Y') }}</p>
-                            </div>
+                            <h2 class="mb-0">Daily Income Report</h2>
                         </td>
                     </tr>
                 </table>
 
-                <div class="table-responsive">
+                <div class="table-responsive mt-3">
                     <table class="table table-bordered" width="100%" cellspacing="0">
                         <thead>
                             <tr>
+                                <th>Date</th>
+                                <th>Day</th>
                                 <th>No. of Visitors</th>
-                                <th>Entrance Fee</th>
-                                <th>Kawa Hot Bath</th>
-                                <th>Water Tubing</th>
-                                <th>Picnic Table</th>
-                                <th>Massage</th>
-                                <th>Accommodation</th>
-                                <th>Meals</th>
-                                <th>Beverages</th>
-                                <th>Total</th>
+                                <th>Total Income</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @if ($report['visitors'] == 0)
+                            @forelse ($dailyReport as $day)
                                 <tr>
-                                    <td colspan="10" class="text-center">No data available for this date.</td>
+                                    <td>{{ \Carbon\Carbon::parse($day['date'])->format('F d, Y') }}</td>
+                                    <td>{{ $day['day'] }}</td>
+                                    <td>{{ $day['visitors'] }}</td>
+                                    <td>₱{{ number_format($day['total'], 2) }}</td>
                                 </tr>
-                            @else
+                            @empty
                                 <tr>
-                                    <td>{{ $report['visitors'] }}</td>
-                                    <td>₱{{ number_format($report['entrance_fee'], 2) }}</td>
-                                    <td>₱{{ number_format($report['kawabath'], 2) }}</td>
-                                    <td>₱{{ number_format($report['watertubing'], 2) }}</td>
-                                    <td>₱{{ number_format($report['picnictable'], 2) }}</td>
-                                    <td>₱{{ number_format($report['massage'], 2) }}</td>
-                                    <td>₱{{ number_format($report['accommodation'], 2) }}</td>
-                                    <td>₱{{ number_format($report['meal'], 2) }}</td>
-                                    <td>₱{{ number_format($report['beverage'], 2) }}</td>
-                                    <td>₱{{ number_format($report['total'], 2) }}</td>
+                                    <td colspan="4" class="text-center">No data available for this month.</td>
                                 </tr>
-                                <tr class="bg-light">
-                                    <td colspan="9" class="text-start h6">Grand Total:</td>
-                                    <td class="h6">₱{{ number_format($report['total'], 2) }}</td>
+                            @endforelse
+                            @if (count($dailyReport))
+                                <tr>
+                                    <td colspan="2" class="h6">Grand Total:</td>
+                                    <td class="h6">{{ number_format(collect($dailyReport)->sum('visitors')) }}</td>
+                                    <td class="h6">₱{{ number_format(collect($dailyReport)->sum('total'), 2) }}</td>
                                 </tr>
                             @endif
                         </tbody>

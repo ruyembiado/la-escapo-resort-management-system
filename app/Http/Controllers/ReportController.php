@@ -88,6 +88,66 @@ class ReportController extends Controller
         ]);
     }
 
+    public function dailyIncomeReport(Request $request)
+    {
+        $selectedYear = $request->input('year') ?? Carbon::now()->year;
+        $selectedMonth = $request->input('month') ?? Carbon::now()->month;
+
+        $startDate = Carbon::createFromDate($selectedYear, $selectedMonth, 1)->startOfMonth();
+        $endDate = $startDate->copy()->endOfMonth();
+
+        $visitors = Visitor::with(
+            'entrance',
+            'accommodation',
+            'cottage',
+            'meal',
+            'beverage',
+            'kawabath',
+            'watertubing',
+            'picnictable',
+            'massage'
+        )
+            ->whereBetween('date_visit', [$startDate, $endDate])
+            ->get();
+
+        $dailyReport = [];
+
+        foreach ($visitors as $visitor) {
+            $date = Carbon::parse($visitor->date_visit)->format('Y-m-d');
+
+            if (!isset($dailyReport[$date])) {
+                $dailyReport[$date] = [
+                    'date' => $date,
+                    'day' => Carbon::parse($date)->format('l'),
+                    'visitors' => 0,
+                    'total' => 0
+                ];
+            }
+
+            $dailyReport[$date]['visitors'] += (int) ($visitor->members ?? 0);
+
+            $dailyReport[$date]['total'] +=
+                ($visitor->entrance->total_payment ?? 0) +
+                ($visitor->accommodation->total_payment ?? 0) +
+                ($visitor->cottage->total_payment ?? 0) +
+                ($visitor->meal->total_payment ?? 0) +
+                ($visitor->beverage->total_payment ?? 0) +
+                ($visitor->kawabath->total_payment ?? 0) +
+                ($visitor->watertubing->total_payment ?? 0) +
+                ($visitor->picnictable->total_payment ?? 0) +
+                ($visitor->massage->total_payment ?? 0);
+        }
+
+        // Sort by date
+        ksort($dailyReport);
+
+        return view('daily_income_report', [
+            'dailyReport' => $dailyReport,
+            'selected_year' => $selectedYear,
+            'selected_month' => $selectedMonth,
+        ]);
+    }
+
     public function weeklyReport(Request $request)
     {
         $selectedYear = $request->input('year') ?? Carbon::now()->year;

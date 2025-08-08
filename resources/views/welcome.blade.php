@@ -13,18 +13,24 @@
                     {{ session('error') }}
                 </div>
             @endif
-            <div class="row justify-content-center align-items-center gap-3">
-                <div class="title-container">
-                    <h6 class="text-light welcome-text m-0">Welcome to</h6>
-                    <h1 class="text-light home-title m-0">La Escapo Resort</h1>
+
+            <div class="d-flex flex-wrap justify-content-between align-items-center">
+                <div class="col-7 justify-content-center align-items-center gap-3">
+                    <div class="title-container">
+                        <h6 class="text-light welcome-text m-0">Welcome to</h6>
+                        <h1 class="text-light home-title m-0">La Escapo Resort</h1>
+                    </div>
+                    <div class="d-flex flex-column gap-5">
+                        <div class="home-description text-light">
+                            <i>"La Escapo Billing System: Empowering Accuracy, Simplifying Finances."</i>
+                        </div>
+                        <div class="home-description text-light">
+                            <i>Let La Escapo take you to a unique experience</i>
+                        </div>
+                    </div>
                 </div>
-                <div class="d-flex flex-column gap-5">
-                    <div class="home-description text-light">
-                        <i>"La Escapo Billing System: Empowering Accuracy, Simplifying Finances."</i>
-                    </div>
-                    <div class="home-description text-light">
-                        <i>Let La Escapo take you to a unique experience</i>
-                    </div>
+                <div class="col-5">
+                    <img src="{{ asset('public/img/biling-system.png') }}" class="img-fluid" alt="biling-system">
                 </div>
             </div>
         </div>
@@ -38,7 +44,7 @@
                 <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
             </div>
             <div class="offcanvas-logo text-center">
-                <img src="{{ asset('public/img/logo.jpg') }}" alt="laescapo-logo" class="img-fluid" width="200">
+                <img src="{{ asset('public/img/logo.png') }}" alt="laescapo-logo" class="img-fluid" width="200">
             </div>
             @if ($errors->any())
                 <div class="alert alert-danger" role="alert">

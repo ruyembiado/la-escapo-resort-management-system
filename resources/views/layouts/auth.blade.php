@@ -24,11 +24,11 @@
 
 <body>
     <div class="wrapper">
-        <aside id="sidebar" class="bg-primary bg-gradient expand">
+        <aside id="sidebar" class="bg-primaryw expand">
             <div class="d-flex gap-1 justify-content-center pt-4">
                 <div class="site-log">
                     <a href="{{ url('/dashboard') }}">
-                        <img src="{{ asset('public/img/logo.jpg') }}" width="50" alt="laescapo-logo">
+                        <img src="{{ asset('public/img/logo.png') }}" width="50" alt="laescapo-logo">
                     </a>
                 </div>
                 <div class="sidebar-logo">

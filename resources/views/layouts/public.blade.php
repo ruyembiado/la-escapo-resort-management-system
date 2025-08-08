@@ -25,7 +25,7 @@
                 <div class="col-10 m-auto d-flex justify-content-between flex-wrap align-items-center">
                     <a href="{{ url('/') }}" class="">
                         <div class="d-flex flex-wrap align-items-center">
-                            <img style="border-radius: 100%;" src="{{ asset('public/img/logo.jpg') }}" width="60"
+                            <img style="border-radius: 100%;" src="{{ asset('public/img/logo.png') }}" width="60"
                                 alt="laescapo-logo">
                             <h5 class="ms-2 mb-0 text-light">LA ESCAPO PORTAL</h5>
                         </div>
