@@ -36,6 +36,20 @@
                                 @endforeach
                             </select>
                         </div>
+
+                        <!-- Week Selector -->
+                        <div class="d-flex flex-column">
+                            <label for="week" class="form-label mb-0">Select Week:</label>
+                            <select name="week" id="week" class="form-control form-control-sm"
+                                onchange="this.form.submit()">
+                                @foreach (range(1, \Carbon\Carbon::createFromDate($selected_year, $selected_month, 1)->endOfMonth()->weekOfMonth) as $week)
+                                    <option value="{{ $week }}"
+                                        {{ request('week', $selected_week) == $week ? 'selected' : '' }}>
+                                        Week {{ $week }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
                     </div>
                 </form>
 

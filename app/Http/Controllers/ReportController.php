@@ -92,9 +92,30 @@ class ReportController extends Controller
     {
         $selectedYear = $request->input('year') ?? Carbon::now()->year;
         $selectedMonth = $request->input('month') ?? Carbon::now()->month;
+        $selectedWeek = $request->input('week');
 
         $startDate = Carbon::createFromDate($selectedYear, $selectedMonth, 1)->startOfMonth();
         $endDate = $startDate->copy()->endOfMonth();
+
+        // If week is selected, adjust start and end dates to Sunday-Saturday
+        if ($selectedWeek) {
+            // Get first day of selected week (Sunday)
+            $weekStart = $startDate->copy()->addWeeks($selectedWeek - 1)->startOfWeek(Carbon::SUNDAY);
+
+            // Get last day of selected week (Saturday)
+            $weekEnd = $weekStart->copy()->endOfWeek(Carbon::SATURDAY);
+
+            // Make sure it doesn't go beyond the month's end
+            if ($weekStart->lt($startDate)) {
+                $weekStart = $startDate;
+            }
+            if ($weekEnd->gt($endDate)) {
+                $weekEnd = $endDate;
+            }
+
+            $startDate = $weekStart;
+            $endDate = $weekEnd;
+        }
 
         $visitors = Visitor::with(
             'entrance',
@@ -138,13 +159,13 @@ class ReportController extends Controller
                 ($visitor->massage->total_payment ?? 0);
         }
 
-        // Sort by date
         ksort($dailyReport);
 
         return view('daily_income_report', [
             'dailyReport' => $dailyReport,
             'selected_year' => $selectedYear,
             'selected_month' => $selectedMonth,
+            'selected_week' => $selectedWeek,
         ]);
     }
 

@@ -120,11 +120,11 @@
                                     <i class="fa fa-book fa-5x text-light"></i>
                                 </div>
                                 <div class="text-light text-uppercase mb-1 mt-3">
-                                    <strong>Daily</strong>
+                                    <strong>Daily Income Report</strong>
                                 </div>
-                                <div class="text-success mb-3 mt-3">
-                                    <span class="border rounded p-2 border-success h5">P5000.00</span>
-                                </div>
+                                {{-- <div class="text-light mb-3 mt-3">
+                                    <span class="border rounded p-2 border-text h5">P5000.00</span>
+                                </div> --}}
                                 <a class="btn text-light btn-light bg-transparent mt-2" href="{{ route('daily.income.report') }}">View Report</a>
                             </div>
                         </div>
@@ -142,11 +142,11 @@
                                     <i class="fa fa-book fa-5x text-light"></i>
                                 </div>
                                 <div class="text-light text-uppercase mb-1 mt-3">
-                                    <strong>Weekly</strong>
+                                    <strong>Weekly Income Report</strong>
                                 </div>
-                                <div class="text-success mb-3 mt-3">
-                                    <span class="border rounded p-2 border-success h5">P5000.00</span>
-                                </div>
+                                {{-- <div class="text-light mb-3 mt-3">
+                                    <span class="border rounded p-2 border-text h5">P5000.00</span>
+                                </div> --}}
                                 @php
                                     $currentYear = now()->year;
                                     $currentMonth = now()->month;
@@ -176,11 +176,11 @@
                                     <i class="fa fa-book fa-5x text-light"></i>
                                 </div>
                                 <div class="text-light text-uppercase mb-1 mt-3">
-                                    <strong>Monthly</strong>
+                                    <strong>Monthly Income Report</strong>
                                 </div>
-                                <div class="text-success mb-3 mt-3">
-                                    <span class="border rounded p-2 border-success h5">P5000.00</span>
-                                </div>
+                                {{-- <div class="text-light mb-3 mt-3">
+                                    <span class="border rounded p-2 border-text h5">P5000.00</span>
+                                </div> --}}
                                 <a class="btn text-light btn-light bg-transparent mt-2"
                                     href="{{ route('monthly.report', ['year' => now()->year, 'month' => now()->month]) }}">
                                     View Report
@@ -201,11 +201,11 @@
                                     <i class="fa fa-book fa-5x text-light"></i>
                                 </div>
                                 <div class="text-light text-uppercase mb-1 mt-3">
-                                    <strong>Yearly</strong>
+                                    <strong>Yearly Income Report</strong>
                                 </div>
-                                <div class="text-success mb-3 mt-3">
-                                    <span class="border rounded p-2 border-success h5">P5000.00</span>
-                                </div>
+                                {{-- <div class="text-light mb-3 mt-3">
+                                    <span class="border rounded p-2 border-text h5">P5000.00</span>
+                                </div> --}}
                                 <a class="btn text-light btn-light bg-transparent mt-2"
                                     href="{{ route('yearly.report', ['year' => now()->year]) }}">View Report</a>
                             </div>
