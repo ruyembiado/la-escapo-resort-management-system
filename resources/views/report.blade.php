@@ -150,14 +150,11 @@
                                 @php
                                     $currentYear = now()->year;
                                     $currentMonth = now()->month;
-                                    // Get the start of the current month
                                     $startOfMonth = now()->startOfMonth();
-                                    // Get the current date's ISO week number relative to the start of the month
-                                    $currentWeek = now()->diffInWeeks($startOfMonth) + 1; // Add 1 to ensure the week starts at 1
                                 @endphp
 
                                 <a class="btn text-light btn-light bg-transparent mt-2"
-                                    href="{{ route('weekly.report', ['year' => $currentYear, 'month' => $currentMonth, 'week' => $currentWeek]) }}">
+                                    href="{{ route('weekly.income.report', ['year' => $currentYear, 'month' => $currentMonth]) }}">
                                     View Report
                                 </a>
                             </div>

@@ -289,6 +289,119 @@ class ReportController extends Controller
         ]);
     }
 
+    public function weeklyIncomeReport(Request $request)
+    {
+        $selectedYear = $request->input('year') ?? Carbon::now()->year;
+        $selectedMonth = $request->input('month') ?? Carbon::now()->month;
+
+        $startDate = Carbon::createFromDate($selectedYear, $selectedMonth, 1)->startOfMonth();
+        $endDate = $startDate->copy()->endOfMonth();
+
+        $visitors = Visitor::with('entrance', 'accommodation', 'cottage', 'meal', 'beverage', 'kawabath', 'watertubing', 'picnictable', 'massage')
+            ->whereDate('date_visit', '>=', $startDate)
+            ->whereDate('date_visit', '<=', $endDate)
+            ->get();
+
+        // Group visitors by week and day
+        $report = collect();
+
+        foreach ($visitors as $visitor) {
+            $weekNumber = Carbon::parse($visitor->date_visit)->weekOfMonth;
+            $dayName = Carbon::parse($visitor->date_visit)->format('l');
+
+            $entrance = $visitor->entrance->total_payment ?? 0;
+            $accommodation = $visitor->accommodation->total_payment ?? 0;
+            $rental = $visitor->cottage->total_payment ?? 0;
+            $meal = $visitor->meal->total_payment ?? 0;
+            $kawabath = $visitor->kawabath->total_payment ?? 0;
+            $watertubing = $visitor->watertubing->total_payment ?? 0;
+            $picnictable = $visitor->picnictable->total_payment ?? 0;
+            $massage = $visitor->massage->total_payment ?? 0;
+            $beverage = $visitor->beverage->total_payment ?? 0;
+
+            if (!$report->has($weekNumber)) {
+                $report->put($weekNumber, collect());
+            }
+
+            $weekData = $report->get($weekNumber);
+
+            if (!$weekData->has($dayName)) {
+                $weekData->put($dayName, [
+                    'visitors' => 0,
+                    'entrance_fee' => 0,
+                    'accommodation' => 0,
+                    'rental' => 0,
+                    'meal' => 0,
+                    'beverage' => 0,
+                    'massage' => 0,
+                    'watertubing' => 0,
+                    'picnictable' => 0,
+                    'kawabath' => 0,
+                    'total' => 0,
+                ]);
+            }
+
+            $dayData = $weekData->get($dayName);
+
+            $dayData['visitors'] += (int) $visitor->members;
+            $dayData['entrance_fee'] += (float) $entrance;
+            $dayData['accommodation'] += (float) $accommodation;
+            $dayData['rental'] += (float) $rental;
+            $dayData['meal'] += (float) $meal;
+            $dayData['beverage'] += (float) $beverage;
+            $dayData['massage'] += (float) $massage;
+            $dayData['watertubing'] += (float) $watertubing;
+            $dayData['picnictable'] += (float) $picnictable;
+            $dayData['kawabath'] += (float) $kawabath;
+            $dayData['total'] = $dayData['entrance_fee'] + $dayData['accommodation'] + $dayData['rental'] + $dayData['meal'] + $dayData['beverage'] + $dayData['massage'] + $dayData['watertubing'] + $dayData['picnictable'] + $dayData['kawabath'];
+
+            $weekData->put($dayName, $dayData);
+            $report->put($weekNumber, $weekData);
+        }
+
+        // Compute weekly totals and grand totals
+        $weeklyTotal = $report->map(function ($weekDays) {
+            return [
+                'visitors' => $weekDays->sum('visitors'),
+                'entrance_fee' => $weekDays->sum('entrance_fee'),
+                'accommodation' => $weekDays->sum('accommodation'),
+                'rental' => $weekDays->sum('rental'),
+                'meal' => $weekDays->sum('meal'),
+                'beverage' => $weekDays->sum('beverage'),
+                'massage' => $weekDays->sum('massage'),
+                'watertubing' => $weekDays->sum('watertubing'),
+                'picnictable' => $weekDays->sum('picnictable'),
+                'kawabath' => $weekDays->sum('kawabath'),
+                'total' => $weekDays->sum('total'),
+            ];
+        });
+
+        $grandTotal = [
+            'visitors' => $weeklyTotal->sum('visitors'),
+            'entrance_fee' => $weeklyTotal->sum('entrance_fee'),
+            'accommodation' => $weeklyTotal->sum('accommodation'),
+            'rental' => $weeklyTotal->sum('rental'),
+            'meal' => $weeklyTotal->sum('meal'),
+            'beverage' => $weeklyTotal->sum('beverage'),
+            'massage' => $weeklyTotal->sum('massage'),
+            'watertubing' => $weeklyTotal->sum('watertubing'),
+            'picnictable' => $weeklyTotal->sum('picnictable'),
+            'kawabath' => $weeklyTotal->sum('kawabath'),
+            'total' => $weeklyTotal->sum('total'),
+        ];
+
+        return view('weekly_income_report', [
+            'report' => $report,
+            'weeklyTotal' => $weeklyTotal,
+            'grandTotal' => $grandTotal,
+            'start_date' => $startDate->format('F d, Y'),
+            'end_date' => $endDate->format('F d, Y'),
+            'selected_year' => $selectedYear,
+            'selected_month' => $selectedMonth,
+            'month_name' => $startDate->format('F'),
+        ]);
+    }
+
 
     public function monthlyReport(Request $request)
     {
