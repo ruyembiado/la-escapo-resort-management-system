@@ -108,7 +108,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/monthly-report', [ReportController::class, 'monthlyReport'])->name('monthly.report');
     Route::get('/yearly-report', [ReportController::class, 'yearlyReport'])->name('yearly.report');
 
-    // Daily Income Report
+    //Income Report
     Route::get('/daily-income-report', [ReportController::class, 'dailyIncomeReport'])->name('daily.income.report');
     Route::get('/weekly-income-report', [ReportController::class, 'weeklyIncomeReport'])->name('weekly.income.report');
+    Route::get('/monthly-income-report', [ReportController::class, 'monthlyIncomeReport'])->name('monthly.income.report');
+    Route::get('/yearly-income-report', [ReportController::class, 'yearlyIncomeReport'])->name('yearly.income.report');
 });

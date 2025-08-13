@@ -1,5 +1,14 @@
 @extends('layouts.auth') <!-- Extend the main layout -->
 
+@php
+    $currentYear = now()->year;
+    $currentMonth = now()->month;
+    // Get the start of the current month
+    $startOfMonth = now()->startOfMonth();
+    // Get the current date's ISO week number relative to the start of the month
+    $currentWeek = now()->diffInWeeks($startOfMonth) + 1; // Add 1 to ensure the week starts at 1
+@endphp
+
 @section('content')
     <!-- Start the content section -->
     <!-- Page Heading -->
@@ -21,7 +30,8 @@
                                 <div class="text-light text-uppercase mb-1 mt-3">
                                     <strong>Daily Summary Report</strong>
                                 </div>
-                                <a class="btn text-light btn-light bg-transparent mt-2" href="{{ route('daily.report') }}">View Report</a>
+                                <a class="btn text-light btn-light bg-transparent mt-2"
+                                    href="{{ route('daily.report') }}">View Report</a>
                             </div>
                         </div>
                     </div>
@@ -40,16 +50,6 @@
                                 <div class="text-light text-uppercase mb-1 mt-3">
                                     <strong>Weekly Summary Report</strong>
                                 </div>
-
-                                @php
-                                    $currentYear = now()->year;
-                                    $currentMonth = now()->month;
-                                    // Get the start of the current month
-                                    $startOfMonth = now()->startOfMonth();
-                                    // Get the current date's ISO week number relative to the start of the month
-                                    $currentWeek = now()->diffInWeeks($startOfMonth) + 1; // Add 1 to ensure the week starts at 1
-                                @endphp
-
                                 <a class="btn text-light btn-light bg-transparent mt-2"
                                     href="{{ route('weekly.report', ['year' => $currentYear, 'month' => $currentMonth, 'week' => $currentWeek]) }}">
                                     View Report
@@ -125,7 +125,9 @@
                                 {{-- <div class="text-light mb-3 mt-3">
                                     <span class="border rounded p-2 border-text h5">P5000.00</span>
                                 </div> --}}
-                                <a class="btn text-light btn-light bg-transparent mt-2" href="{{ route('daily.income.report') }}">View Report</a>
+                                <a class="btn text-light btn-light bg-transparent mt-2"
+                                    href="{{ route('daily.income.report', ['year' => $currentYear, 'month' => $currentMonth, 'week' => $currentWeek]) }}">View
+                                    Report</a>
                             </div>
                         </div>
                     </div>
@@ -179,7 +181,7 @@
                                     <span class="border rounded p-2 border-text h5">P5000.00</span>
                                 </div> --}}
                                 <a class="btn text-light btn-light bg-transparent mt-2"
-                                    href="{{ route('monthly.report', ['year' => now()->year, 'month' => now()->month]) }}">
+                                    href="{{ route('monthly.income.report', ['year' => now()->year]) }}">
                                     View Report
                                 </a>
                             </div>
@@ -204,7 +206,7 @@
                                     <span class="border rounded p-2 border-text h5">P5000.00</span>
                                 </div> --}}
                                 <a class="btn text-light btn-light bg-transparent mt-2"
-                                    href="{{ route('yearly.report', ['year' => now()->year]) }}">View Report</a>
+                                    href="{{ route('yearly.income.report') }}">View Report</a>
                             </div>
                         </div>
                     </div>

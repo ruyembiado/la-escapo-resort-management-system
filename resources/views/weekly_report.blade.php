@@ -124,25 +124,23 @@
                                     <td colspan="11" class="text-center">No data available for this week.</td>
                                 </tr>
                             @else
-                                @foreach ($report as $weekNumber => $weekDays)
-                                    @foreach ($weekDays as $dayName => $dayData)
-                                        <tr>
-                                            <td>{{ $dayName }}</td>
-                                            <td>{{ $dayData['visitors'] }}</td>
-                                            <td>₱{{ number_format($dayData['entrance_fee'], 2) }}</td>
-                                            <td>₱{{ number_format($dayData['kawabath'], 2) }}</td>
-                                            <td>₱{{ number_format($dayData['watertubing'], 2) }}</td>
-                                            <td>₱{{ number_format($dayData['picnictable'], 2) }}</td>
-                                            <td>₱{{ number_format($dayData['massage'], 2) }}</td>
-                                            <td>₱{{ number_format($dayData['accommodation'], 2) }}</td>
-                                            <td>₱{{ number_format($dayData['meal'], 2) }}</td>
-                                            <td>₱{{ number_format($dayData['beverage'], 2) }}</td>
-                                            <td>₱{{ number_format($dayData['total'], 2) }}</td>
-                                        </tr>
-                                    @endforeach
+                                @foreach ($report as $dayData)
+                                    <tr>
+                                        <td>{{ $dayData['day'] }}</td>
+                                        <td>{{ $dayData['visitors'] ?? 0 }}</td>
+                                        <td>₱{{ number_format($dayData['entrance_fee'] ?? 0, 2) }}</td>
+                                        <td>₱{{ number_format($dayData['kawabath'] ?? 0, 2) }}</td>
+                                        <td>₱{{ number_format($dayData['watertubing'] ?? 0, 2) }}</td>
+                                        <td>₱{{ number_format($dayData['picnictable'] ?? 0, 2) }}</td>
+                                        <td>₱{{ number_format($dayData['massage'] ?? 0, 2) }}</td>
+                                        <td>₱{{ number_format($dayData['accommodation'] ?? 0, 2) }}</td>
+                                        <td>₱{{ number_format($dayData['meal'] ?? 0, 2) }}</td>
+                                        <td>₱{{ number_format($dayData['beverage'] ?? 0, 2) }}</td>
+                                        <td>₱{{ number_format($dayData['total'] ?? 0, 2) }}</td>
+                                    </tr>
                                 @endforeach
                                 <tr class="bg-light">
-                                    <td class="text-start h6">Grand Total</td>
+                                    <td colspan="1" class="text-start h6">Grand Total</td>
                                     <td class="h6">{{ $grandTotal['visitors'] }}</td>
                                     <td>₱{{ number_format($grandTotal['entrance_fee'], 2) }}</td>
                                     <td>₱{{ number_format($grandTotal['kawabath'], 2) }}</td>

@@ -91,7 +91,7 @@
                                 <th>Date</th>
                                 <th>Day</th>
                                 <th>No. of Visitors</th>
-                                <th>Total Income</th>
+                                <th>Total Bill Income</th>
                             </tr>
                         </thead>
                         <tbody>

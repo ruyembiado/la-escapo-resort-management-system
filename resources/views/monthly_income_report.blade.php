@@ -2,37 +2,22 @@
 @section('content')
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0">Weekly Income Report</h1>
+        <h1 class="h3 mb-0">Monthly Income Report</h1>
     </div>
 
     <div class="card shadow mb-4">
         <div class="card-body">
             <div class="d-flex justify-content-between align-items-start mb-4">
-                <form method="GET" action="{{ route('weekly.income.report') }}" class="d-print-none">
-                    <div class="d-flex gap-2 align-items-center flex-row">
-                        <!-- Year Selector -->
-                        <div class="d-flex flex-column">
+                <form method="GET" action="{{ route('monthly.income.report') }}" class="d-print-none col-md-3">
+                    <div class="row g-2 align-items-center">
+                        <div class="d-flex flex-column col-md-6">
                             <label for="year" class="form-label mb-0">Select Year:</label>
                             <select name="year" id="year" class="form-control form-control-sm"
                                 onchange="this.form.submit()">
                                 @for ($y = date('Y'); $y >= 2024; $y--)
                                     <option value="{{ $y }}"
-                                        {{ request('year', $selected_year) == $y ? 'selected' : '' }}>
+                                        {{ request('year', $selectedYear) == $y ? 'selected' : '' }}>
                                         {{ $y }}
-                                    </option>
-                                @endfor
-                            </select>
-                        </div>
-
-                        <!-- Month Selector -->
-                        <div class="d-flex flex-column">
-                            <label for="month" class="form-label mb-0">Select Month:</label>
-                            <select name="month" id="month" class="form-control form-control-sm"
-                                onchange="this.form.submit()">
-                                @for ($m = 1; $m <= 12; $m++)
-                                    <option value="{{ $m }}"
-                                        {{ request('month', $selected_month) == $m ? 'selected' : '' }}>
-                                        {{ \Carbon\Carbon::createFromDate($selected_year, $m, 1)->format('F') }}
                                     </option>
                                 @endfor
                             </select>
@@ -66,8 +51,7 @@
                     </tr>
                     <tr>
                         <td class="text-center">
-                            <h2 class="mb-0">Weekly Income Report for {{ $month_name }}
-                                {{ $selected_year }}</h2>
+                            <h2 class="mb-0">Monthly Income Report for {{ $selectedYear }}</h2>
                         </td>
                     </tr>
                 </table>
@@ -76,41 +60,36 @@
                     <table class="table table-bordered" width="100%" cellspacing="0">
                         <thead>
                             <tr>
+                                <th>Year</th>
                                 <th>Month</th>
-                                <th>Week</th>
                                 <th>No. of Visitors</th>
                                 <th>Total Bill Income</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @if ($weeks->isEmpty())
+                            @php $firstRow = true; @endphp
+                            @foreach ($monthlyBreakdown as $data)
                                 <tr>
-                                    <td colspan="4" class="text-center">No data available for this month.</td>
+                                    @if ($firstRow)
+                                        <td class="align-middle" rowspan="{{ count($monthlyBreakdown) }}">
+                                            {{ $selectedYear }}</td>
+                                        @php $firstRow = false; @endphp
+                                    @endif
+                                    <td>{{ $data['month'] }}</td>
+                                    <td>{{ $data['visitors'] }}</td>
+                                    <td>₱{{ number_format($data['total'], 2) }}</td>
                                 </tr>
-                            @else
-                                @foreach ($weeks as $index => $week)
-                                    <tr>
-                                        @if ($loop->first)
-                                            <td class="align-middle" rowspan="{{ $weeks->count() }}">
-                                                {{ $month_name }}
-                                            </td>
-                                        @endif
-                                        <td>Week {{ $index + 1 }}</td>
-                                        <td>{{ $week['visitors'] ?? 0 }}</td>
-                                        <td>₱{{ number_format($week['total'] ?? 0, 2) }}</td>
-                                    </tr>
-                                @endforeach
-                                <tr class="bg-light">
-                                    <td colspan="2" class="h6 text-start">Grand Total:</td>
-                                    <td class="h6">{{ $grandTotal['visitors'] ?? 0 }}</td>
-                                    <td class="h6">₱{{ number_format($grandTotal['total'] ?? 0, 2) }}</td>
-                                </tr>
-                            @endif
+                            @endforeach
+                            <tr>
+                                <td colspan="2" class="h6">Grand Total:</td>
+                                <td class="h6">{{ $totalVisitors }}</td>
+                                <td class="h6">₱{{ number_format($grandTotal, 2) }}</td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
 
-                <div class="col-12 d-flex justify-content-end print-footer">
+                <div class="col-12 d-flex justify-content-end print-footer mt-4">
                     <div class="d-flex flex-column justify-content-end align-items-center">
                         <strong>MENDITO A. AMAR JR.</strong>
                         <span>La Escapo Resort Owner</span>
@@ -126,7 +105,7 @@
                 printable: 'print-section',
                 type: 'html',
                 css: [
-                    '{{ asset('public/css/styles.css') }}',
+                    '{{ asset('/public/css/styles.css') }}',
                     'https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css'
                 ],
             });
