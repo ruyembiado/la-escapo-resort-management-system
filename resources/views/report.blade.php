@@ -122,9 +122,10 @@
                                 <div class="text-light text-uppercase mb-1 mt-3">
                                     <strong>Daily Income Report</strong>
                                 </div>
-                                {{-- <div class="text-light mb-3 mt-3">
-                                    <span class="border rounded p-2 border-text h5">P5000.00</span>
-                                </div> --}}
+                                <div class="mb-2 mt-3" style="color: #045b00;">
+                                    <span
+                                        class="border rounded p-2 border-text h5 bg-light">₱{{ number_format($dailyTotal, 2) }}</span>
+                                </div>
                                 <a class="btn text-light btn-light bg-transparent mt-2"
                                     href="{{ route('daily.income.report', ['year' => $currentYear, 'month' => $currentMonth, 'week' => $currentWeek]) }}">View
                                     Report</a>
@@ -146,15 +147,10 @@
                                 <div class="text-light text-uppercase mb-1 mt-3">
                                     <strong>Weekly Income Report</strong>
                                 </div>
-                                {{-- <div class="text-light mb-3 mt-3">
-                                    <span class="border rounded p-2 border-text h5">P5000.00</span>
-                                </div> --}}
-                                @php
-                                    $currentYear = now()->year;
-                                    $currentMonth = now()->month;
-                                    $startOfMonth = now()->startOfMonth();
-                                @endphp
-
+                                <div class="mb-2 mt-3" style="color: #045b00;">
+                                    <span
+                                        class="border rounded p-2 border-text h5 bg-light">₱{{ number_format($weeklyTotal, 2) }}</span>
+                                </div>
                                 <a class="btn text-light btn-light bg-transparent mt-2"
                                     href="{{ route('weekly.income.report', ['year' => $currentYear, 'month' => $currentMonth]) }}">
                                     View Report
@@ -177,11 +173,11 @@
                                 <div class="text-light text-uppercase mb-1 mt-3">
                                     <strong>Monthly Income Report</strong>
                                 </div>
-                                {{-- <div class="text-light mb-3 mt-3">
-                                    <span class="border rounded p-2 border-text h5">P5000.00</span>
-                                </div> --}}
+                                <div class="mb-2 mt-3" style="color: #045b00;">
+                                    <span class="border rounded p-2 border-text h5 bg-light">₱{{ number_format($monthlyTotal, 2) }}</span>
+                                </div>
                                 <a class="btn text-light btn-light bg-transparent mt-2"
-                                    href="{{ route('monthly.income.report', ['year' => now()->year]) }}">
+                                    href="{{ route('monthly.income.report', ['year' => $currentYear]) }}">
                                     View Report
                                 </a>
                             </div>
@@ -202,9 +198,9 @@
                                 <div class="text-light text-uppercase mb-1 mt-3">
                                     <strong>Yearly Income Report</strong>
                                 </div>
-                                {{-- <div class="text-light mb-3 mt-3">
-                                    <span class="border rounded p-2 border-text h5">P5000.00</span>
-                                </div> --}}
+                                <div class="mb-2 mt-3" style="color: #045b00;">
+                                    <span class="border rounded p-2 border-text h5 bg-light">₱{{ number_format($yearlyTotal, 2) }}</span>
+                                </div>
                                 <a class="btn text-light btn-light bg-transparent mt-2"
                                     href="{{ route('yearly.income.report') }}">View Report</a>
                             </div>

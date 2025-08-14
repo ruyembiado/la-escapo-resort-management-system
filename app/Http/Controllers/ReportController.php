@@ -10,7 +10,128 @@ class ReportController extends Controller
 {
     public function index()
     {
-        return view('report');
+        $today = now();
+
+        /** 1. DAILY (Current week total — Sunday to Saturday) **/
+
+        // Get the start of this week (Sunday)
+        $startOfWeek = $today->copy()->startOfWeek(Carbon::SUNDAY);
+        // Get the end of this week (Saturday)
+        $endOfWeek = $today->copy()->endOfWeek(Carbon::SATURDAY);
+        $dailyTotal = Visitor::with(
+            'entrance',
+            'accommodation',
+            'cottage',
+            'meal',
+            'beverage',
+            'massage',
+            'watertubing',
+            'picnictable',
+            'kawabath'
+        )
+            ->whereBetween('date_visit', [$startOfWeek, $endOfWeek])
+            ->get()
+            ->sum(function ($visitor) {
+                return ($visitor->entrance->total_payment ?? 0) +
+                    ($visitor->accommodation->total_payment ?? 0) +
+                    ($visitor->cottage->total_payment ?? 0) +
+                    ($visitor->meal->total_payment ?? 0) +
+                    ($visitor->beverage->total_payment ?? 0) +
+                    ($visitor->massage->total_payment ?? 0) +
+                    ($visitor->watertubing->total_payment ?? 0) +
+                    ($visitor->picnictable->total_payment ?? 0) +
+                    ($visitor->kawabath->total_payment ?? 0);
+            });
+
+        /** 2. WEEKLY (current month total) **/
+        $startOfMonth = $today->copy()->startOfMonth();
+        $endOfMonth = $today->copy()->endOfMonth();
+
+        $weeklyTotal = Visitor::with(
+            'entrance',
+            'accommodation',
+            'cottage',
+            'meal',
+            'beverage',
+            'massage',
+            'watertubing',
+            'picnictable',
+            'kawabath'
+        )
+            ->whereBetween('date_visit', [$startOfMonth, $endOfMonth])
+            ->get()
+            ->sum(function ($visitor) {
+                return ($visitor->entrance->total_payment ?? 0) +
+                    ($visitor->accommodation->total_payment ?? 0) +
+                    ($visitor->cottage->total_payment ?? 0) +
+                    ($visitor->meal->total_payment ?? 0) +
+                    ($visitor->beverage->total_payment ?? 0) +
+                    ($visitor->massage->total_payment ?? 0) +
+                    ($visitor->watertubing->total_payment ?? 0) +
+                    ($visitor->picnictable->total_payment ?? 0) +
+                    ($visitor->kawabath->total_payment ?? 0);
+            });
+
+        /** 3. MONTHLY (current year total) **/
+        $startOfYear = $today->copy()->startOfYear();
+        $endOfYear = $today->copy()->endOfYear();
+
+        $monthlyTotal = Visitor::with(
+            'entrance',
+            'accommodation',
+            'cottage',
+            'meal',
+            'beverage',
+            'massage',
+            'watertubing',
+            'picnictable',
+            'kawabath'
+        )
+            ->whereBetween('date_visit', [$startOfYear, $endOfYear])
+            ->get()
+            ->sum(function ($visitor) {
+                return ($visitor->entrance->total_payment ?? 0) +
+                    ($visitor->accommodation->total_payment ?? 0) +
+                    ($visitor->cottage->total_payment ?? 0) +
+                    ($visitor->meal->total_payment ?? 0) +
+                    ($visitor->beverage->total_payment ?? 0) +
+                    ($visitor->massage->total_payment ?? 0) +
+                    ($visitor->watertubing->total_payment ?? 0) +
+                    ($visitor->picnictable->total_payment ?? 0) +
+                    ($visitor->kawabath->total_payment ?? 0);
+            });
+
+        /** 4. YEARLY (all years total) **/
+        $yearlyTotal = Visitor::with(
+            'entrance',
+            'accommodation',
+            'cottage',
+            'meal',
+            'beverage',
+            'massage',
+            'watertubing',
+            'picnictable',
+            'kawabath'
+        )
+            ->get()
+            ->sum(function ($visitor) {
+                return ($visitor->entrance->total_payment ?? 0) +
+                    ($visitor->accommodation->total_payment ?? 0) +
+                    ($visitor->cottage->total_payment ?? 0) +
+                    ($visitor->meal->total_payment ?? 0) +
+                    ($visitor->beverage->total_payment ?? 0) +
+                    ($visitor->massage->total_payment ?? 0) +
+                    ($visitor->watertubing->total_payment ?? 0) +
+                    ($visitor->picnictable->total_payment ?? 0) +
+                    ($visitor->kawabath->total_payment ?? 0);
+            });
+
+        return view('report', [
+            'dailyTotal'   => $dailyTotal,
+            'weeklyTotal'  => $weeklyTotal,
+            'monthlyTotal' => $monthlyTotal,
+            'yearlyTotal'  => $yearlyTotal
+        ]);
     }
 
     public function dailyReport(Request $request)
