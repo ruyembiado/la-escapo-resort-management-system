@@ -48,12 +48,6 @@
                         <span>Visitor's Log Book</span>
                     </a>
                 </li>
-                {{-- <li class="sidebar-item">
-                    <a href="{{ url('/staff') }}" class="sidebar-link">
-                        <i class="fa fa-users"></i>
-                        <span>Staff Management</span>
-                    </a>
-                </li> --}}
                 <li class="sidebar-item">
                     <a href="{{ url('/services') }}" class="sidebar-link">
                         <i class="fa fa-tasks"></i>
@@ -70,6 +64,13 @@
                     <a href="{{ url('/report') }}" class="sidebar-link">
                         <i class="fa fa-file"></i>
                         <span>Reports Management</span>
+                    </a>
+                </li>
+
+                 <li class="sidebar-item">
+                    <a href="{{ url('/profile') }}" class="sidebar-link">
+                        <i class="fa fa-user"></i>
+                        <span>Profile</span>
                     </a>
                 </li>
             </ul>
@@ -156,6 +157,29 @@
             }
         }
         hideAlerts();
+
+        const sidebarLinks = document.querySelectorAll('.sidebar-link');
+
+        // Load active link from localStorage
+        const activeLink = localStorage.getItem('activeLink');
+        if (activeLink) {
+            document.querySelectorAll('.sidebar-link').forEach(item => {
+                item.classList.remove('active');
+            });
+            const activeItem = document.querySelector(`.sidebar-link[href="${activeLink}"]`);
+            if (activeItem) {
+                activeItem.parentElement.classList.add('active');
+            }
+        }
+
+        console.log('Active link:', activeLink);
+
+        // Save active link on click
+        sidebarLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                localStorage.setItem('activeLink', link.getAttribute('href'));
+            });
+        });
     </script>
 </body>
 

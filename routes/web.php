@@ -101,6 +101,10 @@ Route::middleware(['auth'])->group(function () {
     // BillController routes
     Route::get('/bills', [BillController::class, 'index'])->name('bill');
 
+    // Profile 
+    Route::get('/profile', [AuthController::class, 'profile'])->name('profile');
+    Route::put('/profile/update', [AuthController::class, 'updateProfile'])->name('profile.update');
+
     // ReportController routes
     Route::get('/report', [ReportController::class, 'index'])->name('report');
     Route::get('/daily-report', [ReportController::class, 'dailyReport'])->name('daily.report');

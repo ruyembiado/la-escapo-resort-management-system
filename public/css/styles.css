@@ -119,7 +119,8 @@ a.sidebar-link {
     margin-right: 12px;
 }
 
-a.sidebar-link:hover {
+a.sidebar-link:hover,
+li.sidebar-item.active {
     background-color: rgba(255, 255, 255, .075);
     border-left: 3px solid #ffffff;
 }
@@ -299,7 +300,8 @@ h1.home-title {
     background-color: #045b00 !important;
 }
 
-.btn-danger, .bg-danger {
+.btn-danger,
+.bg-danger {
     background-color: #af0000 !important;
     border-color: #af0000 !important;
 }
