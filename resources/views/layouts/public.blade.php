@@ -77,6 +77,8 @@
             }
         }
         hideAlerts();
+
+        localStorage.removeItem('activeLink');
     </script>
 </body>
 
