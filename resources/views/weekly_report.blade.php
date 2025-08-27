@@ -38,12 +38,26 @@
                             </select>
                         </div>
 
-                        <!-- Week Selector -->
+                        @php
+                            use Carbon\Carbon;
+
+                            $firstDay = Carbon::createFromDate($selected_year, $selected_month, 1);
+                            $lastDay = $firstDay->copy()->endOfMonth();
+
+                            // Force start on Sunday (go back to last Sunday before 1st, if not Sunday)
+                            $startOfCalendar = $firstDay->copy()->startOfWeek(Carbon::SUNDAY);
+                            // Force end on Saturday (go forward to Saturday after last day, if not Saturday)
+                            $endOfCalendar = $lastDay->copy()->endOfWeek(Carbon::SATURDAY);
+
+                            // Total weeks spanned
+                            $totalWeeks = $startOfCalendar->diffInWeeks($endOfCalendar) + 1;
+                        @endphp
+
                         <div class="d-flex flex-column">
                             <label for="week" class="form-label mb-0">Select Week:</label>
                             <select name="week" id="week" class="form-control form-control-sm"
                                 onchange="this.form.submit()">
-                                @foreach (range(1, \Carbon\Carbon::createFromDate($selected_year, $selected_month, 1)->endOfMonth()->weekOfMonth) as $week)
+                                @foreach (range(1, $totalWeeks) as $week)
                                     <option value="{{ $week }}"
                                         {{ request('week', $selected_week) == $week ? 'selected' : '' }}>
                                         Week {{ $week }}
@@ -57,6 +71,10 @@
                 <div class="print-buttons">
                     <button onclick="printReport()" class="btn btn-sm btn-primary d-print-none">
                         <i class="fas fa-print"></i> Print Report
+                    </button>
+
+                    <button onclick="exportExcel()" class="btn btn-sm btn-success d-print-none">
+                        <i class="fas fa-file-excel"></i> Export Excel
                     </button>
                 </div>
             </div>
@@ -142,14 +160,14 @@
                                 <tr class="bg-light">
                                     <td colspan="1" class="text-start h6">Grand Total</td>
                                     <td class="h6">{{ $grandTotal['visitors'] }}</td>
-                                    <td>₱{{ number_format($grandTotal['entrance_fee'], 2) }}</td>
-                                    <td>₱{{ number_format($grandTotal['kawabath'], 2) }}</td>
-                                    <td>₱{{ number_format($grandTotal['watertubing'], 2) }}</td>
-                                    <td>₱{{ number_format($grandTotal['picnictable'], 2) }}</td>
-                                    <td>₱{{ number_format($grandTotal['massage'], 2) }}</td>
-                                    <td>₱{{ number_format($grandTotal['accommodation'], 2) }}</td>
-                                    <td>₱{{ number_format($grandTotal['meal'], 2) }}</td>
-                                    <td>₱{{ number_format($grandTotal['beverage'], 2) }}</td>
+                                    <td class="h6">₱{{ number_format($grandTotal['entrance_fee'], 2) }}</td>
+                                    <td class="h6">₱{{ number_format($grandTotal['kawabath'], 2) }}</td>
+                                    <td class="h6">₱{{ number_format($grandTotal['watertubing'], 2) }}</td>
+                                    <td class="h6">₱{{ number_format($grandTotal['picnictable'], 2) }}</td>
+                                    <td class="h6">₱{{ number_format($grandTotal['massage'], 2) }}</td>
+                                    <td class="h6">₱{{ number_format($grandTotal['accommodation'], 2) }}</td>
+                                    <td class="h6">₱{{ number_format($grandTotal['meal'], 2) }}</td>
+                                    <td class="h6">₱{{ number_format($grandTotal['beverage'], 2) }}</td>
                                     <td class="h6">₱{{ number_format($grandTotal['total'], 2) }}</td>
                                 </tr>
                             @endif
@@ -174,9 +192,71 @@
                 type: 'html',
                 css: [
                     '{{ asset('public/css/styles.css') }}',
-                    'https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css'
+                    '{{ asset('public/css/bootstrap.min.css') }}'
                 ],
             });
+        }
+    </script>
+
+    <script>
+        function exportExcel() {
+            // Headers from the table
+            let headers = [
+                "Day",
+                "No. of Visitors",
+                "Entrance Fee",
+                "Kawa Hot Bath",
+                "Water Tubing",
+                "Picnic Table",
+                "Massage",
+                "Accommodation",
+                "Meals",
+                "Beverages",
+                "Total"
+            ];
+
+            // Rows for each day
+            let data = [
+                @foreach ($report as $dayData)
+                    [
+                        "{{ $dayData['day'] }}",
+                        "{{ $dayData['visitors'] ?? 0 }}",
+                        "{{ $dayData['entrance_fee'] ?? 0 }}",
+                        "{{ $dayData['kawabath'] ?? 0 }}",
+                        "{{ $dayData['watertubing'] ?? 0 }}",
+                        "{{ $dayData['picnictable'] ?? 0 }}",
+                        "{{ $dayData['massage'] ?? 0 }}",
+                        "{{ $dayData['accommodation'] ?? 0 }}",
+                        "{{ $dayData['meal'] ?? 0 }}",
+                        "{{ $dayData['beverage'] ?? 0 }}",
+                        "{{ $dayData['total'] ?? 0 }}"
+                    ],
+                @endforeach
+
+                // Grand total row
+                [
+                    "Grand Total",
+                    "{{ $grandTotal['visitors'] }}",
+                    "{{ $grandTotal['entrance_fee'] }}",
+                    "{{ $grandTotal['kawabath'] }}",
+                    "{{ $grandTotal['watertubing'] }}",
+                    "{{ $grandTotal['picnictable'] }}",
+                    "{{ $grandTotal['massage'] }}",
+                    "{{ $grandTotal['accommodation'] }}",
+                    "{{ $grandTotal['meal'] }}",
+                    "{{ $grandTotal['beverage'] }}",
+                    "{{ $grandTotal['total'] }}"
+                ]
+            ];
+
+            // Convert to Excel sheet
+            let worksheet = XLSX.utils.aoa_to_sheet([headers, ...data]);
+            let workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, "Weekly Report");
+
+            // File name includes week, month, year
+            XLSX.writeFile(workbook,
+                "weekly_report_week{{ $selected_week }}_{{ $month_name }}_{{ $selected_year }}.xlsx");
         }
     </script>
 @endsection

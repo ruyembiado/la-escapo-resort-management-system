@@ -18,7 +18,11 @@
 
                 <div class="print-buttons">
                     <button onclick="printReport()" class="btn btn-sm btn-primary d-print-none">
-                        <i class="fas fa-print"></i> Print Report
+                        <i class="fas fa-print"></i> Print PDF
+                    </button>
+
+                    <button onclick="exportExcel()" class="btn btn-sm btn-success d-print-none">
+                        <i class="fas fa-file-excel"></i> Export Excel
                     </button>
                 </div>
             </div>
@@ -115,9 +119,51 @@
                 type: 'html',
                 css: [
                     '{{ asset('public/css/styles.css') }}',
-                    'https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css'
+                    '{{ asset('public/css/bootstrap.min.css') }}'
                 ],
             });
+        }
+    </script>
+
+    <script>
+        function exportExcel() {
+            let headers = [
+                "No. of Visitors",
+                "Entrance Fee",
+                "Kawa Hot Bath",
+                "Water Tubing",
+                "Picnic Table",
+                "Massage",
+                "Accommodation",
+                "Meals",
+                "Beverages",
+                "Total"
+            ];
+
+            let data = [
+                [
+                    "{{ $report['visitors'] }}",
+                    "{{ $report['entrance_fee'] }}",
+                    "{{ $report['kawabath'] }}",
+                    "{{ $report['watertubing'] }}",
+                    "{{ $report['picnictable'] }}",
+                    "{{ $report['massage'] }}",
+                    "{{ $report['accommodation'] }}",
+                    "{{ $report['meal'] }}",
+                    "{{ $report['beverage'] }}",
+                    "{{ $report['total'] }}"
+                ],
+                [
+                    "Grand Total", "", "", "", "", "", "", "", "",
+                    "{{ $report['total'] }}"
+                ]
+            ];
+
+            let worksheet = XLSX.utils.aoa_to_sheet([headers, ...data]);
+            let workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, "Daily Report");
+
+            XLSX.writeFile(workbook, "daily_report_{{ $date }}.xlsx");
         }
     </script>
 @endsection

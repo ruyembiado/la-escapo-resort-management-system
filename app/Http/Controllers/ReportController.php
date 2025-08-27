@@ -257,7 +257,7 @@ class ReportController extends Controller
             'picnictable',
             'massage'
         )
-            ->whereBetween('date_visit', [$startDate, $endDate])
+            ->whereBetween('date_visit', [$startDate->toDateString(), $endDate->toDateString()])
             ->get();
 
         // Add actual data to the pre-filled days
@@ -293,10 +293,9 @@ class ReportController extends Controller
         $startDate = Carbon::create($selectedYear, $selectedMonth, 1)->startOfMonth();
         $endDate   = $startDate->copy()->endOfMonth();
 
-        // If week is selected, adjust start & end date to Sunday–Saturday
         if ($selectedWeek) {
             $weekStart = $startDate->copy()->addWeeks($selectedWeek - 1)->startOfWeek(Carbon::SUNDAY);
-            $weekEnd   = $weekStart->copy()->endOfWeek(Carbon::SATURDAY);
+            $weekEnd   = $weekStart->copy()->addDays(6); // Saturday = Sunday + 6
 
             // Bound inside the month
             if ($weekStart->lt($startDate)) {
@@ -321,7 +320,7 @@ class ReportController extends Controller
             'picnictable',
             'massage'
         )
-            ->whereBetween('date_visit', [$startDate, $endDate])
+            ->whereBetween('date_visit', [$startDate->toDateString(), $endDate->toDateString()])
             ->get();
 
         $emptyDayData = [
@@ -419,27 +418,28 @@ class ReportController extends Controller
         $startDate = Carbon::createFromDate($selectedYear, $selectedMonth, 1)->startOfMonth();
         $endDate = $startDate->copy()->endOfMonth();
 
-        // Pre-fill weeks: Sunday → Saturday
-        $weeks = collect();
+        // Start on the Sunday before or equal to the first of the month
         $weekStart = $startDate->copy()->startOfWeek(Carbon::SUNDAY);
+
+        $weeks = collect();
+        $weekNumber = 1;
 
         while ($weekStart->lte($endDate)) {
             $weekEnd = $weekStart->copy()->endOfWeek(Carbon::SATURDAY);
-            if ($weekEnd->gt($endDate)) {
-                $weekEnd = $endDate->copy();
-            }
 
             $weeks->push([
-                'start' => $weekStart->copy(),
-                'end' => $weekEnd->copy(),
+                'week'     => $weekNumber,
+                'start'    => $weekStart->copy(),
+                'end'      => $weekEnd->copy(),
                 'visitors' => 0,
-                'total' => 0,
+                'total'    => 0,
             ]);
 
-            $weekStart = $weekEnd->copy()->addDay(); // next week
+            $weekStart = $weekEnd->copy()->addDay();
+            $weekNumber++;
         }
 
-        // Fetch visitors for the month
+        // Fetch visitors only for the month
         $visitors = Visitor::with(
             'entrance',
             'accommodation',
@@ -451,38 +451,40 @@ class ReportController extends Controller
             'picnictable',
             'massage'
         )
-            ->whereBetween('date_visit', [$startDate, $endDate])
+            ->whereBetween('date_visit', [$startDate->toDateString(), $endDate->toDateString()])
             ->get();
 
-        // Assign visitors to their week
         foreach ($visitors as $visitor) {
             $visitorDate = Carbon::parse($visitor->date_visit);
 
             foreach ($weeks as $key => $week) {
-                if ($visitorDate->between($week['start'], $week['end'])) {
+                // Only count if within actual month range
+                if ($visitorDate->between($week['start'], $week['end'], true)) {
+                    if ($visitorDate->between($startDate, $endDate, true)) {
+                        $weekData = $weeks->get($key);
 
-                    // Get current week data
-                    $weekData = $weeks->get($key);
+                        $payment =
+                            ($visitor->entrance->total_payment ?? 0) +
+                            ($visitor->accommodation->total_payment ?? 0) +
+                            ($visitor->cottage->total_payment ?? 0) +
+                            ($visitor->meal->total_payment ?? 0) +
+                            ($visitor->beverage->total_payment ?? 0) +
+                            ($visitor->massage->total_payment ?? 0) +
+                            ($visitor->watertubing->total_payment ?? 0) +
+                            ($visitor->picnictable->total_payment ?? 0) +
+                            ($visitor->kawabath->total_payment ?? 0);
 
-                    $payment =
-                        ($visitor->entrance->total_payment ?? 0) +
-                        ($visitor->accommodation->total_payment ?? 0) +
-                        ($visitor->cottage->total_payment ?? 0) +
-                        ($visitor->meal->total_payment ?? 0) +
-                        ($visitor->beverage->total_payment ?? 0) +
-                        ($visitor->massage->total_payment ?? 0) +
-                        ($visitor->watertubing->total_payment ?? 0) +
-                        ($visitor->picnictable->total_payment ?? 0) +
-                        ($visitor->kawabath->total_payment ?? 0);
+                        $weekData['visitors'] += (int) $visitor->members;
+                        $weekData['total'] += $payment;
 
-                    // Update the week data
-                    $weekData['visitors'] += (int) $visitor->members;
-                    $weekData['total'] += $payment;
-
-                    // Put it back into the collection
-                    $weeks->put($key, $weekData);
-                    break; // stop checking weeks for this visitor
+                        $weeks->put($key, $weekData);
+                    }
+                    break;
                 }
+
+                // Next week
+                $weekStart->addWeek();
+                $weekEnd = $weekStart->copy()->endOfWeek(Carbon::SATURDAY);
             }
         }
 
@@ -506,104 +508,93 @@ class ReportController extends Controller
         $selectedYear = $request->input('year') ?? Carbon::now()->year;
         $selectedMonth = $request->input('month') ?? Carbon::now()->month;
 
-        $startDate = Carbon::createFromDate($selectedYear, $selectedMonth, 1)->startOfMonth();
-        $endDate = $startDate->copy()->endOfMonth();
+        $startDate = Carbon::createFromDate($selectedYear, $selectedMonth, 1)->startOfDay();
+        $endDate = Carbon::createFromDate($selectedYear, $selectedMonth, 1)->endOfMonth()->endOfDay();
 
-        $visitors = Visitor::with('entrance', 'accommodation', 'cottage', 'meal', 'beverage', 'kawabath', 'watertubing', 'picnictable', 'massage')
-            ->whereDate('date_visit', '>=', $startDate)
-            ->whereDate('date_visit', '<=', $endDate)
+        // Get all visitors in the month with related payments
+        $visitors = Visitor::with(
+            'entrance',
+            'accommodation',
+            'cottage',
+            'meal',
+            'beverage',
+            'kawabath',
+            'watertubing',
+            'picnictable',
+            'massage'
+        )
+            ->whereYear('date_visit', $selectedYear)
+            ->whereMonth('date_visit', $selectedMonth)
             ->get();
 
         // Initialize monthly totals
         $monthlyData = [
-            'visitors' => 0,
-            'entrance_fee' => 0,
-            'accommodation' => 0,
-            'rental' => 0,
-            'meal' => 0,
-            'beverage' => 0,
-            'massage' => 0,
-            'watertubing' => 0,
-            'picnictable' => 0,
-            'kawabath' => 0,
-            'total' => 0,
+            'visitors' => $visitors->sum(fn($v) => (int) $v->members),
+            'entrance_fee' => $visitors->sum(fn($v) => (float) ($v->entrance->total_payment ?? 0)),
+            'accommodation' => $visitors->sum(fn($v) => (float) ($v->accommodation->total_payment ?? 0)),
+            'rental' => $visitors->sum(fn($v) => (float) ($v->cottage->total_payment ?? 0)),
+            'meal' => $visitors->sum(fn($v) => (float) ($v->meal->total_payment ?? 0)),
+            'beverage' => $visitors->sum(fn($v) => (float) ($v->beverage->total_payment ?? 0)),
+            'massage' => $visitors->sum(fn($v) => (float) ($v->massage->total_payment ?? 0)),
+            'watertubing' => $visitors->sum(fn($v) => (float) ($v->watertubing->total_payment ?? 0)),
+            'picnictable' => $visitors->sum(fn($v) => (float) ($v->picnictable->total_payment ?? 0)),
+            'kawabath' => $visitors->sum(fn($v) => (float) ($v->kawabath->total_payment ?? 0)),
         ];
 
-        // Calculate totals for the month
-        foreach ($visitors as $visitor) {
-            $monthlyData['visitors']      += (int) $visitor->members;
-            $monthlyData['entrance_fee']  += (float) ($visitor->entrance->total_payment ?? 0);
-            $monthlyData['accommodation'] += (float) ($visitor->accommodation->total_payment ?? 0);
-            $monthlyData['rental']        += (float) ($visitor->cottage->total_payment ?? 0);
-            $monthlyData['meal']          += (float) ($visitor->meal->total_payment ?? 0);
-            $monthlyData['beverage']      += (float) ($visitor->beverage->total_payment ?? 0);
-            $monthlyData['massage']       += (float) ($visitor->massage->total_payment ?? 0);
-            $monthlyData['watertubing']   += (float) ($visitor->watertubing->total_payment ?? 0);
-            $monthlyData['picnictable']   += (float) ($visitor->picnictable->total_payment ?? 0);
-            $monthlyData['kawabath']      += (float) ($visitor->kawabath->total_payment ?? 0);
-        }
-
-        $monthlyData['total'] = $monthlyData['entrance_fee'] + $monthlyData['accommodation'] + $monthlyData['rental'] +
-            $monthlyData['meal'] + $monthlyData['beverage'] + $monthlyData['massage'] +
-            $monthlyData['watertubing'] + $monthlyData['picnictable'] + $monthlyData['kawabath'];
-
-        // Build weekly structure for the month
-        $weekStart = $startDate->copy()->startOfWeek(Carbon::SUNDAY);
-        $weekEnd   = $weekStart->copy()->endOfWeek(Carbon::SATURDAY);
+        $monthlyData['total'] = collect($monthlyData)->except('total')->sum();
 
         $weeklyBreakdown = collect();
 
-        while ($weekStart->lte($endDate)) {
-            $weekNumber = $weekStart->weekOfMonth;
+        $weekNumber = 1;
+        $currentDate = $startDate->copy();
 
-            // Filter visitors for this week
-            $weekVisitors = $visitors->filter(function ($visitor) use ($weekStart, $weekEnd) {
-                $date = Carbon::parse($visitor->date_visit);
-                return $date->between($weekStart, $weekEnd);
-            });
-
-            // Initialize empty week data
-            $weekData = [
-                'visitors' => 0,
-                'entrance_fee' => 0,
-                'accommodation' => 0,
-                'rental' => 0,
-                'meal' => 0,
-                'beverage' => 0,
-                'massage' => 0,
-                'watertubing' => 0,
-                'picnictable' => 0,
-                'kawabath' => 0,
-                'total' => 0,
-            ];
-
-            foreach ($weekVisitors as $visitor) {
-                $weekData['visitors']      += (int) $visitor->members;
-                $weekData['entrance_fee']  += (float) ($visitor->entrance->total_payment ?? 0);
-                $weekData['accommodation'] += (float) ($visitor->accommodation->total_payment ?? 0);
-                $weekData['rental']        += (float) ($visitor->cottage->total_payment ?? 0);
-                $weekData['meal']          += (float) ($visitor->meal->total_payment ?? 0);
-                $weekData['beverage']      += (float) ($visitor->beverage->total_payment ?? 0);
-                $weekData['massage']       += (float) ($visitor->massage->total_payment ?? 0);
-                $weekData['watertubing']   += (float) ($visitor->watertubing->total_payment ?? 0);
-                $weekData['picnictable']   += (float) ($visitor->picnictable->total_payment ?? 0);
-                $weekData['kawabath']      += (float) ($visitor->kawabath->total_payment ?? 0);
+        while ($currentDate->lte($endDate)) {
+            // First week starts from the 1st of the month (even if mid-week)
+            if ($weekNumber === 1) {
+                $weekStart = $startDate->copy();
+            } else {
+                $weekStart = $currentDate->copy()->startOfWeek(Carbon::SUNDAY);
             }
 
-            $weekData['total'] = $weekData['entrance_fee'] + $weekData['accommodation'] + $weekData['rental'] +
-                $weekData['meal'] + $weekData['beverage'] + $weekData['massage'] +
-                $weekData['watertubing'] + $weekData['picnictable'] + $weekData['kawabath'];
+            // End of the week = Saturday OR end of month
+            $weekEnd = $weekStart->copy()->endOfWeek(Carbon::SATURDAY);
+            if ($weekEnd->gt($endDate)) {
+                $weekEnd = $endDate->copy();
+            }
+
+            // Filter visitors for this week
+            $weekVisitors = $visitors->filter(function ($v) use ($weekStart, $weekEnd) {
+                $date = Carbon::parse($v->date_visit);
+                return $date->gte($weekStart) && $date->lte($weekEnd);
+            });
+
+            $weekData = [
+                'start_date' => $weekStart->format('M d'),
+                'end_date' => $weekEnd->format('M d'),
+                'visitors' => $weekVisitors->sum(fn($v) => (int) $v->members),
+                'entrance_fee' => $weekVisitors->sum(fn($v) => (float) ($v->entrance->total_payment ?? 0)),
+                'accommodation' => $weekVisitors->sum(fn($v) => (float) ($v->accommodation->total_payment ?? 0)),
+                'rental' => $weekVisitors->sum(fn($v) => (float) ($v->cottage->total_payment ?? 0)),
+                'meal' => $weekVisitors->sum(fn($v) => (float) ($v->meal->total_payment ?? 0)),
+                'beverage' => $weekVisitors->sum(fn($v) => (float) ($v->beverage->total_payment ?? 0)),
+                'massage' => $weekVisitors->sum(fn($v) => (float) ($v->massage->total_payment ?? 0)),
+                'watertubing' => $weekVisitors->sum(fn($v) => (float) ($v->watertubing->total_payment ?? 0)),
+                'picnictable' => $weekVisitors->sum(fn($v) => (float) ($v->picnictable->total_payment ?? 0)),
+                'kawabath' => $weekVisitors->sum(fn($v) => (float) ($v->kawabath->total_payment ?? 0)),
+            ];
+
+            $weekData['total'] = collect($weekData)->except(['total', 'start_date', 'end_date'])->sum();
 
             $weeklyBreakdown->put($weekNumber, $weekData);
 
-            // Next week
-            $weekStart->addWeek();
-            $weekEnd = $weekStart->copy()->endOfWeek(Carbon::SATURDAY);
+            // Move to next week
+            $currentDate = $weekEnd->copy()->addDay();
+            $weekNumber++;
         }
 
         return view('monthly_report', [
             'monthlyData' => $monthlyData,
-            'weeklyBreakdown' => $weeklyBreakdown->sortKeys(),
+            'weeklyBreakdown' => $weeklyBreakdown,
             'selected_year' => $selectedYear,
             'selected_month' => $selectedMonth,
             'month_name' => $startDate->format('F'),

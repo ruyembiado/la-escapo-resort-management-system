@@ -18,6 +18,8 @@
     <link href="{{ asset('public/css/select2.min.css') }}" rel="stylesheet">
     <!-- Select2 Bootstrap Styles -->
     <link href="{{ asset('public/css/select2-bootstrap4.min.css') }}" rel="stylesheet">
+    {{-- Print Excel --}}
+    <script src="{{ asset('public/js/xlsx.full.min.js') }}"></script>
     <!-- Custom Styles -->
     <link href="{{ asset('public/css/styles.css') }}" rel="stylesheet">
 </head>
@@ -67,7 +69,7 @@
                     </a>
                 </li>
 
-                 <li class="sidebar-item">
+                <li class="sidebar-item">
                     <a href="{{ url('/profile') }}" class="sidebar-link">
                         <i class="fa fa-user"></i>
                         <span>Profile</span>
@@ -161,15 +163,29 @@
         const sidebarLinks = document.querySelectorAll('.sidebar-link');
 
         // Load active link from localStorage
-        const activeLink = localStorage.getItem('activeLink');
+        let activeLink = localStorage.getItem('activeLink');
+        let activeItem = null;
+
+        // Remove all active classes first
+        sidebarLinks.forEach(item => {
+            item.parentElement.classList.remove('active');
+        });
+
+        // If activeLink exists, try to find it
         if (activeLink) {
-            document.querySelectorAll('.sidebar-link').forEach(item => {
-                item.classList.remove('active');
-            });
-            const activeItem = document.querySelector(`.sidebar-link[href="${activeLink}"]`);
-            if (activeItem) {
-                activeItem.parentElement.classList.add('active');
-            }
+            activeItem = document.querySelector(`.sidebar-link[href="${activeLink}"]`);
+        }
+
+        // If no saved link or invalid, default to first link
+        if (!activeItem && sidebarLinks.length > 0) {
+            activeItem = sidebarLinks[0];
+            activeLink = activeItem.getAttribute('href');
+            localStorage.setItem('activeLink', activeLink); // store first link
+        }
+
+        // Add active class
+        if (activeItem) {
+            activeItem.parentElement.classList.add('active');
         }
 
         console.log('Active link:', activeLink);

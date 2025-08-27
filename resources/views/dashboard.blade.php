@@ -17,7 +17,7 @@
                             <div class="col mr-2">
                                 <div class="text-xs font-weight-bold text-dark text-uppercase mb-1">
                                     Visitors | Today</div>
-                                <div class="h3 mb-0 font-weight-bold text-success">{{ $visitorsToday }}</div>
+                                <div class="h3 count-number mb-0 font-weight-bold text-success">{{ $visitorsToday }}</div>
                             </div>
                             <div class="col-auto">
                                 <i class="fa fa-users fa-2x text-success"></i>
@@ -36,7 +36,7 @@
                             <div class="col mr-2">
                                 <div class="text-xs font-weight-bold text-dark text-uppercase mb-1">
                                     Visitors | This Week</div>
-                                <div class="h3 mb-0 font-weight-bold text-success">{{ $visitorsThisWeek }}</div>
+                                <div class="h3 count-number mb-0 font-weight-bold text-success">{{ $visitorsThisWeek }}</div>
                             </div>
                             <div class="col-auto">
                                 <i class="fa fa-users fa-2x text-success"></i>
@@ -55,7 +55,7 @@
                             <div class="col mr-2">
                                 <div class="text-xs font-weight-bold text-dark text-uppercase mb-1">
                                     Visitors | This Month</div>
-                                <div class="h3 mb-0 font-weight-bold text-success">{{ $visitorsThisMonth }}</div>
+                                <div class="h3 count-number mb-0 font-weight-bold text-success">{{ $visitorsThisMonth }}</div>
                             </div>
                             <div class="col-auto">
                                 <i class="fa fa-users fa-2x text-success"></i>
@@ -74,7 +74,7 @@
                             <div class="col mr-2">
                                 <div class="text-xs font-weight-bold text-dark text-uppercase mb-1">
                                     Visitors | This Year</div>
-                                <div class="h3 mb-0 font-weight-bold text-success">{{ $visitorsThisYear }}</div>
+                                <div class="h3 count-number mb-0 font-weight-bold text-success">{{ $visitorsThisYear }}</div>
                             </div>
                             <div class="col-auto">
                                 <i class="fa fa-users fa-2x text-success"></i>

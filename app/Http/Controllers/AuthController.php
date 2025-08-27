@@ -108,7 +108,7 @@ class AuthController extends Controller
             'phone_number' => 'required|string|max:20',
             'email' => 'required|email|unique:users,email,' . $request->user_id,
             'username' => 'required|string|max:50|unique:users,username,' . $request->user_id,
-            'password' => 'nullable|min:6',
+            'password' => 'nullable',
             'confirm_password' => 'nullable|same:password',
             'avatar' => 'nullable|image|mimes:jpg,jpeg,png,webp',
         ]);

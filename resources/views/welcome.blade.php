@@ -15,7 +15,7 @@
             @endif
 
             <div class="d-flex flex-wrap justify-content-between align-items-center">
-                <div class="col-7 justify-content-center align-items-center gap-3">
+                <div class="col-6 justify-content-center align-items-center gap-3">
                     <div class="title-container">
                         <h6 class="text-light welcome-text m-0">Welcome to</h6>
                         <h1 class="text-light home-title m-0">La Escapo Resort</h1>
@@ -29,7 +29,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-5">
+                <div class="col-6">
                     <img src="{{ asset('public/img/biling-system.png') }}" class="img-fluid" alt="biling-system">
                 </div>
             </div>

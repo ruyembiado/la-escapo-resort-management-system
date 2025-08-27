@@ -9,6 +9,7 @@
     <!-- Bootstrap Style -->
     <link href="{{ asset('public/css/bootstrap.min.css') }}" rel="stylesheet">
     <!-- Fontawesome Style -->
+    <link href="{{ asset('public/css/all.min.css') }}" rel="stylesheet">
     <link href="{{ asset('public/css/fontawesome.min.css') }}" rel="stylesheet">
     <!-- Datatables -->
     <link href="{{ asset('public/css/datatables.min.css') }}" rel="stylesheet">
@@ -36,7 +37,7 @@
                                 <!-- Button to toggle the Login Offcanvas -->
                                 <button class="btn btn-light" type="button" data-bs-toggle="offcanvas"
                                     data-bs-target="#loginOffcanvas" aria-controls="loginOffcanvas">
-                                    Login
+                                    <i class="fa fa-circle-user"></i> Login
                                 </button>
                             </div>
                         @endif
@@ -61,6 +62,7 @@
     <!-- Datatables -->
     <script src="{{ asset('public/js/datatables.min.js') }}"></script>
     <!-- Fontawesome Script -->
+    <script src="{{ asset('public/js/all.min.js') }}"></script>
     <script src="{{ asset('public/js/fontawesome.min.js') }}"></script>
     <!-- Select2 Script -->
     <script src="{{ asset('public/js/select2.min.js') }}"></script>

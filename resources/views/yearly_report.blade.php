@@ -28,6 +28,10 @@
                     <button onclick="printReport()" class="btn btn-sm btn-primary d-print-none">
                         <i class="fas fa-print"></i> Print Report
                     </button>
+
+                    <button onclick="exportYearlyExcel()" class="btn btn-sm btn-success d-print-none">
+                        <i class="fas fa-file-excel"></i> Export Excel
+                    </button>
                 </div>
             </div>
 
@@ -136,9 +140,79 @@
                 type: 'html',
                 css: [
                     '{{ asset('/public/css/styles.css') }}',
-                    'https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css'
+                    '{{ asset('public/css/bootstrap.min.css') }}'
                 ],
             });
+        }
+    </script>
+
+    <script>
+        function exportYearlyExcel() {
+            // Headers for Excel
+            const headers = [
+                "Month",
+                "No. of Visitors",
+                "Entrance Fee",
+                "Kawa Hot Bath",
+                "Water Tubing",
+                "Picnic Table",
+                "Massage",
+                "Accommodation",
+                "Meals",
+                "Beverages",
+                "Total"
+            ];
+
+            // Data rows from Blade
+            const data = [
+                @foreach ($monthlyBreakdown as $monthData)
+                    [
+                        "{{ $monthData['month_name'] }}",
+                        "{{ $monthData['visitors'] ?? 0 }}",
+                        "{{ $monthData['entrance_fee'] ?? 0 }}",
+                        "{{ $monthData['kawabath'] ?? 0 }}",
+                        "{{ $monthData['watertubing'] ?? 0 }}",
+                        "{{ $monthData['picnictable'] ?? 0 }}",
+                        "{{ $monthData['massage'] ?? 0 }}",
+                        "{{ $monthData['accommodation'] ?? 0 }}",
+                        "{{ $monthData['meal'] ?? 0 }}",
+                        "{{ $monthData['beverage'] ?? 0 }}",
+                        "{{ $monthData['total'] ?? 0 }}"
+                    ],
+                @endforeach
+
+                // Add Grand Total row
+                [
+                    "Grand Total",
+                    "{{ $monthlyBreakdown->sum('visitors') }}",
+                    "{{ $monthlyBreakdown->sum('entrance_fee') }}",
+                    "{{ $monthlyBreakdown->sum('kawabath') }}",
+                    "{{ $monthlyBreakdown->sum('watertubing') }}",
+                    "{{ $monthlyBreakdown->sum('picnictable') }}",
+                    "{{ $monthlyBreakdown->sum('massage') }}",
+                    "{{ $monthlyBreakdown->sum('accommodation') }}",
+                    "{{ $monthlyBreakdown->sum('meal') }}",
+                    "{{ $monthlyBreakdown->sum('beverage') }}",
+                    "{{ $monthlyBreakdown->sum('total') }}"
+                ]
+            ];
+
+            // Convert to Excel sheet
+            const worksheet = XLSX.utils.aoa_to_sheet([headers, ...data]);
+
+            // Auto-width columns
+            worksheet["!cols"] = headers.map(h => ({
+                wch: Math.max(h.length, 12)
+            }));
+
+            // Create workbook and append sheet
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, "Yearly Report");
+
+            // File name example: yearly_report_2025.xlsx
+            const filename = `yearly_report_{{ $selected_year }}.xlsx`;
+
+            XLSX.writeFile(workbook, filename);
         }
     </script>
 @endsection

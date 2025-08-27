@@ -1,12 +1,20 @@
 @extends('layouts.auth') <!-- Extend the main layout -->
 
 @php
-    $currentYear = now()->year;
-    $currentMonth = now()->month;
-    // Get the start of the current month
-    $startOfMonth = now()->startOfMonth();
-    // Get the current date's ISO week number relative to the start of the month
-    $currentWeek = now()->diffInWeeks($startOfMonth) + 1; // Add 1 to ensure the week starts at 1
+    use Carbon\Carbon;
+
+    $today = now();
+    $currentYear = $today->year;
+    $currentMonth = $today->month;
+
+    // Start of the month
+    $startOfMonth = Carbon::create($currentYear, $currentMonth, 1);
+
+    // First week start (always Sunday)
+    $firstWeekStart = $startOfMonth->copy()->startOfWeek(Carbon::SUNDAY);
+
+    // Week number (Sunday–Saturday based)
+    $currentWeek = floor($firstWeekStart->diffInDays($today) / 7) + 1;
 @endphp
 
 @section('content')
@@ -174,7 +182,8 @@
                                     <strong>Monthly Income Report</strong>
                                 </div>
                                 <div class="mb-2 mt-3" style="color: #045b00;">
-                                    <span class="border rounded p-2 border-text h5 bg-light">₱{{ number_format($monthlyTotal, 2) }}</span>
+                                    <span
+                                        class="border rounded p-2 border-text h5 bg-light">₱{{ number_format($monthlyTotal, 2) }}</span>
                                 </div>
                                 <a class="btn text-light btn-light bg-transparent mt-2"
                                     href="{{ route('monthly.income.report', ['year' => $currentYear]) }}">
@@ -199,7 +208,8 @@
                                     <strong>Yearly Income Report</strong>
                                 </div>
                                 <div class="mb-2 mt-3" style="color: #045b00;">
-                                    <span class="border rounded p-2 border-text h5 bg-light">₱{{ number_format($yearlyTotal, 2) }}</span>
+                                    <span
+                                        class="border rounded p-2 border-text h5 bg-light">₱{{ number_format($yearlyTotal, 2) }}</span>
                                 </div>
                                 <a class="btn text-light btn-light bg-transparent mt-2"
                                     href="{{ route('yearly.income.report') }}">View Report</a>

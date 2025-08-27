@@ -43,6 +43,10 @@
                     <button onclick="printReport()" class="btn btn-sm btn-primary d-print-none">
                         <i class="fas fa-print"></i> Print Report
                     </button>
+
+                    <button onclick="exportExcel()" class="btn btn-sm btn-success d-print-none">
+                        <i class="fas fa-file-excel"></i> Export Excel
+                    </button>
                 </div>
             </div>
 
@@ -151,9 +155,70 @@
                 type: 'html',
                 css: [
                     '{{ asset('/public/css/styles.css') }}',
-                    'https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css'
+                    '{{ asset('public/css/bootstrap.min.css') }}'
                 ],
             });
+        }
+    </script>
+
+    <script>
+        function exportExcel() {
+            // Headers
+            let headers = [
+                "Week",
+                "No. of Visitors",
+                "Entrance Fee",
+                "Kawa Hot Bath",
+                "Water Tubing",
+                "Picnic Table",
+                "Massage",
+                "Accommodation",
+                "Meals",
+                "Beverages",
+                "Total"
+            ];
+
+            // Data from each week
+            let data = [
+                @foreach ($weeklyBreakdown as $weekNumber => $weekData)
+                    [
+                        "Week {{ $weekNumber }}",
+                        "{{ $weekData['visitors'] }}",
+                        "{{ $weekData['entrance_fee'] }}",
+                        "{{ $weekData['kawabath'] }}",
+                        "{{ $weekData['watertubing'] }}",
+                        "{{ $weekData['picnictable'] }}",
+                        "{{ $weekData['massage'] }}",
+                        "{{ $weekData['accommodation'] }}",
+                        "{{ $weekData['meal'] }}",
+                        "{{ $weekData['beverage'] }}",
+                        "{{ $weekData['total'] }}"
+                    ],
+                @endforeach
+
+                // Grand total row
+                [
+                    "Grand Total",
+                    "{{ $weeklyBreakdown->sum('visitors') }}",
+                    "{{ $weeklyBreakdown->sum('entrance_fee') }}",
+                    "{{ $weeklyBreakdown->sum('kawabath') }}",
+                    "{{ $weeklyBreakdown->sum('watertubing') }}",
+                    "{{ $weeklyBreakdown->sum('picnictable') }}",
+                    "{{ $weeklyBreakdown->sum('massage') }}",
+                    "{{ $weeklyBreakdown->sum('accommodation') }}",
+                    "{{ $weeklyBreakdown->sum('meal') }}",
+                    "{{ $weeklyBreakdown->sum('beverage') }}",
+                    "{{ $weeklyBreakdown->sum('total') }}"
+                ]
+            ];
+
+            // Create Excel sheet
+            let worksheet = XLSX.utils.aoa_to_sheet([headers, ...data]);
+            let workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, "Monthly Report");
+
+            // File name format: monthly_report_Month_Year.xlsx
+            XLSX.writeFile(workbook, "monthly_report_{{ $month_name }}_{{ $selected_year }}.xlsx");
         }
     </script>
 @endsection
