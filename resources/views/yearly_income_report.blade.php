@@ -8,9 +8,13 @@
     <div class="card shadow mb-4">
         <div class="card-body">
             <div class="d-flex justify-content-end align-items-start mb-4">
-                <div class="print-buttons">
+                <div class="print-buttons d-flex gap-2">
                     <button onclick="printReport()" class="btn btn-sm btn-primary d-print-none">
                         <i class="fas fa-print"></i> Print Report
+                    </button>
+
+                    <button onclick="exportExcel()" class="btn btn-sm btn-success d-print-none">
+                        <i class="fas fa-file-excel"></i> Export Excel
                     </button>
                 </div>
             </div>
@@ -41,7 +45,7 @@
 
                 <div class="table-responsive mt-3">
                     <table class="table table-bordered" width="100%" cellspacing="0">
-                        <thead class="">
+                        <thead>
                             <tr>
                                 <th>Year</th>
                                 <th>No. of Visitors</th>
@@ -81,6 +85,7 @@
         </div>
     </div>
 
+    {{-- Print --}}
     <script>
         function printReport() {
             printJS({
@@ -91,6 +96,34 @@
                     '{{ asset('public/css/bootstrap.min.css') }}'
                 ],
             });
+        }
+    </script>
+
+    {{-- Export Excel --}}
+    <script>
+        function exportExcel() {
+            let headers = ["Year", "No. of Visitors", "Total Bill Income"];
+
+            let data = [
+                @foreach ($yearlyBreakdown as $data)
+                    [
+                        "{{ $data['year'] }}",
+                        "{{ $data['visitors'] }}",
+                        "{{ $data['total'] }}"
+                    ],
+                @endforeach
+                [
+                    "Grand Total",
+                    "{{ $totalVisitors }}",
+                    "{{ $grandTotal }}"
+                ]
+            ];
+
+            let worksheet = XLSX.utils.aoa_to_sheet([headers, ...data]);
+            let workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, "Yearly Income Report");
+
+            XLSX.writeFile(workbook, "yearly_income_report.xlsx");
         }
     </script>
 @endsection

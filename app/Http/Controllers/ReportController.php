@@ -412,38 +412,16 @@ class ReportController extends Controller
 
     public function weeklyIncomeReport(Request $request)
     {
-        $selectedYear = $request->input('year') ?? now()->year;
-        $selectedMonth = $request->input('month') ?? now()->month;
+        $selectedYear = $request->input('year') ?? Carbon::now()->year;
+        $selectedMonth = $request->input('month') ?? Carbon::now()->month;
 
-        $startDate = Carbon::createFromDate($selectedYear, $selectedMonth, 1)->startOfMonth();
-        $endDate = $startDate->copy()->endOfMonth();
+        $startDate = Carbon::createFromDate($selectedYear, $selectedMonth, 1)->startOfDay();
+        $endDate   = Carbon::createFromDate($selectedYear, $selectedMonth, 1)->endOfMonth()->endOfDay();
 
-        // Start on the Sunday before or equal to the first of the month
-        $weekStart = $startDate->copy()->startOfWeek(Carbon::SUNDAY);
-
-        $weeks = collect();
-        $weekNumber = 1;
-
-        while ($weekStart->lte($endDate)) {
-            $weekEnd = $weekStart->copy()->endOfWeek(Carbon::SATURDAY);
-
-            $weeks->push([
-                'week'     => $weekNumber,
-                'start'    => $weekStart->copy(),
-                'end'      => $weekEnd->copy(),
-                'visitors' => 0,
-                'total'    => 0,
-            ]);
-
-            $weekStart = $weekEnd->copy()->addDay();
-            $weekNumber++;
-        }
-
-        // Fetch visitors only for the month
+        // Get all visitors in the month
         $visitors = Visitor::with(
             'entrance',
             'accommodation',
-            'cottage',
             'meal',
             'beverage',
             'kawabath',
@@ -451,55 +429,68 @@ class ReportController extends Controller
             'picnictable',
             'massage'
         )
-            ->whereBetween('date_visit', [$startDate->toDateString(), $endDate->toDateString()])
+            ->whereYear('date_visit', $selectedYear)
+            ->whereMonth('date_visit', $selectedMonth)
             ->get();
 
-        foreach ($visitors as $visitor) {
-            $visitorDate = Carbon::parse($visitor->date_visit);
+        $weeks = collect();
+        $weekNumber = 1;
+        $currentDate = $startDate->copy();
 
-            foreach ($weeks as $key => $week) {
-                // Only count if within actual month range
-                if ($visitorDate->between($week['start'], $week['end'], true)) {
-                    if ($visitorDate->between($startDate, $endDate, true)) {
-                        $weekData = $weeks->get($key);
-
-                        $payment =
-                            ($visitor->entrance->total_payment ?? 0) +
-                            ($visitor->accommodation->total_payment ?? 0) +
-                            ($visitor->cottage->total_payment ?? 0) +
-                            ($visitor->meal->total_payment ?? 0) +
-                            ($visitor->beverage->total_payment ?? 0) +
-                            ($visitor->massage->total_payment ?? 0) +
-                            ($visitor->watertubing->total_payment ?? 0) +
-                            ($visitor->picnictable->total_payment ?? 0) +
-                            ($visitor->kawabath->total_payment ?? 0);
-
-                        $weekData['visitors'] += (int) $visitor->members;
-                        $weekData['total'] += $payment;
-
-                        $weeks->put($key, $weekData);
-                    }
-                    break;
-                }
-
-                // Next week
-                $weekStart->addWeek();
-                $weekEnd = $weekStart->copy()->endOfWeek(Carbon::SATURDAY);
+        while ($currentDate->lte($endDate)) {
+            // First week starts from the 1st of the month (even if mid-week)
+            if ($weekNumber === 1) {
+                $weekStart = $startDate->copy();
+            } else {
+                $weekStart = $currentDate->copy()->startOfWeek(Carbon::SUNDAY);
             }
+
+            // Week ends on Saturday OR last day of month
+            $weekEnd = $weekStart->copy()->endOfWeek(Carbon::SATURDAY);
+            if ($weekEnd->gt($endDate)) {
+                $weekEnd = $endDate->copy();
+            }
+
+            // Filter visitors for this week
+            $weekVisitors = $visitors->filter(function ($v) use ($weekStart, $weekEnd) {
+                $date = Carbon::parse($v->date_visit);
+                return $date->between($weekStart, $weekEnd);
+            });
+
+            $totalIncome = $weekVisitors->sum(function ($v) {
+                return ($v->entrance->total_payment ?? 0) +
+                    ($v->accommodation->total_payment ?? 0) +
+                    ($v->meal->total_payment ?? 0) +
+                    ($v->beverage->total_payment ?? 0) +
+                    ($v->massage->total_payment ?? 0) +
+                    ($v->watertubing->total_payment ?? 0) +
+                    ($v->picnictable->total_payment ?? 0) +
+                    ($v->kawabath->total_payment ?? 0);
+            });
+
+            $weeks->push([
+                'week' => $weekNumber,
+                'visitors' => $weekVisitors->sum(fn($v) => (int) $v->members),
+                'total' => $totalIncome,
+            ]);
+
+            // Move to next week
+            $currentDate = $weekEnd->copy()->addDay();
+            $weekNumber++;
         }
 
-        // Calculate grand total
+        // Grand totals
         $grandTotal = [
             'visitors' => $weeks->sum('visitors'),
-            'total' => $weeks->sum('total'),
+            'total'    => $weeks->sum('total'),
         ];
 
         return view('weekly_income_report', [
-            'weeks' => $weeks,
-            'grandTotal' => $grandTotal,
+            'weeks'         => $weeks,
+            'grandTotal'    => $grandTotal,
             'selected_year' => $selectedYear,
             'selected_month' => $selectedMonth,
-            'month_name' => $startDate->format('F'),
+            'month_name'    => $startDate->format('F'),
         ]);
     }
 
@@ -515,7 +506,6 @@ class ReportController extends Controller
         $visitors = Visitor::with(
             'entrance',
             'accommodation',
-            'cottage',
             'meal',
             'beverage',
             'kawabath',
@@ -532,7 +522,6 @@ class ReportController extends Controller
             'visitors' => $visitors->sum(fn($v) => (int) $v->members),
             'entrance_fee' => $visitors->sum(fn($v) => (float) ($v->entrance->total_payment ?? 0)),
             'accommodation' => $visitors->sum(fn($v) => (float) ($v->accommodation->total_payment ?? 0)),
-            'rental' => $visitors->sum(fn($v) => (float) ($v->cottage->total_payment ?? 0)),
             'meal' => $visitors->sum(fn($v) => (float) ($v->meal->total_payment ?? 0)),
             'beverage' => $visitors->sum(fn($v) => (float) ($v->beverage->total_payment ?? 0)),
             'massage' => $visitors->sum(fn($v) => (float) ($v->massage->total_payment ?? 0)),
@@ -541,8 +530,7 @@ class ReportController extends Controller
             'kawabath' => $visitors->sum(fn($v) => (float) ($v->kawabath->total_payment ?? 0)),
         ];
 
-        $monthlyData['total'] = collect($monthlyData)->except('total')->sum();
-
+        $monthlyData['total'] = collect($monthlyData)->except('visitors')->sum();
         $weeklyBreakdown = collect();
 
         $weekNumber = 1;
@@ -574,7 +562,6 @@ class ReportController extends Controller
                 'visitors' => $weekVisitors->sum(fn($v) => (int) $v->members),
                 'entrance_fee' => $weekVisitors->sum(fn($v) => (float) ($v->entrance->total_payment ?? 0)),
                 'accommodation' => $weekVisitors->sum(fn($v) => (float) ($v->accommodation->total_payment ?? 0)),
-                'rental' => $weekVisitors->sum(fn($v) => (float) ($v->cottage->total_payment ?? 0)),
                 'meal' => $weekVisitors->sum(fn($v) => (float) ($v->meal->total_payment ?? 0)),
                 'beverage' => $weekVisitors->sum(fn($v) => (float) ($v->beverage->total_payment ?? 0)),
                 'massage' => $weekVisitors->sum(fn($v) => (float) ($v->massage->total_payment ?? 0)),
@@ -583,7 +570,7 @@ class ReportController extends Controller
                 'kawabath' => $weekVisitors->sum(fn($v) => (float) ($v->kawabath->total_payment ?? 0)),
             ];
 
-            $weekData['total'] = collect($weekData)->except(['total', 'start_date', 'end_date'])->sum();
+            $weekData['total'] = collect($weekData)->except(['total', 'start_date', 'end_date', 'visitors'])->sum();
 
             $weeklyBreakdown->put($weekNumber, $weekData);
 

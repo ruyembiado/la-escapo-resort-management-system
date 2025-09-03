@@ -25,9 +25,13 @@
                     </div>
                 </form>
 
-                <div class="print-buttons">
+                <div class="print-buttons d-flex gap-2">
                     <button onclick="printReport()" class="btn btn-sm btn-primary d-print-none">
                         <i class="fas fa-print"></i> Print Report
+                    </button>
+
+                    <button onclick="exportExcel()" class="btn btn-sm btn-success d-print-none">
+                        <i class="fas fa-file-excel"></i> Export Excel
                     </button>
                 </div>
             </div>
@@ -99,6 +103,7 @@
         </div>
     </div>
 
+    {{-- Print --}}
     <script>
         function printReport() {
             printJS({
@@ -109,6 +114,35 @@
                     '{{ asset('public/css/bootstrap.min.css') }}'
                 ],
             });
+        }
+    </script>
+
+    {{-- Export Excel --}}
+    <script>
+        function exportExcel() {
+            let headers = ["Year", "Month", "No. of Visitors", "Total Bill Income"];
+
+            let data = [
+                @foreach ($monthlyBreakdown as $data)
+                    [
+                        "{{ $selectedYear }}",
+                        "{{ $data['month'] }}",
+                        "{{ $data['visitors'] }}",
+                        "{{ $data['total'] }}"
+                    ],
+                @endforeach
+                [
+                    "Grand Total", "",
+                    "{{ $totalVisitors }}",
+                    "{{ $grandTotal }}"
+                ]
+            ];
+
+            let worksheet = XLSX.utils.aoa_to_sheet([headers, ...data]);
+            let workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, "Monthly Income Report");
+
+            XLSX.writeFile(workbook, "monthly_income_report_{{ $selectedYear }}.xlsx");
         }
     </script>
 @endsection

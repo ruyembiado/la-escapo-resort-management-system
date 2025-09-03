@@ -10,6 +10,7 @@
             <div class="d-flex justify-content-between align-items-start mb-4">
                 <form method="GET" action="{{ route('daily.income.report') }}" class="d-print-none">
                     <div class="d-flex gap-2 align-items-center">
+                        <!-- Year Selector -->
                         <div class="d-flex flex-column">
                             <label for="year" class="form-label mb-0">Select Year:</label>
                             <select name="year" id="year" class="form-control form-control-sm"
@@ -53,9 +54,12 @@
                     </div>
                 </form>
 
-                <div class="print-buttons">
+                <div class="print-buttons d-flex gap-2">
                     <button onclick="printReport()" class="btn btn-sm btn-primary d-print-none">
                         <i class="fas fa-print"></i> Print Report
+                    </button>
+                    <button onclick="exportExcel()" class="btn btn-sm btn-success d-print-none">
+                        <i class="fas fa-file-excel"></i> Export Excel
                     </button>
                 </div>
             </div>
@@ -128,6 +132,7 @@
         </div>
     </div>
 
+    {{-- Print Report --}}
     <script>
         function printReport() {
             printJS({
@@ -138,6 +143,40 @@
                     '{{ asset('public/css/bootstrap.min.css') }}'
                 ],
             });
+        }
+    </script>
+
+    {{-- Export Excel --}}
+    <script>
+        function exportExcel() {
+            let headers = [
+                "Date",
+                "Day",
+                "No. of Visitors",
+                "Total Bill Income"
+            ];
+
+            let data = [
+                @foreach ($dailyReport as $day)
+                    [
+                        "{{ \Carbon\Carbon::parse($day['date'])->format('F d, Y') }}",
+                        "{{ $day['day'] }}",
+                        "{{ $day['visitors'] }}",
+                        "{{ $day['total'] }}"
+                    ],
+                @endforeach
+                [
+                    "Grand Total", "",
+                    "{{ collect($dailyReport)->sum('visitors') }}",
+                    "{{ collect($dailyReport)->sum('total') }}"
+                ]
+            ];
+
+            let worksheet = XLSX.utils.aoa_to_sheet([headers, ...data]);
+            let workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, "Daily Income Report");
+
+            XLSX.writeFile(workbook, "daily_income_report_{{ $selected_year }}_{{ $selected_month }}_week{{ $selected_week }}.xlsx");
         }
     </script>
 @endsection

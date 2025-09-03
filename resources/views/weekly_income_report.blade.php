@@ -40,9 +40,12 @@
                     </div>
                 </form>
 
-                <div class="print-buttons">
+                <div class="print-buttons d-flex gap-2">
                     <button onclick="printReport()" class="btn btn-sm btn-primary d-print-none">
                         <i class="fas fa-print"></i> Print Report
+                    </button>
+                    <button onclick="exportExcel()" class="btn btn-sm btn-success d-print-none">
+                        <i class="fas fa-file-excel"></i> Export Excel
                     </button>
                 </div>
             </div>
@@ -120,6 +123,7 @@
         </div>
     </div>
 
+    {{-- Print --}}
     <script>
         function printReport() {
             printJS({
@@ -130,6 +134,35 @@
                     '{{ asset('public/css/bootstrap.min.css') }}'
                 ],
             });
+        }
+    </script>
+
+    {{-- Export Excel --}}
+    <script>
+        function exportExcel() {
+            let headers = ["Month", "Week", "No. of Visitors", "Total Bill Income"];
+
+            let data = [
+                @foreach ($weeks as $index => $week)
+                    [
+                        "{{ $month_name }}",
+                        "Week {{ $index + 1 }}",
+                        "{{ $week['visitors'] ?? 0 }}",
+                        "{{ $week['total'] ?? 0 }}"
+                    ],
+                @endforeach
+                [
+                    "Grand Total", "",
+                    "{{ $grandTotal['visitors'] ?? 0 }}",
+                    "{{ $grandTotal['total'] ?? 0 }}"
+                ]
+            ];
+
+            let worksheet = XLSX.utils.aoa_to_sheet([headers, ...data]);
+            let workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, "Weekly Income Report");
+
+            XLSX.writeFile(workbook, "weekly_income_report_{{ $selected_year }}_{{ $selected_month }}.xlsx");
         }
     </script>
 @endsection
