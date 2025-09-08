@@ -146,6 +146,7 @@
 
     <!-- Print.js JS -->
     <script src="{{ asset('public/js/print.min.js') }}"></script>
+    <script src="{{ asset('public/js/html2pdf.bundle.min.js') }}"></script>
 
     <!--Custom Script -->
     <script src="{{ asset('public/js/script.js') }}"></script>
