@@ -65,7 +65,7 @@
                 <li class="sidebar-item">
                     <a href="{{ url('/report') }}" class="sidebar-link">
                         <i class="fa fa-file"></i>
-                        <span>Reports Management</span>
+                        <span>Reports</span>
                     </a>
                 </li>
 
