@@ -47,7 +47,7 @@
                 <li class="sidebar-item">
                     <a href="{{ url('/log-book') }}" class="sidebar-link">
                         <i class="fa fa-book"></i>
-                        <span>Visitor's Log Book</span>
+                        <span>Add Visitor</span>
                     </a>
                 </li>
                 <li class="sidebar-item">

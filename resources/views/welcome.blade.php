@@ -58,8 +58,15 @@
 
                 <div class="mb-2">
                     <label for="username" class="form-label">Username</label>
-                    <input type="text" class="form-control @error('username') is-invalid @enderror" id="username"
-                        name="username" value="{{ old('username') }}" required>
+                    <div class="input-group w-100">
+                        <div class="input-group-prepend bg-light rounded-start d-flex align-items-center">
+                            <span class="input-group-text border-0" id="basic-addon1"><i
+                                    class="fa fa-envelope bg-transparent"></i></span>
+                        </div>
+                        <input type="username" class="form-control @error('username') is-invalid @enderror"
+                            aria-describedby="basic-addon1" id="username" name="username" value="{{ old('username') }}"
+                            required>
+                    </div>
                     @error('username')
                         <div class="invalid-feedback d-block">{{ $message }}</div>
                     @enderror
@@ -67,15 +74,22 @@
 
                 <div class="mb-2">
                     <label for="password" class="form-label">Password</label>
-                    <input type="password" class="form-control @error('password') is-invalid @enderror" id="password"
-                        name="password" required>
+                    <div class="input-group d-flex w-100">
+                        <div class="input-group-prepend bg-light rounded d-flex align-items-center w-100">
+                            <span class="input-group-text border-0" id="basic-addon2"><i
+                                    class="fa fa-lock bg-transparent"></i></span>
+                            <input type="password" style="border-radius: 0 6px 6px 0;"
+                                class="form-control @error('password') is-invalid @enderror" id="password"
+                                aria-describedby="basic-addon2" name="password" required>
+                        </div>
+                    </div>
                     @error('password')
                         <div class="invalid-feedback d-block">{{ $message }}</div>
                     @enderror
                 </div>
 
                 <div class="mt-2">
-                    <button type="submit" class="btn btn-primary">Login</button>
+                    <button type="submit" class="btn btn-primary w-100">Login</button>
                 </div>
             </form>
         </div>

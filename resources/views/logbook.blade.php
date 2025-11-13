@@ -4,7 +4,7 @@
     <!-- Start the content section -->
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text">Visitor's Log Book</h1>
+        <h1 class="h3 mb-0 text">Visitors</h1>
         <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addVisitorModal">Add Visitor</a>
     </div>
 
