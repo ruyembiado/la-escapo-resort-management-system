@@ -160,23 +160,39 @@
                                             ],
                                             [
                                                 'name' => 'Sotfdrinks (12oz)',
-                                                'price' => '35.00',
+                                                'price' => '30.00',
                                             ],
                                             [
                                                 'name' => 'Softdrinks (1.5L)',
-                                                'price' => '60.00',
+                                                'price' => '100.00',
                                             ],
                                             [
                                                 'name' => 'Iced Tea (1 Pitcher)',
-                                                'price' => '60.00',
+                                                'price' => '80.00',
                                             ],
                                             [
                                                 'name' => 'Iced Tea (1 Glass)',
-                                                'price' => '25.00',
+                                                'price' => '30.00',
                                             ],
                                             [
-                                                'name' => 'Lemonade (1 Pitcher)',
-                                                'price' => '60.00',
+                                                'name' => 'Blue Lemonade (1 Pitcher)',
+                                                'price' => '130.00',
+                                            ],
+                                            [
+                                                'name' => 'Blue Lemonade (1 Glass)',
+                                                'price' => '40.00',
+                                            ],
+                                            [
+                                                'name' => 'Red Horse Stallion',
+                                                'price' => '65.00',
+                                            ],
+                                            [
+                                                'name' => 'San Mig Light',
+                                                'price' => '70.00',
+                                            ],
+                                            [
+                                                'name' => 'Fresh Buko',
+                                                'price' => '50.00',
                                             ],
                                         ];
                                     @endphp

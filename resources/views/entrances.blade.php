@@ -192,31 +192,31 @@
                                                 'name' => 'Children',
                                                 'age' => '0-11',
                                                 'checked' => false,
-                                                'price' => '50.00',
+                                                'price' => '30.00',
                                             ],
                                             [
                                                 'name' => 'Student',
                                                 'age' => '12-21',
                                                 'checked' => false,
-                                                'price' => '70.00',
+                                                'price' => '30.00',
                                             ],
                                             [
                                                 'name' => 'Regular',
                                                 'age' => '22-59',
                                                 'checked' => false,
-                                                'price' => '100.00',
+                                                'price' => '30.00',
                                             ],
                                             [
                                                 'name' => 'PWD',
                                                 'age' => 'Any',
                                                 'checked' => false,
-                                                'price' => '50.00',
+                                                'price' => '30.00',
                                             ],
                                             [
                                                 'name' => 'Senior Citizen',
                                                 'age' => '60+',
                                                 'checked' => false,
-                                                'price' => '50.00',
+                                                'price' => '30.00',
                                             ],
                                         ];
                                     @endphp
@@ -341,31 +341,31 @@
                                                 'name' => 'Children',
                                                 'age' => '0-11',
                                                 'checked' => false,
-                                                'price' => '50.00',
+                                                'price' => '30.00',
                                             ],
                                             [
                                                 'name' => 'Student',
                                                 'age' => '12-21',
                                                 'checked' => false,
-                                                'price' => '70.00',
+                                                'price' => '30.00',
                                             ],
                                             [
                                                 'name' => 'Regular',
                                                 'age' => '22-59',
                                                 'checked' => false,
-                                                'price' => '100.00',
+                                                'price' => '30.00',
                                             ],
                                             [
                                                 'name' => 'PWD',
                                                 'age' => 'Any',
                                                 'checked' => false,
-                                                'price' => '50.00',
+                                                'price' => '30.00',
                                             ],
                                             [
                                                 'name' => 'Senior Citizen',
                                                 'age' => '60+',
                                                 'checked' => false,
-                                                'price' => '50.00',
+                                                'price' => '30.00',
                                             ],
                                         ];
                                     @endphp

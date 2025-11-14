@@ -150,15 +150,15 @@
                                         $rooms = [
                                             [
                                                 'name' => '(Good for 2 Persons)',
-                                                'price' => '1000.00',
+                                                'price' => '500.00',
                                             ],
                                             [
                                                 'name' => '(Good for 5 Persons)',
-                                                'price' => '2500.00',
+                                                'price' => '1250.00',
                                             ],
                                             [
                                                 'name' => '(Good for 10 Persons)',
-                                                'price' => '5000.00',
+                                                'price' => '2500.00',
                                             ],
                                         ];
                                     @endphp
@@ -277,15 +277,15 @@
                                         $rooms = [
                                             [
                                                 'name' => '(Good for 2 Persons)',
-                                                'price' => '1000.00',
+                                                'price' => '500.00',
                                             ],
                                             [
                                                 'name' => '(Good for 5 Persons)',
-                                                'price' => '2500.00',
+                                                'price' => '1250.00',
                                             ],
                                             [
                                                 'name' => '(Good for 10 Persons)',
-                                                'price' => '5000.00',
+                                                'price' => '2500.00',
                                             ],
                                         ];
                                     @endphp

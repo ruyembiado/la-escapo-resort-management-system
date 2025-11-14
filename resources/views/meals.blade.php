@@ -177,6 +177,18 @@
                                                 'name' => 'Grilled Pork',
                                                 'price' => '299.00',
                                             ],
+                                            [
+                                                'name' => 'Rice Platter',
+                                                'price' => '80.00',
+                                            ],
+                                            [
+                                                'name' => '1 Cup Rice',
+                                                'price' => '20.00',
+                                            ],
+                                            [
+                                                'name' => 'Hotdog + Egg + Dried Fish + Rice + Coffee',
+                                                'price' => '120.00',
+                                            ],
                                         ];
                                     @endphp
 

@@ -195,34 +195,64 @@
                                     @php
                                         $categories = [
                                             [
-                                                'name' => 'Children',
+                                                'name' => 'Children 700M',
                                                 'age' => '0-11',
                                                 'checked' => false,
-                                                'price' => '50.00',
+                                                'price' => '250.00',
                                             ],
                                             [
-                                                'name' => 'Student',
+                                                'name' => 'Student 700M',
                                                 'age' => '12-21',
                                                 'checked' => false,
-                                                'price' => '70.00',
+                                                'price' => '250.00',
                                             ],
                                             [
-                                                'name' => 'Regular',
+                                                'name' => 'Regular 700M',
                                                 'age' => '22-59',
                                                 'checked' => false,
-                                                'price' => '100.00',
+                                                'price' => '250.00',
                                             ],
                                             [
-                                                'name' => 'PWD',
+                                                'name' => 'PWD 700M',
                                                 'age' => 'Any',
                                                 'checked' => false,
-                                                'price' => '50.00',
+                                                'price' => '250.00',
                                             ],
                                             [
-                                                'name' => 'Senior Citizen',
+                                                'name' => 'Senior Citizen 700M',
                                                 'age' => '60+',
                                                 'checked' => false,
-                                                'price' => '50.00',
+                                                'price' => '250.00',
+                                            ],
+                                            [
+                                                'name' => 'Children 1.5KM',
+                                                'age' => '0-11',
+                                                'checked' => false,
+                                                'price' => '499.00',
+                                            ],
+                                            [
+                                                'name' => 'Student 1.5KM',
+                                                'age' => '12-21',
+                                                'checked' => false,
+                                                'price' => '499.00',
+                                            ],
+                                            [
+                                                'name' => 'Regular 1.5KM',
+                                                'age' => '22-59',
+                                                'checked' => false,
+                                                'price' => '499.00',
+                                            ],
+                                            [
+                                                'name' => 'PWD 1.5KM',
+                                                'age' => 'Any',
+                                                'checked' => false,
+                                                'price' => '499.00',
+                                            ],
+                                            [
+                                                'name' => 'Senior Citizen 1.5KM',
+                                                'age' => '60+',
+                                                'checked' => false,
+                                                'price' => '499.00',
                                             ],
                                         ];
                                     @endphp
@@ -352,34 +382,64 @@
                                     @php
                                         $categories = [
                                             [
-                                                'name' => 'Children',
+                                                'name' => 'Children 700M',
                                                 'age' => '0-11',
                                                 'checked' => false,
-                                                'price' => '50.00',
+                                                'price' => '250.00',
                                             ],
                                             [
-                                                'name' => 'Student',
+                                                'name' => 'Student 700M',
                                                 'age' => '12-21',
                                                 'checked' => false,
-                                                'price' => '70.00',
+                                                'price' => '250.00',
                                             ],
                                             [
-                                                'name' => 'Regular',
+                                                'name' => 'Regular 700M',
                                                 'age' => '22-59',
                                                 'checked' => false,
-                                                'price' => '100.00',
+                                                'price' => '250.00',
                                             ],
                                             [
-                                                'name' => 'PWD',
+                                                'name' => 'PWD 700M',
                                                 'age' => 'Any',
                                                 'checked' => false,
-                                                'price' => '50.00',
+                                                'price' => '250.00',
                                             ],
                                             [
-                                                'name' => 'Senior Citizen',
+                                                'name' => 'Senior Citizen 700M',
                                                 'age' => '60+',
                                                 'checked' => false,
-                                                'price' => '50.00',
+                                                'price' => '250.00',
+                                            ],
+                                            [
+                                                'name' => 'Children 1.5KM',
+                                                'age' => '0-11',
+                                                'checked' => false,
+                                                'price' => '499.00',
+                                            ],
+                                            [
+                                                'name' => 'Student 1.5KM',
+                                                'age' => '12-21',
+                                                'checked' => false,
+                                                'price' => '499.00',
+                                            ],
+                                            [
+                                                'name' => 'Regular 1.5KM',
+                                                'age' => '22-59',
+                                                'checked' => false,
+                                                'price' => '499.00',
+                                            ],
+                                            [
+                                                'name' => 'PWD 1.5KM',
+                                                'age' => 'Any',
+                                                'checked' => false,
+                                                'price' => '499.00',
+                                            ],
+                                            [
+                                                'name' => 'Senior Citizen 1.5KM',
+                                                'age' => '60+',
+                                                'checked' => false,
+                                                'price' => '499.00',
                                             ],
                                         ];
                                     @endphp
