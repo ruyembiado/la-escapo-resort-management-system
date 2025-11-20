@@ -37,10 +37,10 @@
     </main>
 
     <!-- Offcanvas for the Login Form -->
-    <div class="offcanvas offcanvas-end" tabindex="-1" id="loginOffcanvas" aria-labelledby="loginOffcanvasLabel">
+    <div class="offcanvas offcanvas-end bg-dark" tabindex="-1" id="loginOffcanvas" aria-labelledby="loginOffcanvasLabel">
         <div class="offcanvas-body">
             <div class="offcanvas-header">
-                <h5 class="offcanvas-title" id="loginOffcanvasLabel">Login</h5>
+                <h5 class="offcanvas-title text-light" id="loginOffcanvasLabel">Login</h5>
                 <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
             </div>
             <div class="offcanvas-logo text-center">
@@ -57,7 +57,7 @@
                 @csrf
 
                 <div class="mb-2">
-                    <label for="username" class="form-label">Username</label>
+                    <label for="username" class="form-label text-light">Username</label>
                     <div class="input-group w-100">
                         <div class="input-group-prepend bg-light rounded-start d-flex align-items-center">
                             <span class="input-group-text border-0" id="basic-addon1"><i
@@ -73,7 +73,7 @@
                 </div>
 
                 <div class="mb-2">
-                    <label for="password" class="form-label">Password</label>
+                    <label for="password" class="form-label text-light">Password</label>
                     <div class="input-group d-flex w-100">
                         <div class="input-group-prepend bg-light rounded d-flex align-items-center w-100">
                             <span class="input-group-text border-0" id="basic-addon2"><i
