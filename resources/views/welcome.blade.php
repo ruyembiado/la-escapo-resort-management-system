@@ -61,7 +61,7 @@
                     <div class="input-group w-100">
                         <div class="input-group-prepend bg-light rounded-start d-flex align-items-center">
                             <span class="input-group-text border-0" id="basic-addon1"><i
-                                    class="fa fa-envelope bg-transparent"></i></span>
+                                    class="fa fa-user bg-transparent"></i></span>
                         </div>
                         <input type="username" class="form-control @error('username') is-invalid @enderror"
                             aria-describedby="basic-addon1" id="username" name="username" value="{{ old('username') }}"
