@@ -86,14 +86,14 @@
                                             data-total-payment="{{ $picnictable->total_payment }}"
                                             data-quantity="{{ $picnictable->quantity }}"
                                             data-payment-status="{{ $picnictable->payment_status }}">
-                                            Edit
+                                            <i class="fa fa-edit"></i>
                                         </a>
                                         <form action="{{ route('picnictable.destroy', $picnictable->id) }}" method="POST">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="btn btn-danger btn-sm"
                                                 onclick="return confirm('Are you sure you want to delete this picnic table record?')">
-                                                Delete
+                                                <i class="fa fa-trash"></i>
                                             </button>
                                         </form>
                                     </div>

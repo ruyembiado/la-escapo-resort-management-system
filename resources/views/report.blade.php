@@ -39,7 +39,7 @@
                                     <strong>Daily Summary Report</strong>
                                 </div>
                                 <a class="btn text-light btn-light bg-transparent mt-2"
-                                    href="{{ route('daily.report') }}">View Report</a>
+                                    href="{{ route('daily.report') }}"><i class="fa fa-eye"></i></a>
                             </div>
                         </div>
                     </div>
@@ -60,7 +60,7 @@
                                 </div>
                                 <a class="btn text-light btn-light bg-transparent mt-2"
                                     href="{{ route('weekly.report', ['year' => $currentYear, 'month' => $currentMonth, 'week' => $currentWeek]) }}">
-                                    View Report
+                                    <i class="fa fa-eye"></i>
                                 </a>
                             </div>
                         </div>
@@ -82,7 +82,7 @@
                                 </div>
                                 <a class="btn text-light btn-light bg-transparent mt-2"
                                     href="{{ route('monthly.report', ['year' => now()->year, 'month' => now()->month]) }}">
-                                    View Report
+                                    <i class="fa fa-eye"></i>
                                 </a>
                             </div>
                         </div>
@@ -103,7 +103,7 @@
                                     <strong>Yearly Summary Report</strong>
                                 </div>
                                 <a class="btn text-light btn-light bg-transparent mt-2"
-                                    href="{{ route('yearly.report', ['year' => now()->year]) }}">View Report</a>
+                                    href="{{ route('yearly.report', ['year' => now()->year]) }}"><i class="fa fa-eye"></i></a>
                             </div>
                         </div>
                     </div>
@@ -135,8 +135,7 @@
                                         class="border rounded p-2 border-text h5 bg-light">₱{{ number_format($dailyTotal, 2) }}</span>
                                 </div>
                                 <a class="btn text-light btn-light bg-transparent mt-2"
-                                    href="{{ route('daily.income.report', ['year' => $currentYear, 'month' => $currentMonth, 'week' => $currentWeek]) }}">View
-                                    Report</a>
+                                    href="{{ route('daily.income.report', ['year' => $currentYear, 'month' => $currentMonth, 'week' => $currentWeek]) }}"><i class="fa fa-eye"></i></a>
                             </div>
                         </div>
                     </div>
@@ -161,7 +160,7 @@
                                 </div>
                                 <a class="btn text-light btn-light bg-transparent mt-2"
                                     href="{{ route('weekly.income.report', ['year' => $currentYear, 'month' => $currentMonth]) }}">
-                                    View Report
+                                    <i class="fa fa-eye"></i>
                                 </a>
                             </div>
                         </div>
@@ -187,7 +186,7 @@
                                 </div>
                                 <a class="btn text-light btn-light bg-transparent mt-2"
                                     href="{{ route('monthly.income.report', ['year' => $currentYear]) }}">
-                                    View Report
+                                    <i class="fa fa-eye"></i>
                                 </a>
                             </div>
                         </div>
@@ -212,7 +211,7 @@
                                         class="border rounded p-2 border-text h5 bg-light">₱{{ number_format($yearlyTotal, 2) }}</span>
                                 </div>
                                 <a class="btn text-light btn-light bg-transparent mt-2"
-                                    href="{{ route('yearly.income.report') }}">View Report</a>
+                                    href="{{ route('yearly.income.report') }}"><i class="fa fa-eye"></i></a>
                             </div>
                         </div>
                     </div>

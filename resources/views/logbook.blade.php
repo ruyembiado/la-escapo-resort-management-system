@@ -91,14 +91,14 @@
                                             data-check_in="{{ $visitor->check_in }}"
                                             data-check_out="{{ $visitor->check_out }}"
                                             data-is_pwd="{{ $visitor->is_pwd }}">
-                                            Edit
+                                            <i class="fa fa-edit"></i>
                                         </a>
                                         <form action="{{ route('visitor.destroy', $visitor->id) }}" method="POST">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="btn btn-danger btn-sm"
                                                 onclick="return confirm('Are you sure you want to delete this visitor record?')">
-                                                Delete
+                                                <i class="fa fa-trash"></i>
                                             </button>
                                         </form>
                                     </div>

@@ -80,14 +80,14 @@
                                             ]); ?>'
                                             data-total-payment="{{ $meal->total_payment }}"
                                             data-payment-status="{{ $meal->payment_status }}">
-                                            Edit
+                                            <i class="fa fa-edit"></i>
                                         </a>
                                         <form action="{{ route('meal.destroy', $meal->id) }}" method="POST">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="btn btn-danger btn-sm"
                                                 onclick="return confirm('Are you sure you want to delete this meal(s) record?')">
-                                                Delete
+                                                <i class="fa fa-trash"></i>
                                             </button>
                                         </form>
                                     </div>

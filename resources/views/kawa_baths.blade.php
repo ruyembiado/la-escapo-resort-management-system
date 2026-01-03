@@ -104,14 +104,14 @@
                                             data-total-members='@json(json_decode($kawabath->members))'
                                             data-total-payment="{{ $kawabath->total_payment }}"
                                             data-payment-status="{{ $kawabath->payment_status }}">
-                                            Edit
+                                            <i class="fa fa-edit"></i>
                                         </a>
                                         <form action="{{ route('kawabath.destroy', $kawabath->id) }}" method="POST">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="btn btn-danger btn-sm"
                                                 onclick="return confirm('Are you sure you want to delete this kawa hot bath record?')">
-                                                Delete
+                                                <i class="fa fa-trash"></i>
                                             </button>
                                         </form>
                                     </div>

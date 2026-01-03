@@ -103,14 +103,14 @@
                                             data-total-members='@json(json_decode($watertubing->members))'
                                             data-total-payment="{{ $watertubing->total_payment }}"
                                             data-payment-status="{{ $watertubing->payment_status }}">
-                                            Edit
+                                            <i class="fa fa-edit"></i>
                                         </a>
                                         <form action="{{ route('watertubing.destroy', $watertubing->id) }}" method="POST">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="btn btn-danger btn-sm"
                                                 onclick="return confirm('Are you sure you want to delete this water tubing record?')">
-                                                Delete
+                                                <i class="fa fa-trash"></i>
                                             </button>
                                         </form>
                                     </div>

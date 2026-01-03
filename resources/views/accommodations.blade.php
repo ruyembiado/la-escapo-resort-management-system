@@ -58,7 +58,7 @@
                                             data-num-night="{{ $accommodation->num_nights }}"
                                             data-rooms="{{ $accommodation->room }}" data-fees="{{ $accommodation->fee }}" data-payment-status="{{ $accommodation->payment_status }}"
                                             data-total-payment="{{ $accommodation->total_payment }}">
-                                            Edit
+                                            <i class="fa fa-edit"></i>
                                         </a>
                                         <form action="{{ route('accommodation.destroy', $accommodation->id) }}"
                                             method="POST">
@@ -66,7 +66,7 @@
                                             @method('DELETE')
                                             <button type="submit" class="btn btn-danger btn-sm"
                                                 onclick="return confirm('Are you sure you want to delete this overnight accommodation record?')">
-                                                Delete
+                                                <i class="fa fa-trash"></i>
                                             </button>
                                         </form>
                                     </div>

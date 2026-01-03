@@ -4,7 +4,7 @@
     <!-- Start the content section -->
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text">Massage</h1>
+        <h1 class="h3 mb-0 text">Massages</h1>
         <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addMassageModal">Add Massage
             Fee</a>
     </div>
@@ -108,14 +108,14 @@
                                             data-total-members='@json(json_decode($massage->members))'
                                             data-total-payment="{{ $massage->total_payment }}"
                                             data-payment-status="{{ $massage->payment_status }}">
-                                            Edit
+                                            <i class="fa fa-edit"></i>
                                         </a>
                                         <form action="{{ route('massage.destroy', $massage->id) }}" method="POST">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="btn btn-danger btn-sm"
                                                 onclick="return confirm('Are you sure you want to delete this massage record?')">
-                                                Delete
+                                                <i class="fa fa-trash"></i>
                                             </button>
                                         </form>
                                     </div>

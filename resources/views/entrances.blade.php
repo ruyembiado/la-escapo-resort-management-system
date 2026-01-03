@@ -104,14 +104,14 @@
                                             data-total-members='@json(json_decode($entrance->members))'
                                             data-total-payment="{{ $entrance->total_payment }}"
                                             data-payment-status="{{ $entrance->payment_status }}">
-                                            Edit
+                                            <i class="fa fa-edit"></i>
                                         </a>
                                         <form action="{{ route('entrance.destroy', $entrance->id) }}" method="POST">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="btn btn-danger btn-sm"
                                                 onclick="return confirm('Are you sure you want to delete this entrance record?')">
-                                                Delete
+                                                <i class="fa fa-trash"></i>
                                             </button>
                                         </form>
                                     </div>
