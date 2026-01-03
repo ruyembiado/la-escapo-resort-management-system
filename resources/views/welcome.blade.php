@@ -41,7 +41,7 @@
         <div class="offcanvas-body">
             <div class="offcanvas-header">
                 <h5 class="offcanvas-title text-light" id="loginOffcanvasLabel">Login</h5>
-                <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                <button type="button" class="btn-close text-reset bg-light" data-bs-dismiss="offcanvas" aria-label="Close"></button>
             </div>
             <div class="offcanvas-logo text-center">
                 <img src="{{ asset('public/img/logo.png') }}" alt="laescapo-logo" class="img-fluid" width="200">
@@ -61,7 +61,7 @@
                     <div class="input-group w-100">
                         <div class="input-group-prepend bg-light rounded-start d-flex align-items-center">
                             <span class="input-group-text border-0" id="basic-addon1"><i
-                                    class="fa fa-envelope bg-transparent"></i></span>
+                                    class="fa fa-user bg-transparent"></i></span>
                         </div>
                         <input type="username" class="form-control @error('username') is-invalid @enderror"
                             aria-describedby="basic-addon1" id="username" name="username" value="{{ old('username') }}"
