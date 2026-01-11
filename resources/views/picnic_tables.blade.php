@@ -48,8 +48,11 @@
                         @foreach ($picnicTables as $picnictable)
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
-                                <td>{{ $picnictable->visitor->first_name }} {{ $picnictable->visitor->middle_name }}
-                                    {{ $picnictable->visitor->last_name }}</td>
+                                <td>
+                                    {{ optional($picnictable->visitor)->first_name }}
+                                    {{ optional($picnictable->visitor)->middle_name }}
+                                    {{ optional($picnictable->visitor)->last_name }}
+                                </td>
                                 <td style="padding: 10px;">
                                     <table style="width: 100%; border-collapse: collapse;">
                                         <thead>

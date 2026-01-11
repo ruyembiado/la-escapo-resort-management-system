@@ -152,7 +152,7 @@
                                 </div>
                                 <div class="col-3 middle-name">
                                     <label for="middle-name">Middle Name</label>
-                                    <input type="text" name="middle_name" class="form-control">
+                                    <input type="text" name="middle_name" class="form-control" required>
                                 </div>
                                 <div class="col-4 last-name">
                                     <label for="last-name">Last Name</label>

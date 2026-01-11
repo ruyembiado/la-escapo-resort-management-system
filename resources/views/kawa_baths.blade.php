@@ -48,8 +48,11 @@
                         @foreach ($kawaBaths as $kawabath)
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
-                                <td>{{ $kawabath->visitor->first_name }} {{ $kawabath->visitor->middle_name }}
-                                    {{ $kawabath->visitor->last_name }}</td>
+                                <td>
+                                    {{ optional($kawabath->visitor)->first_name }}
+                                    {{ optional($kawabath->visitor)->middle_name }}
+                                    {{ optional($kawabath->visitor)->last_name }}
+                                </td>
                                 @php
                                     $categories = json_decode($kawabath->category, true);
                                     $members = json_decode($kawabath->members, true);

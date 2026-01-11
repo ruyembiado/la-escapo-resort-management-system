@@ -48,8 +48,11 @@
                         @foreach ($waterTubings as $watertubing)
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
-                                <td>{{ $watertubing->visitor->first_name }} {{ $watertubing->visitor->middle_name }}
-                                    {{ $watertubing->visitor->last_name }}</td>
+                                <td>
+                                    {{ optional($watertubing->visitor)->first_name }}
+                                    {{ optional($watertubing->visitor)->middle_name }}
+                                    {{ optional($watertubing->visitor)->last_name }}
+                                </td>
                                 @php
                                     $categories = json_decode($watertubing->category, true);
                                     $members = json_decode($watertubing->members, true);

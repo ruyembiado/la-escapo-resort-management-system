@@ -48,8 +48,11 @@
                         @foreach ($massages as $massage)
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
-                                <td>{{ $massage->visitor->first_name }} {{ $massage->visitor->middle_name }}
-                                    {{ $massage->visitor->last_name }}</td>
+                                <td>
+                                    {{ optional($massage->visitor)->first_name }}
+                                    {{ optional($massage->visitor)->middle_name }}
+                                    {{ optional($massage->visitor)->last_name }}
+                                </td>
                                 @php
                                     $categories = json_decode($massage->category, true);
                                     $members = json_decode($massage->members, true);

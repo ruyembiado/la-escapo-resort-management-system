@@ -58,7 +58,10 @@
                         @foreach ($visitors as $visitor)
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
-                                <td>{{ $visitor->first_name . ' ' . $visitor->middle_name . ' ' . $visitor->last_name }}
+                                <td>
+                                    {{ optional($visitor)->first_name }}
+                                    {{ optional($visitor)->middle_name }}
+                                    {{ optional($visitor)->last_name }}
                                 </td>
                                 <td>
                                     {{ $visitor->entrance ? '₱' . number_format($visitor->entrance->total_payment, 2) : 'none' }}
