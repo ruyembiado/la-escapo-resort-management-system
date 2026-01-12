@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Carbon\Carbon;
 use App\Models\Visitor;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ReportController extends Controller
 {
@@ -29,8 +30,10 @@ class ReportController extends Controller
             'picnictable',
             'kawabath'
         )
-            ->whereBetween('date_visit', [$startOfWeek, $endOfWeek])
-            ->get()
+            ->whereBetween(
+                DB::raw('DATE(date_visit)'),
+                [$startOfWeek->toDateString(), $endOfWeek->toDateString()]
+            )->get()
             ->sum(function ($visitor) {
                 return ($visitor->entrance->total_payment ?? 0) +
                     ($visitor->accommodation->total_payment ?? 0) +

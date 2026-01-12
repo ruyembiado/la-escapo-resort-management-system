@@ -23,7 +23,7 @@
                                     <strong>Entrance Fee</strong>
                                 </div>
                                 <a class="btn text-light btn-light bg-transparent mt-2"
-                                    href="{{ url('/entrances') }}"><i class="fa fa-eye"></i></a>
+                                    href="{{ url('/entrances') }}">View</a>
                             </div>
                         </div>
                     </div>
@@ -45,7 +45,7 @@
                                     <strong>Services</strong>
                                 </div>
                                 <a class="btn text-light btn-light bg-transparent mt-2"
-                                    href="{{ route('other.services') }}"><i class="fa fa-eye"></i></a>
+                                    href="{{ route('other.services') }}">View</a>
                             </div>
                         </div>
                     </div>
@@ -66,7 +66,7 @@
                                 <div class="text-light text-uppercase mb-1 mt-3">
                                     <strong>Meals</strong>
                                 </div>
-                                <a class="btn text-light btn-light bg-transparent mt-2" href="{{ route('meals') }}"><i class="fa fa-eye"></i></a>
+                                <a class="btn text-light btn-light bg-transparent mt-2" href="{{ route('meals') }}">View</a>
                             </div>
                         </div>
                     </div>
@@ -88,7 +88,7 @@
                                     <strong>Beverages</strong>
                                 </div>
                                 <a class="btn text-light btn-light bg-transparent mt-2"
-                                    href="{{ route('beverages') }}"><i class="fa fa-eye"></i></a>
+                                    href="{{ route('beverages') }}">View</a>
                             </div>
                         </div>
                     </div>

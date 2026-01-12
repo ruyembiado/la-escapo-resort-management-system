@@ -88,8 +88,8 @@
                     @enderror
                 </div>
 
-                <div class="mt-2">
-                    <button type="submit" class="btn btn-primary w-100">Login</button>
+                <div class="mt-4">
+                    <button type="submit" class="btn btn-success w-100">Login</button>
                 </div>
             </form>
         </div>

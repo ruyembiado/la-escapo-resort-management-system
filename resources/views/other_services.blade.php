@@ -23,7 +23,7 @@
                                     <strong>Kawa Hot Bath</strong>
                                 </div>
                                 <a class="btn text-light btn-light bg-transparent mt-2"
-                                    href="{{ url('/kawa-hot-baths') }}"><i class="fa fa-eye"></i></a>
+                                    href="{{ url('/kawa-hot-baths') }}">View</a>
                             </div>
                         </div>
                     </div>
@@ -46,7 +46,7 @@
                                     <strong>Water Tubing</strong>
                                 </div>
                                 <a class="btn text-light btn-light bg-transparent mt-2"
-                                    href="{{ url('/water-tubings') }}"><i class="fa fa-eye"></i></a>
+                                    href="{{ url('/water-tubings') }}">View</a>
                             </div>
                         </div>
                     </div>
@@ -69,7 +69,7 @@
                                     <strong>Picnic Table</strong>
                                 </div>
                                 <a class="btn text-light btn-light bg-transparent mt-2"
-                                    href="{{ route('picnictables') }}"><i class="fa fa-eye"></i></a>
+                                    href="{{ route('picnictables') }}">View</a>
                             </div>
                         </div>
                     </div>
@@ -92,7 +92,7 @@
                                     <strong>Massage</strong>
                                 </div>
                                 <a class="btn text-light btn-light bg-transparent mt-2"
-                                    href="{{ route('massages') }}"><i class="fa fa-eye"></i></a>
+                                    href="{{ route('massages') }}">View</a>
                             </div>
                         </div>
                     </div>
@@ -115,7 +115,7 @@
                                     <strong>Overnight Accomodation</strong>
                                 </div>
                                 <a class="btn text-light btn-light bg-transparent mt-2"
-                                    href="{{ route('accommodations') }}"><i class="fa fa-eye"></i></a>
+                                    href="{{ route('accommodations') }}">View</a>
                             </div>
                         </div>
                     </div>

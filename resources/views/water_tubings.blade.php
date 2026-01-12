@@ -128,8 +128,8 @@
     <!-- Content Row -->
 
     <!-- Add Water Tubing Fee Modal -->
-    <div class="modal fade" id="addWaterTubingModal" tabindex="-1" role="dialog" aria-labelledby="addWaterTubingModalLabel"
-        aria-hidden="true">
+    <div class="modal fade" id="addWaterTubingModal" tabindex="-1" role="dialog"
+        aria-labelledby="addWaterTubingModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
             <form action="{{ route('watertubing.store') }}" method="POST">
                 @csrf
@@ -176,8 +176,8 @@
                                 <div class="form-group">
                                     <label for="service_title">Service</label>
                                     <div class="col-12">
-                                        <input type="text" name="service_title" id="service_title" value="Water Tubing" class="form-control"
-                                            readonly>
+                                        <input type="text" name="service_title" id="service_title" value="Water Tubing"
+                                            class="form-control" readonly>
                                     </div>
                                 </div>
                             </div>
@@ -272,7 +272,7 @@
                                             </td>
                                             <td width="25%" style="padding: 5px;">
                                                 <input class="form-control" readonly type="number" name="members[]"
-                                                    min="0" value="">
+                                                    value="" max="1">
                                             </td>
                                             <td style="padding: 5px;">
                                                 <input class="form-control" type="text" name="age[]"
@@ -363,8 +363,8 @@
                                 <div class="form-group col-2">
                                     <label for="service_title">Service</label>
                                     <div class="col-12">
-                                        <input type="text" name="service_title" id="service_title" value="Water Tubing" class="form-control"
-                                            readonly>
+                                        <input type="text" name="service_title" id="service_title"
+                                            value="Water Tubing" class="form-control" readonly>
                                     </div>
                                 </div>
                             </div>
@@ -459,7 +459,7 @@
                                             </td>
                                             <td width="25%" style="padding: 5px;">
                                                 <input class="form-control" readonly type="number" name="members[]"
-                                                    value="">
+                                                    value="" max="1">
                                             </td>
                                             <td style="padding: 5px;">
                                                 <input class="form-control" type="text" name="age[]"
@@ -501,314 +501,221 @@
 {{-- ADD FORM SCRIPT --}}
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // Initialize Select2 for visitor_name for add form
-        $('#addWaterTubingModal').on('shown.bs.modal', function() {
-            $('#visitor_name').select2({
-                theme: 'bootstrap4',
-                width: '100%',
-                placeholder: "Select a visitor",
-                allowClear: true,
-                dropdownParent: $('#addWaterTubingModal')
-            });
-        });
 
-        // Get total members based on selected visitor
-        $('#visitor_name').on('change', function() {
-            var visitor_id = $(this).val();
-            if (visitor_id) {
-                var baseUrl = window.location.origin;
-                var pathParts = window.location.pathname.split('/');
-                var folderName = pathParts[1];
-                var url = window.location.origin + '/' + folderName + '/get-visitor-members/' +
-                    visitor_id;
+        function getAllowedIndexes(age, isPwd = false) {
+            if (isPwd) return [3, 8]; // PWD
 
-                $.ajax({
-                    url: url,
-                    method: 'GET',
-                    success: function(response) {
-                        const age = response.age || 0;
-                        const isPwd = response.is_pwd || false;
-                        $('#age').val(response.age).trigger('input');
-                        autoCategorizeByAge(age, isPwd);
-                    }
-                });
-            } else {
-                $('#total_members').val('');
-            }
-        });
-
-        let totalMembers = 0;
-
-        // When total_members changes (manual or from AJAX)
-        $('#total_members').on('input', function() {
-            totalMembers = parseInt($(this).val()) || 0;
-            resetMemberInputs();
-        });
-
-        // When any members[] input changes
-        $(document).on('input', '#addWaterTubingModal input[name="members[]"]', function() {
-            // updateMemberInputLimitsAddForm();
-            updateSubtotalsAndTotalAddForm();
-        });
-
-        function autoCategorizeByAge(age, isPwd) {
-            // Reset all
-            $('#addWaterTubingModal input[name="members[]"]').each(function() {
-                $(this).val('');
-                $(this).prop('readonly', true);
-            });
-
-            let categoryIndex = -1;
-
-            if (isPwd) {
-                categoryIndex = 3; // PWD
-            } else if (age >= 0 && age <= 11) {
-                categoryIndex = 0; // Children
-            } else if (age >= 12 && age <= 21) {
-                categoryIndex = 1; // Student
-            } else if (age >= 22 && age <= 59) {
-                categoryIndex = 2; // Regular
-            } else if (age >= 60) {
-                categoryIndex = 4; // Senior Citizen
-            }
-
-            if (categoryIndex >= 0) {
-                const row = $('#addWaterTubingModal tbody tr').eq(categoryIndex);
-                const memberInput = row.find('input[name="members[]"]');
-                memberInput.val(1);
-                memberInput.prop('readonly', true);
-            }
-
-            updateSubtotalsAndTotalAddForm();
+            if (age <= 11) return [0, 5]; // Children
+            if (age <= 21) return [1, 6]; // Student
+            if (age <= 59) return [2, 7]; // Regular
+            return [4, 9]; // Senior
         }
 
-        function resetMemberInputs() {
-            $('#addWaterTubingModal input[name="members[]"]').each(function() {
-                $(this).val('');
-                $(this).attr('max', totalMembers);
-                $(this).prop('readonly', false);
-            });
-        }
-
-        // function updateMemberInputLimitsAddForm() {
-        //     let used = 0;
-
-        //     // First, calculate the total used
-        //     $('#addWaterTubingModal input[name="members[]"]').each(function() {
-        //         used += parseInt($(this).val()) || 0;
-        //     });
-
-        //     if (used > totalMembers) {
-        //         // Reset all to 0 if over limit
-        //         $('#addWaterTubingModal input[name="members[]"]').each(function() {
-        //             $(this).val(0);
-        //             $(this).attr('max', totalMembers);
-        //             $(this).prop('readonly', totalMembers === 0);
-        //         });
-
-        //         // Optional: show feedback
-        //         alert('Total members exceeded. All inputs have been reset to 0.');
-        //         return;
-        //     }
-
-        //     // Otherwise, set max per input dynamically
-        //     let remaining = totalMembers - used;
-
-        //     $('#addWaterTubingModal input[name="members[]"]').each(function() {
-        //         let currentVal = parseInt($(this).val()) || 0;
-        //         let max = currentVal + remaining;
-        //         $(this).attr('max', max);
-        //         $(this).prop('readonly', totalMembers === 0);
-        //     });
-
-        //     // Lock further increments if full
-        //     if (remaining <= 0) {
-        //         $('#addWaterTubingModal input[name="members[]"]').each(function() {
-        //             let val = parseInt($(this).val()) || 0;
-        //             $(this).attr('max', val); // lock to current value
-        //         });
-        //     }
-        // }
-
-        function updateSubtotalsAndTotalAddForm() {
-            let totalPayment = 0;
-
+        function resetAddRows() {
             $('#addWaterTubingModal tbody tr').each(function() {
-                const memberInput = $(this).find('input[name="members[]"]');
-                const feeInput = $(this).find('input[name="fee[]"]');
-                const subtotalInput = $(this).find('input[id="sub-total"]');
+                $(this).hide();
+                $(this).find('input[name="members[]"]').val('').prop('readonly', true);
+                $(this).find('input[id="sub-total"]').val('');
+            });
+            $('#total_payment').val('0.00');
+        }
 
-                const members = parseInt(memberInput.val()) || 0;
-                const fee = parseFloat(feeInput.val()) || 0;
+        function showAllowedAddRows(age, isPwd) {
+            resetAddRows();
+
+            const allowed = getAllowedIndexes(age, isPwd);
+
+            allowed.forEach(index => {
+                const row = $('#addWaterTubingModal tbody tr').eq(index);
+                row.show();
+                row.find('input[name="members[]"]').prop('readonly', false).val(0);
+            });
+
+            // default: first option = 1
+            const firstRow = $('#addWaterTubingModal tbody tr').eq(allowed[0]);
+            firstRow.find('input[name="members[]"]').val(1);
+
+            updateAddTotals();
+        }
+
+        function enforceSingleChoice($changedInput) {
+            const $visibleInputs = $('#addWaterTubingModal tbody tr:visible input[name="members[]"]');
+
+            $visibleInputs.each(function() {
+                if (this !== $changedInput[0]) {
+                    $(this).val(0);
+                }
+            });
+
+            if (parseInt($changedInput.val()) !== 1) {
+                $changedInput.val(1);
+            }
+        }
+
+        function updateAddTotals() {
+            let total = 0;
+
+            $('#addWaterTubingModal tbody tr:visible').each(function() {
+                const members = parseInt($(this).find('input[name="members[]"]').val()) || 0;
+                const fee = parseFloat($(this).find('input[name="fee[]"]').val()) || 0;
                 const subtotal = members * fee;
 
-                subtotalInput.val(subtotal.toFixed(2));
-                totalPayment += subtotal;
+                $(this).find('input[id="sub-total"]').val(subtotal.toFixed(2));
+                total += subtotal;
             });
 
-            $('#total_payment').val(totalPayment.toFixed(2));
+            $('#total_payment').val(total.toFixed(2));
         }
+
+        // ---------------- EVENTS ----------------
+
+        $('#visitor_name').on('change', function() {
+            const visitor_id = $(this).val();
+            if (!visitor_id) return;
+
+            const baseUrl = window.location.origin;
+            const folderName = window.location.pathname.split('/')[1];
+            const url = `${baseUrl}/${folderName}/get-visitor-members/${visitor_id}`;
+
+            $.get(url, function(res) {
+                const age = parseInt(res.age) || 0;
+                const isPwd = res.is_pwd || false;
+
+                $('#age').val(age);
+                showAllowedAddRows(age, isPwd);
+            });
+        });
+
+        // when user clicks qty
+        $(document).on('input', '#addWaterTubingModal input[name="members[]"]', function() {
+            enforceSingleChoice($(this));
+            updateAddTotals();
+        });
+
+        $('#addWaterTubingModal').on('hidden.bs.modal', function() {
+            resetAddRows();
+            $('#visitor_name').val(null).trigger('change');
+        });
+
     });
 </script>
 
 {{-- EDIT FORM SCRIPT --}}
 <script>
     document.addEventListener('DOMContentLoaded', function() {
+
+        function getAllowedIndexes(age, isPwd = false) {
+            if (isPwd) return [3, 8];
+
+            if (age <= 11) return [0, 5];
+            if (age <= 21) return [1, 6];
+            if (age <= 59) return [2, 7];
+            return [4, 9];
+        }
+
+        function resetEditRows() {
+            $('#editWaterTubingModal tbody tr').each(function() {
+                $(this).hide();
+                $(this).find('input[name="members[]"]').val('').prop('readonly', true);
+                $(this).find('input[id="sub-total"]').val('');
+            });
+            $('#edit_total_payment').val('0.00');
+        }
+
+        function showAllowedEditRows(age, isPwd, existingMembers = []) {
+            resetEditRows();
+
+            const allowed = getAllowedIndexes(age, isPwd);
+
+            allowed.forEach(index => {
+                const row = $('#editWaterTubingModal tbody tr').eq(index);
+                row.show();
+                row.find('input[name="members[]"]').prop('readonly', false).val(0);
+            });
+
+            // restore saved choice if exists
+            let selectedIndex = allowed[0];
+
+            allowed.forEach(i => {
+                if (parseInt(existingMembers[i]) === 1) {
+                    selectedIndex = i;
+                }
+            });
+
+            $('#editWaterTubingModal tbody tr')
+                .eq(selectedIndex)
+                .find('input[name="members[]"]').val(1);
+
+            updateEditTotals();
+        }
+
+        function enforceSingleChoiceEdit($changedInput) {
+            const $visibleInputs = $('#editWaterTubingModal tbody tr:visible input[name="members[]"]');
+
+            $visibleInputs.each(function() {
+                if (this !== $changedInput[0]) {
+                    $(this).val(0);
+                }
+            });
+
+            if (parseInt($changedInput.val()) !== 1) {
+                $changedInput.val(1);
+            }
+        }
+
+        function updateEditTotals() {
+            let total = 0;
+
+            $('#editWaterTubingModal tbody tr:visible').each(function() {
+                const members = parseInt($(this).find('input[name="members[]"]').val()) || 0;
+                const fee = parseFloat($(this).find('input[name="fee[]"]').val()) || 0;
+                const subtotal = members * fee;
+
+                $(this).find('input[id="sub-total"]').val(subtotal.toFixed(2));
+                total += subtotal;
+            });
+
+            $('#edit_total_payment').val(total.toFixed(2));
+        }
+
         const editModal = document.getElementById('editWaterTubingModal');
-        let editTotalMembers = 0; // Track total members for edit form
 
         if (editModal) {
             editModal.addEventListener('show.bs.modal', function(event) {
                 const button = event.relatedTarget;
 
-                const totalMembersArray = JSON.parse(button.getAttribute('data-total-members') || '[]');
+                const membersArr = JSON.parse(button.getAttribute('data-total-members') || '[]');
                 const visitorId = button.getAttribute('data-visitor-id');
                 const waterTubingId = button.getAttribute('data-id');
-                const totalPayment = button.getAttribute('data-total-payment');
                 const paymentStatus = button.getAttribute('data-payment-status');
 
-                // DEBUG: Log what you get
-                console.log("Total Members:", totalMembersArray);
-
-                // Set hidden fields
-                document.getElementById('edit_watertubing_id').value = waterTubingId;
+                $('#edit_watertubing_id').val(waterTubingId);
                 $('#edit_visitor_id').val(visitorId).trigger('change');
                 $('#_visitor_id').val(visitorId);
                 $('#edit_payment_status').val(paymentStatus);
 
-                // All members[] inputs inside the modal
-                const memberInputs = editModal.querySelectorAll('input[name="members[]"]');
-                const feeInputs = editModal.querySelectorAll('input[name="fee[]"]');
-                const subTotalInputs = editModal.querySelectorAll('input[id="sub-total"]');
-
-                let totalPaymentCalculated = 0;
-                let totalMembers = 0;
-
-                memberInputs.forEach((input, index) => {
-                    let raw = totalMembersArray[index];
-                    let members = (raw === "null" || raw === null) ? "0" : parseInt(raw) || 0;
-                    input.value = members;
-                    const fee = parseFloat(feeInputs[index]?.value || 0);
-                    const subtotal = members * fee;
-
-                    subTotalInputs[index].value = subtotal.toFixed(2);
-                    totalPaymentCalculated += subtotal;
-                    totalMembers += members || 0;
-                });
-
-                // document.getElementById('edit_total_members').value = totalMembers;
-                document.getElementById('edit_total_payment').value = totalPayment;
-            });
-        }
-
-        // Initialize Select2 for visitor_name for edit form
-        $('#editWaterTubingModal').on('shown.bs.modal', function() {
-            $('#edit_visitor_id').select2({
-                theme: 'bootstrap4',
-                width: '100%',
-                placeholder: "Select a visitor",
-                allowClear: true,
-                dropdownParent: $('#editWaterTubingModal')
-            });
-        });
-
-        // Get total members from selected visitor for edit form
-        $('#edit_visitor_id').on('change', function() {
-            const visitor_id = $(this).val();
-            if (visitor_id) {
                 const baseUrl = window.location.origin;
-                const pathParts = window.location.pathname.split('/');
-                const folderName = pathParts[1];
-                const url = `${baseUrl}/${folderName}/get-visitor-members/${visitor_id}`;
+                const folderName = window.location.pathname.split('/')[1];
+                const url = `${baseUrl}/${folderName}/get-visitor-members/${visitorId}`;
 
-                $.ajax({
-                    url: url,
-                    method: 'GET',
-                    success: function(response) {
-                        age = parseInt(response.age) || 0;
-                        $('#edit_age').val(age);
-                        resetEditMemberInputs();
-                    }
+                $.get(url, function(res) {
+                    const age = parseInt(res.age) || 0;
+                    const isPwd = res.is_pwd || false;
+
+                    $('#edit_age').val(age);
+                    showAllowedEditRows(age, isPwd, membersArr);
                 });
-            } else {
-                age = 0;
-                $('#edit_age').val('');
-                resetEditMemberInputs();
-            }
-        });
+            });
+        }
 
-        // When any members[] input changes in edit form
         $(document).on('input', '#editWaterTubingModal input[name="members[]"]', function() {
-            // updateMemberInputLimitsEditForm();
-            updateEditSubtotalsAndTotal();
+            enforceSingleChoiceEdit($(this));
+            updateEditTotals();
         });
 
-        function resetEditMemberInputs() {
-            $('#editWaterTubingModal input[name="members[]"]').each(function() {
-                $(this).attr('max', 1);
-                $(this).prop('readonly', true);
-            });
-        }
+        $('#editWaterTubingModal').on('hidden.bs.modal', function() {
+            resetEditRows();
+        });
 
-        function updateEditSubtotalsAndTotal() {
-            let totalPayment = 0;
-            let currentTotalMembers = 0;
-
-            $('#editWaterTubingModal tbody tr').each(function() {
-                const memberInput = $(this).find('input[name="members[]"]');
-                const feeInput = $(this).find('input[name="fee[]"]');
-                const subtotalInput = $(this).find('input[id="sub-total"]');
-
-                const members = parseInt(memberInput.val()) || 0;
-                const fee = parseFloat(feeInput.val()) || 0;
-                const subtotal = members * fee;
-
-                subtotalInput.val(subtotal.toFixed(2));
-                totalPayment += subtotal;
-                currentTotalMembers += members;
-            });
-
-            $('#edit_total_payment').val(totalPayment.toFixed(2));
-        }
-
-        // function updateMemberInputLimitsEditForm() {
-        //     let used = 0;
-
-        //     // First, calculate the total used
-        //     $('#editWaterTubingModal input[name="members[]"]').each(function() {
-        //         used += parseInt($(this).val()) || 0;
-        //     });
-
-        //     if (used > editTotalMembers) {
-        //         // Reset all to 0 if over limit
-        //         $('#editWaterTubingModal input[name="members[]"]').each(function() {
-        //             $(this).val(0);
-        //         });
-
-        //         // Recalculate totals
-        //         updateEditSubtotalsAndTotal();
-
-        //         // Optional: show feedback
-        //         alert('Total members exceeded. All inputs have been reset to 0.');
-        //         return;
-        //     }
-
-        //     // Otherwise, set max per input dynamically
-        //     let remaining = editTotalMembers - used;
-
-        //     $('#editWaterTubingModal input[name="members[]"]').each(function() {
-        //         let currentVal = parseInt($(this).val()) || 0;
-        //         let max = currentVal + remaining;
-        //         $(this).attr('max', max);
-        //     });
-
-        //     // Lock further increments if full
-        //     if (remaining <= 0) {
-        //         $('#editWaterTubingModal input[name="members[]"]').each(function() {
-        //             let val = parseInt($(this).val()) || 0;
-        //             $(this).attr('max', val); // lock to current value
-        //         });
-        //     }
-        // }
     });
 </script>
