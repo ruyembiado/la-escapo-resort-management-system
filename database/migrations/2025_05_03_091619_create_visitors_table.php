@@ -22,6 +22,9 @@ return new class extends Migration
             $table->string('members');
             $table->text('address');
             $table->string('date_visit');
+            $table->time('check_in')->nullable();
+            $table->time('check_out')->nullable();
+            $table->boolean('is_pwd')->default(false);
             $table->timestamps();
         });
     }

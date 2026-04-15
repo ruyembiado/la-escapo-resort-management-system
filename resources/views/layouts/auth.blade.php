@@ -26,28 +26,31 @@
 
 <body>
     <div class="wrapper">
-        <aside id="sidebar" class="bg-primaryw expand">
-            <div class="d-flex gap-1 justify-content-center pt-4">
+        <aside id="sidebar" class="bg-primary expand">
+            <div class="d-flex flex-column gap-1 align-items-center justify-content-center pt-4">
                 <div class="site-log">
                     <a href="{{ url('/dashboard') }}">
-                        <img src="{{ asset('public/img/logo.png') }}" width="50" alt="laescapo-logo">
+                        <img src="{{ asset('public/img/logo.png') }}" width="60" alt="laescapo-logo">
                     </a>
                 </div>
                 <div class="sidebar-logo">
-                    <a href="{{ url('/dashboard') }}">LA ESCAPO</a>
+                    <a href="{{ url('/dashboard') }}">LA ESCAPO RESORT</a>
                 </div>
             </div>
             <ul class="sidebar-nav">
+                <hr class="sidebar-hr text-light mt-2 mb-1">
                 <li class="sidebar-item">
                     <a href="{{ url('/dashboard') }}" class="sidebar-link">
                         <i class="fa fa-dashboard"></i>
                         <span>Dashboard</span>
                     </a>
                 </li>
+                <hr class="sidebar-hr text-light mt-2 mb-2">
+                <b class="text-light ms-3">GUEST</b>
                 <li class="sidebar-item">
                     <a href="{{ url('/log-book') }}" class="sidebar-link">
                         <i class="fa fa-book"></i>
-                        <span>Add Visitor</span>
+                        <span>Availed Services</span>
                     </a>
                 </li>
                 <li class="sidebar-item">
@@ -160,43 +163,6 @@
             }
         }
         hideAlerts();
-
-        const sidebarLinks = document.querySelectorAll('.sidebar-link');
-
-        // Load active link from localStorage
-        let activeLink = localStorage.getItem('activeLink');
-        let activeItem = null;
-
-        // Remove all active classes first
-        sidebarLinks.forEach(item => {
-            item.parentElement.classList.remove('active');
-        });
-
-        // If activeLink exists, try to find it
-        if (activeLink) {
-            activeItem = document.querySelector(`.sidebar-link[href="${activeLink}"]`);
-        }
-
-        // If no saved link or invalid, default to first link
-        if (!activeItem && sidebarLinks.length > 0) {
-            activeItem = sidebarLinks[0];
-            activeLink = activeItem.getAttribute('href');
-            localStorage.setItem('activeLink', activeLink); // store first link
-        }
-
-        // Add active class
-        if (activeItem) {
-            activeItem.parentElement.classList.add('active');
-        }
-
-        console.log('Active link:', activeLink);
-
-        // Save active link on click
-        sidebarLinks.forEach(link => {
-            link.addEventListener('click', () => {
-                localStorage.setItem('activeLink', link.getAttribute('href'));
-            });
-        });
     </script>
 </body>
 

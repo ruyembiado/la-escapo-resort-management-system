@@ -17,6 +17,8 @@ return new class extends Migration
             $table->string('room');
             $table->string('fee');
             $table->string('total_payment')->nullable();
+            $table->integer('num_nights')->default(1);
+            $table->string('payment_status')->default('pending');
             $table->timestamps();
 
             $table->foreign('visitor_id')->references('id')->on('visitors')->onDelete('cascade');

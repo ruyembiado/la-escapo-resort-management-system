@@ -100,17 +100,19 @@ main.content {
 }
 
 .sidebar-nav {
-    padding: 32px 0;
+    padding: 0;
     flex: 1 1 auto;
 }
 
 a.sidebar-link {
-    padding: 10px 26px 10px 10px;
+    margin: 8px;
+    padding: 8px;
     color: #FFF;
     display: block;
     font-size: 17px;
     white-space: nowrap;
     border-left: 3px solid transparent;
+    border-radius: 5px;
 }
 
 .sidebar-link i,
@@ -126,7 +128,7 @@ a.sidebar-link {
 a.sidebar-link:hover,
 li.sidebar-item.active {
     background-color: rgba(255, 255, 255, .075);
-    border-left: 3px solid #ffffff;
+    /* border-left: 3px solid #ffffff; */
 }
 
 .sidebar-item {
@@ -261,7 +263,7 @@ nav {
 }
 
 .home-bg {
-    background-image: url('../img/homepage-banner.jpg');
+    background-image: url('../img/homepage-banner.png');
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
@@ -341,4 +343,12 @@ h1.home-title {
         bottom: 0;
         right: 0;
     }
+}
+
+.bg-theme-primary {
+    background-color: #084D00 !important;
+}
+
+.sidebar-link.active {
+    background-color: #ffffff13;
 }

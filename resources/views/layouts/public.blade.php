@@ -22,22 +22,21 @@
 <body>
     <div class="wrapper">
         <div class="main">
-            <nav class="navbar-expand bg-dark px-4 py-1 shadow-sm">
+            <nav class="navbar-expand px-4 py-1 shadow-sm" style="background-color: #032D01;">
                 <div class="col-10 m-auto d-flex justify-content-between flex-wrap align-items-center">
                     <a href="{{ url('/') }}" class="">
                         <div class="d-flex flex-wrap align-items-center">
                             <img style="border-radius: 100%;" src="{{ asset('public/img/logo.png') }}" width="60"
                                 alt="laescapo-logo">
-                            <h5 class="ms-2 mb-0 text-light">LA ESCAPO PORTAL</h5>
+                            <h5 class="ms-2 mb-0 text-light">LA ESCAPO MOUNTAIN RESORT</h5>
                         </div>
                     </a>
                     <div class="d-flex align-items-center gap-5">
                         @if (!auth()->check())
                             <div class="auth-buttons d-flex gap-3">
-                                <!-- Button to toggle the Login Offcanvas -->
-                                <button class="btn btn-light" type="button" data-bs-toggle="offcanvas"
-                                    data-bs-target="#loginOffcanvas" aria-controls="loginOffcanvas">
-                                    <i class="fa fa-circle-user"></i> Login
+                                <button class="btn btn-success" type="button" data-bs-toggle="modal"
+                                    data-bs-target="#loginModal">
+                                    <i class="fas fa-user-circle text-light"></i> Admin
                                 </button>
                             </div>
                         @endif
@@ -47,7 +46,7 @@
 
             @yield('content')
 
-            <footer class="footer py-2 shadow text-center bg-light text-light bg-dark">
+            <footer class="footer py-2 shadow text-center text-light" style="background-color: #032D01;">
                 <div class="m-auto">
                     <div class="">© 2025 LA ESCAPO. All rights reserved.</div>
                 </div>

@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('fee');
             $table->string('quantity');
             $table->string('total_payment')->nullable();
+            $table->string('payment_status')->default('pending');
             $table->timestamps();
 
             $table->foreign('visitor_id')->references('id')->on('visitors')->onDelete('cascade');
