@@ -40,7 +40,7 @@
             <ul class="sidebar-nav">
                 <hr class="sidebar-hr text-light mt-2 mb-1">
                 <li class="sidebar-item">
-                    <a href="{{ url('/dashboard') }}" class="sidebar-link">
+                    <a href="{{ url('/dashboard') }}" class="sidebar-link {{ Request::is('dashboard') ? 'active' : '' }}">
                         <i class="fa fa-dashboard"></i>
                         <span>Dashboard</span>
                     </a>

@@ -176,7 +176,7 @@ li.sidebar-item.active {
 }
 
 .bg-theme-secondary {
-    background-color: #a8e198;
+    background-color: #B4B4B4;
 }
 
 .navbar-expand .navbar-collapse {
@@ -350,5 +350,26 @@ h1.home-title {
 }
 
 .sidebar-link.active {
-    background-color: #ffffff13;
+    background-color: #ffffff30;
+}
+
+.sticky-action {
+    position: sticky !important;
+    right: 0 !important;
+    background: white;
+    z-index: 2 !important;
+}
+
+.border-brown {
+    --bs-border-opacity: 1;
+    --bs-brown-rgb: 179, 81, 0;
+    border-color: rgba(var(--bs-brown-rgb), var(--bs-border-opacity)) !important;
+}
+
+.bg-brown {
+    background-color: #B35100;
+}
+
+.text-brown {
+    color: #B35100;
 }

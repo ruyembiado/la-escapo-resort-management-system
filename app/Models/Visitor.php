@@ -72,4 +72,9 @@ class Visitor extends Model
     {
         return $this->hasOne(Massage::class, 'visitor_id');
     }
+
+    public function companions()
+    {
+        return $this->hasMany(Companion::class, 'visitor_id');
+    }
 }

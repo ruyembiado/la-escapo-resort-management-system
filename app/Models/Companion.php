@@ -5,29 +5,30 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Entrance extends Model
+class Companion extends Model
 {
     use HasFactory;
 
-    protected $table = 'entrances';
+    protected $table = 'companions';
 
     protected $fillable = [
         'visitor_id',
-        'category',
-        'members',
+        'entrance_id',
+        'name',
+        'gender',
         'age',
+        'isPWD',
+        'address',
         'fee',
-        'total_payment',
-        'payment_status',
     ];
 
     public function visitor()
     {
         return $this->belongsTo(Visitor::class, 'visitor_id');
     }
-    
-    public function companions()
+
+    public function entrance()
     {
-        return $this->hasMany(Companion::class, 'entrance_id');
+        return $this->belongsTo(Entrance::class, 'entrance_id');
     }
 }
