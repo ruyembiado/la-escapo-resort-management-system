@@ -24,7 +24,7 @@
                             <th class="bg-theme-primary text-light border-dark">Name</th>
                             <th class="bg-theme-primary text-light border-dark">Service Type</th>
                             <th class="bg-theme-primary text-light border-dark">Food Category</th>
-                            <th class="bg-theme-primary text-light border-dark">Food/Drink Type</th>
+                            {{-- <th class="bg-theme-primary text-light border-dark">Food/Drink Type</th> --}}
                             <th class="bg-theme-primary text-light border-dark">Fee</th>
                             <th class="bg-theme-primary text-light border-dark">Date Created</th>
                             <th class="bg-theme-primary text-light border-dark">Action</th>
@@ -36,8 +36,9 @@
                                 <td>{{ $index + 1 }}</td>
                                 <td>{{ $service->service_name }}</td>
                                 <td>{{ ucwords(str_replace('_', ' ', $service->service_type)) }}</td>
-                                <td>{{ $service->food_category ? ucfirst($service->food_category) : 'N/A' }}</td>
-                                <td>{{ $service->food_type ? ucfirst($service->food_type) : 'N/A' }}</td>
+                                <td>{{ $service->food_category ? ucwords(str_replace('_', ' ', $service->food_category)) : 'N/A' }}
+                                </td>
+                                {{-- <td>{{ $service->food_type ? ucfirst($service->food_type) : 'N/A' }}</td> --}}
                                 <td>₱{{ number_format($service->fee, 2) }}</td>
                                 <td>{{ $service->created_at->format('F j, Y') }}</td>
                                 <td class="d-flex gap-1">
@@ -62,8 +63,8 @@
                                                             </div>
                                                             <div
                                                                 class="d-flex align-items-center gap-2 justify-content-center">
-                                                                <img src="{{ asset('public/img/logo.png') }}"
-                                                                    width="70" alt="la-escapo-logo">
+                                                                <img src="{{ asset('public/img/logo.png') }}" width="70"
+                                                                    alt="la-escapo-logo">
                                                                 <div class="d-flex flex-column">
                                                                     <b class="modal-title mt-2 text-bold">La Escapo Mountain
                                                                         Resort</b>
@@ -111,13 +112,21 @@
                                                                             {{ $service->service_type == 'accommodation' ? 'selected' : '' }}>
                                                                             Accommodation
                                                                         </option>
-                                                                        <option value="function_hall"
-                                                                            {{ $service->service_type == 'function_hall' ? 'selected' : '' }}>
-                                                                            Function Hall
+                                                                        <option value="massage"
+                                                                            {{ $service->service_type == 'massage' ? 'selected' : '' }}>
+                                                                            Massage
                                                                         </option>
-                                                                        <option value="cottage_fee"
-                                                                            {{ $service->service_type == 'cottage_fee' ? 'selected' : '' }}>
-                                                                            Cottage Fee
+                                                                        <option value="water_tubing"
+                                                                            {{ $service->service_type == 'water_tubing' ? 'selected' : '' }}>
+                                                                            Water Tubing
+                                                                        </option>
+                                                                        <option value="kawa_hot_bath"
+                                                                            {{ $service->service_type == 'kawa_hot_bath' ? 'selected' : '' }}>
+                                                                            Kawa Hot Bath
+                                                                        </option>
+                                                                        <option value="picnic_table"
+                                                                            {{ $service->service_type == 'picnic_table' ? 'selected' : '' }}>
+                                                                            Picnic Table
                                                                         </option>
                                                                     </select>
                                                                 </div>
@@ -128,30 +137,30 @@
                                                         <div class="form-group mb-2">
                                                             <div class="d-flex flex-wrap align-items-center gap-2">
                                                                 <!-- Foods: Category + Type -->
-                                                                <div class="col-12" id="editFoodFields{{ $service->id }}"
+                                                                <div class="col-7" id="editFoodFields{{ $service->id }}"
                                                                     style="{{ $service->service_type == 'foods' ? '' : 'display:none;' }}">
                                                                     <div class="d-flex flex-wrap align-items-center gap-3">
                                                                         <label>Food Category:</label>
-                                                                        <div class="col-4">
+                                                                        <div class="col-7">
                                                                             <select name="food_category"
                                                                                 class="form-control">
                                                                                 <option value="">Select Category
                                                                                 </option>
-                                                                                <option value="noodles"
-                                                                                    {{ $service->food_category == 'noodles' ? 'selected' : '' }}>
-                                                                                    Noodles</option>
-                                                                                <option value="soup"
-                                                                                    {{ $service->food_category == 'soup' ? 'selected' : '' }}>
-                                                                                    Soup</option>
-                                                                                <option value="main"
-                                                                                    {{ $service->food_category == 'main' ? 'selected' : '' }}>
-                                                                                    Main</option>
+                                                                                <option value="inasal"
+                                                                                    {{ $service->food_category == 'inasal' ? 'selected' : '' }}>
+                                                                                    Inasal</option>
+                                                                                <option value="namit_dishes"
+                                                                                    {{ $service->food_category == 'namit_dishes' ? 'selected' : '' }}>
+                                                                                    #Namit Dishes</option>
+                                                                                <option value="breakfast"
+                                                                                    {{ $service->food_category == 'breakfast' ? 'selected' : '' }}>
+                                                                                    Breakfast</option>
                                                                                 <option value="rice"
                                                                                     {{ $service->food_category == 'rice' ? 'selected' : '' }}>
                                                                                     Rice</option>
                                                                             </select>
                                                                         </div>
-                                                                        <label>Food Type:</label>
+                                                                        {{-- <label>Food Type:</label>
                                                                         <div class="col-4">
                                                                             <select name="food_type" class="form-control">
                                                                                 <option value="">Select Type</option>
@@ -162,12 +171,12 @@
                                                                                     {{ $service->food_type == 'group' ? 'selected' : '' }}>
                                                                                     Group</option>
                                                                             </select>
-                                                                        </div>
+                                                                        </div> --}}
                                                                     </div>
                                                                 </div>
 
                                                                 <!-- Drinks: Only Type -->
-                                                                <div class="col-5" id="editDrinkFields{{ $service->id }}"
+                                                                {{-- <div class="col-5" id="editDrinkFields{{ $service->id }}"
                                                                     style="{{ $service->service_type == 'drinks' ? '' : 'display:none;' }}">
                                                                     <div class="d-flex align-items-center gap-3">
                                                                         <label>Drink Type:</label>
@@ -183,7 +192,7 @@
                                                                             </select>
                                                                         </div>
                                                                     </div>
-                                                                </div>
+                                                                </div> --}}
 
                                                                 <label>Fee:</label>
                                                                 <div class="col-2">
@@ -268,8 +277,10 @@
                                         <option value="foods">Foods</option>
                                         <option value="drinks">Drinks</option>
                                         <option value="accommodation">Accommodation</option>
-                                        <option value="function_hall">Function Hall</option>
-                                        <option value="cottage_fee">Cottage Fee</option>
+                                        <option value="massage">Massage</option>
+                                        <option value="water_tubing">Water Tubing</option>
+                                        <option value="kawa_hot_bath">Kawa Hot Bath</option>
+                                        <option value="picnic_table">Picnic Table</option>
                                     </select>
                                 </div>
                             </div>
@@ -278,29 +289,29 @@
                         <!-- Food Fields -->
                         <div class="form-group mb-2">
                             <div class="d-flex flex-wrap align-items-center gap-2">
-                                <div class="col-12" id="foodFields" style="display:none;">
+                                <div class="col-7" id="foodFields" style="display:none;">
                                     <div class="d-flex flex-wrap align-items-center gap-3">
                                         <label>Food Category:</label>
-                                        <div class="col-4">
+                                        <div class="col-7">
                                             <select name="food_category" class="form-control" disabled>
                                                 <option value="">Select Category</option>
-                                                <option value="noodles">Noodles</option>
-                                                <option value="soup">Soup</option>
-                                                <option value="main">Main</option>
+                                                <option value="inasal">Inasal</option>
+                                                <option value="namit_dishes">#Namit Dishes</option>
+                                                <option value="breakfast">Breakfast</option>
                                                 <option value="rice">Rice</option>
                                             </select>
                                         </div>
-                                        <label>Food Type:</label>
+                                        {{-- <label>Food Type:</label>
                                         <div class="col-4">
                                             <select name="food_type" class="form-control" disabled>
                                                 <option value="">Select Type</option>
                                                 <option value="solo">Solo</option>
                                                 <option value="group">Group</option>
                                             </select>
-                                        </div>
+                                        </div> --}}
                                     </div>
                                 </div>
-                                <div class="col-5" id="drinkFields" style="display:none;">
+                                {{-- <div class="col-5" id="drinkFields" style="display:none;">
                                     <div class="d-flex align-items-center gap-3">
                                         <label>Drink Type:</label>
                                         <div class="col-8">
@@ -311,7 +322,7 @@
                                             </select>
                                         </div>
                                     </div>
-                                </div>
+                                </div> --}}
                                 <label>Fee:</label>
                                 <div class="col-2">
                                     <input type="number" name="fee" class="form-control" min="0"
@@ -334,145 +345,81 @@
 <script>
     document.addEventListener("DOMContentLoaded", function() {
 
-        // Add Modal
         const serviceType = document.getElementById("service_type");
-        const foodFields = document.getElementById("foodFields");
-        const drinkFields = document.getElementById("drinkFields");
+        const foodFields = document.getElementById("foodFields"); // restore this
+        // const drinkFields = document.getElementById("drinkFields"); // still removed
 
-        // Get the select elements inside the fields
         const foodCategorySelect = foodFields ? foodFields.querySelector('select[name="food_category"]') : null;
-        const foodTypeSelect = foodFields ? foodFields.querySelector('select[name="food_type"]') : null;
-        const drinkTypeSelect = drinkFields ? drinkFields.querySelector('select[name="food_type"]') : null;
 
         function toggleAddFields() {
+
+            if (!serviceType) return;
+
             if (serviceType.value === "foods") {
-                // Show food fields, hide drink fields
-                foodFields.style.display = "block";
-                drinkFields.style.display = "none";
 
-                // Enable food fields, disable drink fields
+                if (foodFields) foodFields.style.display = "block";
+
                 if (foodCategorySelect) foodCategorySelect.disabled = false;
-                if (foodTypeSelect) foodTypeSelect.disabled = false;
-                if (drinkTypeSelect) drinkTypeSelect.disabled = true;
-
-                // Clear drink field values
-                if (drinkTypeSelect) drinkTypeSelect.value = "";
-
-            } else if (serviceType.value === "drinks") {
-                // Show drink fields, hide food fields
-                drinkFields.style.display = "block";
-                foodFields.style.display = "none";
-
-                // Enable drink fields, disable food fields
-                if (drinkTypeSelect) drinkTypeSelect.disabled = false;
-                if (foodCategorySelect) foodCategorySelect.disabled = true;
-                if (foodTypeSelect) foodTypeSelect.disabled = true;
-
-                // Clear food field values
-                if (foodCategorySelect) foodCategorySelect.value = "";
-                if (foodTypeSelect) foodTypeSelect.value = "";
 
             } else {
-                // Hide both, disable both
-                foodFields.style.display = "none";
-                drinkFields.style.display = "none";
 
-                if (foodCategorySelect) foodCategorySelect.disabled = true;
-                if (foodTypeSelect) foodTypeSelect.disabled = true;
-                if (drinkTypeSelect) drinkTypeSelect.disabled = true;
+                if (foodFields) foodFields.style.display = "none";
 
-                // Clear all values
-                if (foodCategorySelect) foodCategorySelect.value = "";
-                if (foodTypeSelect) foodTypeSelect.value = "";
-                if (drinkTypeSelect) drinkTypeSelect.value = "";
+                if (foodCategorySelect) {
+                    foodCategorySelect.disabled = true;
+                    foodCategorySelect.value = "";
+                }
             }
         }
 
-        // Initial call to set correct state
         toggleAddFields();
 
-        // Add event listener for changes
-        if (serviceType) {
-            serviceType.addEventListener("change", toggleAddFields);
-        }
+        serviceType.addEventListener("change", toggleAddFields);
 
-        // Optional: Add validation before submit to ensure required fields are filled
+        // FORM VALIDATION
         const addServiceForm = document.getElementById('addServiceForm');
+
         if (addServiceForm) {
             addServiceForm.addEventListener('submit', function(e) {
-                const serviceTypeValue = serviceType.value;
 
-                if (serviceTypeValue === 'foods') {
+                if (serviceType.value === 'foods') {
                     const foodCategory = foodCategorySelect ? foodCategorySelect.value : '';
-                    const foodType = foodTypeSelect ? foodTypeSelect.value : '';
 
                     if (!foodCategory) {
                         e.preventDefault();
                         alert('Please select a food category.');
-                        return false;
-                    }
-                    if (!foodType) {
-                        e.preventDefault();
-                        alert('Please select a food type.');
-                        return false;
-                    }
-                }
-
-                if (serviceTypeValue === 'drinks') {
-                    const drinkType = drinkTypeSelect ? drinkTypeSelect.value : '';
-
-                    if (!drinkType) {
-                        e.preventDefault();
-                        alert('Please select a drink type.');
-                        return false;
                     }
                 }
             });
         }
 
-        // Edit Modals
+        // EDIT MODALS
         document.querySelectorAll('.edit_service_type').forEach(select => {
             select.addEventListener('change', function() {
+
                 let id = this.dataset.id;
                 let foodFieldsDiv = document.getElementById('editFoodFields' + id);
-                let drinkFieldsDiv = document.getElementById('editDrinkFields' + id);
 
-                // Get the select elements inside the fields
-                let foodCategorySelectEdit = foodFieldsDiv ? foodFieldsDiv.querySelector(
-                    'select[name="food_category"]') : null;
-                let foodTypeSelectEdit = foodFieldsDiv ? foodFieldsDiv.querySelector(
-                    'select[name="food_type"]') : null;
-                let drinkTypeSelectEdit = drinkFieldsDiv ? drinkFieldsDiv.querySelector(
-                    'select[name="drink_type"]') : null;
+                let foodCategorySelectEdit = foodFieldsDiv ?
+                    foodFieldsDiv.querySelector('select[name="food_category"]') :
+                    null;
 
                 if (this.value === 'foods') {
+
                     if (foodFieldsDiv) foodFieldsDiv.style.display = 'block';
-                    if (drinkFieldsDiv) drinkFieldsDiv.style.display = 'none';
-
-                    // Enable food fields, disable drink fields
                     if (foodCategorySelectEdit) foodCategorySelectEdit.disabled = false;
-                    if (foodTypeSelectEdit) foodTypeSelectEdit.disabled = false;
-                    if (drinkTypeSelectEdit) drinkTypeSelectEdit.disabled = true;
-
-                } else if (this.value === 'drinks') {
-                    if (drinkFieldsDiv) drinkFieldsDiv.style.display = 'block';
-                    if (foodFieldsDiv) foodFieldsDiv.style.display = 'none';
-
-                    // Enable drink fields, disable food fields
-                    if (drinkTypeSelectEdit) drinkTypeSelectEdit.disabled = false;
-                    if (foodCategorySelectEdit) foodCategorySelectEdit.disabled = true;
-                    if (foodTypeSelectEdit) foodTypeSelectEdit.disabled = true;
 
                 } else {
-                    if (foodFieldsDiv) foodFieldsDiv.style.display = 'none';
-                    if (drinkFieldsDiv) drinkFieldsDiv.style.display = 'none';
 
-                    // Disable all
-                    if (foodCategorySelectEdit) foodCategorySelectEdit.disabled = true;
-                    if (foodTypeSelectEdit) foodTypeSelectEdit.disabled = true;
-                    if (drinkTypeSelectEdit) drinkTypeSelectEdit.disabled = true;
+                    if (foodFieldsDiv) foodFieldsDiv.style.display = 'none';
+
+                    if (foodCategorySelectEdit) {
+                        foodCategorySelectEdit.disabled = true;
+                        foodCategorySelectEdit.value = '';
+                    }
                 }
             });
         });
+
     });
 </script>

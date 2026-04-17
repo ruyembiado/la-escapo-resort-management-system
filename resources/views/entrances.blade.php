@@ -57,14 +57,14 @@
             </div>
 
             <div class="table-responsive" style="overflow-x:auto;">
-                <table class="table table-bordered" id="dataTable1" width="100%" cellspacing="0"
+                <table class="table table-bordered border-dark" id="dataTable1" width="100%" cellspacing="0"
                     style="min-width:2000px;">
                     <thead>
                         <tr>
-                            <th class="bg-theme-primary text-light border-dark">NO.</th>
+                            <th class="bg-theme-primary text-light border-dark text-center">NO.</th>
                             <th class="bg-theme-primary text-light border-dark">NAME OF GUEST</th>
                             <th class="bg-theme-primary text-light border-dark">SEX</th>
-                            <th class="bg-theme-primary text-light border-dark">AGE</th>
+                            <th class="bg-theme-primary text-light border-dark text-center">AGE</th>
                             <th class="bg-theme-primary text-light border-dark">MEMBERS</th>
                             <th class="bg-theme-primary text-light border-dark">TOTAL FEE</th>
                             <th class="bg-theme-primary text-light border-dark">STATUS</th>
@@ -78,26 +78,26 @@
                     <tbody>
                         @foreach ($entrances as $entrance)
                             <tr>
-                                <td>{{ $loop->iteration }}</td>
+                                <td class="text-center">{{ $loop->iteration }}</td>
                                 <td>
                                     {{ $entrance->visitor?->first_name ?? '' }}
                                     {{ $entrance->visitor?->middle_name ?? '' }}
                                     {{ $entrance->visitor?->last_name ?? '' }}
                                 </td>
-                                <td>{{ $entrance->visitor->gender }}</td>
-                                <td>{{ $entrance->visitor->age }}</td>
+                                <td class="text-center">{{ $entrance->visitor->gender }}</td>
+                                <td class="text-center">{{ $entrance->visitor->age }}</td>
                                 <td class="text-center px-0 pb-0">
                                     {{ $entrance->visitor->members ?? 0 }}
                                     @if (!empty($entrance->companions))
-                                        <table class="table table-bordered border-none mt-2 mb-0">
+                                        <table class="table table-bordered border-dark mt-2 mb-0">
                                             <thead>
                                                 <tr>
-                                                    <th class="bg-success text-light">No.</th>
-                                                    <th class="bg-success text-light">Name</th>
-                                                    <th class="bg-success text-light">Category</th>
-                                                    <th class="bg-success text-light">Sex</th>
-                                                    <th class="bg-success text-light">Age</th>
-                                                    <th class="bg-success text-light">Address</th>
+                                                    <th class="bg-success text-light">NO.</th>
+                                                    <th class="bg-success text-light">NAME</th>
+                                                    <th class="bg-success text-light">CATEGORY</th>
+                                                    <th class="bg-success text-light">SEX</th>
+                                                    <th class="bg-success text-light">AGE</th>
+                                                    <th class="bg-success text-light">ADDRESS</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -287,14 +287,14 @@
                         <table class="table table-bordered border-dark" width="100%" cellspacing="0">
                             <thead>
                                 <tr>
-                                    <th class="bg-success text-light">No.</th>
-                                    <th class="bg-success text-light">Name</th>
-                                    <th class="bg-success text-light">Sex</th>
-                                    <th class="bg-success text-light">Age</th>
+                                    <th class="bg-success text-light">NO.</th>
+                                    <th class="bg-success text-light">NAME</th>
+                                    <th class="bg-success text-light">SEX</th>
+                                    <th class="bg-success text-light">AGE</th>
                                     <th class="bg-success text-light">is PWD?</th>
-                                    <th class="bg-success text-light">Address</th>
-                                    <th class="bg-success text-light">Fee</th>
-                                    <th class="bg-success text-light">Action</th>
+                                    <th class="bg-success text-light">ADDRESS</th>
+                                    <th class="bg-success text-light">FEE</th>
+                                    <th class="bg-success text-light">ACTION</th>
                                 </tr>
                             </thead>
                             <tbody id="add_companionsTableBody"></tbody>
@@ -436,14 +436,14 @@
                         <table class="table table-bordered border-dark" width="100%" cellspacing="0">
                             <thead>
                                 <tr>
-                                    <th class="bg-success text-light">No.</th>
-                                    <th class="bg-success text-light">Name</th>
-                                    <th class="bg-success text-light">Sex</th>
-                                    <th class="bg-success text-light">Age</th>
+                                    <th class="bg-success text-light">NO.</th>
+                                    <th class="bg-success text-light">NAME</th>
+                                    <th class="bg-success text-light">SEX</th>
+                                    <th class="bg-success text-light">AGE</th>
                                     <th class="bg-success text-light">is PWD?</th>
-                                    <th class="bg-success text-light">Address</th>
-                                    <th class="bg-success text-light">Fee</th>
-                                    <th class="bg-success text-light">Action</th>
+                                    <th class="bg-success text-light">ADDRESS</th>
+                                    <th class="bg-success text-light">FEE</th>
+                                    <th class="bg-success text-light">ACTION</th>
                                 </tr>
                             </thead>
                             <tbody id="edit_companionsTableBody"></tbody>
@@ -602,7 +602,7 @@
         function createAddRow(index) {
             const row = document.createElement("tr");
             row.innerHTML = `
-                <td>${index + 1}</td>
+                <td class="align-middle text-center">${index + 1}</td>
                 <td>
                     <input type="text" name="companion_name[${index}]" class="form-control" required>
                 </td>
@@ -615,7 +615,7 @@
                 <td width="10%">
                     <input type="number" name="companion_age[${index}]" class="form-control companion-age" min="0" max="110" required oninput="calculateCompanionFee(this)">
                 </td>
-                <td class="text-center">
+                <td class="text-center align-middle">
                     <input type="checkbox" name="companion_is_pwd[${index}]" value="1" class="form-check-input companion-pwd" onchange="calculateCompanionFee(this)">
                 </td>
                 <td>
@@ -624,7 +624,7 @@
                 <td width="12%">
                     <input type="number" name="companion_fee[${index}]" class="form-control companion-fee" readonly step="0.01" min="0">
                 </td>
-                <td>
+                <td class="align-middle">
                     <button type="button" class="btn btn-danger btn-sm remove-member">
                         <i class="fas fa-trash"></i>
                     </button>
@@ -666,7 +666,7 @@
             const fee = companionData ? getFee(companionData.age, companionData.isPWD).toFixed(2) : '0.00';
 
             row.innerHTML = `
-                <td>${index + 1}</td>
+                <td class="align-middle text-center">${index + 1}</td>
                 <td>
                     <input type="text" name="edit_companion_name[${index}]" class="form-control" value="${name.replace(/"/g, '&quot;')}" required>
                 </td>
@@ -679,7 +679,7 @@
                 <td width="10%">
                     <input type="number" name="edit_companion_age[${index}]" class="form-control edit-companion-age" value="${age}" min="0" max="110" required oninput="calculateEditCompanionFee(this)">
                 </td>
-                <td class="text-center">
+                <td class="text-center align-middle">
                     <input type="checkbox" name="edit_companion_is_pwd[${index}]" value="1" class="form-check-input edit-companion-pwd" ${isPwd ? 'checked' : ''} onchange="calculateEditCompanionFee(this)">
                 </td>
                 <td>
@@ -688,7 +688,7 @@
                 <td width="12%">
                     <input type="number" name="edit_companion_fee[${index}]" class="form-control edit-companion-fee" value="${fee}" readonly step="0.01" min="0">
                 </td>
-                <td>
+                <td class="align-middle">
                     <button type="button" class="btn btn-danger btn-sm remove-edit-member">
                         <i class="fas fa-trash"></i>
                     </button>

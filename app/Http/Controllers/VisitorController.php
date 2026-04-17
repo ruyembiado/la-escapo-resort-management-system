@@ -104,10 +104,23 @@ class VisitorController extends Controller
     public function getVisitorMembers($visitor_id)
     {
         $visitor = Visitor::findOrFail($visitor_id);
+        
         return response()->json([
             'members' => $visitor->members,
             'age' => $visitor->age,
             'is_pwd' => $visitor->is_pwd,
+            'guests' => [
+                [
+                    'name' => $visitor->first_name . ' ' . $visitor->last_name,
+                    'age' => $visitor->age,
+                    'is_main' => true,
+                ],
+                ...$visitor->companions->map(fn($c) => [
+                    'name' => $c->name,
+                    'age' => $c->age,
+                    'is_main' => false,
+                ])
+            ]
         ]);
     }
 }

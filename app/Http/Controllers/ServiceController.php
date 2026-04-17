@@ -800,54 +800,79 @@ class ServiceController extends Controller
 
     public function watertubings()
     {
+        $waterTubingFees = Service::where('service_type', 'water_tubing')->get();
+
         $visitors = Visitor::orderBy('created_at', 'desc')->limit(100)->get();
         $waterTubings = WaterTubing::orderBy('created_at', 'desc')->with('visitor')->get();
 
-        return view('water_tubings', compact('visitors', 'waterTubings'));
+        return view('water_tubings', compact('visitors', 'waterTubings', 'waterTubingFees'));
     }
 
     public function storeWaterTubing(Request $request)
     {
         $request->validate([
             'visitor_id' => 'required|exists:visitors,id',
-            'category' => 'required|array',
             'members' => 'required|array',
-            'age' => 'nullable|array',
-            'fee' => 'nullable|array',
-            'total_payment' => 'required',
-            'payment_status' => 'nullable',
+            'total_payment' => 'required|numeric',
+            'payment_status' => 'required',
         ]);
 
-        $categories = $request->input('category');
-        $members = $request->input('members');
-        $ages = $request->input('age', []);
-        $fees = $request->input('fee', []);
+        $visitorId = $request->visitor_id;
+        $membersInput = $request->input('members');
 
-        $filteredCategories = [];
-        $filteredMembers = [];
-        $filteredAges = [];
-        $filteredFees = [];
+        $services = Service::where('service_type', 'water_tubing')->get();
 
-        $count = count($members);
+        $visitor = Visitor::with('companions')->findOrFail($visitorId);
 
-        for ($i = 0; $i < $count; $i++) {
-            $filteredCategories[] = isset($categories[$i]) && $categories[$i] !== null ? $categories[$i] : 'null';
-            $filteredMembers[] = isset($members[$i]) && $members[$i] !== null ? $members[$i] : 'null';
-            $filteredAges[] = isset($ages[$i]) && $ages[$i] !== null ? $ages[$i] : 'null';
-            $filteredFees[] = isset($fees[$i]) && $fees[$i] !== null ? $fees[$i] : 'null';
+        $guests = collect([
+            (object)[
+                'name' => trim($visitor->first_name . ' ' . $visitor->middle_name . ' ' . $visitor->last_name),
+                'age' => $visitor->age,
+                'is_main' => true,
+            ]
+        ])->merge(
+            $visitor->companions->map(function ($companion) {
+                return (object)[
+                    'name' => $companion->name,
+                    'age' => $companion->age,
+                    'is_main' => false,
+                ];
+            })
+        );
+        $structured = [];
+
+        foreach ($guests as $gIndex => $guest) {
+            $serviceRows = [];
+            foreach ($services as $sIndex => $service) {
+                $qty = $membersInput[$gIndex][$sIndex] ?? 0;
+                if ($qty <= 0) continue;
+                $serviceRows[] = [
+                    'service_name' => $service->service_name,
+                    'fee' => (float) $service->fee,
+                    'qty' => (int) $qty,
+                    'subtotal' => (float) $qty * $service->fee,
+                ];
+            }
+
+            if (empty($serviceRows)) continue;
+
+            $structured[] = [
+                'guest' => $guest->name,
+                'age' => $guest->age,
+                'services' => $serviceRows,
+                'is_main' => $guest->is_main,
+            ];
         }
 
         WaterTubing::create([
-            'visitor_id' => $request->visitor_id,
-            'category' => json_encode($filteredCategories),
-            'members' => json_encode($filteredMembers),
-            'age' => json_encode($filteredAges),
-            'fee' => json_encode($filteredFees),
+            'visitor_id' => $visitorId,
+            'members' => json_encode($structured),
             'total_payment' => $request->total_payment,
-            'payment_status' => $request->payment_status ?? 'pending',
+            'payment_status' => $request->payment_status,
         ]);
 
-        return redirect()->route('watertubings')->with('success', 'Water Tubing fee added successfully.');
+        return redirect()->route('watertubings')
+            ->with('success', 'Water Tubing fee added successfully.');
     }
 
     public function updateWaterTubing(Request $request)
