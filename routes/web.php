@@ -43,6 +43,9 @@ Route::middleware(['auth'])->group(function () {
 
     // ServiceController routes
     Route::get('/services', [ServiceController::class, 'index'])->name('services');
+    Route::post('/add-service', [ServiceController::class, 'add_service'])->name('service.store');
+    Route::put('/update-service/{id}', [ServiceController::class, 'update_service'])->name('service.update');
+    Route::delete('/delete-service/{id}', [ServiceController::class, 'delete_service'])->name('service.destroy');
     Route::get('/other-services', [ServiceController::class, 'other_services'])->name('other.services');
 
     // Kawa Hot Bath
@@ -71,10 +74,10 @@ Route::middleware(['auth'])->group(function () {
 
     // Entrances
     Route::get('/entrances', [ServiceController::class, 'entrances'])->name('entrances');
-    Route::post('/add-entrance', [ServiceController::class, 'storeEntrance'])->name('entrance.store');
-    Route::put('/entrance/update', [ServiceController::class, 'updateEntrance'])->name('entrance.update');
-    Route::delete('/delete-entrance/{id}', [ServiceController::class, 'destroyEntrance'])->name('entrance.destroy');
-    
+    Route::post('/add-entrance', [ServiceController::class, 'create_entrance_bill'])->name('entrance.store');
+    Route::put('/entrance/update', [ServiceController::class, 'update_entrance_bill'])->name('entrance.update');
+    Route::delete('/delete-entrance/{id}', [ServiceController::class, 'delete_visitor_entrance'])->name('entrance.destroy');
+
     // accommodations
     Route::get('/accommodations', [ServiceController::class, 'accommodations'])->name('accommodations');
     Route::post('/accommodation', [ServiceController::class, 'storeAccommodation'])->name('accommodation.store');
@@ -86,7 +89,7 @@ Route::middleware(['auth'])->group(function () {
     // Route::post('/cottage', [ServiceController::class, 'storeCottage'])->name('cottage.store');
     // Route::put('/cottage/update', [ServiceController::class, 'updateCottage'])->name('cottage.update');
     // Route::delete('/delete-cottage/{id}', [ServiceController::class, 'destroyCottage'])->name('cottage.destroy');
-    
+
     // Meals
     Route::get('/meals', [ServiceController::class, 'meals'])->name('meals');
     Route::post('/meal', [ServiceController::class, 'storeMeal'])->name('meal.store');

@@ -4,33 +4,21 @@
     <!-- Start the content section -->
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text">Water Tubing</h1>
+        <div class="d-flex">
+            <i class="fa fa-ticket fa-2x text-dark me-2"></i>
+            <div class="d-flex flex-column">
+                <h1 class="h3 mb-0 text">AVAILED SERVICES</h1>
+                <h6 class="mb-0">Guest | Water Tubing</h6>
+            </div>
+        </div>
         <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addWaterTubingModal">Add Water Tubing
             Fee</a>
     </div>
 
     <!-- Content Row -->
+    @include('layouts.services-navigation')
     <div class="card shadow mb-4">
         <div class="card-body">
-            {{-- <form method="GET" action="" class="" id="dateRangeForm">
-                <div class="d-flex justify-content-start gap-2 align-items-end mb-4">
-                    <div class="d-flex flex-column align-items-start" style="width: auto;">
-                        <label for="date" class="mb-0">Start Date:</label>
-                        <input type="date" name="start_date" value="{{ $start_date }}"
-                            class="form-control form-control-sm" style="width: auto;" id="start_date" />
-                    </div>
-                    <div class="d-flex flex-column align-items-start" style="width: auto;">
-                        <label for="date" class="mb-0">End Date:</label>
-                        <input type="date" name="end_date" value="{{ $end_date }}"
-                            class="form-control form-control-sm" style="width: auto;" id="end_date" />
-                    </div>
-
-                    <a href="{{ url()->current() }}" class="btn btn-sm btn-danger">
-                        <i class="fas fa-times"></i> Clear
-                    </a>
-                </div>
-            </form> --}}
-
             <div class="table-responsive">
                 <table class="table table-bordered" id="dataTable1" width="100%" cellspacing="0">
                     <thead>

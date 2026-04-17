@@ -4,43 +4,75 @@
     <!-- Start the content section -->
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text">Entrances</h1>
+        <div class="d-flex">
+            <i class="fas fa-ticket fa-2x text-dark me-2"></i>
+            <div class="d-flex flex-column">
+                <h1 class="h3 mb-0 text">AVAILED SERVICES</h1>
+                <h6 class="mb-0">Guest | Entrance Fees</h6>
+            </div>
+        </div>
         <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addEntranceModal">Add Entrance Fee</a>
     </div>
 
     <!-- Content Row -->
+    @include('layouts.services-navigation')
     <div class="card shadow mb-4">
         <div class="card-body">
-            {{-- <form method="GET" action="" class="" id="dateRangeForm">
-                <div class="d-flex justify-content-start gap-2 align-items-end mb-4">
-                    <div class="d-flex flex-column align-items-start" style="width: auto;">
-                        <label for="date" class="mb-0">Start Date:</label>
-                        <input type="date" name="start_date" value="{{ $start_date }}"
-                            class="form-control form-control-sm" style="width: auto;" id="start_date" />
-                    </div>
-                    <div class="d-flex flex-column align-items-start" style="width: auto;">
-                        <label for="date" class="mb-0">End Date:</label>
-                        <input type="date" name="end_date" value="{{ $end_date }}"
-                            class="form-control form-control-sm" style="width: auto;" id="end_date" />
-                    </div>
+            <div class="d-flex justify-content-between align-items-center">
+                <!-- Date Filter -->
+                <form method="GET" action="" id="dateRangeForm">
+                    <div class="d-flex justify-content-start gap-2 align-items-end mb-4">
 
-                    <a href="{{ url()->current() }}" class="btn btn-sm btn-danger">
-                        <i class="fas fa-times"></i> Clear
-                    </a>
-                </div>
-            </form> --}}
+                        <div class="d-flex align-items-center">
+                            <label class="mb-0 me-0 p-1 bg-theme-primary text-light">From:</label>
+                            <input type="date" name="start_date" value="{{ request('start_date') }}"
+                                class="form-control form-control-sm rounded-0"
+                                onchange="document.getElementById('dateRangeForm').submit();">
+                        </div>
 
-            <div class="table-responsive">
-                <table class="table table-bordered" id="dataTable1" width="100%" cellspacing="0">
+                        <div class="d-flex align-items-center">
+                            <label class="mb-0 me-0 p-1 bg-theme-primary text-light">To:</label>
+                            <input type="date" name="end_date" value="{{ request('end_date') }}"
+                                class="form-control form-control-sm rounded-0"
+                                onchange="document.getElementById('dateRangeForm').submit();">
+                        </div>
+                    </div>
+                    <!-- A-Z Filter -->
+                    <div class="d-flex flex-wrap gap-1 mb-3">
+                        <a href="{{ request()->fullUrlWithQuery(['letter' => null]) }}"
+                            class="btn btn-sm rounded-circle {{ request('letter') ? 'btn-dark' : 'btn-success' }}">
+                            All
+                        </a>
+
+                        @foreach (range('A', 'Z') as $letter)
+                            <a href="{{ request()->fullUrlWithQuery(['letter' => $letter]) }}"
+                                class="btn btn-sm rounded-circle 
+                                    {{ request('letter') == $letter ? 'btn-success' : 'btn-dark' }}"
+                                style="width:32px;height:32px;line-height:22px;">
+                                {{ $letter }}
+                            </a>
+                        @endforeach
+                    </div>
+                </form>
+            </div>
+
+            <div class="table-responsive" style="overflow-x:auto;">
+                <table class="table table-bordered" id="dataTable1" width="100%" cellspacing="0"
+                    style="min-width:2000px;">
                     <thead>
                         <tr>
-                            <th>No.</th>
-                            <th>Name</th>
-                            <th>Description</th>
-                            <th>Total Payment</th>
-                            <th>Status</th>
-                            <th>Date Created</th>
-                            <th>Action</th>
+                            <th class="bg-theme-primary text-light border-dark">NO.</th>
+                            <th class="bg-theme-primary text-light border-dark">NAME OF GUEST</th>
+                            <th class="bg-theme-primary text-light border-dark">SEX</th>
+                            <th class="bg-theme-primary text-light border-dark">AGE</th>
+                            <th class="bg-theme-primary text-light border-dark">MEMBERS</th>
+                            <th class="bg-theme-primary text-light border-dark">TOTAL FEE</th>
+                            <th class="bg-theme-primary text-light border-dark">STATUS</th>
+                            <th class="bg-theme-primary text-light border-dark">CONTACT NO.</th>
+                            <th class="bg-theme-primary text-light border-dark">ADDRESS</th>
+                            <th class="bg-theme-primary text-light border-dark">CHECK-IN</th>
+                            <th class="bg-theme-primary text-light border-dark">DATE CREATED</th>
+                            <th class="bg-theme-primary text-light border-dark sticky-action">ACTION</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -48,73 +80,96 @@
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
                                 <td>
-                                    {{ optional($entrance->visitor)->first_name }}
-                                    {{ optional($entrance->visitor)->middle_name }}
-                                    {{ optional($entrance->visitor)->last_name }}
+                                    {{ $entrance->visitor?->first_name ?? '' }}
+                                    {{ $entrance->visitor?->middle_name ?? '' }}
+                                    {{ $entrance->visitor?->last_name ?? '' }}
                                 </td>
-                                @php
-                                    $categories = json_decode($entrance->category, true);
-                                    $members = json_decode($entrance->members, true);
-                                    $ages = json_decode($entrance->age, true);
-                                    $fees = json_decode($entrance->fee, true);
-                                @endphp
-                                <td style="padding: 10px;">
-                                    <table style="width: 100%; border-collapse: collapse;">
-                                        <thead>
-                                            <tr>
-                                                <th style="padding: 5px;">Category</th>
-                                                {{-- <th style="padding: 5px;">Quantity</th> --}}
-                                                <th style="padding: 5px;">Age</th>
-                                                <th style="padding: 5px;">Sub-total</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @foreach ($categories as $index => $cat)
-                                                @php
-                                                    $memberValue = $members[$index] ?? null;
-                                                @endphp
-                                                @if (!is_null($memberValue) && $memberValue !== 'null' && (int) $memberValue > 0)
+                                <td>{{ $entrance->visitor->gender }}</td>
+                                <td>{{ $entrance->visitor->age }}</td>
+                                <td class="text-center px-0 pb-0">
+                                    {{ $entrance->visitor->members ?? 0 }}
+                                    @if (!empty($entrance->companions))
+                                        <table class="table table-bordered border-none mt-2 mb-0">
+                                            <thead>
+                                                <tr>
+                                                    <th class="bg-success text-light">No.</th>
+                                                    <th class="bg-success text-light">Name</th>
+                                                    <th class="bg-success text-light">Category</th>
+                                                    <th class="bg-success text-light">Sex</th>
+                                                    <th class="bg-success text-light">Age</th>
+                                                    <th class="bg-success text-light">Address</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @if ($entrance->companions->isNotEmpty())
+                                                    @foreach ($entrance->companions as $index => $companion)
+                                                        <tr>
+                                                            <td>{{ $index + 1 }}</td>
+                                                            <td>{{ $companion->name }}</td>
+                                                            <td>
+                                                                @if ($companion->age <= 15)
+                                                                    Child
+                                                                @elseif ($companion->isPWD)
+                                                                    PWD
+                                                                @else
+                                                                    Adult
+                                                                @endif
+                                                            </td>
+                                                            <td>{{ $companion->gender }}</td>
+                                                            <td>{{ $companion->age }}</td>
+                                                            <td>{{ $companion->address }}</td>
+                                                        </tr>
+                                                    @endforeach
+                                                @else
                                                     <tr>
-                                                        <td style="padding: 8px;">{{ $cat }}</td>
-                                                        {{-- <td style="padding: 8px;">{{ $members[$index] }}</td> --}}
-                                                        <td style="padding: 8px;">
-                                                            {{ !isset($ages[$index]) || $ages[$index] === null || $ages[$index] === '' || $ages[$index] === 'null' ? 'N/A' : $ages[$index] }}
-                                                        </td>
-                                                        <td style="padding: 8px;">
-                                                            ₱{{ number_format((float) ($members[$index] ?? 0) * (float) ($fees[$index] ?? 0), 2) }}
-                                                        </td>
+                                                        <td colspan="6" class="text-center text-muted">No
+                                                            companions</td>
                                                     </tr>
                                                 @endif
-                                            @endforeach
-                                        </tbody>
-
-                                    </table>
+                                            </tbody>
+                                        </table>
+                                    @else
+                                        <span class="text-muted">No companions</span>
+                                    @endif
                                 </td>
                                 <td>₱ {{ number_format($entrance->total_payment, 2) }}</td>
                                 <td>
-                                    @if ($entrance->payment_status === 'pending')
-                                        <span class="badge bg-danger">{{ ucfirst($entrance->payment_status) }}</span>
+                                    @if ($entrance->status === 'Paid')
+                                        <span class="badge bg-success">Paid</span>
                                     @else
-                                        <span class="badge bg-success">{{ ucfirst($entrance->payment_status) }}</span>
+                                        <span class="badge bg-danger">Unpaid</span>
                                     @endif
                                 </td>
-                                <td>{{ \Carbon\Carbon::parse($entrance->created_at)->format('F j, Y') }}</td>
-                                <td>
-                                    <div class="d-flex align-items-center justify-c gap-2">
-                                        <a href="#" class="btn btn-warning btn-sm" data-bs-toggle="modal"
-                                            data-bs-target="#editEntranceModal" data-id="{{ $entrance->id }}"
-                                            data-visitor-id="{{ $entrance->visitor_id }}"
-                                            data-total-members='@json(json_decode($entrance->members))'
-                                            data-total-payment="{{ $entrance->total_payment }}"
-                                            data-payment-status="{{ $entrance->payment_status }}">
-                                            <i class="fa fa-edit"></i>
-                                        </a>
-                                        <form action="{{ route('entrance.destroy', $entrance->id) }}" method="POST">
+                                <td>{{ $entrance->visitor->contact_number }}</td>
+                                <td>{{ $entrance->visitor->address }}</td>
+                                <td>{{ \Carbon\Carbon::parse($entrance->visitor->created_at)->format('h:i A') }}</td>
+                                <td>{{ \Carbon\Carbon::parse($entrance->created_at)->format('M d, Y') }}</td>
+                                <td class="sticky-action">
+                                    <div class="d-flex align-items-center gap-1">
+                                        <button class="btn btn-warning btn-sm editEntranceBtn"
+                                            data-id="{{ $entrance->id }}"
+                                            data-first_name="{{ $entrance->visitor->first_name }}"
+                                            data-middle_name="{{ $entrance->visitor->middle_name }}"
+                                            data-last_name="{{ $entrance->visitor->last_name }}"
+                                            data-age="{{ $entrance->visitor->age }}"
+                                            data-gender="{{ $entrance->visitor->gender }}"
+                                            data-contact="{{ $entrance->visitor->contact_number }}"
+                                            data-address="{{ $entrance->visitor->address }}"
+                                            data-pwd="{{ $entrance->visitor->isPWD ?? 0 }}"
+                                            data-fee="{{ $entrance->total_payment }}"
+                                            data-status="{{ $entrance->status }}"
+                                            data-date_visit="{{ $entrance->visitor->date_visit }}"
+                                            data-companions="{{ json_encode($entrance->companions) }}"
+                                            data-members="{{ $entrance->visitor->members ?? 0 }}" data-bs-toggle="modal"
+                                            data-bs-target="#editEntranceModal">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <form action="{{ route('visitor.destroy', $entrance->visitor_id) }}" method="POST"
+                                            onsubmit="return confirm('Are you sure you want to delete this visitor record?');">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="btn btn-danger btn-sm"
-                                                onclick="return confirm('Are you sure you want to delete this entrance record?')">
-                                                <i class="fa fa-trash"></i>
+                                            <button type="submit" class="btn btn-danger btn-sm">
+                                                <i class="fas fa-trash"></i>
                                             </button>
                                         </form>
                                     </div>
@@ -128,613 +183,659 @@
     </div>
     <!-- Content Row -->
 
-    <!-- Add Entrance Fee Modal -->
+    <!-- Add Entrance Modal -->
     <div class="modal fade" id="addEntranceModal" tabindex="-1" role="dialog" aria-labelledby="addEntranceModalLabel"
         aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
-            <form action="{{ route('entrance.store') }}" method="POST">
+        <div class="modal-dialog modal-xl" role="document">
+            <form action="{{ route('entrance.store') }}" method="POST" id="entranceAddForm">
                 @csrf
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="addEntranceModalLabel">Add Entrance Fee</h5>
+                        <div class="col-12">
+                            <div class="text-end">
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                            </div>
+                            <div class="d-flex align-items-center gap-2 justify-content-center">
+                                <img src="{{ asset('public/img/logo.png') }}" width="70" alt="la-escapo-logo">
+                                <div class="d-flex flex-column">
+                                    <b class="modal-title mt-2 text-bold">La Escapo Mountain
+                                        Resort</b>
+                                    <span>Tuno, Tibiao, Antique</span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="modal-body">
-                        <div class="form-group mb-3">
-                            <div class="d-flex align-items-start gap-1">
-                                <div class="form-group col-6">
-                                    <label for="visitor_id">Name</label>
-                                    <select name="visitor_id" class="form-control select2" id="visitor_name" required
-                                        data-placeholder="Select a visitor">
-                                        <option></option>
-                                        @foreach ($visitors as $visitor)
-                                            <option value="{{ $visitor->id }}">{{ $visitor->first_name }}
-                                                {{ $visitor->middle_name }}
-                                                {{ $visitor->last_name }} -
-                                                {{ \Carbon\Carbon::parse($visitor->date_visit)->format('F j, Y') }}
-                                            </option>
-                                        @endforeach
+                        <input type="hidden" name="date_visit" value="{{ now()->toDateString() }}"
+                            class="form-control" required />
+                        <div
+                            class="bg-theme-primary d-flex align-items-center gap-2 justify-content-center text-light p-2 mb-3">
+                            <i class="fa fa-book fa-2x"></i>
+                            <h3 class="m-0">ENTRANCE FEE</h3>
+                        </div>
+                        <b>GUEST INFORMATION</b>
+                        <div class="form-group mb-2">
+                            <div class="d-flex align-items-center gap-3">
+                                <label style="min-width: 120px;">Complete Name:</label>
+                                <div class="col-3">
+                                    <input type="text" name="guest_first_name" class="form-control"
+                                        placeholder="First Name" required>
+                                </div>
+                                <div class="col-3">
+                                    <input type="text" name="guest_middle_name" class="form-control"
+                                        placeholder="Middle Name">
+                                </div>
+                                <div class="col-3">
+                                    <input type="text" name="guest_last_name" class="form-control"
+                                        placeholder="Last Name" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group mb-2">
+                            <div class="d-flex align-items-center gap-3">
+                                <label style="min-width: 120px;">Contact Number:</label>
+                                <div class="col-3">
+                                    <input type="text" name="guest_contact_number" class="form-control" required>
+                                </div>
+                                <label>Age:</label>
+                                <div class="col-2">
+                                    <input type="number" name="guest_age" id="guest_age" class="form-control" required
+                                        onchange="calculateGuestFee()">
+                                </div>
+                                <label>Sex:</label>
+                                <div class="col-2">
+                                    <select name="guest_gender" class="form-control" required>
+                                        <option value="">Select sex</option>
+                                        <option value="Male">Male</option>
+                                        <option value="Female">Female</option>
                                     </select>
                                 </div>
-                                <div class="form-group">
-                                    <small id="remaining_members_note" class="text-muted"></small>
+                            </div>
+                        </div>
+                        <div class="form-group mb-2">
+                            <div class="d-flex align-items-center gap-3">
+                                <label style="min-width: 120px;">Address:</label>
+                                <div class="col-5">
+                                    <input type="text" name="guest_address" class="form-control" required>
                                 </div>
-                                <div class="form-group col-1">
-                                    <label for="age">Age</label>
-                                    <div class="">
-                                        <input readonly type="text" id="age" class="form-control" required>
-                                    </div>
+                                <label style="min-width: 50px;">is PWD?</label>
+                                <div class="col-1">
+                                    <input type="checkbox" name="guest_is_pwd" id="guest_is_pwd" value="1"
+                                        class="form-check-input" onchange="calculateGuestFee()">
                                 </div>
-                                <div class="form-group">
-                                    <label for="members">Payment Status</label>
-                                    <div class="col-12">
-                                        <select name="payment_status" class="form-control" id="payment_status">
-                                            <option value="">Select Status</option>
-                                            <option value="pending">Pending</option>
-                                            <option value="paid">Paid</option>
-                                        </select>
+                                <label>Guest Fee:</label>
+                                <div class="col-2">
+                                    <div class="d-flex">
+                                        <span class="input-group-text bg-theme-primary text-light">₱</span>
+                                        <input type="number" readonly name="guest_fee" id="guest_fee" min="0"
+                                            value="0" class="form-control" required>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                        <b>ADD COMPANIONS</b>
+                        <div class="form-group mb-2">
+                            <div class="d-flex align-items-center gap-3">
+                                <label>No. of Companions:</label>
+                                <div class="col-1">
+                                    <input type="number" id="add_companionsCount" name="guest_members" min="0"
+                                        value="0" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+
+                        <table class="table table-bordered border-dark" width="100%" cellspacing="0">
+                            <thead>
+                                <tr>
+                                    <th class="bg-success text-light">No.</th>
+                                    <th class="bg-success text-light">Name</th>
+                                    <th class="bg-success text-light">Sex</th>
+                                    <th class="bg-success text-light">Age</th>
+                                    <th class="bg-success text-light">is PWD?</th>
+                                    <th class="bg-success text-light">Address</th>
+                                    <th class="bg-success text-light">Fee</th>
+                                    <th class="bg-success text-light">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="add_companionsTableBody"></tbody>
+                        </table>
 
                         <div class="form-group mb-2">
-                            <table style="width: 100%; border-collapse: collapse;">
-                                <thead>
-                                    <tr class="bg-secondary text-light">
-                                        <th style="padding: 10px;">CATEGORY</th>
-                                        <th style="padding: 10px;">QUANTITY</th>
-                                        <th style="padding: 10px;">AGE</th>
-                                        <th style="padding: 10px;">FEE</th>
-                                        <th style="padding: 10px;">SUB-TOTAL</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @php
-                                        $categories = [
-                                            [
-                                                'name' => 'Children',
-                                                'age' => '0-11',
-                                                'checked' => false,
-                                                'price' => '30.00',
-                                            ],
-                                            [
-                                                'name' => 'Student',
-                                                'age' => '12-21',
-                                                'checked' => false,
-                                                'price' => '30.00',
-                                            ],
-                                            [
-                                                'name' => 'Regular',
-                                                'age' => '22-59',
-                                                'checked' => false,
-                                                'price' => '30.00',
-                                            ],
-                                            [
-                                                'name' => 'PWD',
-                                                'age' => 'Any',
-                                                'checked' => false,
-                                                'price' => '30.00',
-                                            ],
-                                            [
-                                                'name' => 'Senior Citizen',
-                                                'age' => '60+',
-                                                'checked' => false,
-                                                'price' => '30.00',
-                                            ],
-                                        ];
-                                    @endphp
-
-                                    @foreach ($categories as $index => $category)
-                                        <tr>
-                                            <td width="30%" style="padding: 5px;">
-                                                <div class="d-flex align-items-center gap-1">
-                                                    <input type="hidden" name="category[]" value="{{ $category['name'] }}"
-                                                        {{ $category['checked'] ? 'checked' : '' }}>
-                                                    <span>{{ $category['name'] }}</span>
-                                                </div>
-                                            </td>
-                                            <td width="25%" style="padding: 5px;">
-                                                <input class="form-control" readonly type="number" name="members[]"
-                                                    min="0" value="">
-                                            </td>
-                                            <td style="padding: 5px;">
-                                                <input class="form-control" type="text" name="age[]"
-                                                    value="{{ $category['age'] }}" readonly>
-                                            </td>
-                                            <td style="padding: 5px;">
-                                                <input class="form-control" type="text" name="fee[]" min="0"
-                                                    value="{{ $category['price'] }}" readonly>
-                                            </td>
-                                            <td>
-                                                <input type="text" readonly id="sub-total" class="form-control"
-                                                    value="" readonly>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                            <div class="d-flex align-items-center justify-content-end">
+                            <div class="d-flex align-items-center gap-3">
+                                <label>Payment Status:</label>
                                 <div class="col-2">
-                                    <label for="total_payment">Total Payment</label>
-                                    <div class="d-flex align-items-center gap-1">
-                                        <span>₱ </span>
-                                        <span><input type="text" name="total_payment" id="total_payment"
-                                                class="form-control" readonly></span>
+                                    <select name="payment_status" class="form-control" required>
+                                        <option value="">Select status</option>
+                                        <option value="Paid">Paid</option>
+                                        <option value="Unpaid">Unpaid</option>
+                                    </select>
+                                </div>
+                                <label>Total Fee:</label>
+                                <div class="col-3">
+                                    <div class="d-flex">
+                                        <span class="input-group-text bg-theme-primary text-light">₱</span>
+                                        <input type="text" name="total_fee" id="total_fee" value="0.00"
+                                            class="form-control" readonly required>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="modal-footer">
+                        <button type="submit" class="btn btn-success">Save</button>
                         <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-primary">Add Entrance Fee</button>
                     </div>
                 </div>
             </form>
         </div>
     </div>
 
-    <!-- Edit Entrance Fee Modal -->
+    <!-- Edit Entrance Modal -->
     <div class="modal fade" id="editEntranceModal" tabindex="-1" role="dialog"
         aria-labelledby="editEntranceModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
-            <form action="{{ route('entrance.update') }}" method="POST">
+        <div class="modal-dialog modal-xl" role="document">
+            <form action="{{ route('entrance.update') }}" method="POST" id="entranceEditForm">
                 <input type="hidden" name="entrance_id" id="edit_entrance_id">
-                <input type="hidden" name="visitor_id" id="_visitor_id">
                 @csrf
                 @method('PUT')
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="editEntranceModalLabel">Edit Entrance Fee</h5>
+                        <div class="col-12">
+                            <div class="text-end">
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                            </div>
+                            <div class="d-flex align-items-center gap-2 justify-content-center">
+                                <img src="{{ asset('public/img/logo.png') }}" width="70" alt="la-escapo-logo">
+                                <div class="d-flex flex-column">
+                                    <b class="modal-title mt-2 text-bold">La Escapo Mountain
+                                        Resort</b>
+                                    <span>Tuno, Tibiao, Antique</span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="modal-body">
-                        <div class="form-group mb-3">
-                            <div class="d-flex align-items-start gap-1">
-                                <div class="form-group col-6">
-                                    <label for="visitor_id">Name</label>
-                                    <select disabled name="visitor_id" class="form-control select2" id="edit_visitor_id"
-                                        required data-placeholder="Select a visitor">
-                                        <option></option>
-                                        @foreach ($visitors as $visitor)
-                                            <option value="{{ $visitor->id }}">{{ $visitor->first_name }}
-                                                {{ $visitor->middle_name }}
-                                                {{ $visitor->last_name }} -
-                                                {{ \Carbon\Carbon::parse($visitor->date_visit)->format('F j, Y') }}
-                                            </option>
-                                        @endforeach
+                        <input type="hidden" id="edit_date_visit" name="edit_date_visit" value=""
+                            class="form-control" required />
+                        <div
+                            class="bg-theme-primary d-flex align-items-center gap-2 justify-content-center text-light p-2 mb-3">
+                            <i class="fa fa-book fa-2x"></i>
+                            <h3 class="m-0">ENTRANCE FEE</h3>
+                        </div>
+                        <b>GUEST INFORMATION</b>
+                        <div class="form-group mb-2">
+                            <div class="d-flex align-items-center gap-3">
+                                <label style="min-width: 120px;">Complete Name:</label>
+                                <div class="col-3">
+                                    <input type="text" name="edit_guest_first_name" class="form-control"
+                                        placeholder="First Name" required>
+                                </div>
+                                <div class="col-3">
+                                    <input type="text" name="edit_guest_middle_name" class="form-control"
+                                        placeholder="Middle Name">
+                                </div>
+                                <div class="col-3">
+                                    <input type="text" name="edit_guest_last_name" class="form-control"
+                                        placeholder="Last Name" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group mb-2">
+                            <div class="d-flex align-items-center gap-3">
+                                <label style="min-width: 120px;">Contact Number:</label>
+                                <div class="col-3">
+                                    <input type="text" name="edit_guest_contact_number" class="form-control" required>
+                                </div>
+                                <label>Age:</label>
+                                <div class="col-2">
+                                    <input type="number" name="edit_guest_age" id="edit_guest_age" class="form-control"
+                                        required onchange="calculateEditGuestFee()">
+                                </div>
+                                <label>Sex:</label>
+                                <div class="col-2">
+                                    <select name="edit_guest_gender" class="form-control" required>
+                                        <option value="">Select sex</option>
+                                        <option value="Male">Male</option>
+                                        <option value="Female">Female</option>
                                     </select>
                                 </div>
-                                <div class="form-group">
-                                    <small id="remaining_members_note" class="text-muted"></small>
+                            </div>
+                        </div>
+                        <div class="form-group mb-2">
+                            <div class="d-flex align-items-center gap-3">
+                                <label style="min-width: 120px;">Address:</label>
+                                <div class="col-5">
+                                    <input type="text" name="edit_guest_address" class="form-control" required>
                                 </div>
-                                <div class="form-group col-1">
-                                    <label for="members">Age</label>
-                                    <div class="">
-                                        <input readonly type="text" id="edit_age" class="form-control" required>
-                                    </div>
+                                <label style="min-width: 50px;">is PWD?</label>
+                                <div class="col-1">
+                                    <input type="checkbox" name="edit_guest_is_pwd" id="edit_guest_is_pwd"
+                                        value="1" class="form-check-input" onchange="calculateEditGuestFee()">
                                 </div>
-                                <div class="form-group">
-                                    <label for="members">Payment Status</label>
-                                    <div class="col-12">
-                                        <select name="payment_status" class="form-control" id="edit_payment_status">
-                                            <option value="">Select Status</option>
-                                            <option value="pending">Pending</option>
-                                            <option value="paid">Paid</option>
-                                        </select>
+                                <label>Guest Fee:</label>
+                                <div class="col-2">
+                                    <div class="d-flex">
+                                        <span class="input-group-text bg-theme-primary text-light">₱</span>
+                                        <input type="number" readonly name="edit_guest_fee" id="edit_guest_fee"
+                                            min="0" value="0" class="form-control" required>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                        <b>ADD COMPANIONS</b>
+                        <div class="form-group mb-2">
+                            <div class="d-flex align-items-center gap-3">
+                                <label>No. of Companions:</label>
+                                <div class="col-1">
+                                    <input type="number" id="edit_companionsCount" name="edit_guest_members"
+                                        min="0" value="0" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+
+                        <table class="table table-bordered border-dark" width="100%" cellspacing="0">
+                            <thead>
+                                <tr>
+                                    <th class="bg-success text-light">No.</th>
+                                    <th class="bg-success text-light">Name</th>
+                                    <th class="bg-success text-light">Sex</th>
+                                    <th class="bg-success text-light">Age</th>
+                                    <th class="bg-success text-light">is PWD?</th>
+                                    <th class="bg-success text-light">Address</th>
+                                    <th class="bg-success text-light">Fee</th>
+                                    <th class="bg-success text-light">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="edit_companionsTableBody"></tbody>
+                        </table>
 
                         <div class="form-group mb-2">
-                            <table style="width: 100%; border-collapse: collapse;">
-                                <thead>
-                                    <tr class="bg-secondary text-light">
-                                        <th style="padding: 10px;">CATEGORY</th>
-                                        <th style="padding: 10px;">QUANTITY</th>
-                                        <th style="padding: 10px;">AGE</th>
-                                        <th style="padding: 10px;">FEE</th>
-                                        <th style="padding: 10px;">SUB-TOTAL</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @php
-                                        $categories = [
-                                            [
-                                                'name' => 'Children',
-                                                'age' => '0-11',
-                                                'checked' => false,
-                                                'price' => '30.00',
-                                            ],
-                                            [
-                                                'name' => 'Student',
-                                                'age' => '12-21',
-                                                'checked' => false,
-                                                'price' => '30.00',
-                                            ],
-                                            [
-                                                'name' => 'Regular',
-                                                'age' => '22-59',
-                                                'checked' => false,
-                                                'price' => '30.00',
-                                            ],
-                                            [
-                                                'name' => 'PWD',
-                                                'age' => 'Any',
-                                                'checked' => false,
-                                                'price' => '30.00',
-                                            ],
-                                            [
-                                                'name' => 'Senior Citizen',
-                                                'age' => '60+',
-                                                'checked' => false,
-                                                'price' => '30.00',
-                                            ],
-                                        ];
-                                    @endphp
-
-                                    @foreach ($categories as $index => $category)
-                                        <tr>
-                                            <td width="30%" style="padding: 5px;">
-                                                <div class="d-flex align-items-center gap-1">
-                                                    <input type="hidden" name="category[]"
-                                                        value="{{ $category['name'] }}"
-                                                        {{ $category['checked'] ? 'checked' : '' }}>
-                                                    <span>{{ $category['name'] }}</span>
-                                                </div>
-                                            </td>
-                                            <td width="25%" style="padding: 5px;">
-                                                <input class="form-control" readonly type="number" name="members[]"
-                                                    value="">
-                                            </td>
-                                            <td style="padding: 5px;">
-                                                <input class="form-control" type="text" name="age[]"
-                                                    value="{{ $category['age'] }}" readonly>
-                                            </td>
-                                            <td style="padding: 5px;">
-                                                <input class="form-control" type="text" id="" name="fee[]"
-                                                    min="0" value="{{ $category['price'] }}" readonly>
-                                            </td>
-                                            <td>
-                                                <input type="text" readonly id="sub-total" class="form-control"
-                                                    value="" readonly>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                            <div class="d-flex align-items-center justify-content-end">
+                            <div class="d-flex align-items-center gap-3">
+                                <label>Payment Status:</label>
                                 <div class="col-2">
-                                    <label for="total_payment">Total Payment</label>
-                                    <div class="d-flex align-items-center gap-1">
-                                        <span>₱ </span>
-                                        <span><input type="text" name="total_payment" id="edit_total_payment"
-                                                class="form-control" readonly></span>
+                                    <select name="edit_payment_status" class="form-control" required>
+                                        <option value="">Select status</option>
+                                        <option value="Paid">Paid</option>
+                                        <option value="Unpaid">Unpaid</option>
+                                    </select>
+                                </div>
+                                <label>Total Fee:</label>
+                                <div class="col-3">
+                                    <div class="d-flex">
+                                        <span class="input-group-text bg-theme-primary text-light">₱</span>
+                                        <input type="text" name="edit_total_fee" id="edit_total_fee" value="0.00"
+                                            class="form-control" readonly required>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="modal-footer">
+                        <button type="submit" class="btn btn-success">Update</button>
                         <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-primary">Update Entrance Fee</button>
                     </div>
                 </div>
             </form>
         </div>
     </div>
 @endsection <!-- End the content section -->
-{{-- ADD FORM SCRIPT --}}
+
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Initialize Select2 for visitor_name for add form
-        $('#addEntranceModal').on('shown.bs.modal', function() {
-            $('#visitor_name').select2({
-                theme: 'bootstrap4',
-                width: '100%',
-                placeholder: "Select a visitor",
-                allowClear: true,
-                dropdownParent: $('#addEntranceModal')
-            });
-        });
+    const entranceFees = @json($entranceFees);
 
-        // Get total members based on selected visitor
-        $('#visitor_name').on('change', function() {
-            var visitor_id = $(this).val();
-            if (visitor_id) {
-                var baseUrl = window.location.origin;
-                var pathParts = window.location.pathname.split('/');
-                var folderName = pathParts[1];
-                var url = window.location.origin + '/' + folderName + '/get-visitor-members/' +
-                    visitor_id;
+    /* ---------------------------------
+       BUILD FEE MAP
+    ----------------------------------*/
+    let feeMap = {};
 
-                $.ajax({
-                    url: url,
-                    method: 'GET',
-                    success: function(response) {
-                        const age = response.age || 0;
-                        const isPwd = response.is_pwd || false;
-                        $('#age').val(response.age).trigger('input');
-                        autoCategorizeByAge(age, isPwd);
-                    }
-                });
-            } else {
-                $('#total_members').val('');
-            }
-        });
-
-        let totalMembers = 0;
-
-        // When total_members changes (manual or from AJAX)
-        $('#total_members').on('input', function() {
-            totalMembers = parseInt($(this).val()) || 0;
-            resetMemberInputs();
-        });
-
-        // When any members[] input changes
-        $(document).on('input', '#addEntranceModal input[name="members[]"]', function() {
-            // updateMemberInputLimitsAddForm();
-            updateSubtotalsAndTotalAddForm();
-        });
-
-        function autoCategorizeByAge(age, isPwd) {
-            // Reset all
-            $('#addEntranceModal input[name="members[]"]').each(function() {
-                $(this).val('');
-                $(this).prop('readonly', true);
-            });
-
-            let categoryIndex = -1;
-
-            if (isPwd) {
-                categoryIndex = 3; // PWD
-            } else if (age >= 0 && age <= 11) {
-                categoryIndex = 0; // Children
-            } else if (age >= 12 && age <= 21) {
-                categoryIndex = 1; // Student
-            } else if (age >= 22 && age <= 59) {
-                categoryIndex = 2; // Regular
-            } else if (age >= 60) {
-                categoryIndex = 4; // Senior Citizen
-            }
-
-            if (categoryIndex >= 0) {
-                const row = $('#addEntranceModal tbody tr').eq(categoryIndex);
-                const memberInput = row.find('input[name="members[]"]');
-                memberInput.val(1);
-                memberInput.prop('readonly', true);
-            }
-
-            updateSubtotalsAndTotalAddForm();
-        }
-
-        function resetMemberInputs() {
-            $('#addEntranceModal input[name="members[]"]').each(function() {
-                $(this).val('');
-                $(this).attr('max', totalMembers);
-                $(this).prop('readonly', false);
-            });
-        }
-
-        // function updateMemberInputLimitsAddForm() {
-        //     let used = 0;
-
-        //     // First, calculate the total used
-        //     $('#addEntranceModal input[name="members[]"]').each(function() {
-        //         used += parseInt($(this).val()) || 0;
-        //     });
-
-        //     if (used > totalMembers) {
-        //         // Reset all to 0 if over limit
-        //         $('#addEntranceModal input[name="members[]"]').each(function() {
-        //             $(this).val(0);
-        //             $(this).attr('max', totalMembers);
-        //             $(this).prop('readonly', totalMembers === 0);
-        //         });
-
-        //         // Optional: show feedback
-        //         alert('Total members exceeded. All inputs have been reset to 0.');
-        //         return;
-        //     }
-
-        //     // Otherwise, set max per input dynamically
-        //     let remaining = totalMembers - used;
-
-        //     $('#addEntranceModal input[name="members[]"]').each(function() {
-        //         let currentVal = parseInt($(this).val()) || 0;
-        //         let max = currentVal + remaining;
-        //         $(this).attr('max', max);
-        //         $(this).prop('readonly', totalMembers === 0);
-        //     });
-
-        //     // Lock further increments if full
-        //     if (remaining <= 0) {
-        //         $('#addEntranceModal input[name="members[]"]').each(function() {
-        //             let val = parseInt($(this).val()) || 0;
-        //             $(this).attr('max', val); // lock to current value
-        //         });
-        //     }
-        // }
-
-        function updateSubtotalsAndTotalAddForm() {
-            let totalPayment = 0;
-
-            $('#addEntranceModal tbody tr').each(function() {
-                const memberInput = $(this).find('input[name="members[]"]');
-                const feeInput = $(this).find('input[name="fee[]"]');
-                const subtotalInput = $(this).find('input[id="sub-total"]');
-
-                const members = parseInt(memberInput.val()) || 0;
-                const fee = parseFloat(feeInput.val()) || 0;
-                const subtotal = members * fee;
-
-                subtotalInput.val(subtotal.toFixed(2));
-                totalPayment += subtotal;
-            });
-
-            $('#total_payment').val(totalPayment.toFixed(2));
+    entranceFees.forEach(fee => {
+        if (fee.service_name === "Adult") {
+            feeMap['adult'] = parseFloat(fee.fee);
+        } else if (fee.service_name === "PWD") {
+            feeMap['pwd'] = parseFloat(fee.fee);
+        } else if (fee.service_name === "Child") {
+            feeMap['child'] = parseFloat(fee.fee);
         }
     });
-</script>
 
-{{-- EDIT FORM SCRIPT --}}
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const editModal = document.getElementById('editEntranceModal');
-        let editTotalMembers = 0; // Track total members for edit form
+    /* ---------------------------------
+       GET FEE BASED ON AGE + PWD
+    ----------------------------------*/
+    function getFee(age, isPwd) {
+        if (isPwd) return feeMap['pwd'] ?? 0;
+        if (age <= 15) return feeMap['child'] ?? 0;
+        return feeMap['adult'] ?? 0;
+    }
 
-        if (editModal) {
-            editModal.addEventListener('show.bs.modal', function(event) {
-                const button = event.relatedTarget;
+    /* ---------------------------------
+       GET CATEGORY
+    ----------------------------------*/
+    function getCategory(age, isPwd) {
+        if (isPwd) return "PWD";
+        if (age <= 15) return "Child";
+        return "Adult";
+    }
 
-                const totalMembersArray = JSON.parse(button.getAttribute('data-total-members') || '[]');
-                const visitorId = button.getAttribute('data-visitor-id');
-                const entranceId = button.getAttribute('data-id');
-                const totalPayment = button.getAttribute('data-total-payment');
-                const paymentStatus = button.getAttribute('data-payment-status');
+    /* ---------------------------------
+       GUEST FEE (ADD MODAL)
+    ----------------------------------*/
+    window.calculateGuestFee = function() {
+        let age = parseInt(document.getElementById('guest_age').value) || 0;
+        let isPwd = document.getElementById('guest_is_pwd').checked;
+        let fee = getFee(age, isPwd);
+        document.getElementById('guest_fee').value = fee.toFixed(2);
+        calculateTotal();
+    }
 
-                // DEBUG: Log what you get
-                console.log("Total Members:", totalMembersArray);
+    /* ---------------------------------
+       GUEST FEE (EDIT MODAL)
+    ----------------------------------*/
+    window.calculateEditGuestFee = function() {
+        let age = parseInt(document.getElementById('edit_guest_age').value) || 0;
+        let isPwd = document.getElementById('edit_guest_is_pwd').checked;
+        let fee = getFee(age, isPwd);
+        document.getElementById('edit_guest_fee').value = fee.toFixed(2);
+        calculateEditTotal();
+    }
 
-                // Set hidden fields
-                document.getElementById('edit_entrance_id').value = entranceId;
-                $('#edit_visitor_id').val(visitorId).trigger('change');
-                $('#_visitor_id').val(visitorId);
-                $('#edit_payment_status').val(paymentStatus);
+    /* ---------------------------------
+       COMPANION FEE (ADD MODAL)
+    ----------------------------------*/
+    window.calculateCompanionFee = function(element) {
+        const row = element.closest("tr");
+        const ageInput = row.querySelector(".companion-age");
+        const pwdCheckbox = row.querySelector(".companion-pwd");
+        const feeInput = row.querySelector(".companion-fee");
+        let age = parseInt(ageInput.value) || 0;
+        let isPwd = pwdCheckbox.checked;
+        let fee = getFee(age, isPwd);
+        feeInput.value = fee.toFixed(2);
+        calculateTotal();
+    }
 
-                // All members[] inputs inside the modal
-                const memberInputs = editModal.querySelectorAll('input[name="members[]"]');
-                const feeInputs = editModal.querySelectorAll('input[name="fee[]"]');
-                const subTotalInputs = editModal.querySelectorAll('input[id="sub-total"]');
+    /* ---------------------------------
+       COMPANION FEE (EDIT MODAL)
+    ----------------------------------*/
+    window.calculateEditCompanionFee = function(element) {
+        const row = element.closest("tr");
+        const ageInput = row.querySelector(".edit-companion-age");
+        const pwdCheckbox = row.querySelector(".edit-companion-pwd");
+        const feeInput = row.querySelector(".edit-companion-fee");
+        let age = parseInt(ageInput.value) || 0;
+        let isPwd = pwdCheckbox.checked;
+        let fee = getFee(age, isPwd);
+        feeInput.value = fee.toFixed(2);
+        calculateEditTotal();
+    }
 
-                let totalPaymentCalculated = 0;
-                let totalMembers = 0;
+    /* ---------------------------------
+       TOTAL CALCULATION (ADD MODAL)
+    ----------------------------------*/
+    function calculateTotal() {
+        let total = 0;
+        let guestFee = parseFloat(document.getElementById('guest_fee').value) || 0;
+        total += guestFee;
+        document.querySelectorAll("#add_companionsTableBody .companion-fee").forEach(function(input) {
+            total += parseFloat(input.value) || 0;
+        });
+        document.getElementById("total_fee").value = total.toFixed(2);
+    }
 
-                memberInputs.forEach((input, index) => {
-                    let raw = totalMembersArray[index];
-                    let members = (raw === "null" || raw === null) ? "0" : parseInt(raw) || 0;
-                    input.value = members;
-                    const fee = parseFloat(feeInputs[index]?.value || 0);
-                    const subtotal = members * fee;
+    /* ---------------------------------
+       TOTAL CALCULATION (EDIT MODAL)
+    ----------------------------------*/
+    function calculateEditTotal() {
+        let total = 0;
+        let guestFee = parseFloat(document.getElementById('edit_guest_fee').value) || 0;
+        total += guestFee;
+        document.querySelectorAll("#edit_companionsTableBody .edit-companion-fee").forEach(function(input) {
+            total += parseFloat(input.value) || 0;
+        });
+        document.getElementById("edit_total_fee").value = total.toFixed(2);
+    }
 
-                    subTotalInputs[index].value = subtotal.toFixed(2);
-                    totalPaymentCalculated += subtotal;
-                    totalMembers += members || 0;
-                });
+    document.addEventListener("DOMContentLoaded", function() {
+        // ========== ADD MODAL FUNCTIONALITY ==========
+        const addCompanionsCount = document.getElementById("add_companionsCount");
+        const addTableBody = document.getElementById("add_companionsTableBody");
 
-                // document.getElementById('edit_total_members').value = totalMembers;
-                document.getElementById('edit_total_payment').value = totalPayment;
-            });
+        function createAddRow(index) {
+            const row = document.createElement("tr");
+            row.innerHTML = `
+                <td>${index + 1}</td>
+                <td>
+                    <input type="text" name="companion_name[${index}]" class="form-control" required>
+                </td>
+                <td>
+                    <select name="companion_gender[${index}]" class="form-control" required>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                    </select>
+                </td>
+                <td width="10%">
+                    <input type="number" name="companion_age[${index}]" class="form-control companion-age" min="0" max="110" required oninput="calculateCompanionFee(this)">
+                </td>
+                <td class="text-center">
+                    <input type="checkbox" name="companion_is_pwd[${index}]" value="1" class="form-check-input companion-pwd" onchange="calculateCompanionFee(this)">
+                </td>
+                <td>
+                    <input type="text" name="companion_address[${index}]" class="form-control" required>
+                </td>
+                <td width="12%">
+                    <input type="number" name="companion_fee[${index}]" class="form-control companion-fee" readonly step="0.01" min="0">
+                </td>
+                <td>
+                    <button type="button" class="btn btn-danger btn-sm remove-member">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </td>
+            `;
+            return row;
         }
 
-        // Initialize Select2 for visitor_name for edit form
-        $('#editEntranceModal').on('shown.bs.modal', function() {
-            $('#edit_visitor_id').select2({
-                theme: 'bootstrap4',
-                width: '100%',
-                placeholder: "Select a visitor",
-                allowClear: true,
-                dropdownParent: $('#editEntranceModal')
-            });
-        });
+        if (addCompanionsCount) {
+            addCompanionsCount.addEventListener("input", function() {
+                let members = parseInt(this.value) || 0;
+                let currentRows = addTableBody.querySelectorAll("tr").length;
 
-        // Get total members from selected visitor for edit form
-        $('#edit_visitor_id').on('change', function() {
-            const visitor_id = $(this).val();
-            if (visitor_id) {
-                const baseUrl = window.location.origin;
-                const pathParts = window.location.pathname.split('/');
-                const folderName = pathParts[1];
-                const url = `${baseUrl}/${folderName}/get-visitor-members/${visitor_id}`;
-
-                $.ajax({
-                    url: url,
-                    method: 'GET',
-                    success: function(response) {
-                        age = parseInt(response.age) || 0;
-                        $('#edit_age').val(age);
-                        resetEditMemberInputs();
+                if (members > currentRows) {
+                    for (let i = currentRows; i < members; i++) {
+                        addTableBody.appendChild(createAddRow(i));
                     }
-                });
-            } else {
-                age = 0;
-                $('#edit_age').val('');
-                resetEditMemberInputs();
-            }
-        });
-
-        // When any members[] input changes in edit form
-        $(document).on('input', '#editEntranceModal input[name="members[]"]', function() {
-            // updateMemberInputLimitsEditForm();
-            updateEditSubtotalsAndTotal();
-        });
-
-        function resetEditMemberInputs() {
-            $('#editEntranceModal input[name="members[]"]').each(function() {
-                $(this).attr('max', 1);
-                $(this).prop('readonly', true);
+                } else if (members < currentRows) {
+                    for (let i = currentRows; i > members; i--) {
+                        addTableBody.removeChild(addTableBody.lastElementChild);
+                    }
+                }
+                updateRowNumbers(addTableBody);
+                calculateTotal();
             });
         }
 
-        function updateEditSubtotalsAndTotal() {
-            let totalPayment = 0;
-            let currentTotalMembers = 0;
+        // ========== EDIT MODAL FUNCTIONALITY ==========
+        const editCompanionsCount = document.getElementById("edit_companionsCount");
+        const editTableBody = document.getElementById("edit_companionsTableBody");
 
-            $('#editEntranceModal tbody tr').each(function() {
-                const memberInput = $(this).find('input[name="members[]"]');
-                const feeInput = $(this).find('input[name="fee[]"]');
-                const subtotalInput = $(this).find('input[id="sub-total"]');
+        function createEditRow(index, companionData = null) {
+            const row = document.createElement("tr");
+            const name = companionData ? companionData.name : '';
+            const gender = companionData ? companionData.gender : 'Male';
+            const age = companionData ? companionData.age : '';
+            const isPwd = companionData ? (companionData.isPWD == 1) : false;
+            const address = companionData ? companionData.address : '';
+            const fee = companionData ? getFee(companionData.age, companionData.isPWD).toFixed(2) : '0.00';
 
-                const members = parseInt(memberInput.val()) || 0;
-                const fee = parseFloat(feeInput.val()) || 0;
-                const subtotal = members * fee;
-
-                subtotalInput.val(subtotal.toFixed(2));
-                totalPayment += subtotal;
-                currentTotalMembers += members;
-            });
-
-            $('#edit_total_payment').val(totalPayment.toFixed(2));
+            row.innerHTML = `
+                <td>${index + 1}</td>
+                <td>
+                    <input type="text" name="edit_companion_name[${index}]" class="form-control" value="${name.replace(/"/g, '&quot;')}" required>
+                </td>
+                <td>
+                    <select name="edit_companion_gender[${index}]" class="form-control" required>
+                        <option value="Male" ${gender === 'Male' ? 'selected' : ''}>Male</option>
+                        <option value="Female" ${gender === 'Female' ? 'selected' : ''}>Female</option>
+                    </select>
+                </td>
+                <td width="10%">
+                    <input type="number" name="edit_companion_age[${index}]" class="form-control edit-companion-age" value="${age}" min="0" max="110" required oninput="calculateEditCompanionFee(this)">
+                </td>
+                <td class="text-center">
+                    <input type="checkbox" name="edit_companion_is_pwd[${index}]" value="1" class="form-check-input edit-companion-pwd" ${isPwd ? 'checked' : ''} onchange="calculateEditCompanionFee(this)">
+                </td>
+                <td>
+                    <input type="text" name="edit_companion_address[${index}]" class="form-control" value="${address.replace(/"/g, '&quot;')}" required>
+                </td>
+                <td width="12%">
+                    <input type="number" name="edit_companion_fee[${index}]" class="form-control edit-companion-fee" value="${fee}" readonly step="0.01" min="0">
+                </td>
+                <td>
+                    <button type="button" class="btn btn-danger btn-sm remove-edit-member">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </td>
+            `;
+            return row;
         }
 
-        // function updateMemberInputLimitsEditForm() {
-        //     let used = 0;
+        if (editCompanionsCount) {
+            editCompanionsCount.addEventListener("input", function() {
+                let members = parseInt(this.value) || 0;
+                let currentRows = editTableBody.querySelectorAll("tr").length;
 
-        //     // First, calculate the total used
-        //     $('#editEntranceModal input[name="members[]"]').each(function() {
-        //         used += parseInt($(this).val()) || 0;
-        //     });
+                if (members > currentRows) {
+                    for (let i = currentRows; i < members; i++) {
+                        editTableBody.appendChild(createEditRow(i));
+                    }
+                } else if (members < currentRows) {
+                    for (let i = currentRows; i > members; i--) {
+                        editTableBody.removeChild(editTableBody.lastElementChild);
+                    }
+                }
+                updateRowNumbers(editTableBody);
+                calculateEditTotal();
+            });
+        }
 
-        //     if (used > editTotalMembers) {
-        //         // Reset all to 0 if over limit
-        //         $('#editEntranceModal input[name="members[]"]').each(function() {
-        //             $(this).val(0);
-        //         });
+        // Helper function to update row numbers
+        function updateRowNumbers(tableBody) {
+            const rows = tableBody.querySelectorAll("tr");
+            rows.forEach((row, index) => {
+                row.children[0].innerText = index + 1;
+            });
+        }
 
-        //         // Recalculate totals
-        //         updateEditSubtotalsAndTotal();
+        // Remove member handlers
+        if (addTableBody) {
+            addTableBody.addEventListener("click", function(e) {
+                if (e.target.closest(".remove-member")) {
+                    e.target.closest("tr").remove();
+                    if (addCompanionsCount) {
+                        addCompanionsCount.value = addTableBody.querySelectorAll("tr").length;
+                    }
+                    updateRowNumbers(addTableBody);
+                    calculateTotal();
+                }
+            });
+        }
 
-        //         // Optional: show feedback
-        //         alert('Total members exceeded. All inputs have been reset to 0.');
-        //         return;
-        //     }
+        if (editTableBody) {
+            editTableBody.addEventListener("click", function(e) {
+                if (e.target.closest(".remove-edit-member")) {
+                    e.target.closest("tr").remove();
+                    if (editCompanionsCount) {
+                        editCompanionsCount.value = editTableBody.querySelectorAll("tr").length;
+                    }
+                    updateRowNumbers(editTableBody);
+                    calculateEditTotal();
+                }
+            });
+        }
 
-        //     // Otherwise, set max per input dynamically
-        //     let remaining = editTotalMembers - used;
+        // ========== EDIT BUTTON CLICK HANDLER ==========
+        document.querySelectorAll(".editEntranceBtn").forEach(button => {
+            button.addEventListener("click", function() {
+                // Basic information
+                document.getElementById("edit_entrance_id").value = this.dataset.id;
+                document.getElementById("edit_date_visit").value = this.dataset.date_visit;
+                document.querySelector("[name='edit_guest_first_name']").value = this.dataset
+                    .first_name || '';
+                document.querySelector("[name='edit_guest_middle_name']").value = this.dataset
+                    .middle_name || '';
+                document.querySelector("[name='edit_guest_last_name']").value = this.dataset
+                    .last_name || '';
+                document.querySelector("[name='edit_guest_contact_number']").value = this
+                    .dataset.contact || '';
+                document.querySelector("[name='edit_guest_age']").value = this.dataset.age ||
+                    '';
+                document.querySelector("[name='edit_guest_gender']").value = this.dataset
+                    .gender || '';
+                document.querySelector("[name='edit_guest_address']").value = this.dataset
+                    .address || '';
+                document.querySelector("[name='edit_payment_status']").value = this.dataset
+                    .status ||
+                    '';
 
-        //     $('#editEntranceModal input[name="members[]"]').each(function() {
-        //         let currentVal = parseInt($(this).val()) || 0;
-        //         let max = currentVal + remaining;
-        //         $(this).attr('max', max);
-        //     });
+                // PWD checkbox
+                const pwdCheckbox = document.getElementById("edit_guest_is_pwd");
+                if (this.dataset.pwd == 1) {
+                    pwdCheckbox.checked = true;
+                } else {
+                    pwdCheckbox.checked = false;
+                }
 
-        //     // Lock further increments if full
-        //     if (remaining <= 0) {
-        //         $('#editEntranceModal input[name="members[]"]').each(function() {
-        //             let val = parseInt($(this).val()) || 0;
-        //             $(this).attr('max', val); // lock to current value
-        //         });
-        //     }
-        // }
+                // Calculate guest fee
+                calculateEditGuestFee();
+
+                // Handle companions
+                try {
+                    const companions = JSON.parse(this.dataset.companions || '[]');
+                    const membersCount = parseInt(this.dataset.members) || companions.length;
+
+                    // Set companions count
+                    if (editCompanionsCount) {
+                        editCompanionsCount.value = membersCount;
+                    }
+
+                    // Clear and populate companions table
+                    if (editTableBody) {
+                        editTableBody.innerHTML = '';
+
+                        if (companions.length > 0) {
+                            companions.forEach((companion, index) => {
+                                editTableBody.appendChild(createEditRow(index,
+                                    companion));
+                            });
+                        } else {
+                            // Create empty rows based on members count
+                            for (let i = 0; i < membersCount; i++) {
+                                editTableBody.appendChild(createEditRow(i));
+                            }
+                        }
+                    }
+                } catch (e) {
+                    console.error('Error parsing companions data:', e);
+                }
+
+                // Calculate total fee
+                calculateEditTotal();
+            });
+        });
+
+        // ========== MODAL RESET HANDLERS ==========
+        $('#addEntranceModal').on('hidden.bs.modal', function() {
+            document.getElementById("entranceAddForm").reset();
+            if (addTableBody) addTableBody.innerHTML = "";
+            if (addCompanionsCount) addCompanionsCount.value = 0;
+            document.getElementById("guest_fee").value = "0";
+            document.getElementById("total_fee").value = "0";
+        });
+
+        $('#editEntranceModal').on('hidden.bs.modal', function() {
+            document.getElementById("entranceEditForm").reset();
+            if (editTableBody) editTableBody.innerHTML = "";
+            if (editCompanionsCount) editCompanionsCount.value = 0;
+            document.getElementById("edit_guest_fee").value = "0";
+            document.getElementById("edit_total_fee").value = "0";
+        });
     });
 </script>

@@ -40,7 +40,8 @@
             <ul class="sidebar-nav">
                 <hr class="sidebar-hr text-light mt-2 mb-1">
                 <li class="sidebar-item">
-                    <a href="{{ url('/dashboard') }}" class="sidebar-link {{ Request::is('dashboard') ? 'active' : '' }}">
+                    <a href="{{ url('/dashboard') }}"
+                        class="sidebar-link {{ Request::is('dashboard') ? 'active' : '' }}">
                         <i class="fa fa-dashboard"></i>
                         <span>Dashboard</span>
                     </a>
@@ -48,7 +49,7 @@
                 <hr class="sidebar-hr text-light mt-2 mb-2">
                 <b class="text-light ms-3">GUEST</b>
                 <li class="sidebar-item">
-                    <a href="{{ url('/log-book') }}" class="sidebar-link">
+                    <a href="{{ url('/entrances') }}" class="sidebar-link {{ Request::is('entrances') ? 'active' : '' }}">
                         <i class="fa fa-book"></i>
                         <span>Availed Services</span>
                     </a>
@@ -76,6 +77,14 @@
                     <a href="{{ url('/profile') }}" class="sidebar-link">
                         <i class="fa fa-user"></i>
                         <span>Profile</span>
+                    </a>
+                </li>
+                <hr class="sidebar-hr text-light mt-1 mb-2">
+                <b class="text-light ms-3">SETTINGS</b>
+                <li class="sidebar-item">
+                    <a href="{{ url('/services') }}" class="sidebar-link {{ Request::is('services') ? 'active' : '' }}">
+                        <i class="fa fa-cog"></i>
+                        <span>Services</span>
                     </a>
                 </li>
             </ul>

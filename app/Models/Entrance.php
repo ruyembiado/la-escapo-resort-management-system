@@ -13,12 +13,8 @@ class Entrance extends Model
 
     protected $fillable = [
         'visitor_id',
-        'category',
-        'members',
-        'age',
-        'fee',
+        'status',
         'total_payment',
-        'payment_status',
     ];
 
     public function visitor()
