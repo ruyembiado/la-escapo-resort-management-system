@@ -61,7 +61,7 @@
                             <th class="bg-theme-primary text-light text-center">NO.</th>
                             <th class="bg-theme-primary text-light">MAIN GUEST</th>
                             <th class="bg-theme-primary text-light text-center">AGE</th>
-                            <th class="bg-theme-primary text-light">TOTAL MEMBERS</th>
+                            <th class="bg-theme-primary text-light text-center">TOTAL MEMBERS</th>
                             <th class="bg-theme-primary text-light">TOTAL FEE</th>
                             <th class="bg-theme-primary text-light">STATUS</th>
                             <th class="bg-theme-primary text-light">DATE CREATED</th>

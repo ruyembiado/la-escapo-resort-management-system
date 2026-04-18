@@ -13,8 +13,7 @@ class PicnicTable extends Model
 
     protected $fillable = [
         'visitor_id',
-        'quantity',
-        'fee',
+        'details',
         'total_payment',
         'payment_status',
     ];

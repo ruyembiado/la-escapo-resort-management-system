@@ -65,88 +65,109 @@
                 </a>
             </div>
             <div class="table-responsive">
-                <table class="table table-bordered" id="dataTable1" width="100%" cellspacing="0">
+                <table class="table table-bordered border-dark" id="dataTable1" width="100%" cellspacing="0"
+                    style="min-width:2000px;">
                     <thead>
-                        <tr>
-                            <th>No.</th>
-                            <th>Name</th>
-                            <th>Description</th>
-                            <th>Total Payment</th>
-                            <th>Status</th>
-                            <th>Date Created</th>
-                            <th>Action</th>
-                        </tr>
+                        <th class="bg-theme-primary text-light">NO.</th>
+                        <th class="bg-theme-primary text-light">MAIN GUEST</th>
+                        <th class="bg-theme-primary text-light">TOTAL MEMBERS</th>
+                        <th class="text-center bg-theme-primary text-light">SERVICE DETAILS</th>
+                        <th class="bg-theme-primary text-light">TOTAL FEE</th>
+                        <th class="bg-theme-primary text-light">STATUS</th>
+                        <th class="bg-theme-primary text-light">DATE CREATED</th>
+                        <th class="bg-theme-primary text-light">ACTION</th>
                     </thead>
                     <tbody>
                         @foreach ($kawaBaths as $kawabath)
+                            @php
+                                $membersData = json_decode($kawabath->members, true) ?? [];
+                            @endphp
                             <tr>
-                                <td>{{ $loop->iteration }}</td>
+                                <td class="text-center">{{ $loop->iteration }}</td>
                                 <td>
                                     {{ optional($kawabath->visitor)->first_name }}
                                     {{ optional($kawabath->visitor)->middle_name }}
                                     {{ optional($kawabath->visitor)->last_name }}
                                 </td>
-                                @php
-                                    $categories = json_decode($kawabath->category, true);
-                                    $members = json_decode($kawabath->members, true);
-                                    $ages = json_decode($kawabath->age, true);
-                                    $fees = json_decode($kawabath->fee, true);
-                                @endphp
-                                <td style="padding: 10px;">
-                                    <table style="width: 100%; border-collapse: collapse;">
+                                <td class="text-center">
+                                    {{ count($membersData) }}
+                                </td>
+                                <td class="p-0">
+                                    <table class="table table-bordered border-dark m-0 mt-0" style="width:100%;">
                                         <thead>
                                             <tr>
-                                                <th style="padding: 5px;">Category</th>
-                                                {{-- <th style="padding: 5px;">Quantity</th> --}}
-                                                <th style="padding: 5px;">Age</th>
-                                                <th style="padding: 5px;">Sub-total</th>
+                                                <th class="bg-theme-primary text-light">NO.</th>
+                                                <th class="bg-theme-primary text-light">GUEST</th>
+                                                <th class="bg-theme-primary text-light">AGE</th>
+                                                <th class="bg-theme-primary text-light">ITEM</th>
+                                                <th class="bg-theme-primary text-light">QTY</th>
+                                                <th class="bg-theme-primary text-light">FEE</th>
+                                                <th class="bg-theme-primary text-light">SUBTOTAL</th>
                                             </tr>
                                         </thead>
+
                                         <tbody>
-                                            @foreach ($categories as $index => $cat)
-                                                @php
-                                                    $memberValue = $members[$index] ?? null;
-                                                @endphp
-                                                @if (!is_null($memberValue) && $memberValue !== 'null' && (int) $memberValue > 0)
-                                                    <tr>
-                                                        <td style="padding: 8px;">{{ $cat }}</td>
-                                                        {{-- <td style="padding: 8px;">{{ $members[$index] }}</td> --}}
-                                                        <td style="padding: 8px;">
-                                                            {{ !isset($ages[$index]) || $ages[$index] === null || $ages[$index] === '' || $ages[$index] === 'null' ? 'N/A' : $ages[$index] }}
-                                                        </td>
-                                                        <td style="padding: 8px;">
-                                                            ₱{{ number_format((float) ($members[$index] ?? 0) * (float) ($fees[$index] ?? 0), 2) }}
-                                                        </td>
-                                                    </tr>
+                                            @foreach ($membersData as $index => $row)
+                                                @if (!empty($row['services']))
+                                                    @foreach ($row['services'] as $sIndex => $service)
+                                                        <tr>
+                                                            @if ($sIndex === 0)
+                                                                <td rowspan="{{ count($row['services']) }}"
+                                                                    class="text-center">
+                                                                    {{ $index + 1 }}
+                                                                </td>
+
+                                                                <td rowspan="{{ count($row['services']) }}">
+                                                                    {{ $row['guest'] }}
+                                                                    @if (!empty($row['is_main']))
+                                                                        (Main Guest)
+                                                                    @endif
+                                                                </td>
+
+                                                                <td rowspan="{{ count($row['services']) }}"
+                                                                    class="text-center">
+                                                                    {{ $row['age'] }}
+                                                                </td>
+                                                            @endif
+
+                                                            <td>{{ $service['service_name'] }}</td>
+                                                            <td class="text-center">{{ $service['qty'] }}</td>
+                                                            <td>₱{{ number_format($service['fee'], 2) }}</td>
+                                                            <td>₱{{ number_format($service['subtotal'], 2) }}</td>
+                                                        </tr>
+                                                    @endforeach
                                                 @endif
                                             @endforeach
                                         </tbody>
                                     </table>
                                 </td>
+
                                 <td>₱ {{ number_format($kawabath->total_payment, 2) }}</td>
+
                                 <td>
                                     @if ($kawabath->payment_status === 'pending')
-                                        <span class="badge bg-danger">{{ ucfirst($kawabath->payment_status) }}</span>
+                                        <span class="badge bg-danger">Pending</span>
                                     @else
                                         <span class="badge bg-success">{{ ucfirst($kawabath->payment_status) }}</span>
                                     @endif
                                 </td>
                                 <td>{{ \Carbon\Carbon::parse($kawabath->created_at)->format('F j, Y') }}</td>
-                                <td>
-                                    <div class="d-flex align-items-center justify-c gap-2">
+                                <td class="sticky-action">
+                                    <div class="d-flex gap-2">
                                         <a href="#" class="btn btn-warning btn-sm" data-bs-toggle="modal"
                                             data-bs-target="#editKawaBathModal" data-id="{{ $kawabath->id }}"
                                             data-visitor-id="{{ $kawabath->visitor_id }}"
-                                            data-total-members='@json(json_decode($kawabath->members))'
+                                            data-members='@json($membersData)'
                                             data-total-payment="{{ $kawabath->total_payment }}"
                                             data-payment-status="{{ $kawabath->payment_status }}">
                                             <i class="fa fa-edit"></i>
                                         </a>
+
                                         <form action="{{ route('kawabath.destroy', $kawabath->id) }}" method="POST">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="btn btn-danger btn-sm"
-                                                onclick="return confirm('Are you sure you want to delete this kawa hot bath record?')">
+                                                onclick="return confirm('Delete this record?')">
                                                 <i class="fa fa-trash"></i>
                                             </button>
                                         </form>
@@ -272,10 +293,14 @@
                                                 <tr>
                                                     <td>{{ $index + 1 }}</td>
                                                     <td>{{ $fee->service_name }}</td>
-                                                    <td>₱{{ number_format($fee->fee, 2) }}</td>
-                                                    <td width="15%"><input type="number" name="picnic_table_quantity[]"
-                                                            class="form-control" value="{{ $fee->quantity }}"
-                                                            min="0"></td>
+                                                    <td>
+                                                        ₱{{ number_format($fee->fee, 2) }}
+                                                        <input type="hidden" name="picnic_table_fees[]"
+                                                            class="picnic-fee" value="{{ $fee->fee }}">
+                                                    </td>
+                                                    <td width="15%"><input type="number"
+                                                            name="picnic_table_quantity[]" class="form-control"
+                                                            value="{{ $fee->quantity }}" min="0"></td>
                                                     <td width="20%"><input type="text"
                                                             class="form-control subtotal" readonly="" value="0.00">
                                                     </td>
@@ -324,7 +349,7 @@
     <!-- Edit Kawa Hot Bath Fee Modal -->
     <div class="modal fade" id="editKawaBathModal" tabindex="-1" role="dialog"
         aria-labelledby="editKawaBathModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-dialog modal-xl" role="document">
             <form action="{{ route('kawabath.update') }}" method="POST">
                 <input type="hidden" name="kawabath_id" id="edit_kawabath_id">
                 <input type="hidden" name="visitor_id" id="_visitor_id">
@@ -332,14 +357,26 @@
                 @method('PUT')
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="editKawaBathModalLabel">Edit Kawa Hot Bath Fee</h5>
+                        <div class="col-12">
+                            <div class="text-end">
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                            </div>
+                            <div class="d-flex align-items-center gap-2 justify-content-center">
+                                <img src="{{ asset('public/img/logo.png') }}" width="70" alt="la-escapo-logo">
+                                <div class="d-flex flex-column">
+                                    <b class="modal-title mt-2 text-bold">La Escapo Mountain
+                                        Resort</b>
+                                    <span>Tuno, Tibiao, Antique</span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="modal-body">
                         <div class="form-group mb-3">
                             <div class="d-flex align-items-start gap-1">
-                                <div class="form-group col-6">
-                                    <label for="visitor_id">Name</label>
-                                    <select disabled name="visitor_id" class="form-control select2" id="edit_visitor_id"
+                                <div class="col-6 d-flex align-items-center gap-3">
+                                    <label for="visitor_id">Name:</label>
+                                    <select name="visitor_id" class="form-control select2" id="edit_visitor_name"
                                         required data-placeholder="Select a visitor">
                                         <option></option>
                                         @foreach ($visitors as $visitor)
@@ -351,120 +388,50 @@
                                         @endforeach
                                     </select>
                                 </div>
-                                <div class="form-group">
-                                    <small id="remaining_members_note" class="text-muted"></small>
-                                </div>
-                                <div class="form-group col-1">
-                                    <label for="members">Age</label>
-                                    <div class="">
-                                        <input readonly type="text" id="edit_age" class="form-control" required>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="members">Payment Status</label>
-                                    <div class="col-12">
-                                        <select name="payment_status" class="form-control" id="edit_payment_status">
-                                            <option value="">Select Status</option>
-                                            <option value="pending">Pending</option>
-                                            <option value="paid">Paid</option>
-                                        </select>
-                                    </div>
-                                </div>
                             </div>
                         </div>
 
                         <div class="form-group mb-2">
-                            <table style="width: 100%; border-collapse: collapse;">
+                            <table class="table table-bordered border-dark"
+                                style="width: 100%; border-collapse: collapse;">
                                 <thead>
-                                    <tr class="bg-secondary text-light">
-                                        <th style="padding: 10px;">CATEGORY</th>
-                                        <th style="padding: 10px;">QUANTITY</th>
-                                        <th style="padding: 10px;">AGE</th>
-                                        <th style="padding: 10px;">FEE</th>
-                                        <th style="padding: 10px;">SUB-TOTAL</th>
-                                    </tr>
+                                    <th class="bg-theme-primary text-light">NO.</th>
+                                    <th class="bg-theme-primary text-light">GUEST</th>
+                                    <th class="bg-theme-primary text-light">AGE</th>
+                                    <th class="bg-theme-primary text-light">CATEGORY</th>
+                                    <th class="bg-theme-primary text-light">FEE</th>
+                                    <th class="bg-theme-primary text-light">QUANTITY</th>
+                                    <th class="bg-theme-primary text-light">SUB-TOTAL</th>
                                 </thead>
-                                <tbody>
-                                    @php
-                                        $categories = [
-                                            [
-                                                'name' => 'Children',
-                                                'age' => '0-11',
-                                                'checked' => false,
-                                                'price' => '250.00',
-                                            ],
-                                            [
-                                                'name' => 'Student',
-                                                'age' => '12-21',
-                                                'checked' => false,
-                                                'price' => '250.00',
-                                            ],
-                                            [
-                                                'name' => 'Regular',
-                                                'age' => '22-59',
-                                                'checked' => false,
-                                                'price' => '250.00',
-                                            ],
-                                            [
-                                                'name' => 'PWD',
-                                                'age' => 'Any',
-                                                'checked' => false,
-                                                'price' => '250.00',
-                                            ],
-                                            [
-                                                'name' => 'Senior Citizen',
-                                                'age' => '60+',
-                                                'checked' => false,
-                                                'price' => '250.00',
-                                            ],
-                                        ];
-                                    @endphp
-
-                                    @foreach ($categories as $index => $category)
-                                        <tr>
-                                            <td width="30%" style="padding: 5px;">
-                                                <div class="d-flex align-items-center gap-1">
-                                                    <input type="hidden" name="category[]"
-                                                        value="{{ $category['name'] }}"
-                                                        {{ $category['checked'] ? 'checked' : '' }}>
-                                                    <span>{{ $category['name'] }}</span>
-                                                </div>
-                                            </td>
-                                            <td width="25%" style="padding: 5px;">
-                                                <input class="form-control" readonly type="number" name="members[]"
-                                                    value="">
-                                            </td>
-                                            <td style="padding: 5px;">
-                                                <input class="form-control" type="text" name="age[]"
-                                                    value="{{ $category['age'] }}" readonly>
-                                            </td>
-                                            <td style="padding: 5px;">
-                                                <input class="form-control" type="text" id="" name="fee[]"
-                                                    min="0" value="{{ $category['price'] }}" readonly>
-                                            </td>
-                                            <td>
-                                                <input type="text" readonly id="sub-total" class="form-control"
-                                                    value="" readonly>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
+                                <tbody id="editKawaBathTableBody"></tbody>
                             </table>
-                            <div class="d-flex align-items-center justify-content-end">
-                                <div class="col-2">
-                                    <label for="total_payment">Total Payment</label>
-                                    <div class="d-flex align-items-center gap-1">
-                                        <span>₱ </span>
-                                        <span><input type="text" name="total_payment" id="edit_total_payment"
-                                                class="form-control" readonly></span>
+                            <div class="form-group mt-2">
+                                <div class="d-flex align-items-center justify-content-end gap-3">
+                                    <label>Payment Status:</label>
+                                    <div class="col-3">
+                                        <select name="kawabath_payment_status" id="edit_payment_status"
+                                            class="form-control">
+                                            <option value="">Select status</option>
+                                            <option value="Paid">Paid</option>
+                                            <option value="Unpaid">Unpaid</option>
+                                        </select>
+                                    </div>
+
+                                    <label>Total Fee:</label>
+                                    <div class="col-3">
+                                        <div class="d-flex">
+                                            <span class="input-group-text bg-theme-primary text-light">₱</span>
+                                            <input type="text" name="kawabath_total_payment" id="edit_total_payment"
+                                                value="0.00" class="form-control" readonly>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="modal-footer">
+                        <button type="submit" class="btn btn-success">Update</button>
                         <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-primary">Update Kawa Hot Bath Fee</button>
                     </div>
                 </div>
             </form>
@@ -488,6 +455,16 @@
                 placeholder: "Select a visitor",
                 allowClear: true,
                 dropdownParent: $('#addKawaBathModal')
+            });
+        });
+
+        $('#editKawaBathModal').on('shown.bs.modal', function() {
+            $('#edit_visitor_name').select2({
+                theme: 'bootstrap4',
+                width: '100%',
+                placeholder: "Select a visitor",
+                allowClear: true,
+                dropdownParent: $('#editKawaBathModal')
             });
         });
 
@@ -562,10 +539,8 @@
 
                     <!-- SUBTOTAL -->
                     <td>
-                        <input type="text"
-                            class="form-control ${isEdit ? 'edit-kawa-subtotal' : 'kawa-subtotal'}"
-                            readonly
-                            value="0.00">
+                        <input type="text" class="form-control ${isEdit ? 'edit-kawa-subtotal' : 'kawa-subtotal'}" readonly
+                            value="${(row.qty * row.service.fee).toFixed(2)}">
                     </td>
 
                 </tr>
@@ -638,6 +613,121 @@
                 '#kawabath_total_payment',
                 'kawa-qty',
                 'kawa-subtotal'
+            );
+        });
+
+        function updatePicnicTotals() {
+            let grandTotal = 0;
+
+            document.querySelectorAll('.table tbody tr').forEach(row => {
+
+                let feeText = row.children[2]?.innerText.replace('₱', '').replace(',', '')
+                    .trim();
+                let fee = parseFloat(row.querySelector('.picnic-fee')?.value) || 0;
+
+                let qtyInput = row.querySelector('input[name="picnic_table_quantity[]"]');
+                let qty = parseInt(qtyInput?.value) || 0;
+
+                let subtotal = fee * qty;
+
+                let subtotalInput = row.querySelector('.subtotal');
+                if (subtotalInput) {
+                    subtotalInput.value = subtotal.toFixed(2);
+                }
+
+                grandTotal += subtotal;
+            });
+
+            document.getElementById('picnictable_total_payment').value = grandTotal.toFixed(2);
+        }
+
+        document.addEventListener('input', function(e) {
+            if (e.target.name === 'picnic_table_quantity[]') {
+                updatePicnicTotals();
+            }
+        });
+
+        // =========================
+        // EDIT MODAL LOAD
+        // =========================
+        $('#editKawaBathModal').on('show.bs.modal', function(event) {
+
+            const button = $(event.relatedTarget);
+
+            const kawabathId = button.data('id');
+            const visitorId = button.data('visitor-id');
+            const members = button.data('members') || [];
+            const totalPayment = button.data('total-payment');
+            const paymentStatus = button.data('payment-status');
+
+            // SET BASIC VALUES
+            $('#edit_kawabath_id').val(kawabathId);
+            $('#edit_visitor_name').val(visitorId).trigger('change');
+            $('#edit_payment_status').val(paymentStatus);
+            $('#kawabath_total_payment').val(totalPayment);
+
+            // RENDER TABLE
+            renderKawaRows('#editKawaBathTableBody', members, true);
+
+            // DELAY CALCULATION (IMPORTANT)
+            setTimeout(() => {
+                updateKawaTotals(
+                    '#editKawaBathTableBody',
+                    '#kawabath_total_payment',
+                    'edit-kawa-qty',
+                    'edit-kawa-subtotal'
+                );
+            }, 300);
+        }); // =========================
+        // EDIT MODAL LOAD (FIXED)
+        // =========================
+        $('#editKawaBathModal').on('show.bs.modal', function(event) {
+
+            const button = $(event.relatedTarget);
+
+            const kawabathId = button.data('id');
+            const visitorId = button.data('visitor-id');
+            const members = button.data('members') || [];
+            const totalPayment = button.data('total-payment') || 0;
+            const paymentStatus = button.data('payment-status') || '';
+
+            // Set IDs
+            $('#edit_kawabath_id').val(kawabathId);
+
+            // FIX: Select2 properly update
+            $('#edit_visitor_name')
+                .val(visitorId)
+                .trigger('change');
+
+            // FIX: payment status
+            $('#edit_payment_status').val(paymentStatus);
+
+            // FIX: total payment field
+            $('#edit_total_payment').val(parseFloat(totalPayment).toFixed(2));
+
+            // Render table
+            renderKawaRows('#editKawaBathTableBody', members, true);
+
+            // Recalculate AFTER render
+            setTimeout(() => {
+                updateKawaTotals(
+                    '#editKawaBathTableBody',
+                    '#edit_total_payment',
+                    'edit-kawa-qty',
+                    'edit-kawa-subtotal'
+                );
+            }, 300);
+        });
+
+        // =========================
+        // EDIT QTY CHANGE
+        // =========================
+        $(document).on('input', '.edit-kawa-qty', function() {
+            updateKawaTotals(
+                '#editKawaBathTableBody',
+                '#edit_total_payment',
+                'edit-kawa-qty',
+                'edit-kawa-subtotal'
             );
         });
 

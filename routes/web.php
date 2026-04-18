@@ -50,7 +50,7 @@ Route::middleware(['auth'])->group(function () {
 
     // Kawa Hot Bath
     Route::get('/kawa-hot-baths', [ServiceController::class, 'kawabaths'])->name('kawabaths');
-    Route::post('/add-kawa-hot-bath', [ServiceController::class, 'storeKawaBath'])->name('kawabath.store');
+    Route::post('/add-kawa-hot-bath', [ServiceController::class, 'storeKawaPicnic'])->name('kawabath.store');
     Route::put('/kawa-hot-bath/update', [ServiceController::class, 'updateKawaBath'])->name('kawabath.update');
     Route::delete('/delete-kawa-hot-bath/{id}', [ServiceController::class, 'destroyKawaBath'])->name('kawabath.destroy');
 

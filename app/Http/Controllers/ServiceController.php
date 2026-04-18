@@ -597,7 +597,7 @@ class ServiceController extends Controller
     }
 
     public function kawabaths()
-    {   
+    {
         $kawaHotBathFees = Service::where('service_type', 'kawa_hot_bath')->get();
         $picnicTableFees = Service::where('service_type', 'picnic_table')->get();
 
@@ -607,91 +607,178 @@ class ServiceController extends Controller
         return view('kawa_baths', compact('visitors', 'kawaBaths', 'kawaHotBathFees', 'picnicTableFees'));
     }
 
-    public function storeKawaBath(Request $request)
+    public function storeKawaPicnic(Request $request)
     {
         $request->validate([
             'visitor_id' => 'required|exists:visitors,id',
-            'category' => 'required|array',
-            'members' => 'required|array',
-            'age' => 'nullable|array',
-            'fee' => 'nullable|array',
-            'total_payment' => 'required',
-            'payment_status' => 'nullable',
+
+            'members' => 'nullable|array',
+            'kawabath_total_payment' => 'required|numeric',
+            'kawabath_payment_status' => 'required',
+
+            'picnic_table_quantity' => 'nullable|array',
+            'picnictable_total_payment' => 'required|numeric',
+            'picnictable_payment_status' => 'nullable',
         ]);
 
-        $categories = $request->input('category');
-        $members = $request->input('members');
-        $ages = $request->input('age', []);
-        $fees = $request->input('fee', []);
+        $visitorId = $request->visitor_id;
 
-        $filteredCategories = [];
-        $filteredMembers = [];
-        $filteredAges = [];
-        $filteredFees = [];
+        // =====================================
+        // FETCH VISITOR + GUESTS (SAME AS YOUR WATER TUBING)
+        // =====================================
+        $visitor = Visitor::with('companions')->findOrFail($visitorId);
 
-        $count = count($members);
+        $guests = collect([
+            (object)[
+                'name' => trim($visitor->first_name . ' ' . $visitor->middle_name . ' ' . $visitor->last_name),
+                'age' => $visitor->age,
+                'is_main' => true,
+            ]
+        ])->merge(
+            $visitor->companions->map(function ($companion) {
+                return (object)[
+                    'name' => $companion->name,
+                    'age' => $companion->age,
+                    'is_main' => false,
+                ];
+            })
+        );
 
-        for ($i = 0; $i < $count; $i++) {
-            $filteredCategories[] = isset($categories[$i]) && $categories[$i] !== null ? $categories[$i] : 'null';
-            $filteredMembers[] = isset($members[$i]) && $members[$i] !== null ? $members[$i] : 'null';
-            $filteredAges[] = isset($ages[$i]) && $ages[$i] !== null ? $ages[$i] : 'null';
-            $filteredFees[] = isset($fees[$i]) && $fees[$i] !== null ? $fees[$i] : 'null';
+        // =====================================
+        // KAWA BATH SAVE (LIKE WATER TUBING)
+        // =====================================
+        $kawaServices = Service::where('service_type', 'kawa_hot_bath')->get();
+        $membersInput = $request->input('members', []);
+
+        $structuredKawa = [];
+
+        foreach ($guests as $gIndex => $guest) {
+
+            $serviceRows = [];
+
+            foreach ($kawaServices as $sIndex => $service) {
+
+                $qty = $membersInput[$gIndex][$sIndex] ?? 0;
+
+                if ($qty <= 0) continue;
+
+                $serviceRows[] = [
+                    'service_name' => $service->service_name,
+                    'fee' => (float) $service->fee,
+                    'qty' => (int) $qty,
+                    'subtotal' => (float) $qty * $service->fee,
+                ];
+            }
+
+            if (empty($serviceRows)) continue;
+
+            $structuredKawa[] = [
+                'guest' => $guest->name,
+                'age' => $guest->age,
+                'services' => $serviceRows,
+                'is_main' => $guest->is_main,
+            ];
         }
 
-        KawaBath::create([
-            'visitor_id' => $request->visitor_id,
-            'category' => json_encode($filteredCategories),
-            'members' => json_encode($filteredMembers),
-            'age' => json_encode($filteredAges),
-            'fee' => json_encode($filteredFees),
-            'total_payment' => $request->total_payment,
-            'payment_status' => $request->payment_status ?? 'pending',
-        ]);
+        if (!empty($structuredKawa)) {
+            KawaBath::create([
+                'visitor_id' => $visitorId,
+                'members' => json_encode($structuredKawa),
+                'total_payment' => $request->kawabath_total_payment,
+                'payment_status' => $request->kawabath_payment_status ?? 'Unpaid',
+            ]);
+        }
 
-        return redirect()->route('kawabaths')->with('success', 'Kawa Hot Bath fee added successfully.');
+        $picnicFees = $request->picnic_table_fees ?? [];
+        $picnicQtys = $request->picnic_table_quantity ?? [];
+
+        $structuredPicnic = [];
+
+        foreach ($picnicFees as $index => $fee) {
+
+            $qty = $picnicQtys[$index] ?? 0;
+
+            if ($qty <= 0) continue;
+
+            $structuredPicnic[] = [
+                'fee' => (float) $fee,
+                'qty' => (int) $qty,
+                'subtotal' => (float) $fee * (int) $qty,
+            ];
+        }
+
+        if (!empty($structuredPicnic)) {
+            PicnicTable::create([
+                'visitor_id' => $request->visitor_id,
+                'details' => json_encode($structuredPicnic),
+                'total_payment' => $request->picnictable_total_payment,
+                'payment_status' => $request->picnictable_payment_status ?? 'Unpaid',
+            ]);
+        }
+
+        return redirect()->back()->with('success', 'Kawa Bath and Picnic Table fee saved successfully.');
     }
 
     public function updateKawaBath(Request $request)
     {
         $request->validate([
-            'visitor_id' => 'required|exists:visitors,id',
-            'category' => 'required|array',
-            'members' => 'required|array',
-            'age' => 'nullable|array',
-            'fee' => 'nullable|array',
-            'total_payment' => 'required',
-            'payment_status' => 'nullable',
             'kawabath_id' => 'required|exists:kawa_baths,id',
+            'visitor_id' => 'required|exists:visitors,id',
+            'members' => 'nullable|array',
+            'kawabath_total_payment' => 'required|numeric',
+            'kawabath_payment_status' => 'required|string',
         ]);
 
-        $categories = $request->input('category');
-        $members = $request->input('members');
-        $ages = $request->input('age', []);
-        $fees = $request->input('fee', []);
+        $kawaBath = KawaBath::findOrFail($request->kawabath_id);
+        $kawaServices = Service::where('service_type', 'kawa_hot_bath')->get();
+        $visitor = Visitor::with('companions')->findOrFail($request->visitor_id);
 
-        $filteredCategories = [];
-        $filteredMembers = [];
-        $filteredAges = [];
-        $filteredFees = [];
+        $guests = collect([
+            [
+                'name' => trim($visitor->first_name . ' ' . $visitor->middle_name . ' ' . $visitor->last_name),
+                'age' => $visitor->age,
+                'is_main' => true,
+            ]
+        ])->merge(
+            $visitor->companions->map(function ($c) {
+                return [
+                    'name' => $c->name,
+                    'age' => $c->age,
+                    'is_main' => false,
+                ];
+            })
+        );
 
-        $count = count($members);
+        $membersInput = $request->members ?? [];
+        $structured = [];
+        foreach ($guests as $gIndex => $guest) {
+            $serviceRows = [];
+            foreach ($kawaServices as $sIndex => $service) {
+                $qty = $membersInput[$gIndex][$sIndex] ?? 0;
+                if ((int)$qty <= 0) continue;
+                $serviceRows[] = [
+                    'service_name' => $service->service_name,
+                    'fee' => (float) $service->fee,
+                    'qty' => (int) $qty,
+                    'subtotal' => (float) $qty * $service->fee,
+                ];
+            }
 
-        for ($i = 0; $i < $count; $i++) {
-            $filteredCategories[] = isset($categories[$i]) && $categories[$i] !== null ? $categories[$i] : 'null';
-            $filteredMembers[] = isset($members[$i]) && $members[$i] !== null ? $members[$i] : 'null';
-            $filteredAges[] = isset($ages[$i]) && $ages[$i] !== null ? $ages[$i] : 'null';
-            $filteredFees[] = isset($fees[$i]) && $fees[$i] !== null ? $fees[$i] : 'null';
+            if (!empty($serviceRows)) {
+                $structured[] = [
+                    'guest' => $guest['name'],
+                    'age' => $guest['age'],
+                    'is_main' => $guest['is_main'],
+                    'services' => $serviceRows,
+                ];
+            }
         }
 
-        $kawabath = KawaBath::findOrFail($request->kawabath_id);
-        $kawabath->update([
+        $kawaBath->update([
             'visitor_id' => $request->visitor_id,
-            'category' => json_encode($filteredCategories),
-            'members' => json_encode($filteredMembers),
-            'age' => json_encode($filteredAges),
-            'fee' => json_encode($filteredFees),
-            'total_payment' => $request->total_payment,
-            'payment_status' => $request->payment_status ?? 'pending',
+            'members' => json_encode($structured),
+            'total_payment' => $request->kawabath_total_payment,
+            'payment_status' => $request->kawabath_payment_status,
         ]);
 
         return redirect()->route('kawabaths')->with('success', 'Kawa Hot Bath record updated successfully.');

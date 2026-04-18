@@ -14,12 +14,9 @@ return new class extends Migration
         Schema::create('kawa_baths', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('visitor_id');
-            $table->string('category');
-            $table->integer('members');
-            $table->integer('age')->nullable();
-            $table->decimal('fee', 8, 2);
+            $table->longText('members');
             $table->decimal('total_payment', 10, 2);
-            $table->string('payment_status');
+            $table->string('payment_status')->default('pending');
             $table->timestamps();
 
             $table->foreign('visitor_id')->references('id')->on('visitors')->onDelete('cascade');

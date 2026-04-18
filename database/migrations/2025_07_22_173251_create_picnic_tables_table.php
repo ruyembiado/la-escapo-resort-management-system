@@ -14,8 +14,7 @@ return new class extends Migration
         Schema::create('picnic_tables', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('visitor_id');
-            $table->integer('quantity');
-            $table->decimal('fee', 8, 2);
+            $table->longText('details')->nullable();
             $table->decimal('total_payment', 10, 2);
             $table->string('payment_status');
             $table->timestamps();
