@@ -19,6 +19,40 @@
     @include('layouts.services-navigation')
     <div class="card shadow mb-4">
         <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center">
+                <!-- Date Filter -->
+                <form method="GET" action="" id="dateRangeForm">
+                    <div class="d-flex justify-content-start gap-2 align-items-end mb-4">
+                        <div class="d-flex align-items-center">
+                            <label class="mb-0 me-0 p-1 bg-theme-primary text-light">From:</label>
+                            <input type="date" name="start_date" value="{{ request('start_date') }}"
+                                class="form-control form-control-sm rounded-0"
+                                onchange="document.getElementById('dateRangeForm').submit();">
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <label class="mb-0 me-0 p-1 bg-theme-primary text-light">To:</label>
+                            <input type="date" name="end_date" value="{{ request('end_date') }}"
+                                class="form-control form-control-sm rounded-0"
+                                onchange="document.getElementById('dateRangeForm').submit();">
+                        </div>
+                    </div>
+                    <!-- A-Z Filter -->
+                    <div class="d-flex flex-wrap gap-1 mb-3">
+                        <a href="{{ request()->fullUrlWithQuery(['letter' => null]) }}"
+                            class="btn btn-sm rounded-circle {{ request('letter') ? 'btn-dark' : 'btn-success' }}">
+                            All
+                        </a>
+                        @foreach (range('A', 'Z') as $letter)
+                            <a href="{{ request()->fullUrlWithQuery(['letter' => $letter]) }}"
+                                class="btn btn-sm rounded-circle 
+                                    {{ request('letter') == $letter ? 'btn-success' : 'btn-dark' }}"
+                                style="width:32px;height:32px;line-height:22px;">
+                                {{ $letter }}
+                            </a>
+                        @endforeach
+                    </div>
+                </form>
+            </div>
             <div class="table-responsive">
                 <table class="table table-bordered border-dark" id="dataTable1" width="100%" cellspacing="0"
                     style="min-width:2000px;">
@@ -52,43 +86,43 @@
                                             <tr>
                                                 <th class="bg-theme-primary text-light" style="padding: 5px;">NO.</th>
                                                 <th class="bg-theme-primary text-light" style="padding: 5px;">GUEST</th>
-                                                <th class="bg-theme-primary text-light" style="padding: 5px;">CATEGORY</th>
                                                 <th class="bg-theme-primary text-light" style="padding: 5px;">AGE</th>
+                                                <th class="bg-theme-primary text-light" style="padding: 5px;">CATEGORY</th>
+                                                <th class="bg-theme-primary text-light" style="padding: 5px;">QUANTITY</th>
+                                                <th class="bg-theme-primary text-light" style="padding: 5px;">FEE</th>
                                                 <th class="bg-theme-primary text-light" style="padding: 5px;">SUB-TOTAL</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             @php
-                                                $membersData = json_decode($watertubing->members, true);
+                                                $membersData = json_decode($watertubing->members, true) ?? [];
                                             @endphp
                                             @foreach ($membersData as $index => $row)
                                                 @if (!empty($row['services']))
-                                                    <tr>
-                                                        <td style="padding: 8px;">
-                                                            {{ $row['guest'] }} {{ $row['is_main'] ? '(Main Guest)' : '' }}
-                                                        </td>
-                                                        <td style="padding: 8px;">
-                                                            {{ $row['age'] }}
-                                                        </td>
-                                                        <td style="padding: 8px;">
-                                                            @foreach ($row['services'] as $service)
-                                                                <div>
-                                                                    {{ $service['service_name'] }}
-                                                                    (x{{ $service['qty'] }})
-                                                                </div>
-                                                            @endforeach
-                                                        </td>
-                                                        <td style="padding: 8px;">
-                                                            @foreach ($row['services'] as $service)
-                                                                <div>
-                                                                    ₱{{ number_format($service['fee'], 2) }}
-                                                                </div>
-                                                            @endforeach
-                                                        </td>
-                                                        <td style="padding: 8px;">
-                                                            ₱{{ number_format(collect($row['services'])->sum('subtotal'), 2) }}
-                                                        </td>
-                                                    </tr>
+                                                    @foreach ($row['services'] as $sIndex => $service)
+                                                        <tr>
+                                                            @if ($sIndex === 0)
+                                                                <td class="text-center"
+                                                                    rowspan="{{ count($row['services']) }}">
+                                                                    {{ $loop->parent->iteration ?? $index + 1 }}
+                                                                </td>
+                                                                <td rowspan="{{ count($row['services']) }}">
+                                                                    {{ $row['guest'] }}
+                                                                    @if (!empty($row['is_main']))
+                                                                        (Main Guest)
+                                                                    @endif
+                                                                </td>
+                                                                <td class="text-center"
+                                                                    rowspan="{{ count($row['services']) }}">
+                                                                    {{ $row['age'] }}
+                                                                </td>
+                                                            @endif
+                                                            <td>{{ $service['service_name'] }}</td>
+                                                            <td class="text-center">{{ $service['qty'] }}</td>
+                                                            <td>₱{{ number_format($service['fee'], 2) }}</td>
+                                                            <td>₱{{ number_format($service['subtotal'], 2) }}</td>
+                                                        </tr>
+                                                    @endforeach
                                                 @endif
                                             @endforeach
                                         </tbody>
@@ -108,7 +142,7 @@
                                         <a href="#" class="btn btn-warning btn-sm" data-bs-toggle="modal"
                                             data-bs-target="#editWaterTubingModal" data-id="{{ $watertubing->id }}"
                                             data-visitor-id="{{ $watertubing->visitor_id }}"
-                                            data-total-members='@json(json_decode($watertubing->members))'
+                                            data-members='@json(json_decode($watertubing->members))'
                                             data-total-payment="{{ $watertubing->total_payment }}"
                                             data-payment-status="{{ $watertubing->payment_status }}">
                                             <i class="fa fa-edit"></i>
@@ -228,7 +262,6 @@
         <div class="modal-dialog modal-xl" role="document">
             <form action="{{ route('watertubing.update') }}" method="POST">
                 <input type="hidden" name="water_tubing_id" id="edit_watertubing_id">
-                <input type="hidden" name="visitor_id" id="_visitor_id">
                 @csrf
                 @method('PUT')
                 <div class="modal-content">
@@ -252,8 +285,8 @@
                             <div class="d-flex align-items-start gap-1">
                                 <div class="col-6 d-flex align-items-center gap-3">
                                     <label for="visitor_id">Name:</label>
-                                    <select disabled name="visitor_id" class="form-control select2" id="edit_visitor_id"
-                                        required data-placeholder="Select a visitor">
+                                    <select name="visitor_id" class="form-control select2" id="edit_visitor_id" required
+                                        data-placeholder="Select a visitor">
                                         <option></option>
                                         @foreach ($visitors as $visitor)
                                             <option value="{{ $visitor->id }}">{{ $visitor->first_name }}
@@ -268,7 +301,8 @@
                         </div>
 
                         <div class="form-group mb-2">
-                            <table style="width: 100%; border-collapse: collapse;">
+                            <table class="table table-bordered border-dark"
+                                style="width: 100%; border-collapse: collapse;">
                                 <thead>
                                     <tr>
                                         <th class="bg-theme-primary text-light" style="padding: 10px;">NO.</th>
@@ -315,12 +349,16 @@
     </div>
 @endsection <!-- End the content section -->
 <script>
-    const waterTubingServices = @json($waterTubingFees);
+    window.waterTubingServices = @json($waterTubingFees);
 </script>
-{{-- ADD FORM SCRIPT --}}
+
 <script>
     document.addEventListener('DOMContentLoaded', function() {
 
+        const services = window.waterTubingServices;
+        // =========================
+        // SELECT2 INIT
+        // =========================
         $('#addWaterTubingModal').on('shown.bs.modal', function() {
             $('#visitor_name').select2({
                 theme: 'bootstrap4',
@@ -332,275 +370,182 @@
         });
 
         $('#editWaterTubingModal').on('shown.bs.modal', function() {
-            $('#visitor_name').select2({
+            $('#edit_visitor_id').select2({
                 theme: 'bootstrap4',
                 width: '100%',
-                placeholder: "Select a visitor",
-                allowClear: true,
                 dropdownParent: $('#editWaterTubingModal')
             });
         });
 
-        function renderRows(guests) {
+        // =========================
+        // RENDER TABLE (REUSABLE)
+        // =========================
+        function renderRows(target, guests, isEdit = false) {
+
             let html = '';
 
             guests.forEach((guest, gIndex) => {
 
-                // CATEGORY LABELS (700M | 1.5KM)
-                let categoryLabels = '';
-                waterTubingServices.forEach((service, sIndex) => {
-                    categoryLabels += `<span>${service.service_name}</span>`;
+                let servicesData = services.map((service, sIndex) => {
+
+                    let qty = 0;
+
+                    if (isEdit && guest.services) {
+                        const match = guest.services.find(s =>
+                            s.service_name === service.service_name
+                        );
+                        if (match) qty = match.qty;
+                    }
+
+                    return {
+                        service,
+                        sIndex,
+                        qty
+                    };
                 });
 
-                // QUANTITY INPUTS (0 | 0)
-                let qtyInputs = '';
-                waterTubingServices.forEach((service, sIndex) => {
-                    qtyInputs += `
-                <input type="number"
-                    class="form-control qty"
-                    style="width:70px;"
-                    data-fee="${service.fee}"
-                    name="members[${gIndex}][${sIndex}]"
-                    value="0" min="0">
+                servicesData.forEach((row, index) => {
+
+                    html += `
+                <tr>
+
+                    ${index === 0 ? `
+                        <td class="text-center" rowspan="${servicesData.length}">
+                            ${gIndex + 1}
+                        </td>
+
+                        <td rowspan="${servicesData.length}">
+                            ${guest.name || guest.guest || ''} 
+                            ${guest.is_main ? '(Main Guest)' : ''}
+                        </td>
+
+                        <td class="text-center" rowspan="${servicesData.length}">
+                            ${guest.age || ''}
+                        </td>
+                    ` : ''}
+
+                    <!-- CATEGORY -->
+                    <td>
+                        ${row.service.service_name}
+                    </td>
+
+                    <!-- FEE -->
+                    <td>
+                        ₱${parseFloat(row.service.fee).toFixed(2)}
+                    </td>
+
+                    <!-- QTY -->
+                    <td>
+                        <input type="number"
+                            class="form-control ${isEdit ? 'edit-qty' : 'qty'}"
+                            style="width:70px;"
+                            data-fee="${row.service.fee}"
+                            data-service-name="${row.service.service_name}"
+                            name="members[${gIndex}][${row.sIndex}]"
+                            value="${row.qty}"
+                            min="0">
+                    </td>
+
+                    <!-- SUBTOTAL -->
+                    <td>
+                        <input type="text"
+                            class="form-control ${isEdit ? 'edit-subtotal' : 'subtotal'}"
+                            readonly
+                            value="0.00">
+                    </td>
+
+                </tr>
             `;
                 });
-
-                html += `
-            <tr>
-                <td class="align-middle text-center">${gIndex + 1}</td>
-
-                <td class="align-middle">
-                    ${guest.name} ${guest.is_main ? '(Main Guest)' : ''}
-                </td>
-
-                <td class="align-middle text-center">${guest.age}</td>
-
-                <!-- CATEGORY -->
-                <td class="align-middle text-center">
-                    <div style="display:flex; gap:15px;">
-                        ${categoryLabels}
-                    </div>
-                </td>
-
-                <!-- FEE -->
-                <td class="align-middle text-center">
-                    <div style="display:flex; gap:15px;">
-                        ${waterTubingServices.map(s => `<span>₱${parseFloat(s.fee).toFixed(2)}</span>`).join('')}
-                    </div>
-                </td>
-
-                <!-- QUANTITY -->
-                <td>
-                    <div style="display:flex; gap:10px;">
-                        ${qtyInputs}
-                    </div>
-                </td>
-
-                <td>
-                    <input type="text" class="form-control subtotal" readonly value="0.00">
-                </td>
-            </tr>
-        `;
             });
 
-            document.getElementById('addWaterTubingTableBody').innerHTML = html;
+            $(target).html(html);
         }
 
-        function updateTotals() {
+        // =========================
+        // CALCULATE TOTALS (REUSABLE)
+        // =========================
+        function updateTotals(tableSelector, totalSelector, qtyClass, subtotalClass) {
+
             let grandTotal = 0;
 
-            document.querySelectorAll('#addWaterTubingTableBody tr').forEach(row => {
+            $(`${tableSelector} tr`).each(function() {
 
-                let rowTotal = 0;
+                let qtyInput = $(this).find(`.${qtyClass}`);
 
-                row.querySelectorAll('.qty').forEach(input => {
-                    const qty = parseInt(input.value) || 0;
-                    const fee = parseFloat(input.dataset.fee) || 0;
+                if (qtyInput.length) {
+                    const qty = parseInt(qtyInput.val()) || 0;
+                    const fee = parseFloat(qtyInput.data('fee')) || 0;
 
-                    rowTotal += qty * fee;
-                });
+                    let subtotal = qty * fee;
 
-                const subtotalField = row.querySelector('.subtotal');
-                if (subtotalField) {
-                    subtotalField.value = rowTotal.toFixed(2);
+                    $(this).find(`.${subtotalClass}`).val(subtotal.toFixed(2));
+
+                    grandTotal += subtotal;
                 }
-
-                grandTotal += rowTotal;
             });
 
-            document.getElementById('total_payment').value = grandTotal.toFixed(2);
+            $(totalSelector).val(grandTotal.toFixed(2));
         }
 
-        // SELECT VISITOR
+        // =========================
+        // ADD FLOW
+        // =========================
         $('#visitor_name').on('change', function() {
 
             const visitor_id = $(this).val();
             if (!visitor_id) return;
 
             const baseUrl = window.location.origin;
-            const folderName = window.location.pathname.split('/')[1];
-            const url = `${baseUrl}/${folderName}/get-visitor-members/${visitor_id}`;
+            const folder = window.location.pathname.split('/')[1];
+            const url = `${baseUrl}/${folder}/get-visitor-members/${visitor_id}`;
 
             $.get(url, function(res) {
-
-                renderRows(res.guests);
-                updateTotals();
-
+                renderRows('#addWaterTubingTableBody', res.guests, false);
+                updateTotals('#addWaterTubingTableBody', '#total_payment', 'qty', 'subtotal');
             });
         });
 
-        // INPUT CHANGE
         $(document).on('input', '.qty', function() {
-            updateTotals();
+            updateTotals('#addWaterTubingTableBody', '#total_payment', 'qty', 'subtotal');
         });
 
-    });
-</script>
-
-{{-- EDIT FORM SCRIPT --}}
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-
+        // =========================
+        // EDIT FLOW
+        // =========================
         let editCache = [];
-        let waterTubingServices = window.waterTubingServices || [];
 
-        // =========================
-        // RENDER EDIT TABLE
-        // =========================
-        function renderEditRows(data) {
-
-            let html = '';
-
-            data.forEach((guest, gIndex) => {
-
-                let qtyInputs = waterTubingServices.map(service => {
-
-                    let existingQty = 0;
-
-                    if (guest.services && Array.isArray(guest.services)) {
-                        const match = guest.services.find(s =>
-                            Number(s.service_id) === Number(service.id)
-                        );
-                        if (match) existingQty = match.qty;
-                    }
-
-                    return `
-                    <input type="number"
-                        class="form-control edit-qty"
-                        style="width:70px;"
-                        data-service-id="${service.id}"
-                        data-fee="${service.fee}"
-                        value="${existingQty}"
-                        min="0">
-                `;
-                }).join('');
-
-                let feeLabels = waterTubingServices
-                    .map(s => `₱${parseFloat(s.fee).toFixed(2)}`)
-                    .join(' | ');
-
-                html += `
-                <tr>
-                    <td class="text-center">${gIndex + 1}</td>
-
-                    <td>
-                        ${guest.guest ?? ''} 
-                        ${guest.is_main ? '(Main Guest)' : ''}
-                    </td>
-
-                    <td class="text-center">${guest.age ?? ''}</td>
-
-                    <td>
-                        ${waterTubingServices.map(s => `<div>${s.service_name}</div>`).join('')}
-                    </td>
-
-                    <td class="text-center">
-                        ${feeLabels}
-                    </td>
-
-                    <td class="d-flex gap-2">
-                        ${qtyInputs}
-                    </td>
-
-                    <td>
-                        <input type="text"
-                            class="form-control edit-subtotal"
-                            readonly
-                            value="0.00">
-                    </td>
-                </tr>
-            `;
-            });
-
-            $('#editWaterTubingTableBody').html(html);
-        }
-
-        // =========================
-        // CALCULATE TOTALS
-        // =========================
-        function updateEditTotals() {
-
-            let grandTotal = 0;
-
-            $('#editWaterTubingTableBody tr').each(function() {
-
-                let rowTotal = 0;
-
-                $(this).find('.edit-qty').each(function() {
-
-                    const qty = parseInt(this.value || 0);
-                    const fee = parseFloat(this.dataset.fee || 0);
-
-                    rowTotal += qty * fee;
-                });
-
-                $(this).find('.edit-subtotal').val(rowTotal.toFixed(2));
-
-                grandTotal += rowTotal;
-            });
-
-            $('#edit_total_payment').val(grandTotal.toFixed(2));
-        }
-
-        // =========================
-        // OPEN MODAL
-        // =========================
         $('#editWaterTubingModal').on('show.bs.modal', function(event) {
 
             const button = $(event.relatedTarget);
 
-            const waterTubingId = button.data('id');
-            const visitorId = button.data('visitor-id');
-            const paymentStatus = button.data('payment-status');
+            const members = button.data('members');
 
-            $('#edit_watertubing_id').val(waterTubingId);
-            $('#edit_visitor_id').val(visitorId);
-            $('#_visitor_id').val(visitorId);
-            $('#edit_payment_status').val(paymentStatus);
+            let parsedMembers = [];
 
-            const baseUrl = window.location.origin;
-            const folder = window.location.pathname.split('/')[1];
-            const url = `${baseUrl}/${folder}/get-water-tubing/${waterTubingId}`;
+            try {
+                parsedMembers = typeof members === 'string' ?
+                    JSON.parse(members) :
+                    members;
+            } catch (e) {
+                parsedMembers = [];
+            }
 
-            $.get(url, function(res) {
+            $('#edit_watertubing_id').val(button.data('id'));
+            $('#edit_visitor_id').val(button.data('visitor-id'));
+            $('#edit_payment_status').val(button.data('payment-status'));
 
-                editCache = res.data || [];
+            renderRows('#editWaterTubingTableBody', parsedMembers, true);
 
-                renderEditRows(editCache);
-                updateEditTotals();
-            });
+            updateTotals('#editWaterTubingTableBody', '#edit_total_payment', 'edit-qty',
+                'edit-subtotal');
         });
 
-        // =========================
-        // LIVE INPUT UPDATE
-        // =========================
-        $(document).on('input', '#editWaterTubingTableBody .edit-qty', function() {
-            updateEditTotals();
+        $(document).on('input', '.edit-qty', function() {
+            updateTotals('#editWaterTubingTableBody', '#edit_total_payment', 'edit-qty',
+                'edit-subtotal');
         });
 
-        // =========================
-        // RESET ON CLOSE
-        // =========================
         $('#editWaterTubingModal').on('hidden.bs.modal', function() {
             $('#editWaterTubingTableBody').html('');
             $('#edit_total_payment').val('0.00');

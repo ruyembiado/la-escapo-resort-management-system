@@ -18,8 +18,8 @@
         Retreat & Relaxation
     </a>
 
-    <a href="{{ url('accommodations') }}"
-        class="btn {{ Request::is('accommodations') || Request::is('function-halls') ? 'btn-success' : 'btn-outline-light ' }} d-flex align-items-center gap-2">
+    <a href="{{ url('kawa-hot-baths') }}"
+        class="btn {{ Request::is('kawa-hot-baths') || Request::is('picnic-tables') ? 'btn-success' : 'btn-outline-light ' }} d-flex align-items-center gap-2">
         <i class="fas fa-hot-tub-person"></i>
         Bathing & Wellness
     </a>

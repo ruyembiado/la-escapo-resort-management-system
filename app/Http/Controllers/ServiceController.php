@@ -201,103 +201,6 @@ class ServiceController extends Controller
         return redirect()->route('entrances')->with('success', 'Visitor data deleted successfully.');
     }
 
-    // public function storeEntrance(Request $request)
-    // {
-    //     $request->validate([
-    //         'visitor_id' => 'required|exists:visitors,id',
-    //         'category' => 'required|array',
-    //         'members' => 'required|array',
-    //         'age' => 'nullable|array',
-    //         'fee' => 'nullable|array',
-    //         'total_payment' => 'required',
-    //         'payment_status' => 'nullable',
-    //     ]);
-
-    //     $categories = $request->input('category');
-    //     $members = $request->input('members');
-    //     $ages = $request->input('age', []);
-    //     $fees = $request->input('fee', []);
-
-    //     $filteredCategories = [];
-    //     $filteredMembers = [];
-    //     $filteredAges = [];
-    //     $filteredFees = [];
-
-    //     $count = count($members);
-
-    //     for ($i = 0; $i < $count; $i++) {
-    //         $filteredCategories[] = isset($categories[$i]) && $categories[$i] !== null ? $categories[$i] : 'null';
-    //         $filteredMembers[] = isset($members[$i]) && $members[$i] !== null ? $members[$i] : 'null';
-    //         $filteredAges[] = isset($ages[$i]) && $ages[$i] !== null ? $ages[$i] : 'null';
-    //         $filteredFees[] = isset($fees[$i]) && $fees[$i] !== null ? $fees[$i] : 'null';
-    //     }
-
-    //     Entrance::create([
-    //         'visitor_id' => $request->visitor_id,
-    //         'category' => json_encode($filteredCategories),
-    //         'members' => json_encode($filteredMembers),
-    //         'age' => json_encode($filteredAges),
-    //         'fee' => json_encode($filteredFees),
-    //         'total_payment' => $request->total_payment,
-    //         'payment_status' => $request->payment_status ?? 'pending',
-    //     ]);
-
-    //     return redirect()->route('entrances')->with('success', 'Entrance added successfully.');
-    // }
-
-    // public function updateEntrance(Request $request)
-    // {
-    //     $request->validate([
-    //         'visitor_id' => 'required|exists:visitors,id',
-    //         'category' => 'required|array',
-    //         'members' => 'required|array',
-    //         'age' => 'nullable|array',
-    //         'fee' => 'nullable|array',
-    //         'total_payment' => 'required',
-    //         'payment_status' => 'nullable',
-    //         'entrance_id' => 'required|exists:entrances,id',
-    //     ]);
-
-    //     $categories = $request->input('category');
-    //     $members = $request->input('members');
-    //     $ages = $request->input('age', []);
-    //     $fees = $request->input('fee', []);
-
-    //     $filteredCategories = [];
-    //     $filteredMembers = [];
-    //     $filteredAges = [];
-    //     $filteredFees = [];
-
-    //     $count = count($members);
-
-    //     for ($i = 0; $i < $count; $i++) {
-    //         $filteredCategories[] = isset($categories[$i]) && $categories[$i] !== null ? $categories[$i] : 'null';
-    //         $filteredMembers[] = isset($members[$i]) && $members[$i] !== null ? $members[$i] : 'null';
-    //         $filteredAges[] = isset($ages[$i]) && $ages[$i] !== null ? $ages[$i] : 'null';
-    //         $filteredFees[] = isset($fees[$i]) && $fees[$i] !== null ? $fees[$i] : 'null';
-    //     }
-
-    //     $entrance = Entrance::findOrFail($request->entrance_id);
-    //     $entrance->update([
-    //         'visitor_id' => $request->visitor_id,
-    //         'category' => json_encode($filteredCategories),
-    //         'members' => json_encode($filteredMembers),
-    //         'age' => json_encode($filteredAges),
-    //         'fee' => json_encode($filteredFees),
-    //         'total_payment' => $request->total_payment,
-    //         'payment_status' => $request->payment_status ?? 'pending',
-    //     ]);
-
-    //     return redirect()->route('entrances')->with('success', 'Entrance updated successfully.');
-    // }
-
-    // public function destroyEntrance($id)
-    // {
-    //     $entrance = Entrance::findOrFail($id);
-    //     $entrance->delete();
-    //     return redirect()->route('entrances')->with('success', 'Entrance fee deleted successfully.');
-    // }
-
     public function accommodations()
     {
         $visitors = Visitor::orderBy('created_at', 'desc')->limit(100)->get();
@@ -694,11 +597,14 @@ class ServiceController extends Controller
     }
 
     public function kawabaths()
-    {
+    {   
+        $kawaHotBathFees = Service::where('service_type', 'kawa_hot_bath')->get();
+        $picnicTableFees = Service::where('service_type', 'picnic_table')->get();
+
         $visitors = Visitor::orderBy('created_at', 'desc')->limit(100)->get();
         $kawaBaths = KawaBath::orderBy('created_at', 'desc')->with('visitor')->get();
 
-        return view('kawa_baths', compact('visitors', 'kawaBaths'));
+        return view('kawa_baths', compact('visitors', 'kawaBaths', 'kawaHotBathFees', 'picnicTableFees'));
     }
 
     public function storeKawaBath(Request $request)
@@ -798,12 +704,29 @@ class ServiceController extends Controller
         return redirect()->route('kawabaths')->with('success', 'Kawa Hot Bath record deleted successfully.');
     }
 
-    public function watertubings()
+    public function watertubings(Request $request)
     {
+        $start_date = $request->start_date;
+        $end_date = $request->end_date;
+        $letter = $request->letter;
+
         $waterTubingFees = Service::where('service_type', 'water_tubing')->get();
 
         $visitors = Visitor::orderBy('created_at', 'desc')->limit(100)->get();
-        $waterTubings = WaterTubing::orderBy('created_at', 'desc')->with('visitor')->get();
+        $waterTubings = WaterTubing::with('visitor')
+            ->when($start_date, function ($query) use ($start_date) {
+                $query->whereDate('created_at', '>=', $start_date);
+            })
+            ->when($end_date, function ($query) use ($end_date) {
+                $query->whereDate('created_at', '<=', $end_date);
+            })
+            ->when($letter, function ($query) use ($letter) {
+                $query->whereHas('visitor', function ($q) use ($letter) {
+                    $q->where('first_name', 'like', $letter . '%');
+                });
+            })
+            ->orderBy('created_at', 'desc')
+            ->get();
 
         return view('water_tubings', compact('visitors', 'waterTubings', 'waterTubingFees'));
     }
@@ -879,46 +802,69 @@ class ServiceController extends Controller
     {
         $request->validate([
             'visitor_id' => 'required|exists:visitors,id',
-            'category' => 'required|array',
             'members' => 'required|array',
-            'age' => 'nullable|array',
-            'fee' => 'nullable|array',
-            'total_payment' => 'required',
-            'payment_status' => 'nullable',
+            'total_payment' => 'required|numeric',
+            'payment_status' => 'required',
             'water_tubing_id' => 'required|exists:water_tubings,id',
         ]);
 
-        $categories = $request->input('category');
-        $members = $request->input('members');
-        $ages = $request->input('age', []);
-        $fees = $request->input('fee', []);
+        $visitorId = $request->visitor_id;
+        $membersInput = $request->members;
 
-        $filteredCategories = [];
-        $filteredMembers = [];
-        $filteredAges = [];
-        $filteredFees = [];
+        $services = Service::where('service_type', 'water_tubing')->get();
+        $visitor = Visitor::with('companions')->findOrFail($visitorId);
 
-        $count = count($members);
+        $guests = collect([
+            (object)[
+                'name' => trim($visitor->first_name . ' ' . $visitor->middle_name . ' ' . $visitor->last_name),
+                'age' => $visitor->age,
+                'is_main' => true,
+            ]
+        ])->merge(
+            $visitor->companions->map(function ($c) {
+                return (object)[
+                    'name' => $c->name,
+                    'age' => $c->age,
+                    'is_main' => false,
+                ];
+            })
+        )->values();
 
-        for ($i = 0; $i < $count; $i++) {
-            $filteredCategories[] = isset($categories[$i]) && $categories[$i] !== null ? $categories[$i] : 'null';
-            $filteredMembers[] = isset($members[$i]) && $members[$i] !== null ? $members[$i] : 'null';
-            $filteredAges[] = isset($ages[$i]) && $ages[$i] !== null ? $ages[$i] : 'null';
-            $filteredFees[] = isset($fees[$i]) && $fees[$i] !== null ? $fees[$i] : 'null';
+        $structured = [];
+        foreach ($guests as $gIndex => $guest) {
+            $serviceRows = [];
+            foreach ($services as $sIndex => $service) {
+                $qty = $membersInput[$gIndex][$sIndex] ?? 0;
+
+                if ($qty <= 0) continue;
+
+                $serviceRows[] = [
+                    'service_name' => $service->service_name,
+                    'fee' => (float) $service->fee,
+                    'qty' => (int) $qty,
+                    'subtotal' => (float) $qty * $service->fee,
+                ];
+            }
+
+            if (!empty($serviceRows)) {
+                $structured[] = [
+                    'guest' => $guest->name,
+                    'age' => $guest->age,
+                    'is_main' => $guest->is_main,
+                    'services' => $serviceRows,
+                ];
+            }
         }
 
-        $watertubing = WaterTubing::findOrFail($request->water_tubing_id);
-        $watertubing->update([
-            'visitor_id' => $request->visitor_id,
-            'category' => json_encode($filteredCategories),
-            'members' => json_encode($filteredMembers),
-            'age' => json_encode($filteredAges),
-            'fee' => json_encode($filteredFees),
+        WaterTubing::findOrFail($request->water_tubing_id)->update([
+            'visitor_id' => $visitorId,
+            'members' => json_encode($structured),
             'total_payment' => $request->total_payment,
-            'payment_status' => $request->payment_status ?? 'pending',
+            'payment_status' => $request->payment_status,
         ]);
 
-        return redirect()->route('watertubings')->with('success', 'Water Tubing record updated successfully.');
+        return redirect()->route('watertubings')
+            ->with('success', 'Water Tubing record updated successfully.');
     }
 
     public function destroyWaterTubing($id)
