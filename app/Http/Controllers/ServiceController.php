@@ -596,13 +596,30 @@ class ServiceController extends Controller
         return redirect()->route('beverages')->with('success', 'Beverage(s) record deleted successfully.');
     }
 
-    public function kawabaths()
+    public function kawabaths(Request $request)
     {
+        $start_date = $request->start_date;
+        $end_date = $request->end_date;
+        $letter = $request->letter;
+
         $kawaHotBathFees = Service::where('service_type', 'kawa_hot_bath')->get();
         $picnicTableFees = Service::where('service_type', 'picnic_table')->get();
 
         $visitors = Visitor::orderBy('created_at', 'desc')->limit(100)->get();
-        $kawaBaths = KawaBath::orderBy('created_at', 'desc')->with('visitor')->get();
+        $kawaBaths = KawaBath::with('visitor')
+            ->when($start_date, function ($query) use ($start_date) {
+                $query->whereDate('created_at', '>=', $start_date);
+            })
+            ->when($end_date, function ($query) use ($end_date) {
+                $query->whereDate('created_at', '<=', $end_date);
+            })
+            ->when($letter, function ($query) use ($letter) {
+                $query->whereHas('visitor', function ($q) use ($letter) {
+                    $q->where('first_name', 'like', $letter . '%');
+                });
+            })
+            ->orderBy('created_at', 'desc')
+            ->get();
 
         return view('kawa_baths', compact('visitors', 'kawaBaths', 'kawaHotBathFees', 'picnicTableFees'));
     }
@@ -613,11 +630,12 @@ class ServiceController extends Controller
             'visitor_id' => 'required|exists:visitors,id',
 
             'members' => 'nullable|array',
-            'kawabath_total_payment' => 'required|numeric',
-            'kawabath_payment_status' => 'required',
-
+            'kawabath_total_payment' => 'nullable|numeric',
+            'kawabath_payment_status' => 'nullable',
             'picnic_table_quantity' => 'nullable|array',
-            'picnictable_total_payment' => 'required|numeric',
+            'picnic_table_services' => 'nullable|array',
+            'picnic_table_name' => 'nullable|array',
+            'picnictable_total_payment' => 'nullable|numeric',
             'picnictable_payment_status' => 'nullable',
         ]);
 
@@ -658,25 +676,33 @@ class ServiceController extends Controller
 
             foreach ($kawaServices as $sIndex => $service) {
 
-                $qty = $membersInput[$gIndex][$sIndex] ?? 0;
+                $qty = isset($membersInput[$gIndex]['services'][$sIndex]['qty'])
+                    ? (int) $membersInput[$gIndex]['services'][$sIndex]['qty']
+                    : 0;
 
-                if ($qty <= 0) continue;
+                $fee = (float) $service->fee;
+
+                if ($qty <= 0) {
+                    continue;
+                }
 
                 $serviceRows[] = [
                     'service_name' => $service->service_name,
-                    'fee' => (float) $service->fee,
-                    'qty' => (int) $qty,
-                    'subtotal' => (float) $qty * $service->fee,
+                    'fee' => $fee,
+                    'qty' => $qty,
+                    'subtotal' => $qty * $fee,
                 ];
             }
 
-            if (empty($serviceRows)) continue;
+            if (empty($serviceRows)) {
+                continue;
+            }
 
             $structuredKawa[] = [
                 'guest' => $guest->name,
                 'age' => $guest->age,
-                'services' => $serviceRows,
                 'is_main' => $guest->is_main,
+                'services' => $serviceRows,
             ];
         }
 
@@ -689,21 +715,24 @@ class ServiceController extends Controller
             ]);
         }
 
-        $picnicFees = $request->picnic_table_fees ?? [];
-        $picnicQtys = $request->picnic_table_quantity ?? [];
+        $names = $request->picnic_table_services ?? [];
+        $fees = $request->picnic_table_fees ?? [];
+        $qtys = $request->picnic_table_quantity ?? [];
 
         $structuredPicnic = [];
 
-        foreach ($picnicFees as $index => $fee) {
+        foreach ($names as $i => $name) {
 
-            $qty = $picnicQtys[$index] ?? 0;
+            $qty = (int) ($qtys[$i] ?? 0);
+            $fee = (float) ($fees[$i] ?? 0);
 
             if ($qty <= 0) continue;
 
             $structuredPicnic[] = [
-                'fee' => (float) $fee,
-                'qty' => (int) $qty,
-                'subtotal' => (float) $fee * (int) $qty,
+                'service_name' => $name,
+                'fee' => $fee,
+                'qty' => $qty,
+                'subtotal' => $qty * $fee,
             ];
         }
 
@@ -711,7 +740,7 @@ class ServiceController extends Controller
             PicnicTable::create([
                 'visitor_id' => $request->visitor_id,
                 'details' => json_encode($structuredPicnic),
-                'total_payment' => $request->picnictable_total_payment,
+                'total_payment' => $request->picnictable_total_payment ?? 0,
                 'payment_status' => $request->picnictable_payment_status ?? 'Unpaid',
             ]);
         }
@@ -730,18 +759,20 @@ class ServiceController extends Controller
         ]);
 
         $kawaBath = KawaBath::findOrFail($request->kawabath_id);
+
         $kawaServices = Service::where('service_type', 'kawa_hot_bath')->get();
+
         $visitor = Visitor::with('companions')->findOrFail($request->visitor_id);
 
         $guests = collect([
-            [
+            (object)[
                 'name' => trim($visitor->first_name . ' ' . $visitor->middle_name . ' ' . $visitor->last_name),
                 'age' => $visitor->age,
                 'is_main' => true,
             ]
         ])->merge(
             $visitor->companions->map(function ($c) {
-                return [
+                return (object)[
                     'name' => $c->name,
                     'age' => $c->age,
                     'is_main' => false,
@@ -751,24 +782,33 @@ class ServiceController extends Controller
 
         $membersInput = $request->members ?? [];
         $structured = [];
+
         foreach ($guests as $gIndex => $guest) {
+
             $serviceRows = [];
+
             foreach ($kawaServices as $sIndex => $service) {
-                $qty = $membersInput[$gIndex][$sIndex] ?? 0;
-                if ((int)$qty <= 0) continue;
+
+                $qty = (int) data_get($membersInput, "{$gIndex}.services.{$sIndex}.qty", 0);
+                $fee = (float) $service->fee;
+
+                if ($qty <= 0) {
+                    continue;
+                }
+
                 $serviceRows[] = [
                     'service_name' => $service->service_name,
-                    'fee' => (float) $service->fee,
-                    'qty' => (int) $qty,
-                    'subtotal' => (float) $qty * $service->fee,
+                    'fee' => $fee,
+                    'qty' => $qty,
+                    'subtotal' => $qty * $fee,
                 ];
             }
 
             if (!empty($serviceRows)) {
                 $structured[] = [
-                    'guest' => $guest['name'],
-                    'age' => $guest['age'],
-                    'is_main' => $guest['is_main'],
+                    'guest' => $guest->name,
+                    'age' => $guest->age,
+                    'is_main' => $guest->is_main,
                     'services' => $serviceRows,
                 ];
             }
@@ -781,7 +821,8 @@ class ServiceController extends Controller
             'payment_status' => $request->kawabath_payment_status,
         ]);
 
-        return redirect()->route('kawabaths')->with('success', 'Kawa Hot Bath record updated successfully.');
+        return redirect()->route('kawabaths')
+            ->with('success', 'Kawa Hot Bath record updated successfully.');
     }
 
     public function destroyKawaBath($id)
@@ -963,54 +1004,55 @@ class ServiceController extends Controller
 
     public function picnictables()
     {
+        $kawaHotBathFees = Service::where('service_type', 'kawa_hot_bath')->get();
+        $picnicTableFees = Service::where('service_type', 'picnic_table')->get();
+
         $visitors = Visitor::orderBy('created_at', 'desc')->limit(100)->get();
         $picnicTables = PicnicTable::orderBy('created_at', 'desc')->with('visitor')->get();
 
-        return view('picnic_tables', compact('visitors', 'picnicTables'));
-    }
-
-    public function storePicnicTable(Request $request)
-    {
-        $request->validate([
-            'visitor_id' => 'required|exists:visitors,id',
-            'quantity' => 'required',
-            'fee' => 'required',
-            'total_payment' => 'required',
-            'payment_status' => 'nullable',
-        ]);
-
-        PicnicTable::create([
-            'visitor_id' => $request->visitor_id,
-            'quantity' => $request->quantity,
-            'fee' => $request->fee,
-            'total_payment' => $request->total_payment,
-            'payment_status' => $request->payment_status ?? 'pending',
-        ]);
-
-        return redirect()->route('picnictables')->with('success', 'Picnic Table fee added successfully.');
+        return view('picnic_tables', compact('visitors', 'picnicTables', 'kawaHotBathFees', 'picnicTableFees'));
     }
 
     public function updatePicnicTable(Request $request)
     {
         $request->validate([
             'visitor_id' => 'required|exists:visitors,id',
-            'quantity' => 'required',
-            'fee' => 'required',
-            'total_payment' => 'required',
-            'payment_status' => 'nullable',
             'picnic_table_id' => 'required|exists:picnic_tables,id',
+            'picnictable_total_payment' => 'required|numeric',
+            'picnictable_payment_status' => 'nullable',
+
+            'picnic_table_services' => 'required|array',
+            'picnic_table_fees' => 'required|array',
+            'picnic_table_quantity' => 'required|array',
         ]);
+
+        $details = [];
+
+        foreach ($request->picnic_table_services as $index => $service) {
+
+            $fee = $request->picnic_table_fees[$index] ?? 0;
+            $qty = $request->picnic_table_quantity[$index] ?? 0;
+
+            $details[] = [
+                'service_name' => $service,
+                'fee' => (float) $fee,
+                'qty' => (int) $qty,
+                'subtotal' => (float) $fee * (int) $qty,
+            ];
+        }
 
         $picnictable = PicnicTable::findOrFail($request->picnic_table_id);
+
         $picnictable->update([
             'visitor_id' => $request->visitor_id,
-            'quantity' => $request->quantity,
-            'fee' => $request->fee,
-            'total_payment' => $request->total_payment,
-            'payment_status' => $request->payment_status ?? 'pending',
+            'details' => json_encode($details),
+            'total_payment' => $request->picnictable_total_payment,
+            'payment_status' => $request->picnictable_payment_status ?? 'pending',
         ]);
 
-        return redirect()->route('picnictables')->with('success', 'Picnic Table record updated successfully.');
+        return redirect()
+            ->route('picnictables')
+            ->with('success', 'Picnic Table record updated successfully.');
     }
 
     public function destroyPicnicTable($id)

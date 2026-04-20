@@ -92,12 +92,12 @@
                                         <table class="table table-bordered border-dark mt-2 mb-0">
                                             <thead>
                                                 <tr>
-                                                    <th class="bg-success text-light">NO.</th>
-                                                    <th class="bg-success text-light">NAME</th>
-                                                    <th class="bg-success text-light">CATEGORY</th>
-                                                    <th class="bg-success text-light">SEX</th>
-                                                    <th class="bg-success text-light">AGE</th>
-                                                    <th class="bg-success text-light">ADDRESS</th>
+                                                    <th class="bg-success text-light">No.</th>
+                                                    <th class="bg-success text-light">Name</th>
+                                                    <th class="bg-success text-light">Category</th>
+                                                    <th class="bg-success text-light">Sex</th>
+                                                    <th class="bg-success text-light">Age</th>
+                                                    <th class="bg-success text-light">Address</th>
                                                 </tr>
                                             </thead>
                                             <tbody>

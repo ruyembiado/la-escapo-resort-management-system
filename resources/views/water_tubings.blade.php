@@ -84,13 +84,13 @@
                                         style="width: 100%; border-collapse: collapse;">
                                         <thead>
                                             <tr>
-                                                <th class="bg-theme-primary text-light" style="padding: 5px;">NO.</th>
-                                                <th class="bg-theme-primary text-light" style="padding: 5px;">GUEST</th>
-                                                <th class="bg-theme-primary text-light" style="padding: 5px;">AGE</th>
-                                                <th class="bg-theme-primary text-light" style="padding: 5px;">CATEGORY</th>
-                                                <th class="bg-theme-primary text-light" style="padding: 5px;">QUANTITY</th>
-                                                <th class="bg-theme-primary text-light" style="padding: 5px;">FEE</th>
-                                                <th class="bg-theme-primary text-light" style="padding: 5px;">SUB-TOTAL</th>
+                                                <th class="bg-theme-primary text-light" style="padding: 5px;">No.</th>
+                                                <th class="bg-theme-primary text-light" style="padding: 5px;">Guest</th>
+                                                <th class="bg-theme-primary text-light" style="padding: 5px;">Age</th>
+                                                <th class="bg-theme-primary text-light" style="padding: 5px;">Category</th>
+                                                <th class="bg-theme-primary text-light" style="padding: 5px;">Quantity</th>
+                                                <th class="bg-theme-primary text-light" style="padding: 5px;">Fee</th>
+                                                <th class="bg-theme-primary text-light" style="padding: 5px;">Sub-Total</th>
                                             </tr>
                                         </thead>
                                         <tbody>

@@ -11,7 +11,8 @@
                 <h6 class="mb-0">Guest | Kawa Hot Bath</h6>
             </div>
         </div>
-        <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addKawaBathModal">Add Kawa Hot Bath
+        <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addKawaBathModal">Add Kawa Hot Bath &
+            Picnic Table
             Fee</a>
     </div>
 
@@ -282,7 +283,7 @@
                                 <div class="table-responsive">
                                     <table class="table table-bordered border-dark">
                                         <thead>
-                                            <th class="bg-theme-primary text-light">NO.</th>
+                                            <th class="bg-theme-primary text-light text-center">NO.</th>
                                             <th class="bg-theme-primary text-light">PICNIC TABLE</th>
                                             <th class="bg-theme-primary text-light">FEE</th>
                                             <th class="bg-theme-primary text-light">QUANTITY</th>
@@ -291,8 +292,11 @@
                                         <tbody>
                                             @foreach ($picnicTableFees as $index => $fee)
                                                 <tr>
-                                                    <td>{{ $index + 1 }}</td>
-                                                    <td>{{ $fee->service_name }}</td>
+                                                    <td class="text-center">{{ $index + 1 }}</td>
+                                                    <td>{{ $fee->service_name }}
+                                                        <input type="hidden" name="picnic_table_services[]"
+                                                            value="{{ $fee->service_name }}">
+                                                    </td>
                                                     <td>
                                                         ₱{{ number_format($fee->fee, 2) }}
                                                         <input type="hidden" name="picnic_table_fees[]"
@@ -518,8 +522,14 @@
                     <!-- SERVICE -->
                     <td>
                         ${row.service.service_name}
-                    </td>
+                        <input type="hidden"
+                            name="members[${gIndex}][${row.sIndex}][service_name]"
+                            value="${row.service.service_name}">
 
+                        <input type="hidden"
+                            name="members[${gIndex}][services][${row.sIndex}][fee]"
+                            value="${row.service.fee}">
+                    </td>
                     <!-- FEE -->
                     <td>
                         ₱${parseFloat(row.service.fee).toFixed(2)}
@@ -532,7 +542,7 @@
                             style="width:70px;"
                             data-fee="${row.service.fee}"
                             data-service-name="${row.service.service_name}"
-                            name="members[${gIndex}][${row.sIndex}]"
+                            name="members[${gIndex}][services][${row.sIndex}][qty]"
                             value="${row.qty}"
                             min="0">
                     </td>
@@ -648,37 +658,6 @@
         });
 
         // =========================
-        // EDIT MODAL LOAD
-        // =========================
-        $('#editKawaBathModal').on('show.bs.modal', function(event) {
-
-            const button = $(event.relatedTarget);
-
-            const kawabathId = button.data('id');
-            const visitorId = button.data('visitor-id');
-            const members = button.data('members') || [];
-            const totalPayment = button.data('total-payment');
-            const paymentStatus = button.data('payment-status');
-
-            // SET BASIC VALUES
-            $('#edit_kawabath_id').val(kawabathId);
-            $('#edit_visitor_name').val(visitorId).trigger('change');
-            $('#edit_payment_status').val(paymentStatus);
-            $('#kawabath_total_payment').val(totalPayment);
-
-            // RENDER TABLE
-            renderKawaRows('#editKawaBathTableBody', members, true);
-
-            // DELAY CALCULATION (IMPORTANT)
-            setTimeout(() => {
-                updateKawaTotals(
-                    '#editKawaBathTableBody',
-                    '#kawabath_total_payment',
-                    'edit-kawa-qty',
-                    'edit-kawa-subtotal'
-                );
-            }, 300);
-        }); // =========================
         // EDIT MODAL LOAD (FIXED)
         // =========================
         $('#editKawaBathModal').on('show.bs.modal', function(event) {
