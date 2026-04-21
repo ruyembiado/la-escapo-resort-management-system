@@ -65,7 +65,7 @@
                             <th class="bg-theme-primary text-light border-dark">NAME OF GUEST</th>
                             <th class="bg-theme-primary text-light border-dark">SEX</th>
                             <th class="bg-theme-primary text-light border-dark text-center">AGE</th>
-                            <th class="bg-theme-primary text-light border-dark">MEMBERS</th>
+                            <th class="bg-theme-primary text-light border-dark text-center">MEMBERS</th>
                             <th class="bg-theme-primary text-light border-dark">TOTAL FEE</th>
                             <th class="bg-theme-primary text-light border-dark">STATUS</th>
                             <th class="bg-theme-primary text-light border-dark">CONTACT NO.</th>
@@ -92,19 +92,19 @@
                                         <table class="table table-bordered border-dark mt-2 mb-0">
                                             <thead>
                                                 <tr>
-                                                    <th class="bg-success text-light">No.</th>
-                                                    <th class="bg-success text-light">Name</th>
-                                                    <th class="bg-success text-light">Category</th>
-                                                    <th class="bg-success text-light">Sex</th>
-                                                    <th class="bg-success text-light">Age</th>
-                                                    <th class="bg-success text-light">Address</th>
+                                                    <th class="bg-theme-primary text-light">No.</th>
+                                                    <th class="bg-theme-primary text-light">Name</th>
+                                                    <th class="bg-theme-primary text-light">Category</th>
+                                                    <th class="bg-theme-primary text-light">Sex</th>
+                                                    <th class="bg-theme-primary text-light">Age</th>
+                                                    <th class="bg-theme-primary text-light">Address</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 @if ($entrance->companions->isNotEmpty())
                                                     @foreach ($entrance->companions as $index => $companion)
                                                         <tr>
-                                                            <td>{{ $index + 1 }}</td>
+                                                            <td class="text-center">{{ $index + 1 }}</td>
                                                             <td>{{ $companion->name }}</td>
                                                             <td>
                                                                 @if ($companion->age <= 15)

@@ -3,46 +3,121 @@
 @section('content')
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text">Overnight Accommodations</h1>
+        <div class="d-flex">
+            <i class="fas fa-bed fa-2x text-dark me-2"></i>
+            <div class="d-flex flex-column">
+                <h1 class="h3 mb-0 text">AVAILED SERVICES</h1>
+                <h6 class="mb-0">Guest | Accommodation</h6>
+            </div>
+        </div>
         <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addAccommodationModal">Add
             Overnight Accommodation</a>
     </div>
 
     <!-- Content Row -->
+    @include('layouts.services-navigation')
     <div class="card shadow mb-4">
         <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center">
+                <!-- Date Filter -->
+                <form method="GET" action="" id="dateRangeForm">
+                    <div class="d-flex justify-content-start gap-2 align-items-end mb-4">
+                        <div class="d-flex align-items-center">
+                            <label class="mb-0 me-0 p-1 bg-theme-primary text-light">From:</label>
+                            <input type="date" name="start_date" value="{{ request('start_date') }}"
+                                class="form-control form-control-sm rounded-0"
+                                onchange="document.getElementById('dateRangeForm').submit();">
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <label class="mb-0 me-0 p-1 bg-theme-primary text-light">To:</label>
+                            <input type="date" name="end_date" value="{{ request('end_date') }}"
+                                class="form-control form-control-sm rounded-0"
+                                onchange="document.getElementById('dateRangeForm').submit();">
+                        </div>
+                    </div>
+                    <!-- A-Z Filter -->
+                    <div class="d-flex flex-wrap gap-1 mb-3">
+                        <a href="{{ request()->fullUrlWithQuery(['letter' => null]) }}"
+                            class="btn btn-sm rounded-circle {{ request('letter') ? 'btn-dark' : 'btn-success' }}">
+                            All
+                        </a>
+                        @foreach (range('A', 'Z') as $letter)
+                            <a href="{{ request()->fullUrlWithQuery(['letter' => $letter]) }}"
+                                class="btn btn-sm rounded-circle 
+                                    {{ request('letter') == $letter ? 'btn-success' : 'btn-dark' }}"
+                                style="width:32px;height:32px;line-height:22px;">
+                                {{ $letter }}
+                            </a>
+                        @endforeach
+                    </div>
+                </form>
+            </div>
+            <div class="d-flex gap-2">
+                <a href="{{ url('massages') }}" class="btn bg-theme-primary text-light d-flex align-items-center gap-2">
+                    <i class="fa-solid fa-spa"></i>
+                    Massage
+                </a>
+                <a href="{{ url('accommodations') }}"
+                    class="btn btn-success text-light d-flex align-items-center gap-2">
+                    <i class="fa-solid fa-bed"></i>
+                    Accommodation
+                </a>
+            </div>
             <div class="table-responsive">
-                <table class="table table-bordered" id="dataTable1" width="100%" cellspacing="0">
+                <table class="table table-bordered border-dark" id="dataTable1" width="100%" cellspacing="0"
+                    style="min-width:2000px;">
                     <thead>
                         <tr>
-                            <th>No.</th>
-                            <th>Name</th>
-                            <th>Rooms</th>
-                            <th>Total Payment</th>
-                            <th>Status</th>
-                            <th>Date Created</th>
-                            <th>Action</th>
+                            <th class="bg-theme-primary text-light text-center">NO.</th>
+                            <th class="bg-theme-primary text-light">MAIN GUEST</th>
+                            <th class="bg-theme-primary text-light text-center">SERVICE DETAILS</th>
+                            <th class="bg-theme-primary text-light">TOTAL FEE</th>
+                            <th class="bg-theme-primary text-light">STATUS</th>
+                            <th class="bg-theme-primary text-light">DATE CREATED</th>
+                            <th class="bg-theme-primary text-light sticky-action">ACTION</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($accommodations as $accommodation)
                             <tr>
-                                <td>{{ $loop->iteration }}</td>
+                                <td class="text-center">{{ $loop->iteration }}</td>
                                 <td>
                                     {{ optional($accommodation->visitor)->first_name }}
                                     {{ optional($accommodation->visitor)->middle_name }}
                                     {{ optional($accommodation->visitor)->last_name }}
                                 </td>
-                                <td>
-                                    @php
-                                        $rooms = json_decode($accommodation->room, true);
-                                        $fees = json_decode($accommodation->fee, true);
-                                    @endphp
-                                    <ul style="list-style-type: none; padding: 5px; margin: 0;">
-                                        @foreach ($rooms as $index => $room)
-                                            <li>{{ $room }} - ₱{{ number_format($fees[$index], 2) }}</li>
-                                        @endforeach
-                                    </ul>
+                                <td class="p-0">
+                                    <table class="table table-bordered border-dark m-0" width="100%">
+                                        <thead>
+                                            <tr>
+                                                <th class="bg-theme-primary text-light">No.</th>
+                                                <th class="bg-theme-primary text-light">Room Category</th>
+                                                <th class="bg-theme-primary text-light">Fee</th>
+                                                <th class="bg-theme-primary text-light">Nights</th>
+                                                <th class="bg-theme-primary text-light">Sub-Total</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @php
+                                                $rooms = json_decode($accommodation->room, true) ?? [];
+                                            @endphp
+                                            @foreach ($rooms as $index => $item)
+                                                <tr>
+                                                    <td>{{ $index + 1 }}</td>
+                                                    <td>{{ $item['room'] ?? '-' }}</td>
+                                                    <td>
+                                                        ₱{{ number_format($item['fee'] ?? 0, 2) }}
+                                                    </td>
+                                                    <td class="text-center">
+                                                        {{ $item['num_nights'] ?? 1 }}
+                                                    </td>
+                                                    <td>
+                                                        ₱{{ number_format($item['subtotal'] ?? ($item['fee'] ?? 0) * ($item['num_nights'] ?? 1), 2) }}
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
                                 </td>
                                 <td>₱ {{ number_format($accommodation->total_payment, 2) }}</td>
                                 <td>
@@ -53,13 +128,14 @@
                                     @endif
                                 </td>
                                 <td>{{ \Carbon\Carbon::parse($accommodation->created_at)->format('F j, Y') }}</td>
-                                <td>
+                                <td class="sticky-action">
                                     <div class="d-flex align-items-center justify-c gap-2">
                                         <a href="#" class="btn btn-warning btn-sm" data-bs-toggle="modal"
                                             data-bs-target="#editAccommodationModal" data-id="{{ $accommodation->id }}"
                                             data-visitor-id="{{ $accommodation->visitor_id }}"
                                             data-num-night="{{ $accommodation->num_nights }}"
-                                            data-rooms="{{ $accommodation->room }}" data-fees="{{ $accommodation->fee }}" data-payment-status="{{ $accommodation->payment_status }}"
+                                            data-rooms="{{ $accommodation->room }}" data-fees="{{ $accommodation->fee }}"
+                                            data-payment-status="{{ $accommodation->payment_status }}"
                                             data-total-payment="{{ $accommodation->total_payment }}">
                                             <i class="fa fa-edit"></i>
                                         </a>
@@ -259,8 +335,8 @@
                             <div class="form-group col-2">
                                 <label for="num_nights">No. of Nights</label>
                                 <div class="col-12">
-                                    <input type="number" name="edit_num_nights" class="form-control" id="edit_num_nights"
-                                        min="1" value="1" required>
+                                    <input type="number" name="edit_num_nights" class="form-control"
+                                        id="edit_num_nights" min="1" value="1" required>
                                 </div>
                             </div>
                         </div>

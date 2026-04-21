@@ -4,44 +4,80 @@
     <!-- Start the content section -->
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text">Massages</h1>
-        <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addMassageModal">Add Massage
+        <div class="d-flex">
+            <i class="fas fa-spa fa-2x text-dark me-2"></i>
+            <div class="d-flex flex-column">
+                <h1 class="h3 mb-0 text">AVAILED SERVICES</h1>
+                <h6 class="mb-0">Guest | Massage</h6>
+            </div>
+        </div>
+        <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addMassageModal">Add Massage &
+            Accommodation
             Fee</a>
     </div>
 
     <!-- Content Row -->
+    @include('layouts.services-navigation')
     <div class="card shadow mb-4">
         <div class="card-body">
-            {{-- <form method="GET" action="" class="" id="dateRangeForm">
-                <div class="d-flex justify-content-start gap-2 align-items-end mb-4">
-                    <div class="d-flex flex-column align-items-start" style="width: auto;">
-                        <label for="date" class="mb-0">Start Date:</label>
-                        <input type="date" name="start_date" value="{{ $start_date }}"
-                            class="form-control form-control-sm" style="width: auto;" id="start_date" />
+            <div class="d-flex justify-content-between align-items-center">
+                <!-- Date Filter -->
+                <form method="GET" action="" id="dateRangeForm">
+                    <div class="d-flex justify-content-start gap-2 align-items-end mb-4">
+                        <div class="d-flex align-items-center">
+                            <label class="mb-0 me-0 p-1 bg-theme-primary text-light">From:</label>
+                            <input type="date" name="start_date" value="{{ request('start_date') }}"
+                                class="form-control form-control-sm rounded-0"
+                                onchange="document.getElementById('dateRangeForm').submit();">
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <label class="mb-0 me-0 p-1 bg-theme-primary text-light">To:</label>
+                            <input type="date" name="end_date" value="{{ request('end_date') }}"
+                                class="form-control form-control-sm rounded-0"
+                                onchange="document.getElementById('dateRangeForm').submit();">
+                        </div>
                     </div>
-                    <div class="d-flex flex-column align-items-start" style="width: auto;">
-                        <label for="date" class="mb-0">End Date:</label>
-                        <input type="date" name="end_date" value="{{ $end_date }}"
-                            class="form-control form-control-sm" style="width: auto;" id="end_date" />
+                    <!-- A-Z Filter -->
+                    <div class="d-flex flex-wrap gap-1 mb-3">
+                        <a href="{{ request()->fullUrlWithQuery(['letter' => null]) }}"
+                            class="btn btn-sm rounded-circle {{ request('letter') ? 'btn-dark' : 'btn-success' }}">
+                            All
+                        </a>
+                        @foreach (range('A', 'Z') as $letter)
+                            <a href="{{ request()->fullUrlWithQuery(['letter' => $letter]) }}"
+                                class="btn btn-sm rounded-circle 
+                                    {{ request('letter') == $letter ? 'btn-success' : 'btn-dark' }}"
+                                style="width:32px;height:32px;line-height:22px;">
+                                {{ $letter }}
+                            </a>
+                        @endforeach
                     </div>
-
-                    <a href="{{ url()->current() }}" class="btn btn-sm btn-danger">
-                        <i class="fas fa-times"></i> Clear
-                    </a>
-                </div>
-            </form> --}}
-
+                </form>
+            </div>
+            <div class="d-flex gap-2">
+                <a href="{{ url('massages') }}" class="btn btn-success text-light d-flex align-items-center gap-2">
+                    <i class="fa-solid fa-spa"></i>
+                    Massage
+                </a>
+                <a href="{{ url('accommodations') }}"
+                    class="btn bg-theme-primary text-light d-flex align-items-center gap-2">
+                    <i class="fa-solid fa-bed"></i>
+                    Accommodation
+                </a>
+            </div>
             <div class="table-responsive">
-                <table class="table table-bordered" id="dataTable1" width="100%" cellspacing="0">
+                <table class="table table-bordered border-dark" id="dataTable1" width="100%" cellspacing="0"
+                    style="min-width:2000px;">
                     <thead>
                         <tr>
-                            <th>No.</th>
-                            <th>Name</th>
-                            <th>Description</th>
-                            <th>Total Payment</th>
-                            <th>Status</th>
-                            <th>Date Created</th>
-                            <th>Action</th>
+                            <th class="bg-theme-primary text-light">NO.</th>
+                            <th class="bg-theme-primary text-light">MAIN GUEST</th>
+                            <th class="bg-theme-primary text-light text-center">TOTAL MEMBERS</th>
+                            <th class="bg-theme-primary text-light text-center">SERVICE DETAILS</th>
+                            <th class="bg-theme-primary text-light">TOTAL FEE</th>
+                            <th class="bg-theme-primary text-light">STATUS</th>
+                            <th class="bg-theme-primary text-light">DATE CREATED</th>
+                            <th class="bg-theme-primary text-light sticky-action">ACTION</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -53,42 +89,62 @@
                                     {{ optional($massage->visitor)->middle_name }}
                                     {{ optional($massage->visitor)->last_name }}
                                 </td>
+                                <td class="text-center">
+                                    {{ $massage->visitor->companions->count() + 1 }}
+                                </td>
                                 @php
-                                    $categories = json_decode($massage->category, true);
                                     $members = json_decode($massage->members, true);
-                                    $ages = json_decode($massage->age, true);
-                                    $fees = json_decode($massage->fee, true);
                                 @endphp
-                                <td style="padding: 10px;">
-                                    <table style="width: 100%; border-collapse: collapse;">
+                                <td class="p-0">
+                                    <table class="table table-bordered border-dark m-0" style="width:100%;">
                                         <thead>
                                             <tr>
-                                                <th style="padding: 5px;">Category</th>
-                                                <th style="padding: 5px;">Age</th>
-                                                <th style="padding: 5px;">No. of Hours</th>
-                                                <th style="padding: 5px;">Fee</th>
-                                                <th style="padding: 5px;">Sub-total</th>
+                                                <th class="bg-theme-primary text-light">No.</th>
+                                                <th class="bg-theme-primary text-light">Guest</th>
+                                                <th class="bg-theme-primary text-light">Age</th>
+                                                <th class="bg-theme-primary text-light">Item</th>
+                                                <th class="bg-theme-primary text-light">Quantity</th>
+                                                <th class="bg-theme-primary text-light">Fee</th>
+                                                <th class="bg-theme-primary text-light">Sub-Total</th>
                                             </tr>
                                         </thead>
+
                                         <tbody>
-                                            @foreach ($categories as $index => $cat)
-                                                @php
-                                                    $memberValue = $members[$index] ?? null;
-                                                @endphp
-                                                @if (!is_null($memberValue) && $memberValue !== 'null' && (int) $memberValue > 0)
-                                                    <tr>
-                                                        <td style="padding: 8px;">{{ $cat }}</td>
-                                                        <td style="padding: 8px;">
-                                                            {{ !isset($ages[$index]) || $ages[$index] === null || $ages[$index] === '' || $ages[$index] === 'null' ? 'N/A' : $ages[$index] }}
-                                                        </td>
-                                                        <td style="padding: 8px;">{{ $massage->no_of_hours }}</td>
-                                                        <td style="padding: 8px;">
-                                                            ₱{{ number_format((float) ($members[$index] ?? 0) * (float) ($fees[$index] ?? 0), 2) }}
-                                                        </td>
-                                                        <td style="padding: 8px;">
-                                                            ₱{{ number_format((float) ($members[$index] ?? 0) * (float) ($fees[$index] ?? 0) * $massage->no_of_hours, 2) }}
-                                                        </td>
-                                                    </tr>
+                                            @php
+                                                $members = json_decode($massage->members, true) ?? [];
+                                            @endphp
+                                            @foreach ($members as $gIndex => $guest)
+                                                @if (!empty($guest['services']))
+                                                    @foreach ($guest['services'] as $sIndex => $service)
+                                                        <tr>
+                                                            @if ($sIndex === 0)
+                                                                <td rowspan="{{ count($guest['services']) }}"
+                                                                    class="text-center">
+                                                                    {{ $gIndex + 1 }}
+                                                                </td>
+                                                                <td rowspan="{{ count($guest['services']) }}">
+                                                                    {{ $guest['guest'] }}
+                                                                    @if (!empty($guest['is_main']))
+                                                                        (Main Guest)
+                                                                    @endif
+                                                                </td>
+                                                                <td rowspan="{{ count($guest['services']) }}"
+                                                                    class="text-center">
+                                                                    {{ $guest['age'] ?? 'N/A' }}
+                                                                </td>
+                                                            @endif
+                                                            <td>{{ $service['service_name'] }}</td>
+                                                            <td class="text-center">
+                                                                {{ $service['qty'] }}
+                                                            </td>
+                                                            <td>
+                                                                ₱{{ number_format($service['fee'], 2) }}
+                                                            </td>
+                                                            <td>
+                                                                ₱{{ number_format($service['subtotal'], 2) }}
+                                                            </td>
+                                                        </tr>
+                                                    @endforeach
                                                 @endif
                                             @endforeach
                                         </tbody>
@@ -103,7 +159,7 @@
                                     @endif
                                 </td>
                                 <td>{{ \Carbon\Carbon::parse($massage->created_at)->format('F j, Y') }}</td>
-                                <td>
+                                <td class="sticky-action">
                                     <div class="d-flex align-items-center justify-c gap-2">
                                         <a href="#" class="btn btn-warning btn-sm" data-bs-toggle="modal"
                                             data-bs-target="#editMassageModal" data-id="{{ $massage->id }}"
@@ -135,18 +191,30 @@
     <!-- Add Massage Fee Modal -->
     <div class="modal fade" id="addMassageModal" tabindex="-1" role="dialog" aria-labelledby="addMassageModalLabel"
         aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-dialog modal-lg" role="document" style="max-width: 1500px;">
             <form action="{{ route('massage.store') }}" method="POST">
                 @csrf
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="addMassageModalLabel">Add Massage Fee</h5>
+                        <div class="col-12">
+                            <div class="text-end">
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                            </div>
+                            <div class="d-flex align-items-center gap-2 justify-content-center">
+                                <img src="{{ asset('public/img/logo.png') }}" width="70" alt="la-escapo-logo">
+                                <div class="d-flex flex-column">
+                                    <b class="modal-title mt-2 text-bold">La Escapo Mountain
+                                        Resort</b>
+                                    <span>Tuno, Tibiao, Antique</span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="modal-body">
                         <div class="form-group mb-3">
                             <div class="d-flex align-items-start gap-1">
-                                <div class="form-group col-6">
-                                    <label for="visitor_id">Name</label>
+                                <div class="col-6 d-flex align-items-center gap-3">
+                                    <label for="visitor_id">Name:</label>
                                     <select name="visitor_id" class="form-control select2" id="visitor_name" required
                                         data-placeholder="Select a visitor">
                                         <option></option>
@@ -159,136 +227,143 @@
                                         @endforeach
                                     </select>
                                 </div>
-                                <div class="form-group">
-                                    <small id="remaining_members_note" class="text-muted"></small>
-                                </div>
-                                <div class="form-group col-1">
-                                    <label for="age">Age</label>
-                                    <div class="">
-                                        <input readonly type="text" id="age" class="form-control" required>
-                                    </div>
-                                </div>
-                                <div class="form-group col-2">
-                                    <label for="members">Payment Status</label>
-                                    <div class="col-12">
-                                        <select name="payment_status" class="form-control" id="payment_status">
-                                            <option value="">Select Status</option>
-                                            <option value="pending">Pending</option>
-                                            <option value="paid">Paid</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="service_title">Service</label>
-                                    <div class="col-12">
-                                        <input type="text" name="service_title" id="service_title" value="Massage"
-                                            class="form-control" readonly>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group mb-3">
-                            <div class="form-group col-2">
-                                <label for="hours">No. of Hours</label>
-                                <div class="">
-                                    <input type="number" name="no_of_hours" id="hours" class="form-control"
-                                        min="1" value="1" required>
-                                </div>
                             </div>
                         </div>
 
-                        <div class="form-group mb-2">
-                            <table style="width: 100%; border-collapse: collapse;">
-                                <thead>
-                                    <tr class="bg-secondary text-light">
-                                        <th style="padding: 10px;">CATEGORY</th>
-                                        <th style="padding: 10px;">QUANTITY</th>
-                                        <th style="padding: 10px;">AGE</th>
-                                        <th style="padding: 10px;">FEE</th>
-                                        <th style="padding: 10px;">SUB-TOTAL</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @php
-                                        $categories = [
-                                            [
-                                                'name' => 'Children',
-                                                'age' => '0-11',
-                                                'checked' => false,
-                                                'price' => '399.00',
-                                            ],
-                                            [
-                                                'name' => 'Student',
-                                                'age' => '12-21',
-                                                'checked' => false,
-                                                'price' => '399.00',
-                                            ],
-                                            [
-                                                'name' => 'Regular',
-                                                'age' => '22-59',
-                                                'checked' => false,
-                                                'price' => '399.00',
-                                            ],
-                                            [
-                                                'name' => 'PWD',
-                                                'age' => 'Any',
-                                                'checked' => false,
-                                                'price' => '399.00',
-                                            ],
-                                            [
-                                                'name' => 'Senior Citizen',
-                                                'age' => '60+',
-                                                'checked' => false,
-                                                'price' => '399.00',
-                                            ],
-                                        ];
-                                    @endphp
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div
+                                    class="bg-theme-primary d-flex align-items-center gap-2 justify-content-center text-light p-2">
+                                    <i class="fa fa-spa fa-2x"></i>
+                                    <h3 class="m-0">MASSAGE</h3>
+                                </div>
+                                <div class="table-responsive">
+                                    <table class="table table-bordered border-dark"
+                                        style="width: 100%; border-collapse: collapse;">
+                                        <thead>
+                                            <tr>
+                                                <th class="bg-theme-primary text-light" style="padding: 10px;">NO.</th>
+                                                <th class="bg-theme-primary text-light" style="padding: 10px;">GUEST.</th>
+                                                <th class="bg-theme-primary text-light" style="padding: 10px;">AGE</th>
+                                                <th class="bg-theme-primary text-light" style="padding: 10px;">CATEGORY
+                                                </th>
+                                                <th width="15%" class="bg-theme-primary text-light"
+                                                    style="padding: 10px;">QUANTITY
+                                                </th>
+                                                <th class="bg-theme-primary text-light" style="padding: 10px;">FEE</th>
+                                                <th width="18%" class="bg-theme-primary text-light"
+                                                    style="padding: 10px;">SUB-TOTAL
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="addMassageTableBody">
+                                        </tbody>
+                                    </table>
+                                    <!-- TOTAL -->
+                                    <div class="form-group mt-2">
+                                        <div class="d-flex align-items-center justify-content-end gap-3">
+                                            <label>Payment Status:</label>
+                                            <div class="col-3">
+                                                <select name="massage_payment_status" class="form-control">
+                                                    <option value="">Select status</option>
+                                                    <option value="Paid">Paid</option>
+                                                    <option value="Unpaid">Unpaid</option>
+                                                </select>
+                                            </div>
 
-                                    @foreach ($categories as $index => $category)
-                                        <tr>
-                                            <td width="30%" style="padding: 5px;">
-                                                <div class="d-flex align-items-center gap-1">
-                                                    <input type="hidden" name="category[]"
-                                                        value="{{ $category['name'] }}"
-                                                        {{ $category['checked'] ? 'checked' : '' }}>
-                                                    <span>{{ $category['name'] }}</span>
+                                            <label>Total Fee:</label>
+                                            <div class="col-3">
+                                                <div class="d-flex">
+                                                    <span class="input-group-text bg-theme-primary text-light">₱</span>
+                                                    <input type="text" name="massage_total_payment"
+                                                        id="massage_total_payment" value="0.00" class="form-control"
+                                                        readonly>
                                                 </div>
-                                            </td>
-                                            <td width="25%" style="padding: 5px;">
-                                                <input class="form-control" readonly type="number" name="members[]"
-                                                    min="0" value="">
-                                            </td>
-                                            <td style="padding: 5px;">
-                                                <input class="form-control" type="text" name="age[]"
-                                                    value="{{ $category['age'] }}" readonly>
-                                            </td>
-                                            <td style="padding: 5px;">
-                                                <input class="form-control" type="text" name="fee[]" min="0"
-                                                    value="{{ $category['price'] }}" readonly>
-                                            </td>
-                                            <td>
-                                                <input type="text" readonly id="sub-total" class="form-control"
-                                                    value="" readonly>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                            <div class="d-flex align-items-center justify-content-end">
-                                <div class="col-2">
-                                    <label for="total_payment">Total Payment</label>
-                                    <div class="d-flex align-items-center gap-1">
-                                        <span>₱ </span>
-                                        <span><input type="text" name="total_payment" id="total_payment"
-                                                class="form-control" readonly></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group mb-2">
+                                    <div
+                                        class="bg-theme-primary d-flex align-items-center gap-2 justify-content-center text-light p-2">
+                                        <i class="fa fa-bed fa-2x"></i>
+                                        <h3 class="m-0">ACCOMMODATION</h3>
+                                    </div>
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered border-dark"
+                                            style="width: 100%; border-collapse: collapse;">
+                                            <thead>
+                                                <tr>
+                                                    <th class="bg-theme-primary text-light" style="padding: 10px;">ROOM
+                                                    </th>
+                                                    <th class="bg-theme-primary text-light" style="padding: 10px;">NO. OF
+                                                        NIGHTS</th>
+                                                    <th class="bg-theme-primary text-light" style="padding: 10px;">FEE
+                                                    </th>
+                                                    <th class="bg-theme-primary text-light" style="padding: 10px;">
+                                                        SUB-TOTAL</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach ($accommodationFees as $index => $room)
+                                                    <tr>
+                                                        <td width="" style="padding: 5px;">
+                                                            <input class="form-control" name="rooms[]" type="text"
+                                                                value="{{ $room['service_name'] }}" readonly>
+                                                        </td>
+                                                        <td width="20%">
+                                                            <input class="form-control" type="number" name="nights[]"
+                                                                min="0" value="0">
+                                                        </td>
+                                                        </td>
+                                                        <td width="15%" style="padding: 5px;">
+                                                            ₱{{ number_format($room['fee'], 2) }}
+                                                            <input class="form-control room-fee" type="hidden"
+                                                                name="fees[]" min="0"
+                                                                value="{{ $room['fee'] }}" readonly>
+                                                        </td>
+                                                        <td width="18%">
+                                                            <input type="text"
+                                                                class="form-control accommodation-subtotal" value="0.00"
+                                                                readonly>
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <!-- TOTAL -->
+                                    <div class="form-group mt-0">
+                                        <div class="d-flex align-items-center justify-content-end gap-3">
+                                            <label>Payment Status:</label>
+                                            <div class="col-3">
+                                                <select name="accommodation_payment_status" class="form-control">
+                                                    <option value="">Select status</option>
+                                                    <option value="Paid">Paid</option>
+                                                    <option value="Unpaid">Unpaid</option>
+                                                </select>
+                                            </div>
+
+                                            <label>Total Fee:</label>
+                                            <div class="col-3">
+                                                <div class="d-flex">
+                                                    <span class="input-group-text bg-theme-primary text-light">₱</span>
+                                                    <input type="text" name="accommodation_total_payment"
+                                                        id="accommodation_total_payment" value="0.00"
+                                                        class="form-control" readonly>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="modal-footer">
+                        <button type="submit" class="btn btn-success">Save</button>
                         <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-primary">Add Massage Fee</button>
                     </div>
                 </div>
             </form>
@@ -462,10 +537,14 @@
     </div>
 @endsection <!-- End the content section -->
 
-{{-- ADD FORM SCRIPT --}}
 <script>
+    window.massageServices = @json($massageFees);
     document.addEventListener('DOMContentLoaded', function() {
-        // Initialize Select2 for visitor_name for add form
+        const services = window.massageServices;
+        console.log(services);
+        // =========================
+        // SELECT2
+        // =========================
         $('#addMassageModal').on('shown.bs.modal', function() {
             $('#visitor_name').select2({
                 theme: 'bootstrap4',
@@ -476,236 +555,146 @@
             });
         });
 
-        // Get total members based on selected visitor
+        // =========================
+        // RENDER MASSAGE TABLE
+        // =========================
+        function renderMassageRows(target, guests) {
+            let html = '';
+            guests.forEach((guest, gIndex) => {
+                window.massageServices.forEach((service, sIndex) => {
+                    html += `
+                <tr>
+                    ${sIndex === 0 ? `
+                        <td class="text-center" rowspan="${window.massageServices.length}">
+                            ${gIndex + 1}
+                        </td>
+
+                        <td rowspan="${window.massageServices.length}">
+                            ${guest.name ?? guest.guest ?? ''} 
+                            ${guest.is_main ? '(Main Guest)' : ''}
+                        </td>
+                    ` : ''}
+                    <td>
+                        ${guest.age ?? 'N/A'}
+                    </td>
+
+                    <!-- SERVICE -->
+                    <td>
+                        ${service.service_name}
+
+                        <input type="hidden"
+                            name="members[${gIndex}][services][${sIndex}][service_name]"
+                            value="${service.service_name}">
+                    </td>
+
+                    <!-- QTY -->
+                    <td>
+                        <input type="number"
+                            class="form-control massage-qty"
+                            name="members[${gIndex}][services][${sIndex}][qty]"
+                            data-fee="${service.fee}"
+                            value="0"
+                            min="0">
+                    </td>
+
+                    <!-- FEE -->
+                    <td>
+                        ₱${parseFloat(service.fee).toFixed(2)}
+
+                        <input type="hidden"
+                            name="members[${gIndex}][services][${sIndex}][fee]"
+                            value="${service.fee}">
+                    </td>
+
+                    <!-- SUBTOTAL -->
+                    <td>
+                        <input type="text"
+                            class="form-control massage-subtotal"
+                            readonly value="0.00">
+                    </td>
+
+                </tr>
+            `;
+                });
+            });
+
+            $(target).html(html);
+        }
+
+        // =========================
+        // CALCULATE TOTAL
+        // =========================
+        function updateMassageTotals() {
+
+            let total = 0;
+
+            $('#addMassageTableBody tr').each(function() {
+
+                const qtyInput = $(this).find('.massage-qty');
+
+                const qty = parseInt(qtyInput.val()) || 0;
+                const fee = parseFloat(qtyInput.data('fee')) || 0;
+
+                const subtotal = qty * fee;
+
+                $(this).find('.massage-subtotal').val(subtotal.toFixed(2));
+
+                total += subtotal;
+            });
+
+            $('#massage_total_payment').val(total.toFixed(2));
+        }
+
+        // =========================
+        // LOAD VISITOR → GENERATE ROWS
+        // =========================
         $('#visitor_name').on('change', function() {
-            var visitor_id = $(this).val();
-            if (visitor_id) {
-                var baseUrl = window.location.origin;
-                var pathParts = window.location.pathname.split('/');
-                var folderName = pathParts[1];
-                var url = window.location.origin + '/' + folderName + '/get-visitor-members/' +
-                    visitor_id;
 
-                $.ajax({
-                    url: url,
-                    method: 'GET',
-                    success: function(response) {
-                        const age = response.age || 0;
-                        const isPwd = response.is_pwd || false;
-                        $('#age').val(response.age).trigger('input');
-                        autoCategorizeByAge(age, isPwd);
-                    }
-                });
-            } else {
-                $('#total_members').val('');
-            }
-        });
-
-        let totalMembers = 0;
-
-        // When total_members changes (manual or from AJAX)
-        $('#total_members').on('input', function() {
-            totalMembers = parseInt($(this).val()) || 0;
-            resetMemberInputs();
-        });
-
-        // When any members[] input changes
-        $(document).on('input', '#addMassageModal input[name="members[]"]', function() {
-            // updateMemberInputLimitsAddForm();
-            updateSubtotalsAndTotalAddForm();
-        });
-
-        function autoCategorizeByAge(age, isPwd) {
-            // Reset all
-            $('#addMassageModal input[name="members[]"]').each(function() {
-                $(this).val('');
-                $(this).prop('readonly', true);
-            });
-
-            let categoryIndex = -1;
-
-            if (isPwd) {
-                categoryIndex = 3; // PWD
-            } else if (age >= 0 && age <= 11) {
-                categoryIndex = 0; // Children
-            } else if (age >= 12 && age <= 21) {
-                categoryIndex = 1; // Student
-            } else if (age >= 22 && age <= 59) {
-                categoryIndex = 2; // Regular
-            } else if (age >= 60) {
-                categoryIndex = 4; // Senior Citizen
-            }
-
-            if (categoryIndex >= 0) {
-                const row = $('#addMassageModal tbody tr').eq(categoryIndex);
-                const memberInput = row.find('input[name="members[]"]');
-                memberInput.val(1);
-                memberInput.prop('readonly', true);
-            }
-
-            updateSubtotalsAndTotalAddForm();
-        }
-
-        function resetMemberInputs() {
-            $('#addMassageModal input[name="members[]"]').each(function() {
-                $(this).val('');
-                $(this).attr('max', totalMembers);
-                $(this).prop('readonly', false);
-            });
-        }
-
-        function updateSubtotalsAndTotalAddForm() {
-            let totalPayment = 0;
-            const hours = parseInt($('#hours').val()) || 1;
-
-            $('#addMassageModal tbody tr').each(function() {
-                const memberInput = $(this).find('input[name="members[]"]');
-                const feeInput = $(this).find('input[name="fee[]"]');
-                const subtotalInput = $(this).find('input[id="sub-total"]');
-
-                const members = parseInt(memberInput.val()) || 0;
-                const fee = parseFloat(feeInput.val()) || 0;
-                const subtotal = members * fee * hours;
-
-                subtotalInput.val(subtotal.toFixed(2));
-                totalPayment += subtotal;
-            });
-
-            $('#total_payment').val(totalPayment.toFixed(2));
-        }
-
-        // Recalculate totals when "No. of Hours" input changes
-        $('#hours').on('input', function() {
-            updateSubtotalsAndTotalAddForm();
-        });
-    });
-</script>
-
-{{-- EDIT FORM SCRIPT --}}
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const editModal = document.getElementById('editMassageModal');
-        let editTotalMembers = 0; // Track total members for edit form
-
-        if (editModal) {
-            editModal.addEventListener('show.bs.modal', function(event) {
-                const button = event.relatedTarget;
-
-                const totalMembersArray = JSON.parse(button.getAttribute('data-total-members') || '[]');
-                const visitorId = button.getAttribute('data-visitor-id');
-                const waterTubingId = button.getAttribute('data-id');
-                const totalPayment = button.getAttribute('data-total-payment');
-                const paymentStatus = button.getAttribute('data-payment-status');
-
-                // DEBUG: Log what you get
-                console.log("Total Members:", totalMembersArray);
-
-                // Set hidden fields
-                document.getElementById('edit_massage_id').value = waterTubingId;
-                $('#edit_visitor_id').val(visitorId).trigger('change');
-                $('#_visitor_id').val(visitorId);
-                $('#edit_payment_status').val(paymentStatus);
-
-                // All members[] inputs inside the modal
-                const memberInputs = editModal.querySelectorAll('input[name="members[]"]');
-                const feeInputs = editModal.querySelectorAll('input[name="fee[]"]');
-                const subTotalInputs = editModal.querySelectorAll('input[id="sub-total"]');
-
-                let totalPaymentCalculated = 0;
-                let totalMembers = 0;
-
-                memberInputs.forEach((input, index) => {
-                    let raw = totalMembersArray[index];
-                    let members = (raw === "null" || raw === null) ? "0" : parseInt(raw) || 0;
-                    input.value = members;
-                    const fee = parseFloat(feeInputs[index]?.value || 0);
-                    const subtotal = members * fee;
-
-                    subTotalInputs[index].value = subtotal.toFixed(2);
-                    totalPaymentCalculated += subtotal;
-                    totalMembers += members || 0;
-                });
-
-                // document.getElementById('edit_total_members').value = totalMembers;
-                document.getElementById('edit_total_payment').value = totalPayment;
-            });
-        }
-
-        // Initialize Select2 for visitor_name for edit form
-        $('#editMassageModal').on('shown.bs.modal', function() {
-            $('#edit_visitor_id').select2({
-                theme: 'bootstrap4',
-                width: '100%',
-                placeholder: "Select a visitor",
-                allowClear: true,
-                dropdownParent: $('#editMassageModal')
-            });
-        });
-
-        // Get total members from selected visitor for edit form
-        $('#edit_visitor_id').on('change', function() {
             const visitor_id = $(this).val();
-            if (visitor_id) {
-                const baseUrl = window.location.origin;
-                const pathParts = window.location.pathname.split('/');
-                const folderName = pathParts[1];
-                const url = `${baseUrl}/${folderName}/get-visitor-members/${visitor_id}`;
+            if (!visitor_id) return;
 
-                $.ajax({
-                    url: url,
-                    method: 'GET',
-                    success: function(response) {
-                        age = parseInt(response.age) || 0;
-                        $('#edit_age').val(age);
-                        resetEditMemberInputs();
-                    }
-                });
-            } else {
-                age = 0;
-                $('#edit_age').val('');
-                resetEditMemberInputs();
-            }
-        });
+            const baseUrl = window.location.origin;
+            const folder = window.location.pathname.split('/')[1];
+            const url = `${baseUrl}/${folder}/get-visitor-members/${visitor_id}`;
 
-        // When any members[] input changes in edit form
-        $(document).on('input', '#editMassageModal input[name="members[]"]', function() {
-            // updateMemberInputLimitsEditForm();
-            updateEditSubtotalsAndTotal();
-        });
+            $.get(url, function(res) {
 
-        function resetEditMemberInputs() {
-            $('#editMassageModal input[name="members[]"]').each(function() {
-                $(this).attr('max', 1);
-                $(this).prop('readonly', true);
+                renderMassageRows('#addMassageTableBody', res.guests);
+
+                updateMassageTotals();
             });
-        }
+        });
 
-        function updateEditSubtotalsAndTotal() {
-            let totalPayment = 0;
-            let currentTotalMembers = 0;
-            const hours = parseInt($('#edit_hours').val()) || 1;
+        // =========================
+        // QTY CHANGE
+        // =========================
+        $(document).on('input', '.massage-qty', function() {
+            updateMassageTotals();
+        });
 
-            $('#editMassageModal tbody tr').each(function() {
-                const memberInput = $(this).find('input[name="members[]"]');
-                const feeInput = $(this).find('input[name="fee[]"]');
-                const subtotalInput = $(this).find('input[id="sub-total"]');
+        function updateAccommodationTotals() {
+            let total = 0;
+            $('table tbody tr').each(function() {
+                const nightsInput = $(this).find('input[name="nights[]"]');
+                const feeInput = $(this).find('.room-fee');
+                if (nightsInput.length === 0) return;
 
-                const members = parseInt(memberInput.val()) || 0;
+                const nights = parseFloat(nightsInput.val()) || 0;
                 const fee = parseFloat(feeInput.val()) || 0;
-                const subtotal = members * fee * hours;
 
-                subtotalInput.val(subtotal.toFixed(2));
-                totalPayment += subtotal;
-                currentTotalMembers += members;
+                const subtotal = nights * fee;
+
+                $(this).find('.accommodation-subtotal').val(subtotal.toFixed(2));
+
+                total += subtotal;
             });
 
-            $('#edit_total_payment').val(totalPayment.toFixed(2));
+            $('#accommodation_total_payment').val(total.toFixed(2));
         }
 
-        // Recalculate totals when "No. of Hours" input changes
-        $('#edit_hours').on('input', function() {
-            updateEditSubtotalsAndTotal();
+        // Trigger on input
+        $(document).on('input', 'input[name="nights[]"]', function() {
+            updateAccommodationTotals();
         });
-
     });
 </script>

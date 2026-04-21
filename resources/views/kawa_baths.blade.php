@@ -76,7 +76,7 @@
                         <th class="bg-theme-primary text-light">TOTAL FEE</th>
                         <th class="bg-theme-primary text-light">STATUS</th>
                         <th class="bg-theme-primary text-light">DATE CREATED</th>
-                        <th class="bg-theme-primary text-light">ACTION</th>
+                        <th class="bg-theme-primary text-light sticky-action">ACTION</th>
                     </thead>
                     <tbody>
                         @foreach ($kawaBaths as $kawabath)
@@ -91,19 +91,19 @@
                                     {{ optional($kawabath->visitor)->last_name }}
                                 </td>
                                 <td class="text-center">
-                                    {{ count($membersData) }}
+                                    {{ $kawabath->visitor->companions()->count() + 1 }} 
                                 </td>
                                 <td class="p-0">
                                     <table class="table table-bordered border-dark m-0 mt-0" style="width:100%;">
                                         <thead>
                                             <tr>
-                                                <th class="bg-theme-primary text-light">NO.</th>
-                                                <th class="bg-theme-primary text-light">GUEST</th>
-                                                <th class="bg-theme-primary text-light">AGE</th>
-                                                <th class="bg-theme-primary text-light">ITEM</th>
-                                                <th class="bg-theme-primary text-light">QTY</th>
-                                                <th class="bg-theme-primary text-light">FEE</th>
-                                                <th class="bg-theme-primary text-light">SUBTOTAL</th>
+                                                <th class="bg-theme-primary text-light">No.</th>
+                                                <th class="bg-theme-primary text-light">Guest</th>
+                                                <th class="bg-theme-primary text-light">Age</th>
+                                                <th class="bg-theme-primary text-light">Item</th>
+                                                <th class="bg-theme-primary text-light">Quantity</th>
+                                                <th class="bg-theme-primary text-light">Fee</th>
+                                                <th class="bg-theme-primary text-light">Sub-Total</th>
                                             </tr>
                                         </thead>
 
@@ -209,7 +209,7 @@
                         <div class="form-group mb-3">
                             <div class="d-flex align-items-start gap-1">
                                 <div class="col-6 d-flex align-items-center gap-3">
-                                    <label for="visitor_id">Name</label>
+                                    <label for="visitor_id">Name:</label>
                                     <select name="visitor_id" class="form-control select2" id="visitor_name" required
                                         data-placeholder="Select a visitor">
                                         <option></option>

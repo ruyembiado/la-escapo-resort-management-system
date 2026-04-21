@@ -62,7 +62,7 @@ Route::middleware(['auth'])->group(function () {
 
     // Massages
     Route::get('/massages', [ServiceController::class, 'massages'])->name('massages');
-    Route::post('/add-massage', [ServiceController::class, 'storeMassage'])->name('massage.store');
+    Route::post('/add-massage', [ServiceController::class, 'storeMassageAccommodation'])->name('massage.store');
     Route::put('/massage/update', [ServiceController::class, 'updateMassage'])->name('massage.update');
     Route::delete('/delete-massage/{id}', [ServiceController::class, 'destroyMassage'])->name('massage.destroy');
 

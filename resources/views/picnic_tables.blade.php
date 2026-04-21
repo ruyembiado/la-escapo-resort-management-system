@@ -73,10 +73,11 @@
                             <th class="bg-theme-primary text-light">NO.</th>
                             <th class="bg-theme-primary text-light">MAIN GUEST</th>
                             <th class="bg-theme-primary text-light">TOTAL MEMBERS</th>
-                            <th class="bg-theme-primary text-light">SERVICES DETAILS</th>
-                            <th class="bg-theme-primary text-light">Status</th>
-                            <th class="bg-theme-primary text-light">Date Created</th>
-                            <th class="bg-theme-primary text-light">Action</th>
+                            <th class="bg-theme-primary text-light text-center">SERVICES DETAILS</th>
+                            <th class="bg-theme-primary text-light">TOTAL FEE</th>
+                            <th class="bg-theme-primary text-light">STATUS</th>
+                            <th class="bg-theme-primary text-light">DATE CREATED</th>
+                            <th class="bg-theme-primary text-light sticky-action">ACTION</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -88,15 +89,18 @@
                                     {{ optional($picnictable->visitor)->middle_name }}
                                     {{ optional($picnictable->visitor)->last_name }}
                                 </td>
+                                <td class="text-center">
+                                    {{ $picnictable->visitor->companions->count() + 1 }}
+                                </td>
                                 <td style="padding: 0;">
                                     <table class="table table-bordered border-dark m-0"
                                         style="width: 100%; border-collapse: collapse;">
                                         <thead>
                                             <tr>
-                                                <th class="bg-success text-light" style="padding: 5px;">Item</th>
-                                                <th class="bg-success text-light" style="padding: 5px;">Quantity</th>
-                                                <th class="bg-success text-light" style="padding: 5px;">Fee</th>
-                                                <th class="bg-success text-light" style="padding: 5px;">Sub-total</th>
+                                                <th class="bg-theme-primary text-light" style="padding: 5px;">Item</th>
+                                                <th class="bg-theme-primary text-light" style="padding: 5px;">Quantity</th>
+                                                <th class="bg-theme-primary text-light" style="padding: 5px;">Fee</th>
+                                                <th class="bg-theme-primary text-light" style="padding: 5px;">Sub-Total</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -615,7 +619,7 @@
         // =========================
         $(document).on('input', '#addKawaBathModal .picnic-qty', function() {
             calculatePicnicTotals('#addKawaBathModal', '#picnictable_total_payment');
-        });
+        }); 
 
         // =========================
         // EDIT PICNIC QTY CHANGE

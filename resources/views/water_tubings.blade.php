@@ -65,7 +65,7 @@
                             <th class="bg-theme-primary text-light">TOTAL FEE</th>
                             <th class="bg-theme-primary text-light">STATUS</th>
                             <th class="bg-theme-primary text-light">DATE CREATED</th>
-                            <th class="bg-theme-primary text-light">ACTION</th>
+                            <th class="bg-theme-primary text-light sticky-action">ACTION</th>
                         </tr>
                     </thead>
                     <tbody>

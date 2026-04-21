@@ -1002,13 +1002,30 @@ class ServiceController extends Controller
         return redirect()->route('watertubings')->with('success', 'Water Tubing record deleted successfully.');
     }
 
-    public function picnictables()
+    public function picnictables(Request $request)
     {
+        $start_date = $request->start_date;
+        $end_date = $request->end_date;
+        $letter = $request->letter;
+
         $kawaHotBathFees = Service::where('service_type', 'kawa_hot_bath')->get();
         $picnicTableFees = Service::where('service_type', 'picnic_table')->get();
 
         $visitors = Visitor::orderBy('created_at', 'desc')->limit(100)->get();
-        $picnicTables = PicnicTable::orderBy('created_at', 'desc')->with('visitor')->get();
+        $picnicTables = PicnicTable::with('visitor')
+            ->when($start_date, function ($query) use ($start_date) {
+                $query->whereDate('created_at', '>=', $start_date);
+            })
+            ->when($end_date, function ($query) use ($end_date) {
+                $query->whereDate('created_at', '<=', $end_date);
+            })
+            ->when($letter, function ($query) use ($letter) {
+                $query->whereHas('visitor', function ($q) use ($letter) {
+                    $q->where('first_name', 'like', $letter . '%');
+                });
+            })
+            ->orderBy('created_at', 'desc')
+            ->get();
 
         return view('picnic_tables', compact('visitors', 'picnicTables', 'kawaHotBathFees', 'picnicTableFees'));
     }
@@ -1062,58 +1079,150 @@ class ServiceController extends Controller
         return redirect()->route('picnictables')->with('success', 'Picnic Table record deleted successfully.');
     }
 
-    public function massages()
+    public function massages(Request $request)
     {
+
+        $massageFees = Service::where('service_type', 'massage')->get();
+        $accommodationFees = Service::where('service_type', 'accommodation')->get();
+
         $visitors = Visitor::orderBy('created_at', 'desc')->limit(100)->get();
         $massages = Massage::orderBy('created_at', 'desc')->with('visitor')->get();
 
-        return view('massages', compact('visitors', 'massages'));
+        return view('massages', compact('visitors', 'massages', 'massageFees', 'accommodationFees'));
     }
 
-    public function storeMassage(Request $request)
+    public function storeMassageAccommodation(Request $request)
     {
         $request->validate([
             'visitor_id' => 'required|exists:visitors,id',
-            'category' => 'required|array',
-            'members' => 'required|array',
-            'age' => 'nullable|array',
-            'fee' => 'nullable|array',
-            'total_payment' => 'required',
-            'no_of_hours' => 'required',
-            'payment_status' => 'nullable',
+
+            // Massage
+            'members' => 'nullable|array',
+            'massage_total_payment' => 'nullable|numeric',
+            'massage_payment_status' => 'nullable',
+
+            // Accommodation
+            'rooms' => 'nullable|array',
+            'nights' => 'nullable|array',
+            'fees' => 'nullable|array',
+            'accommodation_total_payment' => 'nullable|numeric',
+            'accommodation_payment_status' => 'nullable',
         ]);
 
-        $categories = $request->input('category');
-        $members = $request->input('members');
-        $ages = $request->input('age', []);
-        $fees = $request->input('fee', []);
+        $visitorId = $request->visitor_id;
 
-        $filteredCategories = [];
-        $filteredMembers = [];
-        $filteredAges = [];
-        $filteredFees = [];
+        /*
+        |--------------------------------------------------------------------------
+        | FETCH VISITOR + COMPANIONS (SAME AS KAWA)
+        |--------------------------------------------------------------------------
+        */
+        $visitor = Visitor::with('companions')->findOrFail($visitorId);
 
-        $count = count($members);
+        $guests = collect([
+            (object)[
+                'name' => trim($visitor->first_name . ' ' . $visitor->middle_name . ' ' . $visitor->last_name),
+                'age' => $visitor->age,
+                'is_main' => true,
+            ]
+        ])->merge(
+            $visitor->companions->map(function ($companion) {
+                return (object)[
+                    'name' => $companion->name,
+                    'age' => $companion->age,
+                    'is_main' => false,
+                ];
+            })
+        );
 
-        for ($i = 0; $i < $count; $i++) {
-            $filteredCategories[] = isset($categories[$i]) && $categories[$i] !== null ? $categories[$i] : 'null';
-            $filteredMembers[] = isset($members[$i]) && $members[$i] !== null ? $members[$i] : 'null';
-            $filteredAges[] = isset($ages[$i]) && $ages[$i] !== null ? $ages[$i] : 'null';
-            $filteredFees[] = isset($fees[$i]) && $fees[$i] !== null ? $fees[$i] : 'null';
+        /*
+    |--------------------------------------------------------------------------
+    | MASSAGE (LIKE KAWA BATH)
+    |--------------------------------------------------------------------------
+    */
+        $massageServices = Service::where('service_type', 'massage')->get();
+        $membersInput = $request->input('members', []);
+
+        $structuredMassage = [];
+
+        foreach ($guests as $gIndex => $guest) {
+
+            $serviceRows = [];
+
+            foreach ($massageServices as $sIndex => $service) {
+
+                $qty = isset($membersInput[$gIndex]['services'][$sIndex]['qty'])
+                    ? (int) $membersInput[$gIndex]['services'][$sIndex]['qty']
+                    : 0;
+
+                $fee = (float) $service->fee;
+
+                if ($qty <= 0) continue;
+
+                $serviceRows[] = [
+                    'service_name' => $service->service_name,
+                    'fee' => $fee,
+                    'qty' => $qty,
+                    'subtotal' => $qty * $fee,
+                ];
+            }
+
+            if (empty($serviceRows)) continue;
+
+            $structuredMassage[] = [
+                'guest' => $guest->name,
+                'age' => $guest->age,
+                'is_main' => $guest->is_main,
+                'services' => $serviceRows,
+            ];
         }
 
-        Massage::create([
-            'visitor_id' => $request->visitor_id,
-            'category' => json_encode($filteredCategories),
-            'members' => json_encode($filteredMembers),
-            'age' => json_encode($filteredAges),
-            'fee' => json_encode($filteredFees),
-            'total_payment' => $request->total_payment,
-            'no_of_hours' => $request->no_of_hours,
-            'payment_status' => $request->payment_status ?? 'pending',
-        ]);
+        if (!empty($structuredMassage)) {
+            Massage::create([
+                'visitor_id' => $visitorId,
+                'members' => json_encode($structuredMassage),
+                'total_payment' => $request->massage_total_payment ?? 0,
+                'payment_status' => $request->massage_payment_status ?? 'Unpaid',
+            ]);
+        }
 
-        return redirect()->route('massages')->with('success', 'Massage fee added successfully.');
+        /*
+    |--------------------------------------------------------------------------
+    | ACCOMMODATION (LIKE PICNIC TABLE)
+    |--------------------------------------------------------------------------
+    */
+        $rooms = $request->rooms ?? [];
+        $nights = $request->nights ?? [];
+        $fees = $request->fees ?? [];
+
+        $structuredAccommodation = [];
+
+        foreach ($rooms as $i => $room) {
+
+            $night = (int) ($nights[$i] ?? 0);
+            $fee = (float) ($fees[$i] ?? 0);
+
+            if ($night <= 0) continue;
+
+            $structuredAccommodation[] = [
+                'room' => $room,
+                'fee' => $fee,
+                'nights' => $night,
+                'subtotal' => $night * $fee,
+            ];
+        }
+
+        if (!empty($structuredAccommodation)) {
+            Accommodation::create([
+                'visitor_id' => $visitorId,
+                'room' => json_encode($structuredAccommodation),
+                'fee' => 0,
+                'num_nights' => 0,
+                'total_payment' => $request->accommodation_total_payment ?? 0,
+                'payment_status' => $request->accommodation_payment_status ?? 'Unpaid',
+            ]);
+        }
+
+        return redirect()->back()->with('success', 'Massage and Accommodation saved successfully.');
     }
 
     public function updateMassage(Request $request)

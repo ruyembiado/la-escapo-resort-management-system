@@ -6,14 +6,14 @@
         Bills
     </a>
 
-    <a href="{{ url('food-drinks') }}"
-        class="btn {{ Request::is('food-drinks') ? 'btn-success' : 'btn-outline-light ' }} d-flex align-items-center gap-2">
+    <a href="{{ url('meals') }}"
+        class="btn {{ Request::is('meals') || Request::is('beverages') ? 'btn-success' : 'btn-outline-light ' }} d-flex align-items-center gap-2">
         <i class="fas fa-utensils"></i>
         Food & Drinks
     </a>
 
-    <a href="{{ url('meals') }}"
-        class="btn {{ Request::is('meals') || Request::is('beverages') ? 'btn-success' : 'btn-outline-light ' }} d-flex align-items-center gap-2">
+    <a href="{{ url('massages') }}"
+        class="btn {{ Request::is('massages') || Request::is('accommodations') ? 'btn-success' : 'btn-outline-light ' }} d-flex align-items-center gap-2">
         <i class="fas fa-spa"></i>
         Retreat & Relaxation
     </a>
