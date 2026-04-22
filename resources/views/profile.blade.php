@@ -3,8 +3,14 @@
 @section('content')
     <!-- Start the content section -->
     <!-- Page Heading -->
-    <div class="d-sm-flex align-items-center justify-content-between mb-2">
-        <h1 class="h3 mb-0">Profile</h1>
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <div class="d-flex">
+            <i class="fas fa-user fa-2x text-dark me-2"></i>
+            <div class="d-flex flex-column">
+                <h1 class="h3 mb-0 text">PROFILE</h1>
+                <h6 class="mb-0">Settings | Profile</h6>
+            </div>
+        </div>
     </div>
 
     <!-- Content Row -->

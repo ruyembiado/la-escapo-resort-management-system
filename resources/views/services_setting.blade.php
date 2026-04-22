@@ -4,9 +4,9 @@
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <div class="d-flex">
-            <i class="fas fa-money-bill fa-2x text-dark me-2"></i>
+            <i class="fas fa-cog fa-2x text-dark me-2"></i>
             <div class="d-flex flex-column">
-                <h1 class="h3 mb-0 text">SETTINGS</h1>
+                <h1 class="h3 mb-0 text">SERVICES</h1>
                 <h6 class="mb-0">Settings | Services</h6>
             </div>
         </div>

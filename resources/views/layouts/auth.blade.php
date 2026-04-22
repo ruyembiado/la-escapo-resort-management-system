@@ -49,7 +49,8 @@
                 <hr class="sidebar-hr text-light mt-2 mb-2">
                 <b class="text-light ms-3">GUEST</b>
                 <li class="sidebar-item">
-                    <a href="{{ url('/entrances') }}" class="sidebar-link {{ Request::is('entrances') ? 'active' : '' }}">
+                    <a href="{{ url('/entrances') }}"
+                        class="sidebar-link {{ Request::is('entrances') ? 'active' : '' }}">
                         <i class="fa fa-book"></i>
                         <span>Availed Services</span>
                     </a>
@@ -66,23 +67,25 @@
                         <span>Visitor's Bill Summary</span>
                     </a>
                 </li>
+                <hr class="sidebar-hr text-light mt-1 mb-2">
+                <b class="text-light ms-3">REPORT</b>
                 <li class="sidebar-item">
                     <a href="{{ url('/report') }}" class="sidebar-link">
                         <i class="fa fa-file"></i>
                         <span>Reports</span>
                     </a>
                 </li>
-
+                <hr class="sidebar-hr text-light mt-1 mb-2">
+                <b class="text-light ms-3">SETTINGS</b>
                 <li class="sidebar-item">
                     <a href="{{ url('/profile') }}" class="sidebar-link">
                         <i class="fa fa-user"></i>
                         <span>Profile</span>
                     </a>
                 </li>
-                <hr class="sidebar-hr text-light mt-1 mb-2">
-                <b class="text-light ms-3">SETTINGS</b>
                 <li class="sidebar-item">
-                    <a href="{{ url('/services') }}" class="sidebar-link {{ Request::is('services') ? 'active' : '' }}">
+                    <a href="{{ url('/services') }}"
+                        class="sidebar-link {{ Request::is('services') ? 'active' : '' }}">
                         <i class="fa fa-cog"></i>
                         <span>Services</span>
                     </a>
@@ -138,7 +141,7 @@
             </main>
             <footer class="footer bg-dark py-3 shadow text-center">
                 <div class="d-flex justify-content-center px-3">
-                    <div class="text-light">© 2025 LA ESCAPO. All rights reserved.</div>
+                    <div class="text-light">© 2025 LA ESCAPO. Developed by IS-SCRIPTED BOYZ. All rights reserved.</div>
                 </div>
             </footer>
         </div>
