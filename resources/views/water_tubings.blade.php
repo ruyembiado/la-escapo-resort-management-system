@@ -5,7 +5,7 @@
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <div class="d-flex">
-            <i class="fa fa-ticket fa-2x text-dark me-2"></i>
+            <i class="fa fa-water fa-2x text-dark me-2"></i>
             <div class="d-flex flex-column">
                 <h1 class="h3 mb-0 text">AVAILED SERVICES</h1>
                 <h6 class="mb-0">Guest | Water Tubing</h6>
@@ -209,6 +209,11 @@
                         </div>
 
                         <div class="form-group mb-2">
+                            <div
+                                class="bg-theme-primary d-flex align-items-center gap-2 justify-content-center text-light p-2">
+                                <i class="fa fa-water fa-2x"></i>
+                                <h3 class="m-0">WATER TUBING</h3>
+                            </div>
                             <table class="table table-bordered border-dark"
                                 style="width: 100%; border-collapse: collapse;">
                                 <thead>
@@ -237,7 +242,7 @@
                                     </select>
                                 </div>
                                 <label>Total Fee:</label>
-                                <div class="col-3">
+                                <div class="col-2">
                                     <div class="d-flex">
                                         <span class="input-group-text bg-theme-primary text-light">₱</span>
                                         <input type="text" name="total_payment" id="total_payment" value="0.00"
@@ -301,6 +306,11 @@
                         </div>
 
                         <div class="form-group mb-2">
+                            <div
+                                class="bg-theme-primary d-flex align-items-center gap-2 justify-content-center text-light p-2">
+                                <i class="fa fa-water fa-2x"></i>
+                                <h3 class="m-0">WATER TUBING</h3>
+                            </div>
                             <table class="table table-bordered border-dark"
                                 style="width: 100%; border-collapse: collapse;">
                                 <thead>
@@ -328,7 +338,7 @@
                                         </select>
                                     </div>
                                     <label>Total Fee:</label>
-                                    <div class="col-3">
+                                    <div class="col-2">
                                         <div class="d-flex">
                                             <span class="input-group-text bg-theme-primary text-light">₱</span>
                                             <input type="text" name="total_payment" id="edit_total_payment"

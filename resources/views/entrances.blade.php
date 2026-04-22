@@ -311,7 +311,7 @@
                                     </select>
                                 </div>
                                 <label>Total Fee:</label>
-                                <div class="col-3">
+                                <div class="col-2">
                                     <div class="d-flex">
                                         <span class="input-group-text bg-theme-primary text-light">₱</span>
                                         <input type="text" name="total_fee" id="total_fee" value="0.00"
@@ -460,7 +460,7 @@
                                     </select>
                                 </div>
                                 <label>Total Fee:</label>
-                                <div class="col-3">
+                                <div class="col-2">
                                     <div class="d-flex">
                                         <span class="input-group-text bg-theme-primary text-light">₱</span>
                                         <input type="text" name="edit_total_fee" id="edit_total_fee" value="0.00"
@@ -470,7 +470,6 @@
                             </div>
                         </div>
                     </div>
-                    w
                 </div>
             </form>
         </div>

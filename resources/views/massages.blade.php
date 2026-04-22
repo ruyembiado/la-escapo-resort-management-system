@@ -309,16 +309,16 @@
                                             <tbody>
                                                 @foreach ($accommodationFees as $index => $room)
                                                     <tr>
-                                                        <td width="" style="padding: 5px;">
-                                                            <input class="form-control" name="rooms[]" type="text"
+                                                        <td class="align-middle" width="" style="padding: 5px;">
+                                                            {{ $room['service_name'] }}
+                                                            <input class="form-control" name="rooms[]" type="hidden"
                                                                 value="{{ $room['service_name'] }}" readonly>
                                                         </td>
                                                         <td width="20%">
                                                             <input class="form-control" type="number" name="nights[]"
                                                                 min="0" value="0">
                                                         </td>
-                                                        </td>
-                                                        <td width="15%" style="padding: 5px;">
+                                                        <td class="align-middle" width="15%" style="padding: 5px;">
                                                             ₱{{ number_format($room['fee'], 2) }}
                                                             <input class="form-control room-fee" type="hidden"
                                                                 name="fees[]" min="0"
@@ -381,14 +381,26 @@
                 @method('PUT')
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="editMassageModalLabel">Edit Massage Fee</h5>
+                        <div class="col-12">
+                            <div class="text-end">
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                            </div>
+                            <div class="d-flex align-items-center gap-2 justify-content-center">
+                                <img src="{{ asset('public/img/logo.png') }}" width="70" alt="la-escapo-logo">
+                                <div class="d-flex flex-column">
+                                    <b class="modal-title mt-2 text-bold">La Escapo Mountain
+                                        Resort</b>
+                                    <span>Tuno, Tibiao, Antique</span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="modal-body">
                         <div class="form-group mb-3">
                             <div class="d-flex align-items-start gap-1">
-                                <div class="form-group col-6">
-                                    <label for="visitor_id">Name</label>
-                                    <select disabled name="visitor_id" class="form-control select2" id="edit_visitor_id"
+                                <div class="col-6 d-flex align-items-center gap-3">
+                                    <label for="visitor_id">Name:</label>
+                                    <select name="visitor_id" class="form-control select2" id="edit_visitor_name"
                                         required data-placeholder="Select a visitor">
                                         <option></option>
                                         @foreach ($visitors as $visitor)
@@ -400,136 +412,56 @@
                                         @endforeach
                                     </select>
                                 </div>
-                                <div class="form-group">
-                                    <small id="remaining_members_note" class="text-muted"></small>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div
+                                    class="bg-theme-primary d-flex align-items-center gap-2 justify-content-center text-light p-2">
+                                    <i class="fa fa-spa fa-2x"></i>
+                                    <h3 class="m-0">MASSAGE</h3>
                                 </div>
-                                <div class="form-group col-1">
-                                    <label for="members">Age</label>
-                                    <div class="">
-                                        <input readonly type="text" id="edit_age" class="form-control" required>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="members">Payment Status</label>
-                                    <div class="col-12">
-                                        <select name="payment_status" class="form-control" id="edit_payment_status">
-                                            <option value="">Select Status</option>
-                                            <option value="pending">Pending</option>
-                                            <option value="paid">Paid</option>
+
+                                <div class="table-responsive">
+                                    <table class="table table-bordered border-dark" style="width:100%;">
+                                        <thead>
+                                            <tr>
+                                                <th class="bg-theme-primary text-light">NO.</th>
+                                                <th class="bg-theme-primary text-light">GUEST</th>
+                                                <th class="bg-theme-primary text-light">AGE</th>
+                                                <th class="bg-theme-primary text-light">SERVICE</th>
+                                                <th class="bg-theme-primary text-light">QTY</th>
+                                                <th class="bg-theme-primary text-light">FEE</th>
+                                                <th width="15%" class="bg-theme-primary text-light">SUBTOTAL</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="editMassageTableBody"></tbody>
+                                    </table>
+
+                                    <!-- TOTAL -->
+                                    <div class="d-flex justify-content-end align-items-center gap-3 mt-2">
+                                        <label>Status:</label>
+                                        <select name="payment_status" id="edit_payment_status"
+                                            class="form-control w-auto">
+                                            <option value="Paid">Paid</option>
+                                            <option value="Unpaid">Unpaid</option>
                                         </select>
-                                    </div>
-                                </div>
-                                <div class="form-group col-2">
-                                    <label for="service_title">Service</label>
-                                    <div class="col-12">
-                                        <input type="text" name="service_title" id="service_title" value="Massage"
-                                            class="form-control" readonly>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group mb-3">
-                            <div class="form-group col-2">
-                                <label for="hours">No. of Hours</label>
-                                <div class="">
-                                    <input type="number" name="no_of_hours" id="edit_hours" class="form-control"
-                                        min="1" value="1" required>
-                                </div>
-                            </div>
-                        </div>
 
-                        <div class="form-group mb-2">
-                            <table style="width: 100%; border-collapse: collapse;">
-                                <thead>
-                                    <tr class="bg-secondary text-light">
-                                        <th style="padding: 10px;">CATEGORY</th>
-                                        <th style="padding: 10px;">QUANTITY</th>
-                                        <th style="padding: 10px;">AGE</th>
-                                        <th style="padding: 10px;">FEE</th>
-                                        <th style="padding: 10px;">SUB-TOTAL</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @php
-                                        $categories = [
-                                            [
-                                                'name' => 'Children',
-                                                'age' => '0-11',
-                                                'checked' => false,
-                                                'price' => '399.00',
-                                            ],
-                                            [
-                                                'name' => 'Student',
-                                                'age' => '12-21',
-                                                'checked' => false,
-                                                'price' => '399.00',
-                                            ],
-                                            [
-                                                'name' => 'Regular',
-                                                'age' => '22-59',
-                                                'checked' => false,
-                                                'price' => '399.00',
-                                            ],
-                                            [
-                                                'name' => 'PWD',
-                                                'age' => 'Any',
-                                                'checked' => false,
-                                                'price' => '399.00',
-                                            ],
-                                            [
-                                                'name' => 'Senior Citizen',
-                                                'age' => '60+',
-                                                'checked' => false,
-                                                'price' => '399.00',
-                                            ],
-                                        ];
-                                    @endphp
-
-                                    @foreach ($categories as $index => $category)
-                                        <tr>
-                                            <td width="30%" style="padding: 5px;">
-                                                <div class="d-flex align-items-center gap-1">
-                                                    <input type="hidden" name="category[]"
-                                                        value="{{ $category['name'] }}"
-                                                        {{ $category['checked'] ? 'checked' : '' }}>
-                                                    <span>{{ $category['name'] }}</span>
-                                                </div>
-                                            </td>
-                                            <td width="25%" style="padding: 5px;">
-                                                <input class="form-control" readonly type="number" name="members[]"
-                                                    value="">
-                                            </td>
-                                            <td style="padding: 5px;">
-                                                <input class="form-control" type="text" name="age[]"
-                                                    value="{{ $category['age'] }}" readonly>
-                                            </td>
-                                            <td style="padding: 5px;">
-                                                <input class="form-control" type="text" id="" name="fee[]"
-                                                    min="0" value="{{ $category['price'] }}" readonly>
-                                            </td>
-                                            <td>
-                                                <input type="text" readonly id="sub-total" class="form-control"
-                                                    value="" readonly>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                            <div class="d-flex align-items-center justify-content-end">
-                                <div class="col-2">
-                                    <label for="total_payment">Total Payment</label>
-                                    <div class="d-flex align-items-center gap-1">
-                                        <span>₱ </span>
-                                        <span><input type="text" name="total_payment" id="edit_total_payment"
-                                                class="form-control" readonly></span>
+                                        <label>Total:</label>
+                                        <div class="d-flex">
+                                            <span class="input-group-text bg-theme-primary text-light">₱</span>
+                                            <input type="text" id="edit_total_payment" name="total_payment"
+                                                class="form-control" readonly>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="modal-footer">
+                        <button type="submit" class="btn btn-success">Update</button>
                         <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-primary">Update Massage Fee</button>
                     </div>
                 </div>
             </form>
@@ -552,6 +484,16 @@
                 placeholder: "Select a visitor",
                 allowClear: true,
                 dropdownParent: $('#addMassageModal')
+            });
+        });
+
+        $('#editMassageModal').on('shown.bs.modal', function() {
+            $('#edit_visitor_name').select2({
+                theme: 'bootstrap4',
+                width: '100%',
+                placeholder: "Select a visitor",
+                allowClear: true,
+                dropdownParent: $('#editMassageModal')
             });
         });
 
@@ -695,6 +637,153 @@
         // Trigger on input
         $(document).on('input', 'input[name="nights[]"]', function() {
             updateAccommodationTotals();
+        });
+
+        // =========================
+        // OPEN EDIT MODAL
+        // =========================
+        $('#editMassageModal').on('show.bs.modal', function(event) {
+
+            const button = $(event.relatedTarget);
+
+            const id = button.data('id');
+            const visitorId = button.data('visitor-id');
+            const members = button.data('total-members') || [];
+            const total = button.data('total-payment');
+            const status = button.data('payment-status');
+
+            $('#edit_massage_id').val(id);
+            $('#_visitor_id').val(visitorId);
+            $('#edit_total_payment').val(parseFloat(total).toFixed(2));
+            $('#edit_payment_status').val(status);
+
+            $('#edit_visitor_name').val(visitorId).trigger('change');
+
+            renderEditRows(members);
+        });
+
+
+        // =========================
+        // RENDER EDIT TABLE
+        // =========================
+        function renderEditRows(members) {
+
+            let html = '';
+
+            members.forEach((guest, gIndex) => {
+
+                const savedServices = guest.services || [];
+
+                window.massageServices.forEach((service, sIndex) => {
+
+                    const existing = savedServices.find(s =>
+                        s.service_name === service.service_name
+                    );
+
+                    const qty = existing ? existing.qty : 0;
+                    const subtotal = existing ? existing.subtotal : 0;
+
+                    html += `
+            <tr>
+                ${sIndex === 0 ? `
+                    <td rowspan="${window.massageServices.length}" class="text-center">
+                        ${gIndex + 1}
+                    </td>
+
+                    <td rowspan="${window.massageServices.length}">
+                        ${guest.guest} ${guest.is_main ? '(Main Guest)' : ''}
+
+                        <input type="hidden" 
+                            name="members[${gIndex}][guest]" 
+                            value="${guest.guest}">
+
+                        <input type="hidden" 
+                            name="members[${gIndex}][age]" 
+                            value="${guest.age ?? ''}">
+
+                        <input type="hidden" 
+                            name="members[${gIndex}][is_main]" 
+                            value="${guest.is_main ? 1 : 0}">
+                    </td>
+
+                    <td rowspan="${window.massageServices.length}" class="text-center">
+                        ${guest.age ?? 'N/A'}
+                    </td>
+                ` : ''}
+
+                <!-- SERVICE -->
+                <td>
+                    ${service.service_name}
+
+                    <input type="hidden"
+                        name="members[${gIndex}][services][${sIndex}][service_name]"
+                        value="${service.service_name}">
+                </td>
+
+                <!-- QTY -->
+                <td>
+                    <input type="number"
+                        class="form-control edit-qty"
+                        name="members[${gIndex}][services][${sIndex}][qty]"
+                        value="${qty}"
+                        data-fee="${service.fee}"
+                        min="0">
+                </td>
+
+                <!-- FEE -->
+                <td>
+                    ₱${parseFloat(service.fee).toFixed(2)}
+
+                    <input type="hidden"
+                        name="members[${gIndex}][services][${sIndex}][fee]"
+                        value="${service.fee}">
+                </td>
+
+                <!-- SUBTOTAL -->
+                <td>
+                    <input type="text"
+                        class="form-control edit-subtotal"
+                        value="${parseFloat(subtotal).toFixed(2)}"
+                        readonly>
+                </td>
+            </tr>
+            `;
+                });
+            });
+
+            $('#editMassageTableBody').html(html);
+
+            updateEditTotals();
+        }
+        // =========================
+        // UPDATE TOTAL (EDIT)
+        // =========================
+        function updateEditTotals() {
+
+            let total = 0;
+
+            $('#editMassageTableBody tr').each(function() {
+
+                const qtyInput = $(this).find('.edit-qty');
+
+                const qty = parseFloat(qtyInput.val()) || 0;
+                const fee = parseFloat(qtyInput.data('fee')) || 0;
+
+                const subtotal = qty * fee;
+
+                $(this).find('.edit-subtotal').val(subtotal.toFixed(2));
+
+                total += subtotal;
+            });
+
+            $('#edit_total_payment').val(total.toFixed(2));
+        }
+
+        // =========================
+        // QTY CHANGE (EDIT)
+        // =========================
+        $(document).on('input', '.edit-qty', function() {
+            updateEditTotals();
         });
     });
 </script>

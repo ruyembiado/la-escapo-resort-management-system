@@ -201,100 +201,87 @@ class ServiceController extends Controller
         return redirect()->route('entrances')->with('success', 'Visitor data deleted successfully.');
     }
 
-    public function accommodations()
+    public function accommodations(Request $request)
     {
+        $start_date = $request->start_date;
+        $end_date = $request->end_date;
+        $letter = $request->letter;
+
+        $massageFees = Service::where('service_type', 'massage')->get();
+        $accommodationFees = Service::where('service_type', 'accommodation')->get();
+
         $visitors = Visitor::orderBy('created_at', 'desc')->limit(100)->get();
-        $accommodations = Accommodation::orderBy('created_at', 'desc')->with('visitor')->get();
+        $accommodations = Accommodation::with('visitor')
+            ->when($start_date, function ($query) use ($start_date) {
+                $query->whereDate('created_at', '>=', $start_date);
+            })
+            ->when($end_date, function ($query) use ($end_date) {
+                $query->whereDate('created_at', '<=', $end_date);
+            })
+            ->when($letter, function ($query) use ($letter) {
+                $query->whereHas('visitor', function ($q) use ($letter) {
+                    $q->where('first_name', 'like', $letter . '%');
+                });
+            })
+            ->orderBy('created_at', 'desc')
+            ->get();
 
-        return view('accommodations', compact('visitors', 'accommodations'));
-    }
-
-    public function storeAccommodation(Request $request)
-    {
-        $request->validate([
-            'visitor_id' => 'required|exists:visitors,id',
-            'num_nights' => 'required',
-            'rooms' => 'required|array',
-            'fees' => 'required|array',
-            'payment_status' => 'required',
-            'total_payment' => 'required',
-        ]);
-
-        $checked = $request->input('checked');
-        $rooms = $request->input('rooms');
-        $fees = $request->input('fees');
-
-        $filteredRooms = [];
-        $filteredFees = [];
-
-        foreach ($rooms as $index => $room) {
-            if (in_array($room, $checked)) {
-                $filteredRooms[] = $room;
-                $filteredFees[] = $fees[$index] ?? 0;
-            }
-        }
-
-        // Check if at least one room was selected
-        if (empty($filteredRooms)) {
-            return redirect()->back()
-                ->withInput()
-                ->with('error', 'Please select at least one room.');
-        }
-
-        Accommodation::create([
-            'visitor_id' => $request->visitor_id,
-            'num_nights' => $request->num_nights,
-            'room' => json_encode($filteredRooms),
-            'fee' => json_encode($filteredFees),
-            'payment_status' => $request->payment_status ?? 'pending',
-            'total_payment' => $request->total_payment,
-        ]);
-
-        return redirect()->route('accommodations')->with('success', 'Overnight Accommodation added successfully.');
+        return view('accommodations', compact('visitors', 'accommodations', 'accommodationFees', 'massageFees'));
     }
 
     public function updateAccommodation(Request $request)
     {
         $request->validate([
             'accommodation_id' => 'required|exists:accommodations,id',
-            'edit_num_nights' => 'required',
-            'edit_rooms' => 'required|array',
-            'edit_fees' => 'required|array',
-            'edit_payment_status' => 'required',
-            'total_payment' => 'required',
+            'visitor_id' => 'required|exists:visitors,id',
+            'rooms' => 'nullable|array',
+            'nights' => 'nullable|array',
+            'fees' => 'nullable|array',
+            'accommodation_total_payment' => 'required|numeric',
+            'accommodation_payment_status' => 'required',
         ]);
 
-        $checked = $request->input('checked', []);
-        $rooms = $request->input('edit_rooms');
-        $fees = $request->input('edit_fees');
+        $rooms = $request->rooms ?? [];
+        $nights = $request->nights ?? [];
+        $fees = $request->fees ?? [];
 
-        $filteredRooms = [];
-        $filteredFees = [];
+        $structuredAccommodation = [];
 
-        foreach ($rooms as $index => $room) {
-            if (in_array($room, $checked)) {
-                $filteredRooms[] = $room;
-                $filteredFees[] = $fees[$index] ?? 0;
-            }
+        foreach ($rooms as $i => $room) {
+
+            $night = (int) ($nights[$i] ?? 0);
+            $fee = (float) ($fees[$i] ?? 0);
+
+            if ($night <= 0) continue;
+
+            $structuredAccommodation[] = [
+                'room' => $room,
+                'fee' => $fee,
+                'nights' => $night,
+                'subtotal' => $night * $fee,
+            ];
         }
 
         $accommodation = Accommodation::findOrFail($request->accommodation_id);
+
         $accommodation->update([
-            'num_nights' => $request->edit_num_nights,
-            'room' => json_encode($filteredRooms),
-            'fee' => json_encode($filteredFees),
-            'payment_status' => $request->edit_payment_status,
-            'total_payment' => $request->total_payment,
+            'visitor_id' => $request->visitor_id,
+            'room' => json_encode($structuredAccommodation),
+            'fee' => 0,
+            'num_nights' => 0,
+            'total_payment' => $request->accommodation_total_payment,
+            'payment_status' => $request->accommodation_payment_status,
         ]);
 
-        return redirect()->route('accommodations')->with('success', 'Overnight Accommodation record updated successfully.');
+        return redirect()->route('accommodations')
+            ->with('success', 'Accommodation record updated successfully.');
     }
 
     public function destroyAccommodation($id)
     {
         $accommodation = Accommodation::findOrFail($id);
         $accommodation->delete();
-        return redirect()->route('accommodations')->with('success', 'Overnight Accommodation record deleted successfully.');
+        return redirect()->route('accommodations')->with('success', 'Accommodation record deleted successfully.');
     }
 
     public function cottages()
@@ -1081,12 +1068,28 @@ class ServiceController extends Controller
 
     public function massages(Request $request)
     {
+        $start_date = $request->start_date;
+        $end_date = $request->end_date;
+        $letter = $request->letter;
 
         $massageFees = Service::where('service_type', 'massage')->get();
         $accommodationFees = Service::where('service_type', 'accommodation')->get();
 
         $visitors = Visitor::orderBy('created_at', 'desc')->limit(100)->get();
-        $massages = Massage::orderBy('created_at', 'desc')->with('visitor')->get();
+        $massages = Massage::with('visitor')
+            ->when($start_date, function ($query) use ($start_date) {
+                $query->whereDate('created_at', '>=', $start_date);
+            })
+            ->when($end_date, function ($query) use ($end_date) {
+                $query->whereDate('created_at', '<=', $end_date);
+            })
+            ->when($letter, function ($query) use ($letter) {
+                $query->whereHas('visitor', function ($q) use ($letter) {
+                    $q->where('first_name', 'like', $letter . '%');
+                });
+            })
+            ->orderBy('created_at', 'desc')
+            ->get();
 
         return view('massages', compact('visitors', 'massages', 'massageFees', 'accommodationFees'));
     }
@@ -1229,48 +1232,53 @@ class ServiceController extends Controller
     {
         $request->validate([
             'visitor_id' => 'required|exists:visitors,id',
-            'category' => 'required|array',
             'members' => 'required|array',
-            'age' => 'nullable|array',
-            'fee' => 'nullable|array',
-            'total_payment' => 'required',
-            'payment_status' => 'nullable',
-            'no_of_hours' => 'required',
+            'total_payment' => 'required|numeric',
+            'payment_status' => 'nullable|string',
             'massage_id' => 'required|exists:massages,id',
         ]);
 
-        $categories = $request->input('category');
-        $members = $request->input('members');
-        $ages = $request->input('age', []);
-        $fees = $request->input('fee', []);
+        $members = $request->input('members', []);
 
-        $filteredCategories = [];
-        $filteredMembers = [];
-        $filteredAges = [];
-        $filteredFees = [];
+        $cleanMembers = [];
 
-        $count = count($members);
+        foreach ($members as $guest) {
 
-        for ($i = 0; $i < $count; $i++) {
-            $filteredCategories[] = isset($categories[$i]) && $categories[$i] !== null ? $categories[$i] : 'null';
-            $filteredMembers[] = isset($members[$i]) && $members[$i] !== null ? $members[$i] : 'null';
-            $filteredAges[] = isset($ages[$i]) && $ages[$i] !== null ? $ages[$i] : 'null';
-            $filteredFees[] = isset($fees[$i]) && $fees[$i] !== null ? $fees[$i] : 'null';
+            if (!isset($guest['services'])) continue;
+            $cleanServices = [];
+            foreach ($guest['services'] as $service) {
+
+                $qty = (int) ($service['qty'] ?? 0);
+                $fee = (float) ($service['fee'] ?? 0);
+                if ($qty <= 0) continue;
+                $cleanServices[] = [
+                    'service_name' => $service['service_name'],
+                    'qty' => $qty,
+                    'fee' => $fee,
+                    'subtotal' => $qty * $fee,
+                ];
+            }
+            if (empty($cleanServices)) continue;
+
+            $cleanMembers[] = [
+                'guest' => $guest['guest'] ?? '',
+                'age' => $guest['age'] ?? null,
+                'is_main' => $guest['is_main'] ?? false,
+                'services' => $cleanServices,
+            ];
         }
 
         $massage = Massage::findOrFail($request->massage_id);
+
         $massage->update([
             'visitor_id' => $request->visitor_id,
-            'category' => json_encode($filteredCategories),
-            'members' => json_encode($filteredMembers),
-            'age' => json_encode($filteredAges),
-            'fee' => json_encode($filteredFees),
+            'members' => json_encode($cleanMembers),
             'total_payment' => $request->total_payment,
-            'no_of_hours' => $request->no_of_hours,
             'payment_status' => $request->payment_status ?? 'pending',
         ]);
 
-        return redirect()->route('massages')->with('success', 'Massage record updated successfully.');
+        return redirect()->route('massages')
+            ->with('success', 'Massage record updated successfully.');
     }
 
     public function destroyMassage($id)

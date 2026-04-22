@@ -12,7 +12,7 @@
             </div>
         </div>
         <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addKawaBathModal">Add Kawa Hot Bath &
-            Picnic Table
+            Picnic Table Fee
         </a>
     </div>
 
@@ -107,20 +107,23 @@
                                             @php
                                                 $details = json_decode($picnictable->details, true);
                                             @endphp
-                                            @if (!empty($details))
+
+                                            @if (!empty($details) && collect($details)->where('qty', '>', 0)->count())
                                                 @foreach ($details as $item)
-                                                    <tr>
-                                                        <td style="padding: 5px;">{{ $item['service_name'] }}</td>
-                                                        <td style="padding: 5px;">{{ $item['qty'] }}</td>
-                                                        <td style="padding: 5px;">₱ {{ number_format($item['fee'], 2) }}
-                                                        </td>
-                                                        <td style="padding: 5px;">₱
-                                                            {{ number_format($item['subtotal'], 2) }}</td>
-                                                    </tr>
+                                                    @if ($item['qty'] > 0)
+                                                        <tr>
+                                                            <td style="padding: 5px;">{{ $item['service_name'] }}</td>
+                                                            <td class="text-center" style="padding: 5px;">{{ $item['qty'] }}</td>
+                                                            <td style="padding: 5px;">₱
+                                                                {{ number_format($item['fee'], 2) }}</td>
+                                                            <td style="padding: 5px;">₱
+                                                                {{ number_format($item['subtotal'], 2) }}</td>
+                                                        </tr>
+                                                    @endif
                                                 @endforeach
                                             @else
                                                 <tr>
-                                                    <td colspan="3" class="text-center">No data</td>
+                                                    <td colspan="4" class="text-center">No data</td>
                                                 </tr>
                                             @endif
                                         </tbody>
@@ -232,7 +235,7 @@
                                     <div class="form-group">
                                         <div class="d-flex align-items-center justify-content-end gap-3">
                                             <label>Payment Status:</label>
-                                            <div class="col-3">
+                                            <div class="col-2">
                                                 <select name="kawabath_payment_status" class="form-control">
                                                     <option value="">Select status</option>
                                                     <option value="Paid">Paid</option>
@@ -241,7 +244,7 @@
                                             </div>
 
                                             <label>Total Fee:</label>
-                                            <div class="col-3">
+                                            <div class="col-2">
                                                 <div class="d-flex">
                                                     <span class="input-group-text bg-theme-primary text-light">₱</span>
                                                     <input type="text" name="kawabath_total_payment"
@@ -299,7 +302,7 @@
                                 <div class="form-group mt-2">
                                     <div class="d-flex align-items-center justify-content-end gap-3">
                                         <label>Payment Status:</label>
-                                        <div class="col-3">
+                                        <div class="col-2">
                                             <select name="picnictable_payment_status" class="form-control">
                                                 <option value="">Select status</option>
                                                 <option value="Paid">Paid</option>
@@ -308,7 +311,7 @@
                                         </div>
 
                                         <label>Total Fee:</label>
-                                        <div class="col-3">
+                                        <div class="col-2">
                                             <div class="d-flex">
                                                 <span class="input-group-text bg-theme-primary text-light">₱</span>
                                                 <input type="text" name="picnictable_total_payment"
@@ -385,7 +388,7 @@
                             <div class="table-responsive">
                                 <table class="table table-bordered border-dark">
                                     <thead>
-                                        <th class="bg-theme-primary text-light">NO.</th>
+                                        <th class="bg-theme-primary text-light text-center">NO.</th>
                                         <th class="bg-theme-primary text-light">PICNIC TABLE</th>
                                         <th class="bg-theme-primary text-light">FEE</th>
                                         <th width="15%" class="bg-theme-primary text-light">QUANTITY</th>
@@ -394,7 +397,7 @@
                                     <tbody>
                                         @foreach ($picnicTableFees as $index => $fee)
                                             <tr>
-                                                <td>{{ $index + 1 }}</td>
+                                                <td class="text-center">{{ $index + 1 }}</td>
                                                 <td>{{ $fee->service_name }}
                                                     <input type="hidden" name="picnic_table_services[]"
                                                         value="{{ $fee->service_name }}">
@@ -420,7 +423,7 @@
                             <div class="form-group mt-2">
                                 <div class="d-flex align-items-center justify-content-end gap-3">
                                     <label>Payment Status:</label>
-                                    <div class="col-3">
+                                    <div class="col-2">
                                         <select name="picnictable_payment_status" class="form-control">
                                             <option value="">Select status</option>
                                             <option value="Paid">Paid</option>
@@ -429,7 +432,7 @@
                                     </div>
 
                                     <label>Total Fee:</label>
-                                    <div class="col-3">
+                                    <div class="col-2">
                                         <div class="d-flex">
                                             <span class="input-group-text bg-theme-primary text-light">₱</span>
                                             <input type="text" name="picnictable_total_payment"
@@ -619,7 +622,7 @@
         // =========================
         $(document).on('input', '#addKawaBathModal .picnic-qty', function() {
             calculatePicnicTotals('#addKawaBathModal', '#picnictable_total_payment');
-        }); 
+        });
 
         // =========================
         // EDIT PICNIC QTY CHANGE
@@ -659,7 +662,7 @@
 
                 html += `
                 <tr>
-                    <td>${index + 1}</td>
+                    <td class="text-center">${index + 1}</td>
 
                     <td>
                         ${service.service_name}
@@ -694,7 +697,8 @@
             $('#edit_picnictable_total_payment').val(parseFloat(totalPayment).toFixed(2));
 
             setTimeout(() => {
-                calculatePicnicTotals('#editPicnicTableModal', '#edit_picnictable_total_payment');
+                calculatePicnicTotals('#editPicnicTableModal',
+                    '#edit_picnictable_total_payment');
             }, 100);
         });
 

@@ -12,8 +12,7 @@
             </div>
         </div>
         <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addKawaBathModal">Add Kawa Hot Bath &
-            Picnic Table
-            Fee</a>
+            Picnic Table Fee</a>
     </div>
 
     <!-- Content Row -->
@@ -91,7 +90,7 @@
                                     {{ optional($kawabath->visitor)->last_name }}
                                 </td>
                                 <td class="text-center">
-                                    {{ $kawabath->visitor->companions()->count() + 1 }} 
+                                    {{ $kawabath->visitor->companions()->count() + 1 }}
                                 </td>
                                 <td class="p-0">
                                     <table class="table table-bordered border-dark m-0 mt-0" style="width:100%;">
@@ -251,7 +250,7 @@
                                     <div class="form-group">
                                         <div class="d-flex align-items-center justify-content-end gap-3">
                                             <label>Payment Status:</label>
-                                            <div class="col-3">
+                                            <div class="col-2">
                                                 <select name="kawabath_payment_status" class="form-control">
                                                     <option value="">Select status</option>
                                                     <option value="Paid">Paid</option>
@@ -260,7 +259,7 @@
                                             </div>
 
                                             <label>Total Fee:</label>
-                                            <div class="col-3">
+                                            <div class="col-2">
                                                 <div class="d-flex">
                                                     <span class="input-group-text bg-theme-primary text-light">₱</span>
                                                     <input type="text" name="kawabath_total_payment"
@@ -318,7 +317,7 @@
                                 <div class="form-group mt-2">
                                     <div class="d-flex align-items-center justify-content-end gap-3">
                                         <label>Payment Status:</label>
-                                        <div class="col-3">
+                                        <div class="col-2">
                                             <select name="picnictable_payment_status" class="form-control">
                                                 <option value="">Select status</option>
                                                 <option value="Paid">Paid</option>
@@ -327,7 +326,7 @@
                                         </div>
 
                                         <label>Total Fee:</label>
-                                        <div class="col-3">
+                                        <div class="col-2">
                                             <div class="d-flex">
                                                 <span class="input-group-text bg-theme-primary text-light">₱</span>
                                                 <input type="text" name="picnictable_total_payment"
@@ -396,6 +395,12 @@
                         </div>
 
                         <div class="form-group mb-2">
+                            <div
+                                class="bg-theme-primary d-flex align-items-center gap-2 justify-content-center text-light p-2">
+                                <i class="fa fa-hot-tub-person fa-2x"></i>
+                                <h3 class="m-0">KAWA HOT BATH</h3>
+                            </div>
+
                             <table class="table table-bordered border-dark"
                                 style="width: 100%; border-collapse: collapse;">
                                 <thead>
@@ -405,14 +410,14 @@
                                     <th class="bg-theme-primary text-light">CATEGORY</th>
                                     <th class="bg-theme-primary text-light">FEE</th>
                                     <th class="bg-theme-primary text-light">QUANTITY</th>
-                                    <th class="bg-theme-primary text-light">SUB-TOTAL</th>
+                                    <th width="15%" class="bg-theme-primary text-light">SUB-TOTAL</th>
                                 </thead>
                                 <tbody id="editKawaBathTableBody"></tbody>
                             </table>
                             <div class="form-group mt-2">
                                 <div class="d-flex align-items-center justify-content-end gap-3">
                                     <label>Payment Status:</label>
-                                    <div class="col-3">
+                                    <div class="col-2">
                                         <select name="kawabath_payment_status" id="edit_payment_status"
                                             class="form-control">
                                             <option value="">Select status</option>
@@ -422,7 +427,7 @@
                                     </div>
 
                                     <label>Total Fee:</label>
-                                    <div class="col-3">
+                                    <div class="col-2">
                                         <div class="d-flex">
                                             <span class="input-group-text bg-theme-primary text-light">₱</span>
                                             <input type="text" name="kawabath_total_payment" id="edit_total_payment"
