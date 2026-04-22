@@ -389,49 +389,105 @@ class ServiceController extends Controller
 
     public function meals()
     {
+        $foodFees = Service::where('service_type', 'foods')->get();
+        $drinkFees = Service::where('service_type', 'drinks')->get();
+
         $visitors = Visitor::orderBy('created_at', 'desc')->limit(100)->get();
         $meals = Meal::orderBy('created_at', 'desc')->with('visitor')->get();
 
-        return view('meals', compact('visitors', 'meals'));
+        return view('meals', compact('visitors', 'meals', 'foodFees', 'drinkFees'));
     }
 
-    public function storeMeal(Request $request)
+    public function storeMealBeverage(Request $request)
     {
         $request->validate([
             'visitor_id' => 'required|exists:visitors,id',
-            'meal_items' => 'required|array',
-            'meal_items.*.name' => 'required|string',
-            'meal_items.*.price' => 'nullable|numeric',
-            'meal_items.*.quantity' => 'nullable|integer|min:0',
-            'meal_items.*.subtotal' => 'nullable|numeric',
-            'total_payment' => 'required|numeric',
-            'payment_status' => 'nullable',
+
+            'meal_items' => 'nullable|array',
+            'beverage_items' => 'nullable|array',
+
+            'food_total_payment' => 'required|numeric',
+            'drink_total_payment' => 'required|numeric',
+
+            'drink_payment_status' => 'nullable',
+            'food_payment_status' => 'nullable',
         ]);
 
-        $itemNames = [];
-        $quantities = [];
-        $fees = [];
+        /*
+    |--------------------------------------------------------------------------
+    | MEALS
+    |--------------------------------------------------------------------------
+    */
+        $mealNames = [];
+        $mealQty = [];
+        $mealFees = [];
+        $hasMealItems = false;
 
-        foreach ($request->meal_items as $item) {
-            $name = isset($item['name']) ? $item['name'] : '';
-            $qty  = isset($item['quantity']) && is_numeric($item['quantity']) ? (int) $item['quantity'] : 0;
-            $fee  = isset($item['price']) && is_numeric($item['price']) ? (float) $item['price'] : 0.00;
+        if ($request->meal_items) {
+            foreach ($request->meal_items as $category => $items) {
+                foreach ($items as $item) {
 
-            $itemNames[] = $name;
-            $quantities[] = $qty;
-            $fees[] = $fee;
+                    $qty = (int) ($item['qty'] ?? 0);
+
+                    if ($qty <= 0) continue;
+
+                    $hasMealItems = true;
+
+                    $mealNames[] = $item['name'] ?? '';
+                    $mealQty[]   = $qty;
+                    $mealFees[]  = (float) ($item['fee'] ?? 0);
+                }
+            }
+
+            if ($hasMealItems) {
+                Meal::create([
+                    'visitor_id'     => $request->visitor_id,
+                    'item_name'      => json_encode($mealNames),
+                    'fee'            => json_encode($mealFees),
+                    'quantity'       => json_encode($mealQty),
+                    'total_payment'  => $request->food_total_payment ?? 0,
+                    'payment_status' => $request->food_payment_status ?? 'Unpaid',
+                ]);
+            }
         }
 
-        Meal::create([
-            'visitor_id'    => $request->visitor_id,
-            'item_name'     => json_encode($itemNames),
-            'fee'           => json_encode($fees),
-            'quantity'      => json_encode($quantities),
-            'total_payment' => $request->total_payment,
-            'payment_status' => $request->payment_status ?? 'pending',
-        ]);
+        /*
+    |--------------------------------------------------------------------------
+    | BEVERAGES
+    |--------------------------------------------------------------------------
+    */
+        $bevNames = [];
+        $bevQty = [];
+        $bevFees = [];
+        $hasBevItems = false;
 
-        return redirect()->route('meals')->with('success', 'Meal(s) added successfully.');
+        if ($request->beverage_items) {
+            foreach ($request->beverage_items as $item) {
+
+                $qty = (int) ($item['qty'] ?? 0);
+
+                if ($qty <= 0) continue;
+
+                $hasBevItems = true;
+
+                $bevNames[] = $item['name'] ?? '';
+                $bevQty[]   = $qty;
+                $bevFees[]  = (float) ($item['fee'] ?? 0);
+            }
+
+            if ($hasBevItems) {
+                Beverage::create([
+                    'visitor_id'     => $request->visitor_id,
+                    'item_name'      => json_encode($bevNames),
+                    'fee'            => json_encode($bevFees),
+                    'quantity'       => json_encode($bevQty),
+                    'total_payment'  => $request->drink_total_payment ?? 0,
+                    'payment_status' => $request->drink_payment_status ?? 'Unpaid',
+                ]);
+            }
+        }
+
+        return redirect()->back()->with('success', 'Food and Drink saved successfully.');
     }
 
     public function updateMeal(Request $request)
@@ -439,50 +495,50 @@ class ServiceController extends Controller
         $request->validate([
             'meal_id' => 'required|exists:meals,id',
             'visitor_id' => 'required|exists:visitors,id',
-            'meal_items' => 'required|array',
-            'meal_items.*.name' => 'required|string',
-            'meal_items.*.price' => 'required|numeric',
-            'meal_items.*.quantity' => 'required|integer|min:0',
-            'total_payment' => 'required|numeric',
-            'payment_status' => 'nullable',
+
+            'meal_items' => 'nullable|array',
+
+            'food_total_payment' => 'required|numeric',
+            'food_payment_status' => 'nullable',
         ]);
 
         $meal = Meal::findOrFail($request->meal_id);
 
-        $items = $request->input('meal_items');
+        $names = [];
+        $fees = [];
+        $qtys = [];
 
-        $itemNames = [];
-        $prices = [];
-        $quantities = [];
-        $subtotals = [];
+        if ($request->meal_items) {
+            foreach ($request->meal_items as $category => $items) {
+                foreach ($items as $item) {
 
-        foreach ($items as $item) {
-            if ($item['quantity'] > 0) {
-                $itemNames[] = $item['name'];
-                $prices[] = (float) $item['price'];
-                $quantities[] = (int) $item['quantity'];
-                $subtotals[] = (float) $item['price'] * (int) $item['quantity'];
+                    $qty = (int) ($item['qty'] ?? 0);
+                    if ($qty <= 0) continue;
+
+                    $names[] = $item['name'] ?? '';
+                    $fees[]  = (float) ($item['fee'] ?? 0);
+                    $qtys[]  = $qty;
+                }
             }
         }
 
         $meal->update([
-            'visitor_id' => $request->input('visitor_id'),
-            'item_name' => json_encode($itemNames),
-            'fee' => json_encode($prices),
-            'quantity' => json_encode($quantities),
-            'subtotal' => json_encode($subtotals),
-            'total_payment' => $request->input('total_payment'),
-            'payment_status' => $request->payment_status ?? 'pending',
+            'visitor_id'     => $request->visitor_id,
+            'item_name'      => json_encode($names),
+            'fee'            => json_encode($fees),
+            'quantity'       => json_encode($qtys),
+            'total_payment'  => $request->food_total_payment ?? 0,
+            'payment_status' => $request->food_payment_status ?? 'Unpaid',
         ]);
 
-        return redirect()->route('meals')->with('success', 'Meal record updated successfully.');
+        return redirect()->back()->with('success', 'Food record updated successfully.');
     }
 
     public function destroyMeal($id)
     {
         $meal = Meal::findOrFail($id);
         $meal->delete();
-        return redirect()->route('meals')->with('success', 'Meal(s) record deleted successfully.');
+        return redirect()->route('meals')->with('success', 'Food record deleted successfully.');
     }
 
     public function beverages()
@@ -491,45 +547,6 @@ class ServiceController extends Controller
         $beverages = Beverage::orderBy('created_at', 'desc')->with('visitor')->get();
 
         return view('beverages', compact('visitors', 'beverages'));
-    }
-
-    public function storeBeverage(Request $request)
-    {
-        $request->validate([
-            'visitor_id' => 'required|exists:visitors,id',
-            'beverage_items' => 'required|array',
-            'beverage_items.*.name' => 'required|string',
-            'beverage_items.*.price' => 'nullable|numeric',
-            'beverage_items.*.quantity' => 'nullable|integer|min:0',
-            'beverage_items.*.subtotal' => 'nullable|numeric',
-            'total_payment' => 'required|numeric',
-            'payment_status' => 'nullable',
-        ]);
-
-        $itemNames = [];
-        $quantities = [];
-        $fees = [];
-
-        foreach ($request->beverage_items as $item) {
-            $name = isset($item['name']) ? $item['name'] : '';
-            $qty  = isset($item['quantity']) && is_numeric($item['quantity']) ? (int) $item['quantity'] : 0;
-            $fee  = isset($item['price']) && is_numeric($item['price']) ? (float) $item['price'] : 0.00;
-
-            $itemNames[] = $name;
-            $quantities[] = $qty;
-            $fees[] = $fee;
-        }
-
-        Beverage::create([
-            'visitor_id'    => $request->visitor_id,
-            'item_name'     => json_encode($itemNames),
-            'fee'           => json_encode($fees),
-            'quantity'      => json_encode($quantities),
-            'total_payment' => $request->total_payment,
-            'payment_status' => $request->payment_status ?? 'pending',
-        ]);
-
-        return redirect()->route('beverages')->with('success', 'Beverage(s) added successfully.');
     }
 
     public function updateBeverage(Request $request)
@@ -580,7 +597,7 @@ class ServiceController extends Controller
     {
         $beverage = Beverage::findOrFail($id);
         $beverage->delete();
-        return redirect()->route('beverages')->with('success', 'Beverage(s) record deleted successfully.');
+        return redirect()->route('beverages')->with('success', 'Drink record deleted successfully.');
     }
 
     public function kawabaths(Request $request)

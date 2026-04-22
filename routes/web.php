@@ -92,7 +92,7 @@ Route::middleware(['auth'])->group(function () {
 
     // Meals
     Route::get('/meals', [ServiceController::class, 'meals'])->name('meals');
-    Route::post('/meal', [ServiceController::class, 'storeMeal'])->name('meal.store');
+    Route::post('/meal', [ServiceController::class, 'storeMealBeverage'])->name('meal.store');
     Route::put('/meal/update', [ServiceController::class, 'updateMeal'])->name('meal.update');
     Route::delete('/delete-meal/{id}', [ServiceController::class, 'destroyMeal'])->name('meal.destroy');
     // Beverages
