@@ -127,7 +127,7 @@ class ServiceController extends Controller
 
         $entrance = Entrance::create([
             'visitor_id' => $visitor->id,
-            'status' => $request->payment_status ?? 'unpaid',
+            'status' => $request->payment_status ?? 'Unpaid',
             'total_payment' => $request->total_fee,
         ]);
 

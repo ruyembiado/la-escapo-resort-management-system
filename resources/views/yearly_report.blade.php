@@ -69,7 +69,7 @@
                 <div class="table-responsive">
                     <table id="summary_report" class="table table-bordered" width="100%" cellspacing="0">
                         <thead class="">
-                            <tr>
+                            <tr class="text-uppercase">
                                 <th>Month</th>
                                 <th>No. of Visitors</th>
                                 <th>Entrance Fee</th>
@@ -78,8 +78,8 @@
                                 <th>Picnic Table</th>
                                 <th>Massage</th>
                                 <th>Accommodation</th>
-                                <th>Meals</th>
-                                <th>Beverages</th>
+                                <th>Foods</th>
+                                <th>Drinks</th>
                                 <th>Total</th>
                             </tr>
                         </thead>
@@ -105,7 +105,7 @@
                                     </tr>
                                 @endforeach
                                 <tr class="">
-                                    <td class="h6">Grand Total:</td>
+                                    <td class="h6 text-uppercase">Grand Total:</td>
                                     <td class="h6">{{ $monthlyBreakdown->sum('visitors') }}</td>
                                     <td class="h6">₱{{ number_format($monthlyBreakdown->sum('entrance_fee'), 2) }}</td>
                                     <td class="h6">₱{{ number_format($monthlyBreakdown->sum('kawabath'), 2) }}</td>

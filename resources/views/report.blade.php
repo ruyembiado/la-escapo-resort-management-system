@@ -21,11 +21,51 @@
     <!-- Start the content section -->
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0">Summary Reports</h1>
+        <div class="d-flex">
+            <i class="fa fa-file-invoice-dollar fa-2x text-dark me-2"></i>
+            <div class="d-flex flex-column">
+                <h1 class="h3 mb-0 text">BILL INCOME</h1>
+                <h6 class="mb-0">Report | Bill Income</h6>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="card col-5 m-auto shadow mb-4 px-0">
+            <div class="card-body">
+                <div class="d-flex align-items-center gap-2 justify-content-center">
+                    <img src="{{ asset('public/img/logo.png') }}" width="70" alt="la-escapo-logo">
+                    <div class="d-flex flex-column">
+                        <b class="modal-title mt-2 text-bold">La Escapo Mountain
+                            Resort</b>
+                        <span>Tuno, Tibiao, Antique</span>
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <form action="{{ route('reportType') }}">
+                        <div class="form-group mb-2">
+                            <div class="d-flex flex-column align-items-start gap-3">
+                                <label>Periodic Report Type:</label>
+                                <div class="col-12">
+                                    <select name="report_type" class="form-control" id="report_type">
+                                        <option value="daily">Daily</option>
+                                        <option value="weekly">Weekly</option>
+                                        <option value="monthly">Monthly</option>
+                                        <option value="yearly">Yearly</option>
+                                    </select>
+                                </div>
+                                <button type="submit" class="btn btn-success bg-theme-primary w-100">View Report</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Content Row -->
-    <div class="row">
+    {{-- <div class="row">
         <div class="col-xl-3 col-md-6 mb-4">
             <div class="card bg-success shadow h-100 py-2">
                 <div class="card-body">
@@ -110,14 +150,14 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
     <!-- Content Row -->
 
-    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+    {{-- <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0">La Escapo Resort Bill Income Reports</h1>
-    </div>
+    </div> --}}
     <!-- Content Row -->
-    <div class="row">
+    {{-- <div class="row">
         <div class="col-xl-3 col-md-6 mb-4">
             <div class="card bg-success shadow h-100 py-2">
                 <div class="card-body">
@@ -218,6 +258,6 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
     <!-- Content Row -->
 @endsection <!-- End the content section -->

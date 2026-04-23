@@ -22,7 +22,6 @@ class ReportController extends Controller
         $dailyTotal = Visitor::with(
             'entrance',
             'accommodation',
-            'cottage',
             'meal',
             'beverage',
             'massage',
@@ -37,7 +36,6 @@ class ReportController extends Controller
             ->sum(function ($visitor) {
                 return ($visitor->entrance->total_payment ?? 0) +
                     ($visitor->accommodation->total_payment ?? 0) +
-                    ($visitor->cottage->total_payment ?? 0) +
                     ($visitor->meal->total_payment ?? 0) +
                     ($visitor->beverage->total_payment ?? 0) +
                     ($visitor->massage->total_payment ?? 0) +
@@ -53,7 +51,6 @@ class ReportController extends Controller
         $weeklyTotal = Visitor::with(
             'entrance',
             'accommodation',
-            'cottage',
             'meal',
             'beverage',
             'massage',
@@ -66,7 +63,6 @@ class ReportController extends Controller
             ->sum(function ($visitor) {
                 return ($visitor->entrance->total_payment ?? 0) +
                     ($visitor->accommodation->total_payment ?? 0) +
-                    ($visitor->cottage->total_payment ?? 0) +
                     ($visitor->meal->total_payment ?? 0) +
                     ($visitor->beverage->total_payment ?? 0) +
                     ($visitor->massage->total_payment ?? 0) +
@@ -82,7 +78,6 @@ class ReportController extends Controller
         $monthlyTotal = Visitor::with(
             'entrance',
             'accommodation',
-            'cottage',
             'meal',
             'beverage',
             'massage',
@@ -95,7 +90,6 @@ class ReportController extends Controller
             ->sum(function ($visitor) {
                 return ($visitor->entrance->total_payment ?? 0) +
                     ($visitor->accommodation->total_payment ?? 0) +
-                    ($visitor->cottage->total_payment ?? 0) +
                     ($visitor->meal->total_payment ?? 0) +
                     ($visitor->beverage->total_payment ?? 0) +
                     ($visitor->massage->total_payment ?? 0) +
@@ -108,7 +102,6 @@ class ReportController extends Controller
         $yearlyTotal = Visitor::with(
             'entrance',
             'accommodation',
-            'cottage',
             'meal',
             'beverage',
             'massage',
@@ -120,7 +113,6 @@ class ReportController extends Controller
             ->sum(function ($visitor) {
                 return ($visitor->entrance->total_payment ?? 0) +
                     ($visitor->accommodation->total_payment ?? 0) +
-                    ($visitor->cottage->total_payment ?? 0) +
                     ($visitor->meal->total_payment ?? 0) +
                     ($visitor->beverage->total_payment ?? 0) +
                     ($visitor->massage->total_payment ?? 0) +
@@ -140,12 +132,12 @@ class ReportController extends Controller
     public function dailyReport(Request $request)
     {
         $date = $request->input('date') ?? Carbon::today()->toDateString();
-        $visitors = Visitor::with('entrance', 'accommodation', 'cottage', 'meal', 'beverage', 'kawabath', 'watertubing', 'picnictable', 'massage')
+        $visitors = Visitor::with('entrance', 'accommodation', 'meal', 'beverage', 'kawabath', 'watertubing', 'picnictable', 'massage')
             ->whereDate('date_visit', $date)
             ->get();
 
         // Summarize values
-        $totalVisitors = 0;
+        $totalVisitors = 1;
         foreach ($visitors as $visitor) {
             if ($visitor->members) {
                 $totalVisitors += (int) $visitor->members;
@@ -158,10 +150,6 @@ class ReportController extends Controller
 
         $totalAccommodation = $visitors->sum(function ($visitor) {
             return $visitor->accommodation ? (float) ($visitor->accommodation->total_payment ?? 0) : 0;
-        });
-
-        $totalRental = $visitors->sum(function ($visitor) {
-            return $visitor->cottage ? (float) ($visitor->cottage->total_payment ?? 0) : 0;
         });
 
         $totalMeal = $visitors->sum(function ($visitor) {
@@ -193,14 +181,13 @@ class ReportController extends Controller
             'visitors' => $totalVisitors,
             'entrance_fee' => $totalEntrance,
             'accommodation' => $totalAccommodation,
-            'rental' => $totalRental,
             'meal' => $totalMeal,
             'beverage' => $totalBeverage,
             'kawabath' => $totalKawabath,
             'watertubing' => $totalWatertubing,
             'picnictable' => $totalPicnicTable,
             'massage' => $totalMassage,
-            'total' => $totalEntrance + $totalAccommodation + $totalRental + $totalMeal + $totalBeverage + $totalKawabath + $totalWatertubing + $totalPicnicTable + $totalMassage,
+            'total' => $totalEntrance + $totalAccommodation + $totalMeal + $totalBeverage + $totalKawabath + $totalWatertubing + $totalPicnicTable + $totalMassage,
         ];
 
         $dayName = Carbon::parse($date)->format('l');
@@ -252,7 +239,6 @@ class ReportController extends Controller
         $visitors = Visitor::with(
             'entrance',
             'accommodation',
-            'cottage',
             'meal',
             'beverage',
             'kawabath',
@@ -270,7 +256,6 @@ class ReportController extends Controller
             $dailyReport[$dateKey]['total'] +=
                 ($visitor->entrance->total_payment ?? 0) +
                 ($visitor->accommodation->total_payment ?? 0) +
-                ($visitor->cottage->total_payment ?? 0) +
                 ($visitor->meal->total_payment ?? 0) +
                 ($visitor->beverage->total_payment ?? 0) +
                 ($visitor->kawabath->total_payment ?? 0) +
@@ -315,7 +300,6 @@ class ReportController extends Controller
         $visitors = Visitor::with(
             'entrance',
             'accommodation',
-            'cottage',
             'meal',
             'beverage',
             'kawabath',
@@ -330,7 +314,6 @@ class ReportController extends Controller
             'visitors'      => 0,
             'entrance_fee'  => 0,
             'accommodation' => 0,
-            'rental'        => 0,
             'meal'          => 0,
             'beverage'      => 0,
             'massage'       => 0,
@@ -360,10 +343,9 @@ class ReportController extends Controller
             if ($report->has($dateKey)) {
                 $dayData = $report->get($dateKey); // get current day's data
 
-                $dayData['visitors']      += (int) $visitor->members;
+                $dayData['visitors']      += (int) $visitor->members + 1;
                 $dayData['entrance_fee']  += (float) ($visitor->entrance->total_payment ?? 0);
                 $dayData['accommodation'] += (float) ($visitor->accommodation->total_payment ?? 0);
-                $dayData['rental']        += (float) ($visitor->cottage->total_payment ?? 0);
                 $dayData['meal']          += (float) ($visitor->meal->total_payment ?? 0);
                 $dayData['beverage']      += (float) ($visitor->beverage->total_payment ?? 0);
                 $dayData['massage']       += (float) ($visitor->massage->total_payment ?? 0);
@@ -374,7 +356,6 @@ class ReportController extends Controller
                 $dayData['total'] =
                     $dayData['entrance_fee'] +
                     $dayData['accommodation'] +
-                    $dayData['rental'] +
                     $dayData['meal'] +
                     $dayData['beverage'] +
                     $dayData['massage'] +
@@ -391,7 +372,6 @@ class ReportController extends Controller
             'visitors'      => $report->sum('visitors'),
             'entrance_fee'  => $report->sum('entrance_fee'),
             'accommodation' => $report->sum('accommodation'),
-            'rental'        => $report->sum('rental'),
             'meal'          => $report->sum('meal'),
             'beverage'      => $report->sum('beverage'),
             'massage'       => $report->sum('massage'),
@@ -522,7 +502,7 @@ class ReportController extends Controller
 
         // Initialize monthly totals
         $monthlyData = [
-            'visitors' => $visitors->sum(fn($v) => (int) $v->members),
+            'visitors' => $visitors->sum(fn($v) => ((int) $v->members) + 1),
             'entrance_fee' => $visitors->sum(fn($v) => (float) ($v->entrance->total_payment ?? 0)),
             'accommodation' => $visitors->sum(fn($v) => (float) ($v->accommodation->total_payment ?? 0)),
             'meal' => $visitors->sum(fn($v) => (float) ($v->meal->total_payment ?? 0)),
@@ -562,7 +542,7 @@ class ReportController extends Controller
             $weekData = [
                 'start_date' => $weekStart->format('M d'),
                 'end_date' => $weekEnd->format('M d'),
-                'visitors' => $weekVisitors->sum(fn($v) => (int) $v->members),
+                'visitors' => $weekVisitors->sum(fn($v) => ((int) $v->members) + 1),
                 'entrance_fee' => $weekVisitors->sum(fn($v) => (float) ($v->entrance->total_payment ?? 0)),
                 'accommodation' => $weekVisitors->sum(fn($v) => (float) ($v->accommodation->total_payment ?? 0)),
                 'meal' => $weekVisitors->sum(fn($v) => (float) ($v->meal->total_payment ?? 0)),
@@ -601,7 +581,6 @@ class ReportController extends Controller
         $visitors = Visitor::with(
             'entrance',
             'accommodation',
-            'cottage',
             'meal',
             'beverage',
             'kawabath',
@@ -645,7 +624,6 @@ class ReportController extends Controller
             $monthlyBreakdown[$monthNum]['total'] +=
                 ($visitor->entrance->total_payment ?? 0) +
                 ($visitor->accommodation->total_payment ?? 0) +
-                ($visitor->cottage->total_payment ?? 0) +
                 ($visitor->meal->total_payment ?? 0) +
                 ($visitor->beverage->total_payment ?? 0) +
                 ($visitor->massage->total_payment ?? 0) +
@@ -675,7 +653,6 @@ class ReportController extends Controller
         $visitors = Visitor::with(
             'entrance',
             'accommodation',
-            'cottage',
             'meal',
             'beverage',
             'kawabath',
@@ -690,7 +667,6 @@ class ReportController extends Controller
             'visitors' => 0,
             'entrance_fee' => 0,
             'accommodation' => 0,
-            'rental' => 0,
             'meal' => 0,
             'beverage' => 0,
             'massage' => 0,
@@ -712,7 +688,6 @@ class ReportController extends Controller
                 'visitors' => 0,
                 'entrance_fee' => 0,
                 'accommodation' => 0,
-                'rental' => 0,
                 'meal' => 0,
                 'beverage' => 0,
                 'massage' => 0,
@@ -724,10 +699,9 @@ class ReportController extends Controller
             ];
 
             foreach ($monthVisitors as $visitor) {
-                $monthData['visitors'] += (int) $visitor->members;
+                $monthData['visitors'] += (int) $visitor->members + 1;
                 $monthData['entrance_fee'] += (float) ($visitor->entrance->total_payment ?? 0);
                 $monthData['accommodation'] += (float) ($visitor->accommodation->total_payment ?? 0);
-                $monthData['rental'] += (float) ($visitor->cottage->total_payment ?? 0);
                 $monthData['meal'] += (float) ($visitor->meal->total_payment ?? 0);
                 $monthData['beverage'] += (float) ($visitor->beverage->total_payment ?? 0);
                 $monthData['massage'] += (float) ($visitor->massage->total_payment ?? 0);
@@ -736,7 +710,7 @@ class ReportController extends Controller
                 $monthData['kawabath'] += (float) ($visitor->kawabath->total_payment ?? 0);
             }
 
-            $monthData['total'] = $monthData['entrance_fee'] + $monthData['accommodation'] + $monthData['rental'] +
+            $monthData['total'] = $monthData['entrance_fee'] + $monthData['accommodation'] +
                 $monthData['meal'] + $monthData['beverage'] + $monthData['massage'] +
                 $monthData['watertubing'] + $monthData['picnictable'] + $monthData['kawabath'];
 
@@ -747,7 +721,6 @@ class ReportController extends Controller
             $yearlyData['visitors'] += $monthData['visitors'];
             $yearlyData['entrance_fee'] += $monthData['entrance_fee'];
             $yearlyData['accommodation'] += $monthData['accommodation'];
-            $yearlyData['rental'] += $monthData['rental'];
             $yearlyData['meal'] += $monthData['meal'];
             $yearlyData['beverage'] += $monthData['beverage'];
             $yearlyData['massage'] += $monthData['massage'];
@@ -756,7 +729,7 @@ class ReportController extends Controller
             $yearlyData['kawabath'] += $monthData['kawabath'];
         }
 
-        $yearlyData['total'] = $yearlyData['entrance_fee'] + $yearlyData['accommodation'] + $yearlyData['rental'] +
+        $yearlyData['total'] = $yearlyData['entrance_fee'] + $yearlyData['accommodation'] +
             $yearlyData['meal'] + $yearlyData['beverage'] + $yearlyData['massage'] +
             $yearlyData['watertubing'] + $yearlyData['picnictable'] + $yearlyData['kawabath'];
 
@@ -775,7 +748,6 @@ class ReportController extends Controller
         $visitors = Visitor::with(
             'entrance',
             'accommodation',
-            'cottage',
             'meal',
             'beverage',
             'kawabath',
@@ -793,7 +765,6 @@ class ReportController extends Controller
                 'visitors' => 0,
                 'entrance_fee' => 0,
                 'accommodation' => 0,
-                'rental' => 0,
                 'meal' => 0,
                 'beverage' => 0,
                 'massage' => 0,
@@ -807,7 +778,6 @@ class ReportController extends Controller
                 $data['visitors'] += (int) $visitor->members;
                 $data['entrance_fee'] += (float) ($visitor->entrance->total_payment ?? 0);
                 $data['accommodation'] += (float) ($visitor->accommodation->total_payment ?? 0);
-                $data['rental'] += (float) ($visitor->cottage->total_payment ?? 0);
                 $data['meal'] += (float) ($visitor->meal->total_payment ?? 0);
                 $data['beverage'] += (float) ($visitor->beverage->total_payment ?? 0);
                 $data['massage'] += (float) ($visitor->massage->total_payment ?? 0);
@@ -816,7 +786,7 @@ class ReportController extends Controller
                 $data['kawabath'] += (float) ($visitor->kawabath->total_payment ?? 0);
             }
 
-            $data['total'] = $data['entrance_fee'] + $data['accommodation'] + $data['rental'] +
+            $data['total'] = $data['entrance_fee'] + $data['accommodation'] +
                 $data['meal'] + $data['beverage'] + $data['massage'] +
                 $data['watertubing'] + $data['picnictable'] + $data['kawabath'];
 
@@ -832,5 +802,32 @@ class ReportController extends Controller
             'totalVisitors' => $totalVisitors,
             'grandTotal' => $grandTotal
         ]);
+    }
+
+    public function reportType(Request $request)
+    {
+        $now = Carbon::now();
+        $route = match ($request->report_type) {
+            'daily' => route('daily.report', [
+                'year' => $now->year,
+                'month' => $now->month,
+                'day' => $now->day,
+            ]),
+            'weekly' => route('weekly.report', [
+                'year' => $now->year,
+                'month' => $now->month,
+                'week' => $now->weekOfMonth,
+            ]),
+            'monthly' => route('monthly.report', [
+                'year' => $now->year,
+                'month' => $now->month,
+            ]),
+            'yearly' => route('yearly.report', [
+                'year' => $now->year,
+            ]),
+            default => abort(404, 'Invalid report type'),
+        };
+
+        return redirect($route);
     }
 }

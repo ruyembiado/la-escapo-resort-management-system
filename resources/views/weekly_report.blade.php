@@ -2,7 +2,13 @@
 @section('content')
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0">Weekly Report</h1>
+        <div class="d-flex">
+            <i class="fas fa-file-invoice-dollar fa-2x text-dark me-2"></i>
+            <div class="d-flex flex-column">
+                <h1 class="h3 mb-0 text">WEEKLY REPORT</h1>
+                <h6 class="mb-0">Report | Weekly Report</h6>
+            </div>
+        </div>
     </div>
 
     <div class="card shadow mb-4">
@@ -122,7 +128,7 @@
                 <div class="table-responsive">
                     <table id="summary_report" class="table table-bordered" width="100%" cellspacing="0">
                         <thead>
-                            <tr>
+                            <tr class="text-uppercase">
                                 <th>Day</th>
                                 <th>No. of Visitors</th>
                                 <th>Entrance Fee</th>
@@ -131,8 +137,8 @@
                                 <th>Picnic Table</th>
                                 <th>Massage</th>
                                 <th>Accommodation</th>
-                                <th>Meals</th>
-                                <th>Beverages</th>
+                                <th>Foods</th>
+                                <th>Drinks</th>
                                 <th>Total</th>
                             </tr>
                         </thead>
@@ -158,7 +164,7 @@
                                     </tr>
                                 @endforeach
                                 <tr class="bg-light">
-                                    <td colspan="1" class="text-start h6">Grand Total</td>
+                                    <td colspan="1" class="text-start h6 text-uppercase">Grand Total</td>
                                     <td class="h6">{{ $grandTotal['visitors'] }}</td>
                                     <td class="h6">₱{{ number_format($grandTotal['entrance_fee'], 2) }}</td>
                                     <td class="h6">₱{{ number_format($grandTotal['kawabath'], 2) }}</td>

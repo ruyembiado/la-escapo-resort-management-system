@@ -38,4 +38,23 @@ class BillController extends Controller
 
         return view('bill', compact('visitors'));
     }
+
+    public function bill_history()
+    {
+        $visitors = Visitor::orderBy('created_at', 'desc')
+            ->with(
+                'entrance',
+                'accommodation',
+                'cottage',
+                'meal',
+                'beverage',
+                'kawabath',
+                'watertubing',
+                'picnictable',
+                'massage'
+            )
+            ->get();
+
+        return view('bill_history', compact('visitors'));
+    }
 }

@@ -41,51 +41,99 @@ class AuthController extends Controller
 
         $selectedYear = $request->year ?? Carbon::now()->year;
 
+        /*
+    |--------------------------------------------------------------------------
+    | ENTRANCES
+    |--------------------------------------------------------------------------
+    */
         $entrances = Entrance::with('visitor', 'companions')
-            ->when($start_date, function ($query) use ($start_date) {
-                $query->whereDate('created_at', '>=', $start_date);
+            ->when($start_date, fn($q) => $q->whereDate('created_at', '>=', $start_date))
+            ->when($end_date, fn($q) => $q->whereDate('created_at', '<=', $end_date))
+            ->when($letter, function ($q) use ($letter) {
+                $q->whereHas(
+                    'visitor',
+                    fn($sub) =>
+                    $sub->where('first_name', 'like', $letter . '%')
+                );
             })
-            ->when($end_date, function ($query) use ($end_date) {
-                $query->whereDate('created_at', '<=', $end_date);
-            })
-            ->when($letter, function ($query) use ($letter) {
-                $query->whereHas('visitor', function ($q) use ($letter) {
-                    $q->where('first_name', 'like', $letter . '%');
-                });
-            })
-
             ->orderBy('created_at', 'desc')
             ->get();
 
+        /*
+    |--------------------------------------------------------------------------
+    | DATE RANGES
+    |--------------------------------------------------------------------------
+    */
         $today = Carbon::today();
         $startOfWeek = Carbon::now()->startOfWeek();
         $startOfMonth = Carbon::now()->startOfMonth();
         $startOfYear = Carbon::now()->startOfYear();
-        // $currentYear = Carbon::now()->year;
 
-        $visitorsToday = Visitor::whereDate('created_at', $today)->count();
-        $visitorsThisWeek = Visitor::where('created_at', '>=', $startOfWeek)->count();
-        $visitorsThisMonth = Visitor::where('created_at', '>=', $startOfMonth)->count();
-        $visitorsThisYear = Visitor::where('created_at', '>=', $startOfYear)->count();
+        /*
+    |--------------------------------------------------------------------------
+    | VISITOR COUNTS (FIXED: members + 1)
+    |--------------------------------------------------------------------------
+    */
+        $visitorsToday = Visitor::whereDate('created_at', $today)
+            ->selectRaw('SUM(COALESCE(members,0) + 1) as total')
+            ->value('total') ?? 0;
 
-        // Visitors table
-        $visitorsMonth = Visitor::where('created_at', '>=', $startOfMonth)
+        $visitorsThisWeek = Visitor::where('created_at', '>=', $startOfWeek)
+            ->selectRaw('SUM(COALESCE(members,0) + 1) as total')
+            ->value('total') ?? 0;
+
+        $visitorsThisMonth = Visitor::where('created_at', '>=', $startOfMonth)
+            ->selectRaw('SUM(COALESCE(members,0) + 1) as total')
+            ->value('total') ?? 0;
+
+        $visitorsThisYear = Visitor::where('created_at', '>=', $startOfYear)
+            ->selectRaw('SUM(COALESCE(members,0) + 1) as total')
+            ->value('total') ?? 0;
+
+        /*
+    |--------------------------------------------------------------------------
+    | VISITORS TABLE (MONTH)
+    |--------------------------------------------------------------------------
+    */
+        $visitorsMonth = Visitor::with([
+            'entrance',
+            'accommodation',
+            'meal',
+            'beverage',
+            'kawabath',
+            'watertubing',
+            'massage',
+            'picnictable',
+        ])
+            ->where('created_at', '>=', $startOfMonth)
             ->orderBy('created_at', 'desc')
             ->get();
 
+        /*
+    |--------------------------------------------------------------------------
+    | VISITORS WITH UNPAID BILLS
+    |--------------------------------------------------------------------------
+    */
         $visitorsWithUnpaidBills = $visitorsMonth->filter(function ($visitor) {
+
             $services = [
                 $visitor->entrance,
                 $visitor->accommodation,
-                $visitor->cottage,
                 $visitor->meal,
                 $visitor->beverage,
-                $visitor->functionHall
+                $visitor->kawabath,
+                $visitor->watertubing,
+                $visitor->massage,
+                $visitor->picnictable,
             ];
 
             foreach ($services as $service) {
-                if ($service && isset($service->status) && $service->status !== 'Paid') {
-                    return true;
+                if ($service) {
+                    $status = $service->payment_status ?? $service->status ?? 'Unpaid';
+
+                    if ($status !== 'Paid') {
+                        return true;
+                    }
                 }
             }
 
@@ -97,44 +145,36 @@ class AuthController extends Controller
     | BILL COMPUTATION
     |--------------------------------------------------------------------------
     */
+        $totalBills = 0;
+        $paidBills = 0;
+        $unpaidBills = 0;
 
-        $totalBills = 0; // amount
-        $paidBills = 0; // count
-        $unpaidBills = 0; // count
-
-        $visitorsForBills = Visitor::with([
-            'entrance',
-            'accommodation',
-            'cottage',
-            'meal',
-            'beverage',
-            'companions',
-            'kawabath',
-            'watertubing',
-            'massage',
-            'picnictable',
-        ])->get();
+        $visitorsForBills = $visitorsMonth; // reuse (already eager loaded)
 
         foreach ($visitorsForBills as $visitor) {
 
             $services = [
                 $visitor->entrance,
                 $visitor->accommodation,
-                $visitor->cottage,
                 $visitor->meal,
                 $visitor->beverage,
-                $visitor->functionHall,
+                $visitor->kawabath,
+                $visitor->watertubing,
+                $visitor->massage,
+                $visitor->picnictable,
             ];
 
             foreach ($services as $service) {
 
                 if ($service) {
 
+                    $status = $service->payment_status ?? $service->status ?? 'Unpaid';
+
                     // TOTAL AMOUNT
                     $totalBills += $service->total_payment ?? 0;
 
                     // COUNT STATUS
-                    if ($service->status === 'Paid') {
+                    if ($status === 'Paid') {
                         $paidBills++;
                     } else {
                         $unpaidBills++;
@@ -145,12 +185,11 @@ class AuthController extends Controller
 
         /*
     |--------------------------------------------------------------------------
-    | CHART DATA
+    | CHART DATA (FIXED: members + 1)
     |--------------------------------------------------------------------------
     */
-
         $monthlyVisitors = Visitor::query()
-            ->selectRaw('strftime("%m", created_at) as month, count(*) as total')
+            ->selectRaw('strftime("%m", created_at) as month, SUM(COALESCE(members,0) + 1) as total')
             ->whereYear('created_at', $selectedYear)
             ->groupBy('month')
             ->orderBy('month')
@@ -178,8 +217,18 @@ class AuthController extends Controller
             'December'
         ];
 
+        /*
+    |--------------------------------------------------------------------------
+    | SERVICES
+    |--------------------------------------------------------------------------
+    */
         $entranceFees = Service::where('service_type', 'entrance_fee')->get();
 
+        /*
+    |--------------------------------------------------------------------------
+    | RETURN VIEW
+    |--------------------------------------------------------------------------
+    */
         return view('dashboard', [
             'visitorsToday' => $visitorsToday,
             'visitorsThisWeek' => $visitorsThisWeek,

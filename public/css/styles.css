@@ -323,19 +323,22 @@ h1.home-title {
 }
 
 @media print {
+
+    @page {
+        size: A4 landscape;
+        margin: 5mm;
+    }
+
     #summary_report {
         font-size: 1.5vw;
-        /* scales based on page width */
     }
 
     table#summary_report {
         width: 100%;
-        /* make sure table takes available width */
     }
 
     #summary_report * {
         font-size: inherit !important;
-        /* inherit scaling */
     }
 
     .print-footer {

@@ -56,7 +56,7 @@
                     style="min-width:1500px;">
                     <thead>
                         <tr>
-                            <th class="bg-theme-primary text-light">NO.</th>
+                            <th class="bg-theme-primary text-light text-center">NO.</th>
                             <th class="bg-theme-primary text-light">NAME OF GUEST</th>
                             <th class="bg-theme-primary text-light">EF</th>
                             <th class="bg-theme-primary text-light">WT</th>
@@ -75,35 +75,35 @@
                     <tbody>
                         @foreach ($visitors as $visitor)
                             <tr>
-                                <td>{{ $loop->iteration }}</td>
+                                <td class="text-center">{{ $loop->iteration }}</td>
                                 <td>
                                     {{ optional($visitor)->first_name }}
                                     {{ optional($visitor)->middle_name }}
                                     {{ optional($visitor)->last_name }}
                                 </td>
                                 <td>
-                                    {{ $visitor->entrance ? '₱' . number_format($visitor->entrance->total_payment, 2) : 'none' }}
+                                    {{ $visitor->entrance ? '₱' . number_format($visitor->entrance->total_payment, 2) : 'N/A' }}
                                 </td>
                                 <td>
-                                    {{ $visitor->watertubing ? '₱' . number_format($visitor->watertubing->total_payment, 2) : 'none' }}
+                                    {{ $visitor->watertubing ? '₱' . number_format($visitor->watertubing->total_payment, 2) : 'N/A' }}
                                 </td>
                                 <td>
-                                    {{ $visitor->kawabath ? '₱' . number_format($visitor->kawabath->total_payment, 2) : 'none' }}
+                                    {{ $visitor->kawabath ? '₱' . number_format($visitor->kawabath->total_payment, 2) : 'N/A' }}
                                 </td>
                                 <td>
-                                    {{ $visitor->picnictable ? '₱' . number_format($visitor->picnictable->total_payment, 2) : 'none' }}
+                                    {{ $visitor->picnictable ? '₱' . number_format($visitor->picnictable->total_payment, 2) : 'N/A' }}
                                 </td>
                                 <td>
-                                    {{ $visitor->massage ? '₱' . number_format($visitor->massage->total_payment, 2) : 'none' }}
+                                    {{ $visitor->massage ? '₱' . number_format($visitor->massage->total_payment, 2) : 'N/A' }}
                                 </td>
                                 <td>
-                                    {{ $visitor->accommodation ? '₱' . number_format($visitor->accommodation->total_payment, 2) : 'none' }}
+                                    {{ $visitor->accommodation ? '₱' . number_format($visitor->accommodation->total_payment, 2) : 'N/A' }}
                                 </td>
                                 <td>
-                                    {{ $visitor->meal ? '₱' . number_format($visitor->meal->total_payment, 2) : 'none' }}
+                                    {{ $visitor->meal ? '₱' . number_format($visitor->meal->total_payment, 2) : 'N/A' }}
                                 </td>
                                 <td>
-                                    {{ $visitor->beverage ? '₱' . number_format($visitor->beverage->total_payment, 2) : 'none' }}
+                                    {{ $visitor->beverage ? '₱' . number_format($visitor->beverage->total_payment, 2) : 'N/A' }}
                                 </td>
                                 @php
                                     $grand_total =
@@ -144,11 +144,132 @@
                                     @endif
                                 </td>
                                 <td>{{ \Carbon\Carbon::parse($visitor->created_at)->format('M d, Y') }}</td>
-                                <td class="sticky-action"></td>
+                                <td class="sticky-action">
+                                    <a href="#" class="btn btn-secondary btn-sm" data-bs-toggle="modal"
+                                        data-bs-target="#viewBillModal_{{ $visitor->id }}"
+                                        data-visitor="{{ $visitor->id }}">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
+                                </td>
                             </tr>
                         @endforeach
                     </tbody>
                 </table>
+
+                @foreach ($visitors as $visitor)
+                    <!-- View Bill Modal -->
+                    <div class="modal fade" id="viewBillModal_{{ $visitor->id }}" tabindex="-1" role="dialog"
+                        aria-labelledby="viewBillModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-md" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <div class="col-12">
+                                        <div class="text-end">
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                        </div>
+                                        <div class="d-flex align-items-center gap-2 justify-content-center">
+                                            <img src="{{ asset('public/img/logo.png') }}" width="70"
+                                                alt="la-escapo-logo">
+                                            <div class="d-flex flex-column">
+                                                <b class="modal-title mt-2 text-bold">La Escapo Mountain
+                                                    Resort</b>
+                                                <span>Tuno, Tibiao, Antique</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="row">
+                                        <div
+                                            class="bg-theme-primary d-flex align-items-center gap-2 justify-content-center text-light p-2">
+                                            <h3 class="m-0">BILL RECEIPT</h3>
+                                        </div>
+                                        <div class="visitor-name my-2 d-flex align-items-center gap-2">
+                                            <label class="col-3" for="visitorName">Name:</label>
+                                            <input type="text" class="form-control" id="visitorName"
+                                                value="{{ $visitor->first_name . ' ' . $visitor->middle_name . ' ' . $visitor->last_name }}"
+                                                readonly>
+                                        </div>
+                                        <div class="table-responsive p-0">
+                                            <table class="table table-bordered border-N/A m-0">
+                                                <thead class="bg-success text-light">
+                                                    <tr>
+                                                        <th style="border-width: 0px"
+                                                            class="text-start bg-success text-light">
+                                                            AVAILED SERVICES</th>
+                                                        <th style="border-width: 0px"
+                                                            class="text-start bg-success text-light">
+                                                            FEE STATUS
+                                                        </th>
+                                                        <th style="border-width: 0px"
+                                                            class="text-center bg-success text-light">
+                                                            AMOUNT
+                                                            FEE</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @php
+                                                        $services = [
+                                                            'entrance' => 'Entrance Fee',
+                                                            'watertubing' => 'Water Tubing',
+                                                            'kawabath' => 'Kawa Hot Bath',
+                                                            'picnictable' => 'Picnic Table',
+                                                            'massage' => 'Massage',
+                                                            'accommodation' => 'Accommodation',
+                                                            'meal' => 'Foods',
+                                                            'beverage' => 'Drinks',
+                                                        ];
+                                                        $modal_total = 0;
+                                                    @endphp
+                                                    @foreach ($services as $key => $label)
+                                                        @if ($visitor->$key)
+                                                            @php $modal_total += $visitor->$key->total_payment; @endphp
+
+                                                            @php
+                                                                $status =
+                                                                    $visitor->$key->payment_status ??
+                                                                    ($visitor->$key->status ?? 'Unpaid');
+                                                            @endphp
+
+                                                            <tr>
+                                                                <td style="border-width: 0px"
+                                                                    class="{{ $status == 'Unpaid' ? 'text-danger' : 'text-dark' }}">
+                                                                    {{ $label }}
+                                                                </td>
+
+                                                                <td style="border-width: 0px" class="text-center">
+                                                                    <span
+                                                                        class="badge {{ $status == 'Unpaid' ? 'bg-danger' : 'bg-success' }}">
+                                                                        {{ $status }}
+                                                                    </span>
+                                                                </td>
+
+                                                                <td style="border-width: 0px" class="text-center">
+                                                                    ₱{{ number_format($visitor->$key->total_payment, 2) }}
+                                                                </td>
+                                                            </tr>
+                                                        @endif
+                                                    @endforeach
+
+                                                    <!-- TOTAL ROW -->
+                                                    <tr class="bg-dark text-light">
+                                                        <td style="border-width: 0px" colspan="2" class="text-start fw-bold">
+                                                            TOTAL
+                                                            FEE
+                                                        </td>
+                                                        <td style="border-width: 0px" class="text-center fw-semibold">
+                                                            ₱{{ number_format($modal_total, 2) }}
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
             </div>
         </div>
     </div>

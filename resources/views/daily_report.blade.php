@@ -2,7 +2,13 @@
 @section('content')
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0">Daily Report</h1>
+        <div class="d-flex">
+            <i class="fas fa-file-invoice-dollar fa-2x text-dark me-2"></i>
+            <div class="d-flex flex-column">
+                <h1 class="h3 mb-0 text">DAILY REPORT</h1>
+                <h6 class="mb-0">Report | Daily Report</h6>
+            </div>
+        </div>
     </div>
 
     <div class="card shadow mb-4">
@@ -60,19 +66,19 @@
                 </table>
 
                 <div class="table-responsive">
-                    <table id="summary_report" class="table table-bordered" width="100%" cellspacing="0">
+                    <table id="summary_report" class="table table-bordered border-dark" width="100%" cellspacing="0">
                         <thead>
                             <tr>
-                                <th>No. of Visitors</th>
-                                <th>Entrance Fee</th>
-                                <th>Kawa Hot Bath</th>
-                                <th>Water Tubing</th>
-                                <th>Picnic Table</th>
-                                <th>Massage</th>
-                                <th>Accommodation</th>
-                                <th>Meals</th>
-                                <th>Beverages</th>
-                                <th>Total</th>
+                                <th class="text-uppercase">No. of Visitors</th>
+                                <th class="text-uppercase">Entrance Fee</th>
+                                <th class="text-uppercase">Kawa Hot Bath</th>
+                                <th class="text-uppercase">Water Tubing</th>
+                                <th class="text-uppercase">Picnic Table</th>
+                                <th class="text-uppercase">Massage</th>
+                                <th class="text-uppercase">Accommodation</th>
+                                <th class="text-uppercase">Foods</th>
+                                <th class="text-uppercase">Drinks</th>
+                                <th class="text-uppercase">Total Bill Income</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -93,9 +99,17 @@
                                     <td>₱{{ number_format($report['beverage'], 2) }}</td>
                                     <td>₱{{ number_format($report['total'], 2) }}</td>
                                 </tr>
-                                <tr class="bg-light">
-                                    <td colspan="9" class="text-start h6">Grand Total:</td>
-                                    <td class="h6">₱{{ number_format($report['total'], 2) }}</td>
+                                <tr class="bg-light h6">
+                                    <td class="text-uppercase">Grand Total</td>
+                                    <td>₱{{ number_format($report['entrance_fee'], 2) }}</td>
+                                    <td>₱{{ number_format($report['kawabath'], 2) }}</td>
+                                    <td>₱{{ number_format($report['watertubing'], 2) }}</td>
+                                    <td>₱{{ number_format($report['picnictable'], 2) }}</td>
+                                    <td>₱{{ number_format($report['massage'], 2) }}</td>
+                                    <td>₱{{ number_format($report['accommodation'], 2) }}</td>
+                                    <td>₱{{ number_format($report['meal'], 2) }}</td>
+                                    <td>₱{{ number_format($report['beverage'], 2) }}</td>
+                                    <td>₱{{ number_format($report['total'], 2) }}</td>
                                 </tr>
                             @endif
                         </tbody>

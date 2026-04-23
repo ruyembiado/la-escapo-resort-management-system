@@ -56,23 +56,25 @@
                     </a>
                 </li>
                 <li class="sidebar-item">
-                    <a href="{{ url('/services') }}" class="sidebar-link">
-                        <i class="fa fa-tasks"></i>
-                        <span>Visitor's Billing Payments</span>
-                    </a>
-                </li>
-                <li class="sidebar-item">
-                    <a href="{{ url('/bills') }}" class="sidebar-link">
+                    <a href="{{ url('/bill-history') }}"
+                        class="sidebar-link {{ Request::is('bill-history') ? 'active' : '' }}">
                         <i class="fa fa-money-bill"></i>
-                        <span>Visitor's Bill Summary</span>
+                        <span>Bill History</span>
                     </a>
                 </li>
                 <hr class="sidebar-hr text-light mt-1 mb-2">
                 <b class="text-light ms-3">REPORT</b>
                 <li class="sidebar-item">
                     <a href="{{ url('/report') }}" class="sidebar-link">
-                        <i class="fa fa-file"></i>
-                        <span>Reports</span>
+                        <i class="fa fa-file-invoice-dollar"></i>
+                        <span>Bill Income</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="{{ url('/guest-report') }}"
+                        class="sidebar-link {{ Request::is('guest-report') ? 'active' : '' }}">
+                        <i class="fa fa-address-book"></i>
+                        <span>List of Guest</span>
                     </a>
                 </li>
                 <hr class="sidebar-hr text-light mt-1 mb-2">
@@ -162,6 +164,9 @@
     <!-- Print.js JS -->
     <script src="{{ asset('public/js/print.min.js') }}"></script>
     <script src="{{ asset('public/js/html2pdf.bundle.min.js') }}"></script>
+
+    <!-- FullCalendar JS -->
+    <script src="{{ asset('public/js/index.global.min.js') }}"></script>
 
     <!--Custom Script -->
     <script src="{{ asset('public/js/script.js') }}"></script>

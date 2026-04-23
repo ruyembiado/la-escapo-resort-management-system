@@ -103,6 +103,7 @@ Route::middleware(['auth'])->group(function () {
 
     // BillController routes
     Route::get('/bills', [BillController::class, 'index'])->name('bill');
+    Route::get('/bill-history', [BillController::class, 'bill_history'])->name('bill.history');
 
     // Profile 
     Route::get('/profile', [AuthController::class, 'profile'])->name('profile');
@@ -110,6 +111,7 @@ Route::middleware(['auth'])->group(function () {
 
     // ReportController routes
     Route::get('/report', [ReportController::class, 'index'])->name('report');
+    Route::get('/report-type', [ReportController::class, 'reportType'])->name('reportType');
     Route::get('/daily-report', [ReportController::class, 'dailyReport'])->name('daily.report');
     Route::get('/weekly-report', [ReportController::class, 'weeklyReport'])->name('weekly.report');
     Route::get('/monthly-report', [ReportController::class, 'monthlyReport'])->name('monthly.report');
@@ -120,4 +122,5 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/weekly-income-report', [ReportController::class, 'weeklyIncomeReport'])->name('weekly.income.report');
     Route::get('/monthly-income-report', [ReportController::class, 'monthlyIncomeReport'])->name('monthly.income.report');
     Route::get('/yearly-income-report', [ReportController::class, 'yearlyIncomeReport'])->name('yearly.income.report');
+
 });
