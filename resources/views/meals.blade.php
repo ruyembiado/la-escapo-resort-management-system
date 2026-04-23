@@ -126,7 +126,7 @@
                                 </td>
                                 <td>₱ {{ number_format($meal->total_payment, 2) }}</td>
                                 <td>
-                                    @if ($meal->payment_status === 'pending')
+                                    @if ($meal->payment_status === 'Unpaid')
                                         <span class="badge bg-danger">{{ ucfirst($meal->payment_status) }}</span>
                                     @else
                                         <span class="badge bg-success">{{ ucfirst($meal->payment_status) }}</span>

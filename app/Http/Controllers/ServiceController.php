@@ -387,13 +387,30 @@ class ServiceController extends Controller
         return redirect()->route('cottages')->with('success', 'Cottage Rental deleted successfully.');
     }
 
-    public function meals()
+    public function meals(Request $request)
     {
+        $start_date = $request->start_date;
+        $end_date = $request->end_date;
+        $letter = $request->letter;
+
         $foodFees = Service::where('service_type', 'foods')->get();
         $drinkFees = Service::where('service_type', 'drinks')->get();
 
         $visitors = Visitor::orderBy('created_at', 'desc')->limit(100)->get();
-        $meals = Meal::orderBy('created_at', 'desc')->with('visitor')->get();
+        $meals = Meal::with('visitor')
+            ->when($start_date, function ($query) use ($start_date) {
+                $query->whereDate('created_at', '>=', $start_date);
+            })
+            ->when($end_date, function ($query) use ($end_date) {
+                $query->whereDate('created_at', '<=', $end_date);
+            })
+            ->when($letter, function ($query) use ($letter) {
+                $query->whereHas('visitor', function ($q) use ($letter) {
+                    $q->where('first_name', 'like', $letter . '%');
+                });
+            })
+            ->orderBy('created_at', 'desc')
+            ->get();
 
         return view('meals', compact('visitors', 'meals', 'foodFees', 'drinkFees'));
     }
@@ -541,12 +558,32 @@ class ServiceController extends Controller
         return redirect()->route('meals')->with('success', 'Food record deleted successfully.');
     }
 
-    public function beverages()
+    public function beverages(Request $request)
     {
-        $visitors = Visitor::orderBy('created_at', 'desc')->limit(100)->get();
-        $beverages = Beverage::orderBy('created_at', 'desc')->with('visitor')->get();
+        $start_date = $request->start_date;
+        $end_date = $request->end_date;
+        $letter = $request->letter;
 
-        return view('beverages', compact('visitors', 'beverages'));
+        $foodFees = Service::where('service_type', 'foods')->get();
+        $drinkFees = Service::where('service_type', 'drinks')->get();
+
+        $visitors = Visitor::orderBy('created_at', 'desc')->limit(100)->get();
+        $beverages = Beverage::with('visitor')
+            ->when($start_date, function ($query) use ($start_date) {
+                $query->whereDate('created_at', '>=', $start_date);
+            })
+            ->when($end_date, function ($query) use ($end_date) {
+                $query->whereDate('created_at', '<=', $end_date);
+            })
+            ->when($letter, function ($query) use ($letter) {
+                $query->whereHas('visitor', function ($q) use ($letter) {
+                    $q->where('first_name', 'like', $letter . '%');
+                });
+            })
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return view('beverages', compact('visitors', 'beverages', 'foodFees', 'drinkFees'));
     }
 
     public function updateBeverage(Request $request)
@@ -554,43 +591,46 @@ class ServiceController extends Controller
         $request->validate([
             'beverage_id' => 'required|exists:beverages,id',
             'visitor_id' => 'required|exists:visitors,id',
-            'beverage_items' => 'required|array',
-            'beverage_items.*.name' => 'required|string',
-            'beverage_items.*.price' => 'required|numeric',
-            'beverage_items.*.quantity' => 'required|integer|min:0',
-            'total_payment' => 'required|numeric',
-            'payment_status' => 'nullable',
+
+            'beverage_items' => 'nullable|array',
+
+            'drink_total_payment' => 'required|numeric',
+            'drink_payment_status' => 'nullable',
         ]);
 
         $beverage = Beverage::findOrFail($request->beverage_id);
 
-        $items = $request->input('beverage_items');
+        $bevNames = [];
+        $bevQty   = [];
+        $bevFees  = [];
+        $hasBevItems = false;
 
-        $itemNames = [];
-        $prices = [];
-        $quantities = [];
-        $subtotals = [];
+        if ($request->beverage_items) {
 
-        foreach ($items as $item) {
-            if ($item['quantity'] > 0) {
-                $itemNames[] = $item['name'];
-                $prices[] = (float) $item['price'];
-                $quantities[] = (int) $item['quantity'];
-                $subtotals[] = (float) $item['price'] * (int) $item['quantity'];
+            foreach ($request->beverage_items as $item) {
+
+                $qty = (int) ($item['qty'] ?? 0);
+
+                if ($qty <= 0) continue;
+
+                $hasBevItems = true;
+
+                $bevNames[] = $item['name'] ?? '';
+                $bevQty[]   = $qty;
+                $bevFees[]  = (float) ($item['fee'] ?? 0);
             }
         }
 
         $beverage->update([
-            'visitor_id' => $request->input('visitor_id'),
-            'item_name' => json_encode($itemNames),
-            'fee' => json_encode($prices),
-            'quantity' => json_encode($quantities),
-            'subtotal' => json_encode($subtotals),
-            'total_payment' => $request->input('total_payment'),
-            'payment_status' => $request->payment_status ?? 'pending',
+            'visitor_id'     => $request->visitor_id,
+            'item_name'      => json_encode($bevNames),
+            'fee'            => json_encode($bevFees),
+            'quantity'       => json_encode($bevQty),
+            'total_payment'  => $request->drink_total_payment ?? 0,
+            'payment_status' => $request->drink_payment_status ?? 'Unpaid',
         ]);
 
-        return redirect()->route('beverages')->with('success', 'Beverage record updated successfully.');
+        return redirect()->back()->with('success', 'Drink record updated successfully.');
     }
 
     public function destroyBeverage($id)
@@ -1068,7 +1108,7 @@ class ServiceController extends Controller
             'visitor_id' => $request->visitor_id,
             'details' => json_encode($details),
             'total_payment' => $request->picnictable_total_payment,
-            'payment_status' => $request->picnictable_payment_status ?? 'pending',
+            'payment_status' => $request->picnictable_payment_status ?? 'Unpaid',
         ]);
 
         return redirect()
@@ -1291,7 +1331,7 @@ class ServiceController extends Controller
             'visitor_id' => $request->visitor_id,
             'members' => json_encode($cleanMembers),
             'total_payment' => $request->total_payment,
-            'payment_status' => $request->payment_status ?? 'pending',
+            'payment_status' => $request->payment_status ?? '',
         ]);
 
         return redirect()->route('massages')

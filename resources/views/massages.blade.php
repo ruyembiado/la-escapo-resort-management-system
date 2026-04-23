@@ -152,7 +152,7 @@
                                 </td>
                                 <td>₱ {{ number_format($massage->total_payment, 2) }}</td>
                                 <td>
-                                    @if ($massage->payment_status === 'pending')
+                                    @if ($massage->payment_status === 'Unpaid')
                                         <span class="badge bg-danger">{{ ucfirst($massage->payment_status) }}</span>
                                     @else
                                         <span class="badge bg-success">{{ ucfirst($massage->payment_status) }}</span>

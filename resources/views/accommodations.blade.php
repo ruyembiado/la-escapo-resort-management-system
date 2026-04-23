@@ -121,7 +121,7 @@
                                 </td>
                                 <td>₱ {{ number_format($accommodation->total_payment, 2) }}</td>
                                 <td>
-                                    @if ($accommodation->payment_status === 'pending')
+                                    @if ($accommodation->payment_status === 'Unpaid')
                                         <span class="badge bg-danger">{{ ucfirst($accommodation->payment_status) }}</span>
                                     @else
                                         <span class="badge bg-success">{{ ucfirst($accommodation->payment_status) }}</span>

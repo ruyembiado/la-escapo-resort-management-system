@@ -130,7 +130,7 @@
                                 </td>
                                 <td>₱ {{ number_format($watertubing->total_payment, 2) }}</td>
                                 <td>
-                                    @if ($watertubing->payment_status === 'pending')
+                                    @if ($watertubing->payment_status === 'Unpaid')
                                         <span class="badge bg-danger">{{ ucfirst($watertubing->payment_status) }}</span>
                                     @else
                                         <span class="badge bg-success">{{ ucfirst($watertubing->payment_status) }}</span>

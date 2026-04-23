@@ -131,7 +131,7 @@
                                 </td>
                                 <td>₱ {{ number_format($picnictable->total_payment, 2) }}</td>
                                 <td>
-                                    @if ($picnictable->payment_status === 'pending')
+                                    @if ($picnictable->payment_status === 'Unpaid')
                                         <span class="badge bg-danger">{{ ucfirst($picnictable->payment_status) }}</span>
                                     @else
                                         <span class="badge bg-success">{{ ucfirst($picnictable->payment_status) }}</span>

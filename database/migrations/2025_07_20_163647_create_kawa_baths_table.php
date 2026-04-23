@@ -16,7 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('visitor_id');
             $table->longText('members');
             $table->decimal('total_payment', 10, 2);
-            $table->string('payment_status')->default('pending');
+            $table->string('payment_status')->default('Unpaid');
             $table->timestamps();
 
             $table->foreign('visitor_id')->references('id')->on('visitors')->onDelete('cascade');

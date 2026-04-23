@@ -145,7 +145,7 @@
                                 <td>₱ {{ number_format($kawabath->total_payment, 2) }}</td>
 
                                 <td>
-                                    @if ($kawabath->payment_status === 'pending')
+                                    @if ($kawabath->payment_status === 'Unpaid')
                                         <span class="badge bg-danger">Pending</span>
                                     @else
                                         <span class="badge bg-success">{{ ucfirst($kawabath->payment_status) }}</span>
