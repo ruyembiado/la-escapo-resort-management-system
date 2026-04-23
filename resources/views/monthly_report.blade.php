@@ -2,7 +2,13 @@
 @section('content')
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0">Monthly Report</h1>
+        <div class="d-flex">
+            <i class="fas fa-file-invoice-dollar fa-2x text-dark me-2"></i>
+            <div class="d-flex flex-column">
+                <h1 class="h3 mb-0 text">MONTHLY REPORT</h1>
+                <h6 class="mb-0">Report | Monthly Report</h6>
+            </div>
+        </div>
     </div>
 
     <div class="card shadow mb-4">
@@ -83,7 +89,7 @@
                 </table>
 
                 <div class="table-responsive">
-                    <table id="summary_report" class="table table-bordered" width="100%" cellspacing="0">
+                    <table id="summary_report" class="table table-bordered border-dark" width="100%" cellspacing="0">
                         <thead class="">
                             <tr class="text-uppercase">
                                 <th>Week</th>

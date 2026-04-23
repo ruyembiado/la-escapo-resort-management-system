@@ -126,7 +126,7 @@
                 </table>
 
                 <div class="table-responsive">
-                    <table id="summary_report" class="table table-bordered" width="100%" cellspacing="0">
+                    <table id="summary_report" class="table table-bordered border-dark" width="100%" cellspacing="0">
                         <thead>
                             <tr class="text-uppercase">
                                 <th>Day</th>
