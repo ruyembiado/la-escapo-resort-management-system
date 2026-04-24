@@ -338,7 +338,7 @@ h1.home-title {
     }
 
     #summary_report * {
-        font-size: inherit !important;
+        font-size: 1vw !important;
     }
 
     .print-footer {
