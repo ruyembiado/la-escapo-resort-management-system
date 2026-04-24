@@ -129,8 +129,12 @@
                     <table id="summary_report" class="table table-bordered border-dark" width="100%" cellspacing="0">
                         <thead>
                             <tr class="text-uppercase">
-                                <th>Day</th>
-                                <th>No. of Visitors</th>
+                                <th rowspan="2">Day</th>
+                                <th rowspan="2">No. of Visitors</th>
+                                <th colspan="8" class="text-center">Services</th>
+                                <th rowspan="2">Total Bill Income</th>
+                            </tr>
+                            <tr class="text-uppercase">
                                 <th>Entrance Fee</th>
                                 <th>Kawa Hot Bath</th>
                                 <th>Water Tubing</th>
@@ -139,7 +143,6 @@
                                 <th>Accommodation</th>
                                 <th>Foods</th>
                                 <th>Drinks</th>
-                                <th>Total</th>
                             </tr>
                         </thead>
                         <tbody>
