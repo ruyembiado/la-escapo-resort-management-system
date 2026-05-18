@@ -99,13 +99,13 @@
                                     <table class="table table-bordered border-dark m-0" style="width:100%;">
                                         <thead>
                                             <tr>
-                                                <th class="bg-theme-primary text-light">No.</th>
-                                                <th class="bg-theme-primary text-light">Guest</th>
-                                                <th class="bg-theme-primary text-light">Age</th>
-                                                <th class="bg-theme-primary text-light">Item</th>
-                                                <th class="bg-theme-primary text-light">Quantity</th>
-                                                <th class="bg-theme-primary text-light">Fee</th>
-                                                <th class="bg-theme-primary text-light">Sub-Total</th>
+                                                <th class="bg-green-tertiary text-light">No.</th>
+                                                <th class="bg-green-tertiary text-light">Guest</th>
+                                                <th class="bg-green-tertiary text-light">Age</th>
+                                                <th class="bg-green-tertiary text-light">Item</th>
+                                                <th class="bg-green-tertiary text-light">Quantity</th>
+                                                <th class="bg-green-tertiary text-light">Fee</th>
+                                                <th class="bg-green-tertiary text-light">Sub-Total</th>
                                             </tr>
                                         </thead>
 
@@ -196,14 +196,15 @@
                 @csrf
                 <div class="modal-content">
                     <div class="modal-header">
-                        <div class="col-12">
+                        <div class="col-12 p-2 pb-4 text-light bg-theme-primary">
                             <div class="text-end">
-                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                <button type="button" class="btn-close btn-close-white btn-circle"
+                                    data-bs-dismiss="modal"></button>
                             </div>
                             <div class="d-flex align-items-center gap-2 justify-content-center">
                                 <img src="{{ asset('public/img/logo.png') }}" width="70" alt="la-escapo-logo">
                                 <div class="d-flex flex-column">
-                                    <b class="modal-title mt-2 text-bold">La Escapo Mountain
+                                    <b class="modal-title mt-2 h5 text-bold">La Escapo Mountain
                                         Resort</b>
                                     <span>Tuno, Tibiao, Antique</span>
                                 </div>
@@ -233,7 +234,7 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div
-                                    class="bg-theme-primary d-flex align-items-center gap-2 justify-content-center text-light p-2">
+                                    class="bg-green-secondary d-flex align-items-center gap-2 justify-content-center text-light p-2 mb-3">
                                     <i class="fa fa-spa fa-2x"></i>
                                     <h3 class="m-0">MASSAGE</h3>
                                 </div>
@@ -242,16 +243,17 @@
                                         style="width: 100%; border-collapse: collapse;">
                                         <thead>
                                             <tr>
-                                                <th class="bg-theme-primary text-light" style="padding: 10px;">NO.</th>
-                                                <th class="bg-theme-primary text-light" style="padding: 10px;">GUEST.</th>
-                                                <th class="bg-theme-primary text-light" style="padding: 10px;">AGE</th>
-                                                <th class="bg-theme-primary text-light" style="padding: 10px;">CATEGORY
+                                                <th class="bg-green-tertiary text-light" style="padding: 10px;">NO.</th>
+                                                <th class="bg-green-tertiary text-light" style="padding: 10px;">GUEST.
                                                 </th>
-                                                <th width="15%" class="bg-theme-primary text-light"
+                                                <th class="bg-green-tertiary text-light" style="padding: 10px;">AGE</th>
+                                                <th class="bg-green-tertiary text-light" style="padding: 10px;">CATEGORY
+                                                </th>
+                                                <th width="15%" class="bg-green-tertiary text-light"
                                                     style="padding: 10px;">QUANTITY
                                                 </th>
-                                                <th class="bg-theme-primary text-light" style="padding: 10px;">FEE</th>
-                                                <th width="18%" class="bg-theme-primary text-light"
+                                                <th class="bg-green-tertiary text-light" style="padding: 10px;">FEE</th>
+                                                <th width="18%" class="bg-green-tertiary text-light"
                                                     style="padding: 10px;">SUB-TOTAL
                                                 </th>
                                             </tr>
@@ -287,7 +289,7 @@
                             <div class="col-md-6">
                                 <div class="form-group mb-2">
                                     <div
-                                        class="bg-theme-primary d-flex align-items-center gap-2 justify-content-center text-light p-2">
+                                        class="bg-green-secondary d-flex align-items-center gap-2 justify-content-center text-light p-2 mb-3">
                                         <i class="fa fa-bed fa-2x"></i>
                                         <h3 class="m-0">ACCOMMODATION</h3>
                                     </div>
@@ -296,13 +298,13 @@
                                             style="width: 100%; border-collapse: collapse;">
                                             <thead>
                                                 <tr>
-                                                    <th class="bg-theme-primary text-light" style="padding: 10px;">ROOM
+                                                    <th class="bg-green-tertiary text-light" style="padding: 10px;">ROOM
                                                     </th>
-                                                    <th class="bg-theme-primary text-light" style="padding: 10px;">NO. OF
+                                                    <th class="bg-green-tertiary text-light" style="padding: 10px;">NO. OF
                                                         NIGHTS</th>
-                                                    <th class="bg-theme-primary text-light" style="padding: 10px;">FEE
+                                                    <th class="bg-green-tertiary text-light" style="padding: 10px;">FEE
                                                     </th>
-                                                    <th class="bg-theme-primary text-light" style="padding: 10px;">
+                                                    <th class="bg-green-tertiary text-light" style="padding: 10px;">
                                                         SUB-TOTAL</th>
                                                 </tr>
                                             </thead>
@@ -362,7 +364,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-success">Save</button>
+                        <button type="submit" class="btn bg-theme-primary text-light">Save</button>
                         <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
                     </div>
                 </div>
@@ -381,14 +383,15 @@
                 @method('PUT')
                 <div class="modal-content">
                     <div class="modal-header">
-                        <div class="col-12">
+                        <div class="col-12 p-2 pb-4 text-light bg-theme-primary">
                             <div class="text-end">
-                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                <button type="button" class="btn-close btn-close-white btn-circle"
+                                    data-bs-dismiss="modal"></button>
                             </div>
                             <div class="d-flex align-items-center gap-2 justify-content-center">
                                 <img src="{{ asset('public/img/logo.png') }}" width="70" alt="la-escapo-logo">
                                 <div class="d-flex flex-column">
-                                    <b class="modal-title mt-2 text-bold">La Escapo Mountain
+                                    <b class="modal-title mt-2 h5 text-bold">La Escapo Mountain
                                         Resort</b>
                                     <span>Tuno, Tibiao, Antique</span>
                                 </div>
@@ -396,6 +399,11 @@
                         </div>
                     </div>
                     <div class="modal-body">
+                        <div
+                            class="bg-green-secondary d-flex align-items-center gap-2 justify-content-center text-light p-2 mb-3">
+                            <i class="fa fa-spa fa-2x"></i>
+                            <h3 class="m-0">MASSAGE</h3>
+                        </div>
                         <div class="form-group mb-3">
                             <div class="d-flex align-items-start gap-1">
                                 <div class="col-6 d-flex align-items-center gap-3">
@@ -417,23 +425,17 @@
 
                         <div class="row">
                             <div class="col-md-12">
-                                <div
-                                    class="bg-theme-primary d-flex align-items-center gap-2 justify-content-center text-light p-2">
-                                    <i class="fa fa-spa fa-2x"></i>
-                                    <h3 class="m-0">MASSAGE</h3>
-                                </div>
-
                                 <div class="table-responsive">
                                     <table class="table table-bordered border-dark" style="width:100%;">
                                         <thead>
                                             <tr>
-                                                <th class="bg-theme-primary text-light">NO.</th>
-                                                <th class="bg-theme-primary text-light">GUEST</th>
-                                                <th class="bg-theme-primary text-light">AGE</th>
-                                                <th class="bg-theme-primary text-light">SERVICE</th>
-                                                <th class="bg-theme-primary text-light">QTY</th>
-                                                <th class="bg-theme-primary text-light">FEE</th>
-                                                <th width="15%" class="bg-theme-primary text-light">SUBTOTAL</th>
+                                                <th class="bg-green-tertiary text-light">NO.</th>
+                                                <th class="bg-green-tertiary text-light">GUEST</th>
+                                                <th class="bg-green-tertiary text-light">AGE</th>
+                                                <th class="bg-green-tertiary text-light">SERVICE</th>
+                                                <th class="bg-green-tertiary text-light">QTY</th>
+                                                <th class="bg-green-tertiary text-light">FEE</th>
+                                                <th width="15%" class="bg-green-tertiary text-light">SUBTOTAL</th>
                                             </tr>
                                         </thead>
                                         <tbody id="editMassageTableBody"></tbody>
@@ -460,7 +462,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-success">Update</button>
+                        <button type="submit" class="btn bg-theme-primary text-light">Update</button>
                         <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
                     </div>
                 </div>

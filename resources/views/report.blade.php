@@ -33,12 +33,18 @@
     <div class="row">
         <div class="card col-5 m-auto shadow mb-4 px-0">
             <div class="card-body">
-                <div class="d-flex align-items-center gap-2 justify-content-center">
-                    <img src="{{ asset('public/img/logo.png') }}" width="70" alt="la-escapo-logo">
-                    <div class="d-flex flex-column">
-                        <b class="modal-title mt-2 text-bold">La Escapo Mountain
-                            Resort</b>
-                        <span>Tuno, Tibiao, Antique</span>
+                <div class="col-12 p-2 pb-4 text-light bg-theme-primary">
+                    <div class="text-end">
+                        <button type="button" class="btn-close btn-close-white btn-circle"
+                            data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="d-flex align-items-center gap-2 justify-content-center">
+                        <img src="{{ asset('public/img/logo.png') }}" width="70" alt="la-escapo-logo">
+                        <div class="d-flex flex-column">
+                            <b class="modal-title mt-2 h5 text-bold">La Escapo Mountain
+                                Resort</b>
+                            <span>Tuno, Tibiao, Antique</span>
+                        </div>
                     </div>
                 </div>
                 <hr>
@@ -47,7 +53,10 @@
                         <div class="form-group mb-2">
                             <div class="d-flex flex-column align-items-start gap-3">
                                 <label>Periodic Report Type:</label>
-                                <div class="col-12">
+                                <div class="input-group">
+                                    <span class="input-group-text bg-theme-primary text-light">
+                                        <i class="fas fa-file-invoice-dollar"></i>
+                                    </span>
                                     <select name="report_type" class="form-control" id="report_type">
                                         <option value="daily">Daily</option>
                                         <option value="weekly">Weekly</option>

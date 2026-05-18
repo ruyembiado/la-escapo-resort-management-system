@@ -53,19 +53,19 @@
             </div>
             <div class="table-responsive">
                 <table class="table table-bordered border-dark" id="dataTable1" width="100%" cellspacing="0"
-                    style="min-width:1500px;">
+                    style="min-width:2000px;">
                     <thead>
                         <tr>
                             <th class="bg-theme-primary text-light text-center">NO.</th>
                             <th class="bg-theme-primary text-light">NAME OF GUEST</th>
-                            <th class="bg-theme-primary text-light">EF</th>
-                            <th class="bg-theme-primary text-light">WT</th>
-                            <th class="bg-theme-primary text-light">KHB</th>
-                            <th class="bg-theme-primary text-light">PT</th>
-                            <th class="bg-theme-primary text-light">MS</th>
-                            <th class="bg-theme-primary text-light">AC</th>
-                            <th class="bg-theme-primary text-light">FD</th>
-                            <th class="bg-theme-primary text-light">DS</th>
+                            <th class="bg-theme-primary text-light">ENTRANCE FEE</th>
+                            <th class="bg-theme-primary text-light">WATER TUBING</th>
+                            <th class="bg-theme-primary text-light">KAWA BATH</th>
+                            <th class="bg-theme-primary text-light">PICNIC TABLE</th>
+                            <th class="bg-theme-primary text-light">MASSAGE</th>
+                            <th class="bg-theme-primary text-light">ACCOMMODATION</th>
+                            <th class="bg-theme-primary text-light">FOODS</th>
+                            <th class="bg-theme-primary text-light">DRINKS</th>
                             <th class="bg-theme-primary text-light">TOTAL FEE</th>
                             <th class="bg-theme-primary text-light">STATUS</th>
                             <th class="bg-theme-primary text-light">DATE CREATED</th>
@@ -144,7 +144,7 @@
                                     @endif
                                 </td>
                                 <td>{{ \Carbon\Carbon::parse($visitor->created_at)->format('M d, Y') }}</td>
-                                <td class="sticky-action">
+                                <td class="sticky-action text-center">
                                     <a href="#" class="btn btn-secondary btn-sm" data-bs-toggle="modal"
                                         data-bs-target="#viewBillModal_{{ $visitor->id }}"
                                         data-visitor="{{ $visitor->id }}">
@@ -162,26 +162,27 @@
                         aria-labelledby="viewBillModalLabel" aria-hidden="true">
                         <div class="modal-dialog modal-md" role="document">
                             <div class="modal-content">
-                                <div class="modal-header">
-                                    <div class="col-12">
+                                <div class="modal-header p-3">
+                                    <div class="col-12 p-2 pb-4 text-light bg-theme-primary">
                                         <div class="text-end">
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                            <button type="button" class="btn-close btn-close-white btn-circle"
+                                                data-bs-dismiss="modal"></button>
                                         </div>
                                         <div class="d-flex align-items-center gap-2 justify-content-center">
                                             <img src="{{ asset('public/img/logo.png') }}" width="70"
                                                 alt="la-escapo-logo">
                                             <div class="d-flex flex-column">
-                                                <b class="modal-title mt-2 text-bold">La Escapo Mountain
+                                                <b class="modal-title mt-2 h5 text-bold">La Escapo Mountain
                                                     Resort</b>
                                                 <span>Tuno, Tibiao, Antique</span>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="modal-body">
-                                    <div class="row">
+                                <div class="modal-body ">
+                                    <div class="row p-2">
                                         <div
-                                            class="bg-theme-primary d-flex align-items-center gap-2 justify-content-center text-light p-2">
+                                            class="bg-green-secondary d-flex align-items-center gap-2 justify-content-center text-light p-2">
                                             <h3 class="m-0">BILL RECEIPT</h3>
                                         </div>
                                         <div class="visitor-name my-2 d-flex align-items-center gap-2">
@@ -195,14 +196,14 @@
                                                 <thead class="bg-success text-light">
                                                     <tr>
                                                         <th style="border-width: 0px"
-                                                            class="text-start bg-success text-light">
+                                                            class="text-start bg-green-tertiary text-light">
                                                             AVAILED SERVICES</th>
                                                         <th style="border-width: 0px"
-                                                            class="text-start bg-success text-light">
+                                                            class="text-start bg-green-tertiary text-light">
                                                             FEE STATUS
                                                         </th>
                                                         <th style="border-width: 0px"
-                                                            class="text-center bg-success text-light">
+                                                            class="text-center bg-green-tertiary text-light">
                                                             AMOUNT
                                                             FEE</th>
                                                     </tr>
@@ -253,7 +254,8 @@
 
                                                     <!-- TOTAL ROW -->
                                                     <tr class="bg-dark text-light">
-                                                        <td style="border-width: 0px" colspan="2" class="text-start fw-bold">
+                                                        <td style="border-width: 0px" colspan="2"
+                                                            class="text-start fw-bold">
                                                             TOTAL
                                                             FEE
                                                         </td>

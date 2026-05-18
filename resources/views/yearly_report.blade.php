@@ -13,7 +13,7 @@
 
     <div class="card shadow mb-4">
         <div class="card-body">
-            <div class="d-flex justify-content-between align-items-start mb-4">
+            <div class="d-flex justify-content-between align-items-center mb-4 bg-theme-primary p-2 text-light">
                 <form method="GET" action="{{ route('yearly.report') }}" class="d-print-none col-md-3">
                     <div class="row g-2 align-items-center">
                         <div class="d-flex flex-column col-md-6">
@@ -35,7 +35,7 @@
                         <i class="fas fa-print"></i> Print Report
                     </button>
 
-                    <button onclick="exportYearlyExcel()" class="btn btn-sm btn-success d-print-none">
+                    <button onclick="exportYearlyExcel()" class="btn btn-sm bg-green-tertiary text-light d-print-none">
                         <i class="fas fa-file-excel"></i> Export Excel
                     </button>
                 </div>
@@ -76,20 +76,20 @@
                     <table id="summary_report" class="table table-bordered border-dark" width="100%" cellspacing="0">
                         <thead class="">
                             <tr class="text-uppercase">
-                                <th rowspan="2">Month</th>
-                                <th rowspan="2">No. of Visitors</th>
-                                <th colspan="8" class="text-center">Services</th>
-                                <th rowspan="2">Total Bill Income</th>
+                                <th class="bg-theme-primary text-light" rowspan="2">Month</th>
+                                <th class="bg-theme-primary text-light" rowspan="2">No. of Visitors</th>
+                                <th class="bg-theme-primary text-light" colspan="8" class="text-center">Services</th>
+                                <th class="bg-theme-primary text-light" rowspan="2">Total Bill Income</th>
                             </tr>
                             <tr class="text-uppercase">
-                                <th>Entrance Fee</th>
-                                <th>Kawa Hot Bath</th>
-                                <th>Water Tubing</th>
-                                <th>Picnic Table</th>
-                                <th>Massage</th>
-                                <th>Accommodation</th>
-                                <th>Foods</th>
-                                <th>Drinks</th>
+                                <th class="bg-theme-primary text-light">Entrance Fee</th>
+                                <th class="bg-theme-primary text-light">Kawa Hot Bath</th>
+                                <th class="bg-theme-primary text-light">Water Tubing</th>
+                                <th class="bg-theme-primary text-light">Picnic Table</th>
+                                <th class="bg-theme-primary text-light">Massage</th>
+                                <th class="bg-theme-primary text-light">Accommodation</th>
+                                <th class="bg-theme-primary text-light">Foods</th>
+                                <th class="bg-theme-primary text-light">Drinks</th>
                             </tr>
                         </thead>
                         <tbody>

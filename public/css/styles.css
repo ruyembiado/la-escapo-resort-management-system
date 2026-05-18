@@ -17,7 +17,7 @@ li {
 }
 
 body {
-    font-family: 'Raleway', sans-serif;
+    font-family: 'Arial', sans-serif;
     overflow: hidden;
     height: 100%;
 }
@@ -127,7 +127,7 @@ a.sidebar-link {
 
 a.sidebar-link:hover,
 li.sidebar-item.active {
-    background-color: rgba(255, 255, 255, .075);
+    background-color: #2e7800;
     /* border-left: 3px solid #ffffff; */
 }
 
@@ -172,7 +172,7 @@ li.sidebar-item.active {
 
 .navbar {
     box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
-    /* background-color: #F9FDCE; */
+    background-color: #313131 !important;
 }
 
 .bg-theme-secondary {
@@ -212,12 +212,13 @@ nav {
 
 .btn-circle {
     border-radius: 100%;
-    height: 32px;
-    width: 32px;
+    /* height: 32px;
+    width: 32px; */
     font-size: 16px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    margin: 0px !important;
 }
 
 .toast {
@@ -284,14 +285,15 @@ nav {
 
 .welcome-text,
 .home-description {
-    font-size: 30px;
+    font-size: 25px;
     color: #fff;
     text-shadow: 1px 1px 1px #252525;
 }
 
 h1.home-title {
     color: #fff;
-    font-size: 70px;
+    font-size: 40px;
+    font-weight: 700;
     text-shadow: 1px 1px 1px #252525;
 }
 
@@ -303,7 +305,7 @@ h1.home-title {
 }
 
 #sidebar {
-    background-color: #045b00 !important;
+    background-color: #093a0d !important;
 }
 
 .btn-danger,
@@ -317,11 +319,6 @@ h1.home-title {
     border-color: #1000c4 !important;
 }
 
-.bg-success {
-    background-color: #045b00 !important;
-    border-color: #045b00 !important;
-}
-
 @media print {
 
     @page {
@@ -331,6 +328,10 @@ h1.home-title {
 
     #summary_report {
         font-size: 1vw;
+    }
+
+    #print-section * {
+        color: #000 !important;
     }
 
     table#summary_report {
@@ -349,14 +350,23 @@ h1.home-title {
 }
 
 .bg-theme-primary {
-    background-color: #084D00 !important;
+    background-color: #093a0d !important;
+}
+
+.bg-green-secondary {
+    background-color: #084d00 !important;
+}
+
+.bg-green-tertiary {
+    background-color: #2e7800 !important;
 }
 
 .sidebar-link.active {
-    background-color: #ffffff30;
+    background-color: #2e7800;
 }
 
-.sticky-action {
+.sticky-action,
+.dt-layout-row {
     position: sticky !important;
     right: 0 !important;
     background: white;
@@ -375,4 +385,51 @@ h1.home-title {
 
 .text-brown {
     color: #B35100;
+}
+
+table th {
+    text-align: center !important;
+}
+
+td.sticky-action div {
+    justify-content: center !important;
+}
+
+table th.border-dark,
+table.dataTable>thead>tr>th {
+    border-color: #fff !important;
+}
+
+.fc .fc-button {
+    background-color: #093a0d !important;
+    border-color: #093a0d !important;
+    color: #fff !important;
+}
+
+.fc .fc-button:hover {
+    background-color: #062a0a !important;
+    border-color: #062a0a !important;
+}
+
+.fc .fc-button-primary:not(:disabled).fc-button-active,
+.fc .fc-button-primary:not(:disabled):active {
+    background-color: #062a0a !important;
+    border-color: #062a0a !important;
+}
+
+.fc .fc-today-button {
+    background-color: #093a0d !important;
+}
+
+.fc .fc-toolbar-title {
+    color: #093a0d !important;
+    font-weight: 600;
+}
+
+.fc .fc-daygrid-day-number {
+    color: #093a0d;
+}
+
+.fc a {
+    color: #093a0d;
 }

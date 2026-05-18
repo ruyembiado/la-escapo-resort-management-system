@@ -84,13 +84,13 @@
                                         style="width: 100%; border-collapse: collapse;">
                                         <thead>
                                             <tr>
-                                                <th class="bg-theme-primary text-light" style="padding: 5px;">No.</th>
-                                                <th class="bg-theme-primary text-light" style="padding: 5px;">Guest</th>
-                                                <th class="bg-theme-primary text-light" style="padding: 5px;">Age</th>
-                                                <th class="bg-theme-primary text-light" style="padding: 5px;">Category</th>
-                                                <th class="bg-theme-primary text-light" style="padding: 5px;">Quantity</th>
-                                                <th class="bg-theme-primary text-light" style="padding: 5px;">Fee</th>
-                                                <th class="bg-theme-primary text-light" style="padding: 5px;">Sub-Total</th>
+                                                <th class="bg-green-tertiary text-light" style="padding: 5px;">No.</th>
+                                                <th class="bg-green-tertiary text-light" style="padding: 5px;">Guest</th>
+                                                <th class="bg-green-tertiary text-light" style="padding: 5px;">Age</th>
+                                                <th class="bg-green-tertiary text-light" style="padding: 5px;">Category</th>
+                                                <th class="bg-green-tertiary text-light" style="padding: 5px;">Quantity</th>
+                                                <th class="bg-green-tertiary text-light" style="padding: 5px;">Fee</th>
+                                                <th class="bg-green-tertiary text-light" style="padding: 5px;">Sub-Total</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -174,14 +174,15 @@
                 @csrf
                 <div class="modal-content">
                     <div class="modal-header">
-                        <div class="col-12">
+                        <div class="col-12 p-2 pb-4 text-light bg-theme-primary">
                             <div class="text-end">
-                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                <button type="button" class="btn-close btn-close-white"
+                                    data-bs-dismiss="modal"></button>
                             </div>
                             <div class="d-flex align-items-center gap-2 justify-content-center">
                                 <img src="{{ asset('public/img/logo.png') }}" width="70" alt="la-escapo-logo">
                                 <div class="d-flex flex-column">
-                                    <b class="modal-title mt-2 text-bold">La Escapo Mountain
+                                    <b class="modal-title mt-2 h5 text-bold">La Escapo Mountain
                                         Resort</b>
                                     <span>Tuno, Tibiao, Antique</span>
                                 </div>
@@ -189,6 +190,11 @@
                         </div>
                     </div>
                     <div class="modal-body">
+                        <div
+                            class="bg-green-secondary d-flex align-items-center gap-2 justify-content-center text-light p-2 mb-3">
+                            <i class="fa fa-water fa-2x"></i>
+                            <h3 class="m-0">WATER TUBING</h3>
+                        </div>
                         <div class="form-group mb-3">
                             <div class="d-flex align-items-start gap-1">
                                 <div class="col-6 d-flex align-items-center gap-3">
@@ -209,22 +215,17 @@
                         </div>
 
                         <div class="form-group mb-2">
-                            <div
-                                class="bg-theme-primary d-flex align-items-center gap-2 justify-content-center text-light p-2">
-                                <i class="fa fa-water fa-2x"></i>
-                                <h3 class="m-0">WATER TUBING</h3>
-                            </div>
                             <table class="table table-bordered border-dark"
                                 style="width: 100%; border-collapse: collapse;">
                                 <thead>
                                     <tr>
-                                        <th class="bg-theme-primary text-light" style="padding: 10px;">NO.</th>
-                                        <th class="bg-theme-primary text-light" style="padding: 10px;">GUEST</th>
-                                        <th class="bg-theme-primary text-light" style="padding: 10px;">AGE</th>
-                                        <th class="bg-theme-primary text-light" style="padding: 10px;">CATEGORY</th>
-                                        <th class="bg-theme-primary text-light" style="padding: 10px;">FEE</th>
-                                        <th class="bg-theme-primary text-light" style="padding: 10px;">QUANTITY</th>
-                                        <th class="bg-theme-primary text-light" style="padding: 10px;">SUB-TOTAL</th>
+                                        <th class="bg-green-tertiary text-light" style="padding: 10px;">NO.</th>
+                                        <th class="bg-green-tertiary text-light" style="padding: 10px;">GUEST</th>
+                                        <th class="bg-green-tertiary text-light" style="padding: 10px;">AGE</th>
+                                        <th class="bg-green-tertiary text-light" style="padding: 10px;">CATEGORY</th>
+                                        <th class="bg-green-tertiary text-light" style="padding: 10px;">FEE</th>
+                                        <th class="bg-green-tertiary text-light" style="padding: 10px;">QUANTITY</th>
+                                        <th class="bg-green-tertiary text-light" style="padding: 10px;">SUB-TOTAL</th>
                                     </tr>
                                 </thead>
                                 <tbody id="addWaterTubingTableBody"></tbody>
@@ -271,14 +272,15 @@
                 @method('PUT')
                 <div class="modal-content">
                     <div class="modal-header">
-                        <div class="col-12">
+                        <div class="col-12 p-2 pb-4 text-light bg-theme-primary">
                             <div class="text-end">
-                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                <button type="button" class="btn-close btn-close-white btn-circle"
+                                    data-bs-dismiss="modal"></button>
                             </div>
                             <div class="d-flex align-items-center gap-2 justify-content-center">
                                 <img src="{{ asset('public/img/logo.png') }}" width="70" alt="la-escapo-logo">
                                 <div class="d-flex flex-column">
-                                    <b class="modal-title mt-2 text-bold">La Escapo Mountain
+                                    <b class="modal-title mt-2 h5 text-bold">La Escapo Mountain
                                         Resort</b>
                                     <span>Tuno, Tibiao, Antique</span>
                                 </div>
@@ -286,6 +288,11 @@
                         </div>
                     </div>
                     <div class="modal-body">
+                        <div
+                            class="bg-green-secondary d-flex align-items-center gap-2 justify-content-center text-light p-2 mb-3">
+                            <i class="fa fa-water fa-2x"></i>
+                            <h3 class="m-0">WATER TUBING</h3>
+                        </div>
                         <div class="form-group mb-3">
                             <div class="d-flex align-items-start gap-1">
                                 <div class="col-6 d-flex align-items-center gap-3">
@@ -306,22 +313,17 @@
                         </div>
 
                         <div class="form-group mb-2">
-                            <div
-                                class="bg-theme-primary d-flex align-items-center gap-2 justify-content-center text-light p-2">
-                                <i class="fa fa-water fa-2x"></i>
-                                <h3 class="m-0">WATER TUBING</h3>
-                            </div>
                             <table class="table table-bordered border-dark"
                                 style="width: 100%; border-collapse: collapse;">
                                 <thead>
                                     <tr>
-                                        <th class="bg-theme-primary text-light" style="padding: 10px;">NO.</th>
-                                        <th class="bg-theme-primary text-light" style="padding: 10px;">GUEST</th>
-                                        <th class="bg-theme-primary text-light" style="padding: 10px;">AGE</th>
-                                        <th class="bg-theme-primary text-light" style="padding: 10px;">CATEGORY</th>
-                                        <th class="bg-theme-primary text-light" style="padding: 10px;">FEE</th>
-                                        <th class="bg-theme-primary text-light" style="padding: 10px;">QUANTITY</th>
-                                        <th class="bg-theme-primary text-light" style="padding: 10px;">SUB-TOTAL</th>
+                                        <th class="bg-green-tertiary text-light" style="padding: 10px;">NO.</th>
+                                        <th class="bg-green-tertiary text-light" style="padding: 10px;">GUEST</th>
+                                        <th class="bg-green-tertiary text-light" style="padding: 10px;">AGE</th>
+                                        <th class="bg-green-tertiary text-light" style="padding: 10px;">CATEGORY</th>
+                                        <th class="bg-green-tertiary text-light" style="padding: 10px;">FEE</th>
+                                        <th class="bg-green-tertiary text-light" style="padding: 10px;">QUANTITY</th>
+                                        <th class="bg-green-tertiary text-light" style="padding: 10px;">SUB-TOTAL</th>
                                     </tr>
                                 </thead>
                                 <tbody id="editWaterTubingTableBody"></tbody>

@@ -835,7 +835,7 @@ class ReportController extends Controller
     public function guestReport(Request $request)
     {
         $start_date = $request->start_date;
-        $end_date = $request->end_date;
+        $end_date = $request->start_date;
 
         if (!$end_date) {
             $end_date = Carbon::today()->toDateString();

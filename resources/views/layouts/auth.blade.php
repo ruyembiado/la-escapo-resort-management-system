@@ -50,7 +50,7 @@
                 <b class="text-light ms-3">GUEST</b>
                 <li class="sidebar-item">
                     <a href="{{ url('/entrances') }}"
-                        class="sidebar-link {{ Request::is('entrances') ? 'active' : '' }}">
+                        class="sidebar-link {{ Request::is('entrances') || Request::is('water-tubings') || Request::is('kawa-hot-baths') || Request::is('picnic-tables') || Request::is('massages') || Request::is('accommodations') || Request::is('meals') || Request::is('beverages') ? 'active' : '' }}">
                         <i class="fa fa-book"></i>
                         <span>Availed Services</span>
                     </a>
@@ -65,7 +65,7 @@
                 <hr class="sidebar-hr text-light mt-1 mb-2">
                 <b class="text-light ms-3">REPORT</b>
                 <li class="sidebar-item">
-                    <a href="{{ url('/report') }}" class="sidebar-link">
+                    <a href="{{ url('/report') }}" class="sidebar-link {{ Request::is('report') || Request::is('daily-report') || Request::is('weekly-report') || Request::is('monthly-report') || Request::is('yearly-report') ? 'active' : '' }}">
                         <i class="fa fa-file-invoice-dollar"></i>
                         <span>Bill Income</span>
                     </a>
@@ -79,12 +79,12 @@
                 </li>
                 <hr class="sidebar-hr text-light mt-1 mb-2">
                 <b class="text-light ms-3">SETTINGS</b>
-                <li class="sidebar-item">
+                {{-- <li class="sidebar-item">
                     <a href="{{ url('/profile') }}" class="sidebar-link">
                         <i class="fa fa-user"></i>
                         <span>Profile</span>
                     </a>
-                </li>
+                </li> --}}
                 <li class="sidebar-item">
                     <a href="{{ url('/services') }}"
                         class="sidebar-link {{ Request::is('services') ? 'active' : '' }}">

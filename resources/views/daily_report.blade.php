@@ -13,10 +13,10 @@
 
     <div class="card shadow mb-4">
         <div class="card-body">
-            <div class="d-flex justify-content-between align-items-start mb-4">
+            <div class="d-flex justify-content-between align-items-center mb-4 bg-theme-primary p-2">
                 <form method="GET" action="{{ route('daily.report') }}" class="d-print-none">
                     <div class="d-flex flex-column align-items-start" style="width: auto;">
-                        <label for="date" class="mb-0">Select Date:</label>
+                        <label for="date" class="mb-0 text-light">Select Date:</label>
                         <input type="date" name="date" value="{{ $date }}"
                             class="form-control form-control-sm" style="width: auto;" onchange="this.form.submit()" />
                     </div>
@@ -27,7 +27,7 @@
                         <i class="fas fa-print"></i> Print PDF
                     </button>
 
-                    <button onclick="exportExcel()" class="btn btn-sm btn-success d-print-none">
+                    <button onclick="exportExcel()" class="btn btn-sm bg-green-tertiary text-light d-print-none">
                         <i class="fas fa-file-excel"></i> Export Excel
                     </button>
                 </div>
@@ -69,19 +69,19 @@
                     <table id="summary_report" class="table table-bordered border-dark" width="100%" cellspacing="0">
                         <thead>
                             <tr>
-                                <th rowspan="2" class="text-uppercase">No. of Visitors</th>
-                                <th colspan="8" class="text-uppercase text-center">Services</th>
-                                <th rowspan="2" class="text-uppercase">Total Bill Income</th>
+                                <th rowspan="2" class="text-uppercase bg-theme-primary text-light">No. of Visitors</th>
+                                <th colspan="8" class="text-uppercase bg-theme-primary text-light text-center">Services</th>
+                                <th rowspan="2" class="text-uppercase bg-theme-primary text-light">Total Bill Income</th>
                             </tr>
                             <tr>
-                                <th class="text-uppercase">Entrance Fee</th>
-                                <th class="text-uppercase">Kawa Hot Bath</th>
-                                <th class="text-uppercase">Water Tubing</th>
-                                <th class="text-uppercase">Picnic Table</th>
-                                <th class="text-uppercase">Massage</th>
-                                <th class="text-uppercase">Accommodation</th>
-                                <th class="text-uppercase">Foods</th>
-                                <th class="text-uppercase">Drinks</th>
+                                <th class="text-uppercase bg-theme-primary text-light">Entrance Fee</th>
+                                <th class="text-uppercase bg-theme-primary text-light">Kawa Hot Bath</th>
+                                <th class="text-uppercase bg-theme-primary text-light">Water Tubing</th>
+                                <th class="text-uppercase bg-theme-primary text-light">Picnic Table</th>
+                                <th class="text-uppercase bg-theme-primary text-light">Massage</th>
+                                <th class="text-uppercase bg-theme-primary text-light">Accommodation</th>
+                                <th class="text-uppercase bg-theme-primary text-light">Foods</th>
+                                <th class="text-uppercase bg-theme-primary text-light">Drinks</th>
                             </tr>
                         </thead>
                         <tbody>

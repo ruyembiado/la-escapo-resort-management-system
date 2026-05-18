@@ -54,7 +54,7 @@
                 </form>
             </div>
             <div class="d-flex gap-2">
-                <a href="{{ url('kawa-hot-baths') }}" class="btn btn-success text-light d-flex align-items-center gap-2">
+                <a href="{{ url('kawa-hot-baths') }}" class="btn bg-success text-light text-light d-flex align-items-center gap-2">
                     <i class="fa-solid fa-hot-tub-person"></i>
                     Kawa Hot Bath
                 </a>
@@ -96,13 +96,13 @@
                                     <table class="table table-bordered border-dark m-0 mt-0" style="width:100%;">
                                         <thead>
                                             <tr>
-                                                <th class="bg-theme-primary text-light">No.</th>
-                                                <th class="bg-theme-primary text-light">Guest</th>
-                                                <th class="bg-theme-primary text-light">Age</th>
-                                                <th class="bg-theme-primary text-light">Item</th>
-                                                <th class="bg-theme-primary text-light">Quantity</th>
-                                                <th class="bg-theme-primary text-light">Fee</th>
-                                                <th class="bg-theme-primary text-light">Sub-Total</th>
+                                                <th class="bg-green-tertiary text-light">No.</th>
+                                                <th class="bg-green-tertiary text-light">Guest</th>
+                                                <th class="bg-green-tertiary text-light">Age</th>
+                                                <th class="bg-green-tertiary text-light">Item</th>
+                                                <th class="bg-green-tertiary text-light">Quantity</th>
+                                                <th class="bg-green-tertiary text-light">Fee</th>
+                                                <th class="bg-green-tertiary text-light">Sub-Total</th>
                                             </tr>
                                         </thead>
 
@@ -190,14 +190,15 @@
                 @csrf
                 <div class="modal-content">
                     <div class="modal-header">
-                        <div class="col-12">
+                        <div class="col-12 p-2 pb-4 text-light bg-theme-primary">
                             <div class="text-end">
-                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                <button type="button" class="btn-close btn-close-white btn-circle"
+                                    data-bs-dismiss="modal"></button>
                             </div>
                             <div class="d-flex align-items-center gap-2 justify-content-center">
                                 <img src="{{ asset('public/img/logo.png') }}" width="70" alt="la-escapo-logo">
                                 <div class="d-flex flex-column">
-                                    <b class="modal-title mt-2 text-bold">La Escapo Mountain
+                                    <b class="modal-title mt-2 h5 text-bold">La Escapo Mountain
                                         Resort</b>
                                     <span>Tuno, Tibiao, Antique</span>
                                 </div>
@@ -227,7 +228,7 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div
-                                    class="bg-theme-primary d-flex align-items-center gap-2 justify-content-center text-light p-2">
+                                    class="bg-green-secondary d-flex align-items-center gap-2 justify-content-center text-light p-2 mb-3">
                                     <i class="fa fa-hot-tub-person fa-2x"></i>
                                     <h3 class="m-0">KAWA HOT BATH</h3>
                                 </div>
@@ -235,13 +236,13 @@
                                 <div class="table-responsive">
                                     <table class="table table-bordered border-dark">
                                         <thead>
-                                            <th class="bg-theme-primary text-light">NO.</th>
-                                            <th class="bg-theme-primary text-light">GUEST</th>
-                                            <th class="bg-theme-primary text-light">AGE</th>
-                                            <th class="bg-theme-primary text-light">CATEGORY</th>
-                                            <th class="bg-theme-primary text-light">FEE</th>
-                                            <th class="bg-theme-primary text-light">QUANTITY</th>
-                                            <th class="bg-theme-primary text-light">SUB-TOTAL</th>
+                                            <th class="bg-green-tertiary text-light">NO.</th>
+                                            <th class="bg-green-tertiary text-light">GUEST</th>
+                                            <th class="bg-green-tertiary text-light">AGE</th>
+                                            <th class="bg-green-tertiary text-light">CATEGORY</th>
+                                            <th class="bg-green-tertiary text-light">FEE</th>
+                                            <th class="bg-green-tertiary text-light">QUANTITY</th>
+                                            <th class="bg-green-tertiary text-light">SUB-TOTAL</th>
                                         </thead>
                                         <tbody id="addKawaBathTableBody"></tbody>
                                     </table>
@@ -274,7 +275,7 @@
 
                             <div class="col-md-6">
                                 <div
-                                    class="bg-theme-primary d-flex align-items-center gap-2 justify-content-center text-light p-2">
+                                    class="bg-green-secondary d-flex align-items-center gap-2 justify-content-center text-light p-2 mb-3">
                                     <i class="fa fa-table fa-2x"></i>
                                     <h3 class="m-0">PICNIC TABLE</h3>
                                 </div>
@@ -282,11 +283,11 @@
                                 <div class="table-responsive">
                                     <table class="table table-bordered border-dark">
                                         <thead>
-                                            <th class="bg-theme-primary text-light text-center">NO.</th>
-                                            <th class="bg-theme-primary text-light">PICNIC TABLE</th>
-                                            <th class="bg-theme-primary text-light">FEE</th>
-                                            <th class="bg-theme-primary text-light">QUANTITY</th>
-                                            <th class="bg-theme-primary text-light">SUB-TOTAL</th>
+                                            <th class="bg-green-tertiary text-light text-center">NO.</th>
+                                            <th class="bg-green-tertiary text-light">PICNIC TABLE</th>
+                                            <th class="bg-green-tertiary text-light">FEE</th>
+                                            <th class="bg-green-tertiary text-light">QUANTITY</th>
+                                            <th class="bg-green-tertiary text-light">SUB-TOTAL</th>
                                         </thead>
                                         <tbody>
                                             @foreach ($picnicTableFees as $index => $fee)
@@ -341,7 +342,7 @@
                         <input type="hidden" name="grand_total" id="grand_total" value="0.00">
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-success">Save</button>
+                        <button type="submit" class="btn bg-theme-primary text-light">Save</button>
                         <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
                     </div>
                 </div>
@@ -360,14 +361,15 @@
                 @method('PUT')
                 <div class="modal-content">
                     <div class="modal-header">
-                        <div class="col-12">
+                        <div class="col-12 p-2 pb-4 text-light bg-theme-primary">
                             <div class="text-end">
-                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                <button type="button" class="btn-close btn-close-white btn-circle"
+                                    data-bs-dismiss="modal"></button>
                             </div>
                             <div class="d-flex align-items-center gap-2 justify-content-center">
                                 <img src="{{ asset('public/img/logo.png') }}" width="70" alt="la-escapo-logo">
                                 <div class="d-flex flex-column">
-                                    <b class="modal-title mt-2 text-bold">La Escapo Mountain
+                                    <b class="modal-title mt-2 h5 text-bold">La Escapo Mountain
                                         Resort</b>
                                     <span>Tuno, Tibiao, Antique</span>
                                 </div>
@@ -375,6 +377,11 @@
                         </div>
                     </div>
                     <div class="modal-body">
+                        <div
+                            class="bg-green-secondary d-flex align-items-center gap-2 justify-content-center text-light p-2 mb-3">
+                            <i class="fa fa-hot-tub-person fa-2x"></i>
+                            <h3 class="m-0">KAWA HOT BATH</h3>
+                        </div>
                         <div class="form-group mb-3">
                             <div class="d-flex align-items-start gap-1">
                                 <div class="col-6 d-flex align-items-center gap-3">
@@ -395,22 +402,16 @@
                         </div>
 
                         <div class="form-group mb-2">
-                            <div
-                                class="bg-theme-primary d-flex align-items-center gap-2 justify-content-center text-light p-2">
-                                <i class="fa fa-hot-tub-person fa-2x"></i>
-                                <h3 class="m-0">KAWA HOT BATH</h3>
-                            </div>
-
                             <table class="table table-bordered border-dark"
                                 style="width: 100%; border-collapse: collapse;">
                                 <thead>
-                                    <th class="bg-theme-primary text-light">NO.</th>
-                                    <th class="bg-theme-primary text-light">GUEST</th>
-                                    <th class="bg-theme-primary text-light">AGE</th>
-                                    <th class="bg-theme-primary text-light">CATEGORY</th>
-                                    <th class="bg-theme-primary text-light">FEE</th>
-                                    <th class="bg-theme-primary text-light">QUANTITY</th>
-                                    <th width="15%" class="bg-theme-primary text-light">SUB-TOTAL</th>
+                                    <th class="bg-green-tertiary text-light">NO.</th>
+                                    <th class="bg-green-tertiary text-light">GUEST</th>
+                                    <th class="bg-green-tertiary text-light">AGE</th>
+                                    <th class="bg-green-tertiary text-light">CATEGORY</th>
+                                    <th class="bg-green-tertiary text-light">FEE</th>
+                                    <th class="bg-green-tertiary text-light">QUANTITY</th>
+                                    <th width="15%" class="bg-green-tertiary text-light">SUB-TOTAL</th>
                                 </thead>
                                 <tbody id="editKawaBathTableBody"></tbody>
                             </table>
@@ -439,7 +440,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-success">Update</button>
+                        <button type="submit" class="btn bg-theme-primary text-light">Update</button>
                         <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
                     </div>
                 </div>

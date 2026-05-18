@@ -98,10 +98,11 @@
                                         style="width: 100%; border-collapse: collapse;">
                                         <thead>
                                             <tr>
-                                                <th class="bg-theme-primary text-light" style="padding: 5px;">Item</th>
-                                                <th class="bg-theme-primary text-light" style="padding: 5px;">Fee</th>
-                                                <th class="bg-theme-primary text-light" style="padding: 5px;">Quantity</th>
-                                                <th class="bg-theme-primary text-light" style="padding: 5px;">Sub-total</th>
+                                                <th class="bg-green-tertiary text-light" style="padding: 5px;">Item</th>
+                                                <th class="bg-green-tertiary text-light" style="padding: 5px;">Fee</th>
+                                                <th class="bg-green-tertiary text-light" style="padding: 5px;">Quantity</th>
+                                                <th class="bg-green-tertiary text-light" style="padding: 5px;">Sub-total
+                                                </th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -169,14 +170,15 @@
                 @csrf
                 <div class="modal-content">
                     <div class="modal-header">
-                        <div class="col-12">
+                        <div class="col-12 p-2 pb-4 text-light bg-theme-primary">
                             <div class="text-end">
-                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                <button type="button" class="btn-close btn-close-white btn-circle"
+                                    data-bs-dismiss="modal"></button>
                             </div>
                             <div class="d-flex align-items-center gap-2 justify-content-center">
                                 <img src="{{ asset('public/img/logo.png') }}" width="70" alt="la-escapo-logo">
                                 <div class="d-flex flex-column">
-                                    <b class="modal-title mt-2 text-bold">La Escapo Mountain
+                                    <b class="modal-title mt-2 h5 text-bold">La Escapo Mountain
                                         Resort</b>
                                     <span>Tuno, Tibiao, Antique</span>
                                 </div>
@@ -206,7 +208,7 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div
-                                    class="bg-theme-primary d-flex align-items-center gap-2 justify-content-center text-light p-2">
+                                    class="bg-green-secondary d-flex align-items-center gap-2 justify-content-center text-light p-2 mb-3">
                                     <i class="fa fa-utensils fa-2x"></i>
                                     <h3 class="m-0">FOODS</h3>
                                 </div>
@@ -216,11 +218,11 @@
                                         style="width: 100%; border-collapse: collapse;">
                                         <thead>
                                             <tr>
-                                                <th class="bg-theme-primary text-light">CATEGORY</th>
-                                                <th class="bg-theme-primary text-light">ITEMS</th>
-                                                <th class="bg-theme-primary text-light">FEE</th>
-                                                <th class="bg-theme-primary text-light">QUANTITY</th>
-                                                <th class="bg-theme-primary text-light">SUB-TOTAL</th>
+                                                <th class="bg-green-tertiary text-light">CATEGORY</th>
+                                                <th class="bg-green-tertiary text-light">ITEMS</th>
+                                                <th class="bg-green-tertiary text-light">FEE</th>
+                                                <th class="bg-green-tertiary text-light">QUANTITY</th>
+                                                <th class="bg-green-tertiary text-light">SUB-TOTAL</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -307,7 +309,7 @@
 
                             <div class="col-md-6">
                                 <div
-                                    class="bg-theme-primary d-flex align-items-center gap-2 justify-content-center text-light p-2">
+                                    class="bg-green-secondary d-flex align-items-center gap-2 justify-content-center text-light p-2 mb-3">
                                     <i class="fa fa-glass-water fa-2x"></i>
                                     <h3 class="m-0">DRINKS</h3>
                                 </div>
@@ -316,11 +318,11 @@
                                         style="width: 100%; border-collapse: collapse;">
                                         <thead>
                                             <tr>
-                                                <th class="bg-theme-primary text-light" style="padding: 10px;">ITEMS</th>
-                                                <th class="bg-theme-primary text-light" style="padding: 10px;">FEE</th>
-                                                <th class="bg-theme-primary text-light" style="padding: 10px;">QUANTITY
+                                                <th class="bg-green-tertiary text-light" style="padding: 10px;">ITEMS</th>
+                                                <th class="bg-green-tertiary text-light" style="padding: 10px;">FEE</th>
+                                                <th class="bg-green-tertiary text-light" style="padding: 10px;">QUANTITY
                                                 </th>
-                                                <th class="bg-theme-primary text-light" style="padding: 10px;">SUB-TOTAL
+                                                <th class="bg-green-tertiary text-light" style="padding: 10px;">SUB-TOTAL
                                                 </th>
                                             </tr>
                                         </thead>
@@ -386,7 +388,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-success">Save</button>
+                        <button type="submit" class="btn bg-theme-primary text-light">Save</button>
                         <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
                     </div>
                 </div>
@@ -405,14 +407,15 @@
                 <input type="hidden" name="visitor_id" id="edit_visitor_id_hidden">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <div class="col-12">
+                        <div class="col-12 p-2 pb-4 text-light bg-theme-primary">
                             <div class="text-end">
-                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                <button type="button" class="btn-close btn-close-white btn-circle"
+                                    data-bs-dismiss="modal"></button>
                             </div>
                             <div class="d-flex align-items-center gap-2 justify-content-center">
                                 <img src="{{ asset('public/img/logo.png') }}" width="70" alt="la-escapo-logo">
                                 <div class="d-flex flex-column">
-                                    <b class="modal-title mt-2 text-bold">La Escapo Mountain
+                                    <b class="modal-title mt-2 h5 text-bold">La Escapo Mountain
                                         Resort</b>
                                     <span>Tuno, Tibiao, Antique</span>
                                 </div>
@@ -420,6 +423,11 @@
                         </div>
                     </div>
                     <div class="modal-body">
+                        <div
+                            class="bg-green-secondary d-flex align-items-center gap-2 justify-content-center text-light p-2 mb-3">
+                            <i class="fa fa-glass-water fa-2x"></i>
+                            <h3 class="m-0">DRINKS</h3>
+                        </div>
                         <div class="form-group mb-3">
                             <div class="d-flex align-items-start gap-1">
                                 <div class="col-6 d-flex align-items-center gap-3">
@@ -439,21 +447,16 @@
                         </div>
 
                         <div class="col-md-12">
-                            <div
-                                class="bg-theme-primary d-flex align-items-center gap-2 justify-content-center text-light p-2">
-                                <i class="fa fa-glass-water fa-2x"></i>
-                                <h3 class="m-0">DRINKS</h3>
-                            </div>
                             <div class="form-group mb-2">
                                 <table class="table table-bordered border-dark"
                                     style="width: 100%; border-collapse: collapse;">
                                     <thead>
                                         <tr>
-                                            <th class="bg-theme-primary text-light" style="padding: 10px;">ITEMS</th>
-                                            <th class="bg-theme-primary text-light" style="padding: 10px;">FEE</th>
-                                            <th class="bg-theme-primary text-light" style="padding: 10px;">QUANTITY
+                                            <th class="bg-green-secondary text-light" style="padding: 10px;">ITEMS</th>
+                                            <th class="bg-green-secondary text-light" style="padding: 10px;">FEE</th>
+                                            <th class="bg-green-secondary text-light" style="padding: 10px;">QUANTITY
                                             </th>
-                                            <th class="bg-theme-primary text-light" style="padding: 10px;">SUB-TOTAL
+                                            <th class="bg-green-secondary text-light" style="padding: 10px;">SUB-TOTAL
                                             </th>
                                         </tr>
                                     </thead>
@@ -515,7 +518,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-success">Update</button>
+                        <button type="submit" class="btn bg-theme-primary text-light">Update</button>
                         <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
                     </div>
                 </div>

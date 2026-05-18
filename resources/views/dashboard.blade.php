@@ -219,8 +219,8 @@
                                             </tr>
                                             <tr>
                                                 @for ($i = 0; $i < 8; $i++)
-                                                    <th class="bg-success text-light">Fee</th>
-                                                    <th class="bg-success text-light">Status</th>
+                                                    <th class="bg-green-tertiary text-light">Fee</th>
+                                                    <th class="bg-green-tertiary text-light">Status</th>
                                                 @endfor
                                             </tr>
                                         </thead>
@@ -366,7 +366,8 @@
                                                                 ($visitor->meal->total_payment ?? 0) +
                                                                 ($visitor->beverage->total_payment ?? 0);
                                                         @endphp
-                                                        <td class="text-center fw-bold">₱{{ number_format($grand_total, 2) }}
+                                                        <td class="text-center fw-bold">
+                                                            ₱{{ number_format($grand_total, 2) }}
                                                         </td>
                                                     </tr>
                                                 @endforeach
@@ -463,12 +464,12 @@
                                                 <table class="table table-bordered border-dark mt-2 mb-0">
                                                     <thead>
                                                         <tr>
-                                                            <th class="bg-success text-light">No.</th>
-                                                            <th class="bg-success text-light">Name</th>
-                                                            <th class="bg-success text-light">Category</th>
-                                                            <th class="bg-success text-light">Sex</th>
-                                                            <th class="bg-success text-light">Age</th>
-                                                            <th class="bg-success text-light">Address</th>
+                                                            <th class="bg-green-tertiary text-light">No.</th>
+                                                            <th class="bg-green-tertiary text-light">Name</th>
+                                                            <th class="bg-green-tertiary text-light">Category</th>
+                                                            <th class="bg-green-tertiary text-light">Sex</th>
+                                                            <th class="bg-green-tertiary text-light">Age</th>
+                                                            <th class="bg-green-tertiary text-light">Address</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -597,14 +598,16 @@
                 @method('PUT')
                 <div class="modal-content">
                     <div class="modal-header">
-                        <div class="col-12">
+                        <div class="col-12 p-2 pb-4 text-light bg-theme-primary">
                             <div class="text-end">
-                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                <button type="button" class="btn-close btn-close-white btn-circle"
+                                    data-bs-dismiss="modal"></button>
                             </div>
                             <div class="d-flex align-items-center gap-2 justify-content-center">
                                 <img src="{{ asset('public/img/logo.png') }}" width="70" alt="la-escapo-logo">
                                 <div class="d-flex flex-column">
-                                    <b class="modal-title mt-2 text-bold">La Escapo Mountain Resort</b>
+                                    <b class="modal-title mt-2 h5 text-bold">La Escapo Mountain
+                                        Resort</b>
                                     <span>Tuno, Tibiao, Antique</span>
                                 </div>
                             </div>
@@ -614,13 +617,13 @@
                         <input type="hidden" name="edit_date_visit" value="{{ now()->toDateString() }}"
                             class="form-control" required />
                         <div
-                            class="bg-theme-primary d-flex align-items-center gap-2 justify-content-center text-light p-2 mb-3">
+                            class="bg-green-secondary d-flex align-items-center gap-2 justify-content-center text-light p-2 mb-3">
                             <i class="fa fa-book fa-2x"></i>
                             <h3 class="m-0">ENTRANCE FEE</h3>
                         </div>
                         <b>GUEST INFORMATION</b>
                         <div class="form-group mb-2">
-                            <div class="d-flex align-items-center gap-3">
+                            <div class="d-flex align-items-center gap-3 justify-content-between">
                                 <label style="min-width: 120px;">Complete Name:</label>
                                 <div class="col-3">
                                     <input type="text" name="edit_guest_first_name" class="form-control"
@@ -637,7 +640,7 @@
                             </div>
                         </div>
                         <div class="form-group mb-2">
-                            <div class="d-flex align-items-center gap-3">
+                            <div class="d-flex align-items-center gap-3 justify-content-between">
                                 <label style="min-width: 120px;">Contact Number:</label>
                                 <div class="col-3">
                                     <input type="text" name="edit_guest_contact_number" class="form-control" required>
@@ -658,7 +661,7 @@
                             </div>
                         </div>
                         <div class="form-group mb-2">
-                            <div class="d-flex align-items-center gap-3">
+                            <div class="d-flex align-items-center gap-3 justify-content-between">
                                 <label style="min-width: 120px;">Address:</label>
                                 <div class="col-5">
                                     <input type="text" name="edit_guest_address" class="form-control" required>
@@ -692,14 +695,14 @@
                         <table class="table table-bordered border-dark" width="100%" cellspacing="0">
                             <thead>
                                 <tr>
-                                    <th class="bg-success text-light">No.</th>
-                                    <th class="bg-success text-light">Name</th>
-                                    <th class="bg-success text-light">Sex</th>
-                                    <th class="bg-success text-light">Age</th>
-                                    <th class="bg-success text-light">is PWD?</th>
-                                    <th class="bg-success text-light">Address</th>
-                                    <th class="bg-success text-light">Fee</th>
-                                    <th class="bg-success text-light">Action</th>
+                                    <th class="bg-green-tertiary text-light">No.</th>
+                                    <th class="bg-green-tertiary text-light">Name</th>
+                                    <th class="bg-green-tertiary text-light">Sex</th>
+                                    <th class="bg-green-tertiary text-light">Age</th>
+                                    <th class="bg-green-tertiary text-light">is PWD?</th>
+                                    <th class="bg-green-tertiary text-light">Address</th>
+                                    <th class="bg-green-tertiary text-light">Fee</th>
+                                    <th class="bg-green-tertiary text-light">Action</th>
                                 </tr>
                             </thead>
                             <tbody id="edit_companionsTableBody"></tbody>
@@ -727,7 +730,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-success">Update</button>
+                        <button type="submit" class="btn bg-theme-primary text-light">Update</button>
                         <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
                     </div>
                 </div>

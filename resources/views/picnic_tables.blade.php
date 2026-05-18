@@ -97,10 +97,11 @@
                                         style="width: 100%; border-collapse: collapse;">
                                         <thead>
                                             <tr>
-                                                <th class="bg-theme-primary text-light" style="padding: 5px;">Item</th>
-                                                <th class="bg-theme-primary text-light" style="padding: 5px;">Quantity</th>
-                                                <th class="bg-theme-primary text-light" style="padding: 5px;">Fee</th>
-                                                <th class="bg-theme-primary text-light" style="padding: 5px;">Sub-Total</th>
+                                                <th class="bg-green-tertiary text-light" style="padding: 5px;">Item</th>
+                                                <th class="bg-green-tertiary text-light" style="padding: 5px;">Quantity</th>
+                                                <th class="bg-green-tertiary text-light" style="padding: 5px;">Fee</th>
+                                                <th class="bg-green-tertiary text-light" style="padding: 5px;">Sub-Total
+                                                </th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -113,7 +114,8 @@
                                                     @if ($item['qty'] > 0)
                                                         <tr>
                                                             <td style="padding: 5px;">{{ $item['service_name'] }}</td>
-                                                            <td class="text-center" style="padding: 5px;">{{ $item['qty'] }}</td>
+                                                            <td class="text-center" style="padding: 5px;">
+                                                                {{ $item['qty'] }}</td>
                                                             <td style="padding: 5px;">₱
                                                                 {{ number_format($item['fee'], 2) }}</td>
                                                             <td style="padding: 5px;">₱
@@ -175,14 +177,15 @@
                 @csrf
                 <div class="modal-content">
                     <div class="modal-header">
-                        <div class="col-12">
+                        <div class="col-12 p-2 pb-4 text-light bg-theme-primary">
                             <div class="text-end">
-                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                <button type="button" class="btn-close btn-close-white btn-circle"
+                                    data-bs-dismiss="modal"></button>
                             </div>
                             <div class="d-flex align-items-center gap-2 justify-content-center">
                                 <img src="{{ asset('public/img/logo.png') }}" width="70" alt="la-escapo-logo">
                                 <div class="d-flex flex-column">
-                                    <b class="modal-title mt-2 text-bold">La Escapo Mountain
+                                    <b class="modal-title mt-2 h5 text-bold">La Escapo Mountain
                                         Resort</b>
                                     <span>Tuno, Tibiao, Antique</span>
                                 </div>
@@ -212,7 +215,7 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div
-                                    class="bg-theme-primary d-flex align-items-center gap-2 justify-content-center text-light p-2">
+                                    class="bg-green-secondary d-flex align-items-center gap-2 justify-content-center text-light p-2 mb-3">
                                     <i class="fa fa-hot-tub-person fa-2x"></i>
                                     <h3 class="m-0">KAWA HOT BATH</h3>
                                 </div>
@@ -220,13 +223,13 @@
                                 <div class="table-responsive">
                                     <table class="table table-bordered border-dark">
                                         <thead>
-                                            <th class="bg-theme-primary text-light">NO.</th>
-                                            <th class="bg-theme-primary text-light">GUEST</th>
-                                            <th class="bg-theme-primary text-light">AGE</th>
-                                            <th class="bg-theme-primary text-light">CATEGORY</th>
-                                            <th class="bg-theme-primary text-light">FEE</th>
-                                            <th class="bg-theme-primary text-light">QUANTITY</th>
-                                            <th class="bg-theme-primary text-light">SUB-TOTAL</th>
+                                            <th class="bg-green-tertiary text-light">NO.</th>
+                                            <th class="bg-green-tertiary text-light">GUEST</th>
+                                            <th class="bg-green-tertiary text-light">AGE</th>
+                                            <th class="bg-green-tertiary text-light">CATEGORY</th>
+                                            <th class="bg-green-tertiary text-light">FEE</th>
+                                            <th class="bg-green-tertiary text-light">QUANTITY</th>
+                                            <th class="bg-green-tertiary text-light">SUB-TOTAL</th>
                                         </thead>
                                         <tbody id="addKawaBathTableBody"></tbody>
                                     </table>
@@ -259,7 +262,7 @@
 
                             <div class="col-md-6">
                                 <div
-                                    class="bg-theme-primary d-flex align-items-center gap-2 justify-content-center text-light p-2">
+                                    class="bg-green-secondary d-flex align-items-center gap-2 justify-content-center text-light p-2 mb-3">
                                     <i class="fa fa-table fa-2x"></i>
                                     <h3 class="m-0">PICNIC TABLE</h3>
                                 </div>
@@ -267,11 +270,11 @@
                                 <div class="table-responsive">
                                     <table class="table table-bordered border-dark">
                                         <thead>
-                                            <th class="bg-theme-primary text-light text-center">NO.</th>
-                                            <th class="bg-theme-primary text-light">PICNIC TABLE</th>
-                                            <th class="bg-theme-primary text-light">FEE</th>
-                                            <th class="bg-theme-primary text-light">QUANTITY</th>
-                                            <th class="bg-theme-primary text-light">SUB-TOTAL</th>
+                                            <th class="bg-green-tertiary text-light text-center">NO.</th>
+                                            <th class="bg-green-tertiary text-light">PICNIC TABLE</th>
+                                            <th class="bg-green-tertiary text-light">FEE</th>
+                                            <th class="bg-green-tertiary text-light">QUANTITY</th>
+                                            <th class="bg-green-tertiary text-light">SUB-TOTAL</th>
                                         </thead>
                                         <tbody>
                                             @foreach ($picnicTableFees as $index => $fee)
@@ -326,7 +329,7 @@
                         <input type="hidden" name="grand_total" id="grand_total" value="0.00">
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-success">Save</button>
+                        <button type="submit" class="btn bg-theme-primary text-light">Save</button>
                         <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
                     </div>
                 </div>
@@ -345,14 +348,15 @@
                 @method('PUT')
                 <div class="modal-content">
                     <div class="modal-header">
-                        <div class="col-12">
+                        <div class="col-12 p-2 pb-4 text-light bg-theme-primary">
                             <div class="text-end">
-                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                <button type="button" class="btn-close btn-close-white btn-circle"
+                                    data-bs-dismiss="modal"></button>
                             </div>
                             <div class="d-flex align-items-center gap-2 justify-content-center">
                                 <img src="{{ asset('public/img/logo.png') }}" width="70" alt="la-escapo-logo">
                                 <div class="d-flex flex-column">
-                                    <b class="modal-title mt-2 text-bold">La Escapo Mountain
+                                    <b class="modal-title mt-2 h5 text-bold">La Escapo Mountain
                                         Resort</b>
                                     <span>Tuno, Tibiao, Antique</span>
                                 </div>
@@ -360,6 +364,11 @@
                         </div>
                     </div>
                     <div class="modal-body">
+                        <div
+                            class="bg-green-secondary d-flex align-items-center gap-2 justify-content-center text-light p-2 mb-3">
+                            <i class="fa fa-table fa-2x"></i>
+                            <h3 class="m-0">PICNIC TABLE</h3>
+                        </div>
                         <div class="form-group mb-3">
                             <div class="d-flex align-items-start gap-1">
                                 <div class="col-8 d-flex align-items-center gap-3">
@@ -379,20 +388,14 @@
                             </div>
                         </div>
                         <div class="">
-                            <div
-                                class="bg-theme-primary d-flex align-items-center gap-2 justify-content-center text-light p-2">
-                                <i class="fa fa-table fa-2x"></i>
-                                <h3 class="m-0">PICNIC TABLE</h3>
-                            </div>
-
                             <div class="table-responsive">
                                 <table class="table table-bordered border-dark">
                                     <thead>
-                                        <th class="bg-theme-primary text-light text-center">NO.</th>
-                                        <th class="bg-theme-primary text-light">PICNIC TABLE</th>
-                                        <th class="bg-theme-primary text-light">FEE</th>
-                                        <th width="15%" class="bg-theme-primary text-light">QUANTITY</th>
-                                        <th width="15%" class="bg-theme-primary text-light">SUB-TOTAL</th>
+                                        <th class="bg-green-tertiary text-light text-center">NO.</th>
+                                        <th class="bg-green-tertiary text-light">PICNIC TABLE</th>
+                                        <th class="bg-green-tertiary text-light">FEE</th>
+                                        <th width="15%" class="bg-green-tertiary text-light">QUANTITY</th>
+                                        <th width="15%" class="bg-green-tertiary text-light">SUB-TOTAL</th>
                                     </thead>
                                     <tbody>
                                         @foreach ($picnicTableFees as $index => $fee)
@@ -445,7 +448,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-success">Update</button>
+                        <button type="submit" class="btn bg-theme-primary text-light">Update</button>
                         <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
                     </div>
                 </div>

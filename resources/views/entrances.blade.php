@@ -92,12 +92,12 @@
                                         <table class="table table-bordered border-dark mt-2 mb-0">
                                             <thead>
                                                 <tr>
-                                                    <th class="bg-theme-primary text-light">No.</th>
-                                                    <th class="bg-theme-primary text-light">Name</th>
-                                                    <th class="bg-theme-primary text-light">Category</th>
-                                                    <th class="bg-theme-primary text-light">Sex</th>
-                                                    <th class="bg-theme-primary text-light">Age</th>
-                                                    <th class="bg-theme-primary text-light">Address</th>
+                                                    <th class="bg-green-tertiary text-light">No.</th>
+                                                    <th class="bg-green-tertiary text-light">Name</th>
+                                                    <th class="bg-green-tertiary text-light">Category</th>
+                                                    <th class="bg-green-tertiary text-light">Sex</th>
+                                                    <th class="bg-green-tertiary text-light">Age</th>
+                                                    <th class="bg-green-tertiary text-light">Address</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -191,14 +191,14 @@
                 @csrf
                 <div class="modal-content">
                     <div class="modal-header">
-                        <div class="col-12">
+                        <div class="col-12 p-2 pb-4 text-light bg-theme-primary">
                             <div class="text-end">
-                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                <button type="button" class="btn-close btn-close-white btn-circle" data-bs-dismiss="modal"></button>
                             </div>
                             <div class="d-flex align-items-center gap-2 justify-content-center">
                                 <img src="{{ asset('public/img/logo.png') }}" width="70" alt="la-escapo-logo">
                                 <div class="d-flex flex-column">
-                                    <b class="modal-title mt-2 text-bold">La Escapo Mountain
+                                    <b class="modal-title mt-2 h5 text-bold">La Escapo Mountain
                                         Resort</b>
                                     <span>Tuno, Tibiao, Antique</span>
                                 </div>
@@ -209,13 +209,13 @@
                         <input type="hidden" name="date_visit" value="{{ now()->toDateString() }}"
                             class="form-control" required />
                         <div
-                            class="bg-theme-primary d-flex align-items-center gap-2 justify-content-center text-light p-2 mb-3">
+                            class="bg-green-secondary d-flex align-items-center gap-2 justify-content-center text-light p-2 mb-3">
                             <i class="fa fa-book fa-2x"></i>
                             <h3 class="m-0">ENTRANCE FEE</h3>
                         </div>
                         <b>GUEST INFORMATION</b>
                         <div class="form-group mb-2">
-                            <div class="d-flex align-items-center gap-3">
+                            <div class="d-flex align-items-center gap-3 justify-content-between">
                                 <label style="min-width: 120px;">Complete Name:</label>
                                 <div class="col-3">
                                     <input type="text" name="guest_first_name" class="form-control"
@@ -232,7 +232,7 @@
                             </div>
                         </div>
                         <div class="form-group mb-2">
-                            <div class="d-flex align-items-center gap-3">
+                            <div class="d-flex align-items-center gap-3 justify-content-between">
                                 <label style="min-width: 120px;">Contact Number:</label>
                                 <div class="col-3">
                                     <input type="text" name="guest_contact_number" class="form-control" required>
@@ -253,7 +253,7 @@
                             </div>
                         </div>
                         <div class="form-group mb-2">
-                            <div class="d-flex align-items-center gap-3">
+                            <div class="d-flex align-items-center gap-3 justify-content-between">
                                 <label style="min-width: 120px;">Address:</label>
                                 <div class="col-5">
                                     <input type="text" name="guest_address" class="form-control" required>
@@ -287,14 +287,14 @@
                         <table class="table table-bordered border-dark" width="100%" cellspacing="0">
                             <thead>
                                 <tr>
-                                    <th class="bg-success text-light">NO.</th>
-                                    <th class="bg-success text-light">NAME</th>
-                                    <th class="bg-success text-light">SEX</th>
-                                    <th class="bg-success text-light">AGE</th>
-                                    <th class="bg-success text-light">is PWD?</th>
-                                    <th class="bg-success text-light">ADDRESS</th>
-                                    <th class="bg-success text-light">FEE</th>
-                                    <th class="bg-success text-light">ACTION</th>
+                                    <th class="bg-green-tertiary text-light">NO.</th>
+                                    <th class="bg-green-tertiary text-light">NAME</th>
+                                    <th class="bg-green-tertiary text-light">SEX</th>
+                                    <th class="bg-green-tertiary text-light">AGE</th>
+                                    <th class="bg-green-tertiary text-light">is PWD?</th>
+                                    <th class="bg-green-tertiary text-light">ADDRESS</th>
+                                    <th class="bg-green-tertiary text-light">FEE</th>
+                                    <th class="bg-green-tertiary text-light">ACTION</th>
                                 </tr>
                             </thead>
                             <tbody id="add_companionsTableBody"></tbody>
@@ -322,7 +322,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-success">Save</button>
+                        <button type="submit" class="btn text-light bg-theme-primary">Save</button>
                         <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
                     </div>
                 </div>
@@ -340,14 +340,14 @@
                 @method('PUT')
                 <div class="modal-content">
                     <div class="modal-header">
-                        <div class="col-12">
+                        <div class="col-12 p-2 pb-4 text-light bg-theme-primary">
                             <div class="text-end">
-                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                <button type="button" class="btn-close btn-close-white btn-circle" data-bs-dismiss="modal"></button>
                             </div>
                             <div class="d-flex align-items-center gap-2 justify-content-center">
                                 <img src="{{ asset('public/img/logo.png') }}" width="70" alt="la-escapo-logo">
                                 <div class="d-flex flex-column">
-                                    <b class="modal-title mt-2 text-bold">La Escapo Mountain
+                                    <b class="modal-title mt-2 h5 text-bold">La Escapo Mountain
                                         Resort</b>
                                     <span>Tuno, Tibiao, Antique</span>
                                 </div>
@@ -358,13 +358,13 @@
                         <input type="hidden" id="edit_date_visit" name="edit_date_visit" value=""
                             class="form-control" required />
                         <div
-                            class="bg-theme-primary d-flex align-items-center gap-2 justify-content-center text-light p-2 mb-3">
+                            class="bg-green-secondary d-flex align-items-center gap-2 justify-content-center text-light p-2 mb-3">
                             <i class="fa fa-book fa-2x"></i>
                             <h3 class="m-0">ENTRANCE FEE</h3>
                         </div>
                         <b>GUEST INFORMATION</b>
                         <div class="form-group mb-2">
-                            <div class="d-flex align-items-center gap-3">
+                            <div class="d-flex align-items-center gap-3 justify-content-between">
                                 <label style="min-width: 120px;">Complete Name:</label>
                                 <div class="col-3">
                                     <input type="text" name="edit_guest_first_name" class="form-control"
@@ -381,7 +381,7 @@
                             </div>
                         </div>
                         <div class="form-group mb-2">
-                            <div class="d-flex align-items-center gap-3">
+                            <div class="d-flex align-items-center gap-3 justify-content-between">
                                 <label style="min-width: 120px;">Contact Number:</label>
                                 <div class="col-3">
                                     <input type="text" name="edit_guest_contact_number" class="form-control" required>
@@ -402,7 +402,7 @@
                             </div>
                         </div>
                         <div class="form-group mb-2">
-                            <div class="d-flex align-items-center gap-3">
+                            <div class="d-flex align-items-center gap-3 justify-content-between">
                                 <label style="min-width: 120px;">Address:</label>
                                 <div class="col-5">
                                     <input type="text" name="edit_guest_address" class="form-control" required>
@@ -436,14 +436,14 @@
                         <table class="table table-bordered border-dark" width="100%" cellspacing="0">
                             <thead>
                                 <tr>
-                                    <th class="bg-success text-light">NO.</th>
-                                    <th class="bg-success text-light">NAME</th>
-                                    <th class="bg-success text-light">SEX</th>
-                                    <th class="bg-success text-light">AGE</th>
-                                    <th class="bg-success text-light">is PWD?</th>
-                                    <th class="bg-success text-light">ADDRESS</th>
-                                    <th class="bg-success text-light">FEE</th>
-                                    <th class="bg-success text-light">ACTION</th>
+                                    <th class="bg-green-tertiary text-light">NO.</th>
+                                    <th class="bg-green-tertiary text-light">NAME</th>
+                                    <th class="bg-green-tertiary text-light">SEX</th>
+                                    <th class="bg-green-tertiary text-light">AGE</th>
+                                    <th class="bg-green-tertiary text-light">is PWD?</th>
+                                    <th class="bg-green-tertiary text-light">ADDRESS</th>
+                                    <th class="bg-green-tertiary text-light">FEE</th>
+                                    <th class="bg-green-tertiary text-light">ACTION</th>
                                 </tr>
                             </thead>
                             <tbody id="edit_companionsTableBody"></tbody>
@@ -471,7 +471,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-success">Update</button>
+                        <button type="submit" class="btn text-light bg-theme-primary">Update</button>
                         <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
                     </div>
                 </div>

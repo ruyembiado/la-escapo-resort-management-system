@@ -16,20 +16,13 @@
     <!-- Content Row -->
     <div class="card shadow mb-4">
         <div class="card-body">
-            <div class="d-flex justify-content-between align-items-center mb-3">
+            <div class="d-flex justify-content-between align-items-center mb-3 bg-theme-primary p-2 text-light">
                 <!-- Date Filter -->
                 <form method="GET" action="" id="dateRangeForm">
                     <div class="d-flex justify-content-center gap-2 align-items-center">
                         <div class="d-flex align-items-center">
-                            <label class="mb-0 me-0 p-1 bg-theme-primary text-light">From:</label>
+                            <label class="mb-0 me-0 p-1 bg-theme-primary text-light col-6">Select Date:</label>
                             <input type="date" name="start_date" value="{{ request('start_date') }}"
-                                class="form-control form-control-sm rounded-0"
-                                onchange="document.getElementById('dateRangeForm').submit();">
-                        </div>
-
-                        <div class="d-flex align-items-center">
-                            <label class="mb-0 me-0 p-1 bg-theme-primary text-light">To:</label>
-                            <input type="date" name="end_date" value="{{ request('end_date') }}"
                                 class="form-control form-control-sm rounded-0"
                                 onchange="document.getElementById('dateRangeForm').submit();">
                         </div>
@@ -37,10 +30,10 @@
                 </form>
 
                 <div class="print-buttons d-flex gap-1">
-                    <button onclick="printReport()" class="btn btn-sm btn-success d-print-none bg-theme-primary">
+                    <button onclick="printReport()" class="btn btn-sm btn-primary d-print-none">
                         <i class="fas fa-print"></i> Print Report
                     </button>
-                    <button onclick="exportExcel()" class="btn btn-sm btn-success d-print-none">
+                    <button onclick="exportExcel()" class="btn btn-sm bg-green-tertiary text-light d-print-none">
                         <i class="fas fa-file-excel"></i> Export Excel
                     </button>
                 </div>
@@ -76,21 +69,21 @@
                     <table class="table table-bordered border-dark" id="" width="100%" cellspacing="0">
                         <thead>
                             <tr>
-                                <th class="text-dark text-center">NO.</th>
-                                <th class="text-dark text-center">NAME OF GUEST</th>
-                                <th class="text-dark text-center">SEX</th>
-                                <th class="text-dark text-center">AGE</th>
-                                <th class="text-dark text-center">MEMBERS</th>
-                                <th class="text-dark text-center">TOTAL MEMBERS</th>
-                                <th class="text-dark text-center">ADDRESS</th>
-                                <th class="text-dark text-center">CONTACT NO.</th>
-                                <th class="text-dark text-center">CHECK-IN</th>
+                                <th class="text-center bg-theme-primary text-light">NO.</th>
+                                <th class="text-center bg-theme-primary text-light">NAME OF GUEST</th>
+                                <th class="text-center bg-theme-primary text-light">SEX</th>
+                                <th class="text-center bg-theme-primary text-light">AGE</th>
+                                <th class="text-center bg-theme-primary text-light">MEMBERS</th>
+                                <th class="text-center bg-theme-primary text-light">TOTAL MEMBERS</th>
+                                <th class="text-center bg-theme-primary text-light">ADDRESS</th>
+                                <th class="text-center bg-theme-primary text-light">CONTACT NO.</th>
+                                <th class="text-center bg-theme-primary text-light">CHECK-IN</th>
                             </tr>
                         </thead>
                         <tbody>
                             @if ($entrances->isEmpty())
                                 <tr>
-                                    <td colspan="8" class="text-center">No data available for this date.</td>
+                                    <td colspan="9" class="text-center">No data available for this date.</td>
                                 </tr>
                             @else
                                 @foreach ($entrances as $entrance)
@@ -106,15 +99,15 @@
                                         <td class="text-center px-0 pb-0">
                                             {{ $entrance->visitor->members ?? 0 }}
                                             @if (!empty($entrance->companions))
-                                                <table class="table table-bordered border-none mt-2 mb-0">
+                                                <table class="table table-bordered border-dark mt-2 mb-0">
                                                     <thead>
                                                         <tr>
-                                                            <th class="text-dark text-center">No.</th>
-                                                            <th class="text-dark text-center">Name</th>
-                                                            <th class="text-dark text-center">Category</th>
-                                                            <th class="text-dark text-center">Sex</th>
-                                                            <th class="text-dark text-center">Age</th>
-                                                            <th class="text-dark text-center">Address</th>
+                                                            <th class="text-center bg-green-tertiary text-light">No.</th>
+                                                            <th class="text-center bg-green-tertiary text-light">Name</th>
+                                                            <th class="text-center bg-green-tertiary text-light">Category</th>
+                                                            <th class="text-center bg-green-tertiary text-light">Sex</th>
+                                                            <th class="text-center bg-green-tertiary text-light">Age</th>
+                                                            <th class="text-center bg-green-tertiary text-light">Address</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>

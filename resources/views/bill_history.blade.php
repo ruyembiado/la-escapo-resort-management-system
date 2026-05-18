@@ -1,4 +1,4 @@
-@extends('layouts.auth') <!-- Extend the main layout -->
+@extends('layouts.auth') 
 
 @section('content')
     <!-- Start the content section -->
@@ -61,12 +61,12 @@
                                 <table class="table table-bordered border-N/A m-0">
                                     <thead class="bg-success text-light">
                                         <tr>
-                                            <th style="border-width: 0px" class="text-start bg-success text-light">
+                                            <th style="border-width: 0px" class="text-start bg-green-tertiary text-light">
                                                 AVAILED SERVICES</th>
-                                            <th style="border-width: 0px" class="text-start bg-success text-light">
+                                            <th style="border-width: 0px" class="text-start bg-green-tertiary text-light">
                                                 FEE STATUS
                                             </th>
-                                            <th style="border-width: 0px" class="text-center bg-success text-light">
+                                            <th style="border-width: 0px" class="text-center bg-green-tertiary text-light">
                                                 AMOUNT
                                                 FEE</th>
                                         </tr>
@@ -154,7 +154,6 @@
                 center: 'title',
                 right: 'dayGridMonth,timeGridWeek,timeGridDay'
             },
-
             events: visitors.map(v => ({
                 allDay: true
             })),

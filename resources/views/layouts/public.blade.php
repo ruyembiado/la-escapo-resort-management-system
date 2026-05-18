@@ -31,7 +31,7 @@
                             <h5 class="ms-2 mb-0 text-light">LA ESCAPO MOUNTAIN RESORT</h5>
                         </div>
                     </a>
-                    <div class="d-flex align-items-center gap-5">
+                    {{-- <div class="d-flex align-items-center gap-5">
                         @if (!auth()->check())
                             <div class="auth-buttons d-flex gap-3">
                                 <button class="btn btn-success" type="button" data-bs-toggle="modal"
@@ -40,7 +40,7 @@
                                 </button>
                             </div>
                         @endif
-                    </div>
+                    </div> --}}
                 </div>
             </nav>
 
