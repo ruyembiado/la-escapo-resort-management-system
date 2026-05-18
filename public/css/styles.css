@@ -305,7 +305,7 @@ h1.home-title {
 }
 
 #sidebar {
-    background-color: #093a0d !important;
+    background-color: #084d00 !important;
 }
 
 .btn-danger,
@@ -432,4 +432,8 @@ table.dataTable>thead>tr>th {
 
 .fc a {
     color: #093a0d;
+}
+
+.text-dash {
+    font-size: 20px;
 }

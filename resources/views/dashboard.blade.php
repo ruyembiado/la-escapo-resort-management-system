@@ -16,7 +16,7 @@
                     <div class="card-body">
                         <div class="row align-items-center justify-content-between flex-column gap-3">
                             <div class="d-flex flex-column text-center">
-                                <b class="text-xs font-weight-bold text-primary text-uppercase">
+                                <b class="text-dash font-weight-bold text-primary text-uppercase">
                                     Total Guest
                                 </b>
                                 <span class="text-center text-primary">({{ date('Y') }})</span>
@@ -36,7 +36,7 @@
                 <div class="card-body">
                     <div class="row align-items-center justify-content-between flex-column gap-3">
                         <div class="d-flex flex-column text-center">
-                            <b class="text-xs font-weight-bold text-brown text-uppercase">
+                            <b class="text-dash font-weight-bold text-brown text-uppercase">
                                 Total Bill
                             </b>
                             <span class="text-center text-brown">({{ date('Y') }})</span>
@@ -56,7 +56,7 @@
                     <div class="card-body">
                         <div class="row align-items-center justify-content-between flex-column gap-3">
                             <div class="d-flex flex-column text-center">
-                                <b class="text-xs font-weight-bold text-danger text-uppercase">
+                                <b class="text-dash font-weight-bold text-danger text-uppercase">
                                     Unpaid Bills
                                 </b>
                                 <span class="text-center text-danger">(Incomplete)</span>
@@ -76,7 +76,7 @@
                 <div class="card-body">
                     <div class="row align-items-center justify-content-between flex-column gap-3">
                         <div class="d-flex flex-column text-center">
-                            <b class="text-xs font-weight-bold text-success text-uppercase">
+                            <b class="text-dash font-weight-bold text-success text-uppercase">
                                 Paid Bills
                             </b>
                             <span class="text-center text-success">(Complete)</span>
@@ -105,7 +105,7 @@
                                     <div class="card-body">
                                         <div
                                             class="d-flex flex-column justify-content-between p-3 border border-2 rounded border-primary">
-                                            <div class="text-xs font-weight-bold text-primary text-uppercase">
+                                            <div class="text-dash font-weight-bold text-primary text-uppercase">
                                                 <i class="fa fa-calendar fa-2x text-primary"></i>
                                                 <b class="ms-2 pb-2">DAY</b>
                                             </div>
@@ -122,7 +122,7 @@
                                     <div class="card-body">
                                         <div
                                             class="d-flex flex-column justify-content-between p-3 border border-2 rounded border-success">
-                                            <div class="text-xs font-weight-bold text-success text-uppercase">
+                                            <div class="text-dash font-weight-bold text-success text-uppercase">
                                                 <i class="fa fa-calendar fa-2x text-success"></i>
                                                 <b class="ms-2 pb-2">WEEK</b>
                                             </div>
@@ -139,7 +139,7 @@
                                     <div class="card-body">
                                         <div
                                             class="d-flex flex-column justify-content-between p-3 border border-2 rounded border-brown">
-                                            <div class="text-xs font-weight-bold text-brown text-uppercase">
+                                            <div class="text-dash font-weight-bold text-brown text-uppercase">
                                                 <i class="fa fa-calendar fa-2x text-brown"></i>
                                                 <b class="ms-2 pb-2">MONTH</b>
                                             </div>
@@ -156,7 +156,7 @@
                                     <div class="card-body">
                                         <div
                                             class="d-flex flex-column justify-content-between p-3 border border-2 rounded border-danger">
-                                            <div class="text-xs font-weight-bold text-danger text-uppercase">
+                                            <div class="text-dash font-weight-bold text-danger text-uppercase">
                                                 <i class="fa fa-calendar fa-2x text-danger"></i>
                                                 <b class="ms-2 pb-2">YEAR</b>
                                             </div>
@@ -188,34 +188,34 @@
                                         <thead>
                                             <tr>
                                                 <th rowspan="3"
-                                                    class="align-middle bg-theme-primary text-light text-uppercase">No.
+                                                    class="align-middle bg-theme-primary border-light text-light text-uppercase">No.
                                                 </th>
                                                 <th rowspan="3"
-                                                    class="align-middle bg-theme-primary text-light text-uppercase">Name of
+                                                    class="align-middle bg-theme-primary border-light text-light text-uppercase">Name of
                                                     Guest</th>
                                                 <th rowspan="3"
-                                                    class="align-middle bg-theme-primary text-light text-uppercase">Members
+                                                    class="align-middle bg-theme-primary border-light text-light text-uppercase">Members
                                                 </th>
 
                                                 <th colspan="16"
-                                                    class="text-center bg-theme-primary text-light text-uppercase">
+                                                    class="text-center bg-theme-primary text-light border-bottom border-light text-uppercase">
                                                     Availed Services
                                                 </th>
 
                                                 <th rowspan="3"
-                                                    class="align-middle bg-theme-primary text-light text-uppercase">
+                                                    class="align-middle bg-theme-primary border-light text-light text-uppercase">
                                                     Total Fee
                                                 </th>
                                             </tr>
                                             <tr class="text-center">
-                                                <th colspan="2" class="bg-theme-primary text-light">Entrance Fee</th>
-                                                <th colspan="2" class="bg-theme-primary text-light">Water Tubing</th>
-                                                <th colspan="2" class="bg-theme-primary text-light">Kawa Hot Bath</th>
-                                                <th colspan="2" class="bg-theme-primary text-light">Picnic Table</th>
-                                                <th colspan="2" class="bg-theme-primary text-light">Massage</th>
-                                                <th colspan="2" class="bg-theme-primary text-light">Accommodation</th>
-                                                <th colspan="2" class="bg-theme-primary text-light">Foods</th>
-                                                <th colspan="2" class="bg-theme-primary text-light">Drinks</th>
+                                                <th colspan="2" class="bg-theme-primary border-light text-light">Entrance Fee</th>
+                                                <th colspan="2" class="bg-theme-primary border-light text-light">Water Tubing</th>
+                                                <th colspan="2" class="bg-theme-primary border-light text-light">Kawa Hot Bath</th>
+                                                <th colspan="2" class="bg-theme-primary border-light text-light">Picnic Table</th>
+                                                <th colspan="2" class="bg-theme-primary border-light text-light">Massage</th>
+                                                <th colspan="2" class="bg-theme-primary border-light text-light">Accommodation</th>
+                                                <th colspan="2" class="bg-theme-primary border-light text-light">Foods</th>
+                                                <th colspan="2" class="bg-theme-primary border-light text-light">Drinks</th>
                                             </tr>
                                             <tr>
                                                 @for ($i = 0; $i < 8; $i++)
@@ -256,10 +256,10 @@
                                                             {{ $visitor->watertubing ? '₱' . number_format($visitor->watertubing->total_payment, 2) : '₱0.00' }}
                                                         </td>
                                                         <td class="text-center">
-                                                            @if (isset($visitor->watertubing->status))
+                                                            @if (isset($visitor->watertubing->payment_status))
                                                                 <span
-                                                                    class="badge {{ $visitor->watertubing->status === 'Paid' ? 'bg-success' : 'bg-danger' }}">
-                                                                    {{ $visitor->watertubing->status }}
+                                                                    class="badge {{ $visitor->watertubing->payment_status === 'Paid' ? 'bg-success' : 'bg-danger' }}">
+                                                                    {{ $visitor->watertubing->payment_status }}
                                                                 </span>
                                                             @else
                                                                 <span class="badge bg-secondary">N/A</span>
@@ -271,10 +271,10 @@
                                                             {{ $visitor->kawabath ? '₱' . number_format($visitor->kawabath->total_payment, 2) : '₱0.00' }}
                                                         </td>
                                                         <td class="text-center">
-                                                            @if (isset($visitor->kawabath->status))
+                                                            @if (isset($visitor->kawabath->payment_status))
                                                                 <span
-                                                                    class="badge {{ $visitor->kawabath->status === 'Paid' ? 'bg-success' : 'bg-danger' }}">
-                                                                    {{ $visitor->kawabath->status }}
+                                                                    class="badge {{ $visitor->kawabath->payment_status === 'Paid' ? 'bg-success' : 'bg-danger' }}">
+                                                                    {{ $visitor->kawabath->payment_status }}
                                                                 </span>
                                                             @else
                                                                 <span class="badge bg-secondary">N/A</span>
@@ -286,10 +286,10 @@
                                                             {{ $visitor->picnictable ? '₱' . number_format($visitor->picnictable->total_payment, 2) : '₱0.00' }}
                                                         </td>
                                                         <td class="text-center">
-                                                            @if (isset($visitor->picnictable->status))
+                                                            @if (isset($visitor->picnictable->payment_status))
                                                                 <span
-                                                                    class="badge {{ $visitor->picnictable->status === 'Paid' ? 'bg-success' : 'bg-danger' }}">
-                                                                    {{ $visitor->picnictable->status }}
+                                                                    class="badge {{ $visitor->picnictable->payment_status === 'Paid' ? 'bg-success' : 'bg-danger' }}">
+                                                                    {{ $visitor->picnictable->payment_status }}
                                                                 </span>
                                                             @else
                                                                 <span class="badge bg-secondary">N/A</span>
@@ -301,10 +301,10 @@
                                                             {{ $visitor->massage ? '₱' . number_format($visitor->massage->total_payment, 2) : '₱0.00' }}
                                                         </td>
                                                         <td class="text-center">
-                                                            @if (isset($visitor->massage->status))
+                                                            @if (isset($visitor->massage->payment_status))
                                                                 <span
-                                                                    class="badge {{ $visitor->massage->status === 'Paid' ? 'bg-success' : 'bg-danger' }}">
-                                                                    {{ $visitor->massage->status }}
+                                                                    class="badge {{ $visitor->massage->payment_status === 'Paid' ? 'bg-success' : 'bg-danger' }}">
+                                                                    {{ $visitor->massage->payment_status }}
                                                                 </span>
                                                             @else
                                                                 <span class="badge bg-secondary">N/A</span>
@@ -316,10 +316,10 @@
                                                             {{ $visitor->accommodation ? '₱' . number_format($visitor->accommodation->total_payment, 2) : '₱0.00' }}
                                                         </td>
                                                         <td class="text-center">
-                                                            @if (isset($visitor->accommodation->status))
+                                                            @if (isset($visitor->accommodation->payment_status))
                                                                 <span
-                                                                    class="badge {{ $visitor->accommodation->status === 'Paid' ? 'bg-success' : 'bg-danger' }}">
-                                                                    {{ $visitor->accommodation->status }}
+                                                                    class="badge {{ $visitor->accommodation->payment_status === 'Paid' ? 'bg-success' : 'bg-danger' }}">
+                                                                    {{ $visitor->accommodation->payment_status }}
                                                                 </span>
                                                             @else
                                                                 <span class="badge bg-secondary">N/A</span>
@@ -331,10 +331,10 @@
                                                             {{ $visitor->meal ? '₱' . number_format($visitor->meal->total_payment, 2) : '₱0.00' }}
                                                         </td>
                                                         <td class="text-center">
-                                                            @if (isset($visitor->meal->status))
+                                                            @if (isset($visitor->meal->payment_status))
                                                                 <span
-                                                                    class="badge {{ $visitor->meal->status === 'Paid' ? 'bg-success' : 'bg-danger' }}">
-                                                                    {{ $visitor->meal->status }}
+                                                                    class="badge {{ $visitor->meal->payment_status === 'Paid' ? 'bg-success' : 'bg-danger' }}">
+                                                                    {{ $visitor->meal->payment_status }}
                                                                 </span>
                                                             @else
                                                                 <span class="badge bg-secondary">N/A</span>
@@ -346,10 +346,10 @@
                                                             {{ $visitor->beverage ? '₱' . number_format($visitor->beverage->total_payment, 2) : '₱0.00' }}
                                                         </td>
                                                         <td class="text-center">
-                                                            @if (isset($visitor->beverage->status))
+                                                            @if (isset($visitor->beverage->payment_status))
                                                                 <span
-                                                                    class="badge {{ $visitor->beverage->status === 'Paid' ? 'bg-success' : 'bg-danger' }}">
-                                                                    {{ $visitor->beverage->status }}
+                                                                    class="badge {{ $visitor->beverage->payment_status === 'Paid' ? 'bg-success' : 'bg-danger' }}">
+                                                                    {{ $visitor->beverage->payment_status }}
                                                                 </span>
                                                             @else
                                                                 <span class="badge bg-secondary">N/A</span>
@@ -361,8 +361,10 @@
                                                             $grand_total =
                                                                 ($visitor->entrance->total_payment ?? 0) +
                                                                 ($visitor->accommodation->total_payment ?? 0) +
-                                                                ($visitor->functionHall->total_payment ?? 0) +
-                                                                ($visitor->cottage->total_payment ?? 0) +
+                                                                ($visitor->watertubing->total_payment ?? 0) +
+                                                                ($visitor->picnictable->total_payment ?? 0) +
+                                                                ($visitor->massage->total_payment ?? 0) +
+                                                                ($visitor->kawabath->total_payment ?? 0) +
                                                                 ($visitor->meal->total_payment ?? 0) +
                                                                 ($visitor->beverage->total_payment ?? 0);
                                                         @endphp
@@ -562,7 +564,7 @@
                     <div class="d-flex h-100 flex-column justify-content-between">
                         <div class="row align-items-center justify-content-between">
                             <div class="col mr-2">
-                                <div class="text-xs font-weight-bold text-dark text-uppercase mb-1">
+                                <div class="text-dash font-weight-bold text-dark text-uppercase mb-1">
                                     Monthly Visitors Data Chart</div>
                             </div>
                             <div class="col-auto">

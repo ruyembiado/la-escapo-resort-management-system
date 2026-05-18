@@ -105,7 +105,6 @@ class AuthController extends Controller
             'massage',
             'picnictable',
         ])
-            ->where('created_at', '>=', $startOfMonth)
             ->orderBy('created_at', 'desc')
             ->get();
 
@@ -129,7 +128,7 @@ class AuthController extends Controller
 
             foreach ($services as $service) {
                 if ($service) {
-                    $status = $service->payment_status ?? $service->status ?? 'Unpaid';
+                    $status = $service->payment_status ?? 'Unpaid';
 
                     if ($status !== 'Paid') {
                         return true;
@@ -139,7 +138,6 @@ class AuthController extends Controller
 
             return false;
         });
-
         /*
     |--------------------------------------------------------------------------
     | BILL COMPUTATION
@@ -168,7 +166,7 @@ class AuthController extends Controller
 
                 if ($service) {
 
-                    $status = $service->payment_status ?? $service->status ?? 'Unpaid';
+                    $status = $service->payment_status ?? 'Unpaid';
 
                     // TOTAL AMOUNT
                     $totalBills += $service->total_payment ?? 0;
