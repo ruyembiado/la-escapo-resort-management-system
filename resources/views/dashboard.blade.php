@@ -1250,7 +1250,7 @@
                 datasets: [{
                     label: 'Total Visitors',
                     data: {!! json_encode($visitorsPerMonth) !!},
-                    backgroundColor: '#545454',
+                    backgroundColor: '#093A0D',
                     borderRadius: 4,
                 }]
             },

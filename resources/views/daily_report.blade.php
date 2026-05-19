@@ -69,19 +69,19 @@
                     <table id="summary_report" class="table table-bordered border-dark" width="100%" cellspacing="0">
                         <thead>
                             <tr>
-                                <th rowspan="2" class="text-uppercase bg-theme-primary text-light">No. of Visitors</th>
-                                <th colspan="8" class="text-uppercase bg-theme-primary text-light text-center">Services</th>
-                                <th rowspan="2" class="text-uppercase bg-theme-primary text-light">Total Bill Income</th>
+                                <th rowspan="2" class="text-uppercase bg-green-tertiary text-light">No. of Visitors</th>
+                                <th colspan="8" class="text-uppercase bg-green-tertiary text-light text-center">Services</th>
+                                <th rowspan="2" class="text-uppercase bg-green-tertiary text-light">Total Bill Income</th>
                             </tr>
                             <tr>
-                                <th class="text-uppercase bg-theme-primary text-light">Entrance Fee</th>
-                                <th class="text-uppercase bg-theme-primary text-light">Kawa Hot Bath</th>
-                                <th class="text-uppercase bg-theme-primary text-light">Water Tubing</th>
-                                <th class="text-uppercase bg-theme-primary text-light">Picnic Table</th>
-                                <th class="text-uppercase bg-theme-primary text-light">Massage</th>
-                                <th class="text-uppercase bg-theme-primary text-light">Accommodation</th>
-                                <th class="text-uppercase bg-theme-primary text-light">Foods</th>
-                                <th class="text-uppercase bg-theme-primary text-light">Drinks</th>
+                                <th class="text-uppercase bg-green-tertiary text-light">Entrance Fee</th>
+                                <th class="text-uppercase bg-green-tertiary text-light">Kawa Hot Bath</th>
+                                <th class="text-uppercase bg-green-tertiary text-light">Water Tubing</th>
+                                <th class="text-uppercase bg-green-tertiary text-light">Picnic Table</th>
+                                <th class="text-uppercase bg-green-tertiary text-light">Massage</th>
+                                <th class="text-uppercase bg-green-tertiary text-light">Accommodation</th>
+                                <th class="text-uppercase bg-green-tertiary text-light">Foods</th>
+                                <th class="text-uppercase bg-green-tertiary text-light">Drinks</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -103,16 +103,16 @@
                                     <td>₱{{ number_format($report['total'], 2) }}</td>
                                 </tr>
                                 <tr class="bg-light h6">
-                                    <td class="text-uppercase">Grand Total</td>
-                                    <td>₱{{ number_format($report['entrance_fee'], 2) }}</td>
-                                    <td>₱{{ number_format($report['kawabath'], 2) }}</td>
-                                    <td>₱{{ number_format($report['watertubing'], 2) }}</td>
-                                    <td>₱{{ number_format($report['picnictable'], 2) }}</td>
-                                    <td>₱{{ number_format($report['massage'], 2) }}</td>
-                                    <td>₱{{ number_format($report['accommodation'], 2) }}</td>
-                                    <td>₱{{ number_format($report['meal'], 2) }}</td>
-                                    <td>₱{{ number_format($report['beverage'], 2) }}</td>
-                                    <td>₱{{ number_format($report['total'], 2) }}</td>
+                                    <td class="text-uppercase fw-bold">Grand Total</td>
+                                    <td class="fw-bold">₱{{ number_format($report['entrance_fee'], 2) }}</td>
+                                    <td class="fw-bold">₱{{ number_format($report['kawabath'], 2) }}</td>
+                                    <td class="fw-bold">₱{{ number_format($report['watertubing'], 2) }}</td>
+                                    <td class="fw-bold">₱{{ number_format($report['picnictable'], 2) }}</td>
+                                    <td class="fw-bold">₱{{ number_format($report['massage'], 2) }}</td>
+                                    <td class="fw-bold">₱{{ number_format($report['accommodation'], 2) }}</td>
+                                    <td class="fw-bold">₱{{ number_format($report['meal'], 2) }}</td>
+                                    <td class="fw-bold">₱{{ number_format($report['beverage'], 2) }}</td>
+                                    <td class="fw-bold">₱{{ number_format($report['total'], 2) }}</td>
                                 </tr>
                             @endif
                         </tbody>

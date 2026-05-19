@@ -20,8 +20,8 @@
                 <!-- Date Filter -->
                 <form method="GET" action="" id="dateRangeForm">
                     <div class="d-flex justify-content-center gap-2 align-items-center">
-                        <div class="d-flex align-items-center">
-                            <label class="mb-0 me-0 p-1 bg-theme-primary text-light col-6">Select Date:</label>
+                        <div class="d-flex align-items-start flex-column">
+                            <label class="mb-0 me-0 p-1 bg-theme-primary text-light">Select Date:</label>
                             <input type="date" name="start_date" value="{{ request('start_date') }}"
                                 class="form-control form-control-sm rounded-0"
                                 onchange="document.getElementById('dateRangeForm').submit();">
@@ -69,15 +69,15 @@
                     <table class="table table-bordered border-dark" id="" width="100%" cellspacing="0">
                         <thead>
                             <tr>
-                                <th class="text-center bg-theme-primary text-light">NO.</th>
-                                <th class="text-center bg-theme-primary text-light">NAME OF GUEST</th>
-                                <th class="text-center bg-theme-primary text-light">SEX</th>
-                                <th class="text-center bg-theme-primary text-light">AGE</th>
-                                <th class="text-center bg-theme-primary text-light">MEMBERS</th>
-                                <th class="text-center bg-theme-primary text-light">TOTAL MEMBERS</th>
-                                <th class="text-center bg-theme-primary text-light">ADDRESS</th>
-                                <th class="text-center bg-theme-primary text-light">CONTACT NO.</th>
-                                <th class="text-center bg-theme-primary text-light">CHECK-IN</th>
+                                <th class="text-center bg-green-secondary text-light">NO.</th>
+                                <th class="text-center bg-green-secondary text-light">NAME OF GUEST</th>
+                                <th class="text-center bg-green-secondary text-light">SEX</th>
+                                <th class="text-center bg-green-secondary text-light">AGE</th>
+                                <th class="text-center bg-green-secondary text-light">MEMBERS</th>
+                                <th class="text-center bg-green-secondary text-light">TOTAL MEMBERS</th>
+                                <th class="text-center bg-green-secondary text-light">ADDRESS</th>
+                                <th class="text-center bg-green-secondary text-light">CONTACT NO.</th>
+                                <th class="text-center bg-green-secondary text-light">CHECK-IN</th>
                             </tr>
                         </thead>
                         <tbody>

@@ -92,20 +92,20 @@
                     <table id="summary_report" class="table table-bordered border-dark" width="100%" cellspacing="0">
                         <thead class="">
                             <tr class="text-uppercase">
-                                <th class="bg-theme-primary text-light" rowspan="2">Week</th>
-                                <th class="bg-theme-primary text-light" rowspan="2">No. of Visitors</th>
-                                <th class="bg-theme-primary text-light" colspan="8" class="text-center">Services</th>
-                                <th class="bg-theme-primary text-light" rowspan="2">Total Bill Income</th>
+                                <th class="bg-green-tertiary text-light" rowspan="2">Week</th>
+                                <th class="bg-green-tertiary text-light" rowspan="2">No. of Visitors</th>
+                                <th class="bg-green-tertiary text-light" colspan="8" class="text-center">Services</th>
+                                <th class="bg-green-tertiary text-light" rowspan="2">Total Bill Income</th>
                             </tr>
                             <tr class="text-uppercase">
-                                <th class="bg-theme-primary text-light">Entrance Fee</th>
-                                <th class="bg-theme-primary text-light">Kawa Hot Bath</th>
-                                <th class="bg-theme-primary text-light">Water Tubing</th>
-                                <th class="bg-theme-primary text-light">Picnic Table</th>
-                                <th class="bg-theme-primary text-light">Massage</th>
-                                <th class="bg-theme-primary text-light">Accommodation</th>
-                                <th class="bg-theme-primary text-light">Foods</th>
-                                <th class="bg-theme-primary text-light">Drinks</th>
+                                <th class="bg-green-tertiary text-light">Entrance Fee</th>
+                                <th class="bg-green-tertiary text-light">Kawa Hot Bath</th>
+                                <th class="bg-green-tertiary text-light">Water Tubing</th>
+                                <th class="bg-green-tertiary text-light">Picnic Table</th>
+                                <th class="bg-green-tertiary text-light">Massage</th>
+                                <th class="bg-green-tertiary text-light">Accommodation</th>
+                                <th class="bg-green-tertiary text-light">Foods</th>
+                                <th class="bg-green-tertiary text-light">Drinks</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -130,17 +130,17 @@
                                     </tr>
                                 @endforeach
                                 <tr class="">
-                                    <td class="h6 text-uppercase">Grand Total:</td>
-                                    <td class="h6">{{ $weeklyBreakdown->sum('visitors') }}</td>
-                                    <td class="h6">₱{{ number_format($weeklyBreakdown->sum('entrance_fee'), 2) }}</td>
-                                    <td class="h6">₱{{ number_format($weeklyBreakdown->sum('kawabath'), 2) }}</td>
-                                    <td class="h6">₱{{ number_format($weeklyBreakdown->sum('watertubing'), 2) }}</td>
-                                    <td class="h6">₱{{ number_format($weeklyBreakdown->sum('picnictable'), 2) }}</td>
-                                    <td class="h6">₱{{ number_format($weeklyBreakdown->sum('massage'), 2) }}</td>
-                                    <td class="h6">₱{{ number_format($weeklyBreakdown->sum('accommodation'), 2) }}</td>
-                                    <td class="h6">₱{{ number_format($weeklyBreakdown->sum('meal'), 2) }}</td>
-                                    <td class="h6">₱{{ number_format($weeklyBreakdown->sum('beverage'), 2) }}</td>
-                                    <td class="h6">₱{{ number_format($weeklyBreakdown->sum('total'), 2) }}</td>
+                                    <td class="fw-bold text-uppercase">Grand Total:</td>
+                                    <td class="fw-bold">{{ $weeklyBreakdown->sum('visitors') }}</td>
+                                    <td class="fw-bold">₱{{ number_format($weeklyBreakdown->sum('entrance_fee'), 2) }}</td>
+                                    <td class="fw-bold">₱{{ number_format($weeklyBreakdown->sum('kawabath'), 2) }}</td>
+                                    <td class="fw-bold">₱{{ number_format($weeklyBreakdown->sum('watertubing'), 2) }}</td>
+                                    <td class="fw-bold">₱{{ number_format($weeklyBreakdown->sum('picnictable'), 2) }}</td>
+                                    <td class="fw-bold">₱{{ number_format($weeklyBreakdown->sum('massage'), 2) }}</td>
+                                    <td class="fw-bold">₱{{ number_format($weeklyBreakdown->sum('accommodation'), 2) }}</td>
+                                    <td class="fw-bold">₱{{ number_format($weeklyBreakdown->sum('meal'), 2) }}</td>
+                                    <td class="fw-bold">₱{{ number_format($weeklyBreakdown->sum('beverage'), 2) }}</td>
+                                    <td class="fw-bold">₱{{ number_format($weeklyBreakdown->sum('total'), 2) }}</td>
                                 </tr>
                             @endif
                         </tbody>

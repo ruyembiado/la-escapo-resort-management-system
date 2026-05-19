@@ -832,6 +832,11 @@ class ReportController extends Controller
         return redirect($route);
     }
 
+    public function guestReportIndex()
+    {
+        return view('guest_report_index');
+    }
+
     public function guestReport(Request $request)
     {
         $start_date = $request->start_date;

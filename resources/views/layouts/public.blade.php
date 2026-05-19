@@ -48,7 +48,7 @@
 
             <footer class="footer py-2 shadow text-center text-light" style="background-color: #032D01;">
                 <div class="m-auto">
-                    <div class="">© 2025 LA ESCAPO. Developed by IS-SCRIPTED BOYZ. All rights reserved.</div>
+                    <div class="">© {{ date('Y') }} LA ESCAPO. Developed by IS-SCRIPTED BOYZ. All rights reserved.</div>
                 </div>
             </footer>
         </div>
