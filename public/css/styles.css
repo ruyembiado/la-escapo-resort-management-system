@@ -395,6 +395,10 @@ td.sticky-action div {
     justify-content: center !important;
 }
 
+table td:last-child {
+    text-align: center !important;
+}
+
 table th.border-dark,
 table.dataTable>thead>tr>th {
     border-color: #fff !important;
@@ -436,4 +440,15 @@ table.dataTable>thead>tr>th {
 
 .text-dash {
     font-size: 20px;
+}
+
+.form-control:focus {
+    border-color: #093a0d !important;
+    box-shadow: 0 0 0 0.25rem rgba(9, 58, 13, 0.25) !important;
+}
+
+#dataTable1 table th {
+    padding: 9px !important;
+    vertical-align: middle;
+    white-space: nowrap;
 }

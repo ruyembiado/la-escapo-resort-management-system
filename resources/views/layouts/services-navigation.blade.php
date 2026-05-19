@@ -1,5 +1,11 @@
-<div class="d-flex align-items-center justify-content-center gap-2 bg-theme-primary p-2">
-    
+<div class="d-flex align-items-center justify-content-between bg-theme-primary p-4">
+
+    <a href="{{ url()->current() }}"
+        class="btn btn-danger d-flex align-items-center gap-2">
+        <i class="fas fa-sync-alt"></i>
+        Reload
+    </a>
+
     <a href="{{ url('bills') }}"
         class="btn {{ Request::is('bills') ? 'bg-green-tertiary text-light' : 'btn-outline-light ' }} d-flex align-items-center gap-2">
         <i class="fas fa-file-invoice-dollar"></i>

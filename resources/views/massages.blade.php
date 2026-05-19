@@ -40,7 +40,7 @@
                     <!-- A-Z Filter -->
                     <div class="d-flex flex-wrap gap-1 mb-3">
                         <a href="{{ request()->fullUrlWithQuery(['letter' => null]) }}"
-                            class="btn btn-sm rounded-circle {{ request('letter') ? 'btn-dark' : 'btn-success' }}">
+                            class="btn btn-sm rounded-circle {{ request('letter') ? 'btn-dark' : 'btn bg-green-tertiary text-light' }}">
                             All
                         </a>
                         @foreach (range('A', 'Z') as $letter)
@@ -55,7 +55,7 @@
                 </form>
             </div>
             <div class="d-flex gap-2">
-                <a href="{{ url('massages') }}" class="btn btn-success text-light d-flex align-items-center gap-2">
+                <a href="{{ url('massages') }}" class="btn bg-green-tertiary text-light d-flex align-items-center gap-2">
                     <i class="fa-solid fa-spa"></i>
                     Massage
                 </a>

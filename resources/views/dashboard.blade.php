@@ -188,13 +188,16 @@
                                         <thead>
                                             <tr>
                                                 <th rowspan="3"
-                                                    class="align-middle bg-theme-primary border-light text-light text-uppercase">No.
+                                                    class="align-middle bg-theme-primary border-light text-light text-uppercase">
+                                                    No.
                                                 </th>
                                                 <th rowspan="3"
-                                                    class="align-middle bg-theme-primary border-light text-light text-uppercase">Name of
+                                                    class="align-middle bg-theme-primary border-light text-light text-uppercase">
+                                                    Name of
                                                     Guest</th>
                                                 <th rowspan="3"
-                                                    class="align-middle bg-theme-primary border-light text-light text-uppercase">Members
+                                                    class="align-middle bg-theme-primary border-light text-light text-uppercase">
+                                                    Members
                                                 </th>
 
                                                 <th colspan="16"
@@ -206,16 +209,28 @@
                                                     class="align-middle bg-theme-primary border-light text-light text-uppercase">
                                                     Total Fee
                                                 </th>
+                                                <th rowspan="3"
+                                                    class="align-middle bg-theme-primary border-light text-light text-uppercase">
+                                                    Action
+                                                </th>
                                             </tr>
                                             <tr class="text-center">
-                                                <th colspan="2" class="bg-theme-primary border-light text-light">Entrance Fee</th>
-                                                <th colspan="2" class="bg-theme-primary border-light text-light">Water Tubing</th>
-                                                <th colspan="2" class="bg-theme-primary border-light text-light">Kawa Hot Bath</th>
-                                                <th colspan="2" class="bg-theme-primary border-light text-light">Picnic Table</th>
-                                                <th colspan="2" class="bg-theme-primary border-light text-light">Massage</th>
-                                                <th colspan="2" class="bg-theme-primary border-light text-light">Accommodation</th>
-                                                <th colspan="2" class="bg-theme-primary border-light text-light">Foods</th>
-                                                <th colspan="2" class="bg-theme-primary border-light text-light">Drinks</th>
+                                                <th colspan="2" class="bg-theme-primary border-light text-light">
+                                                    Entrance Fee</th>
+                                                <th colspan="2" class="bg-theme-primary border-light text-light">Water
+                                                    Tubing</th>
+                                                <th colspan="2" class="bg-theme-primary border-light text-light">Kawa
+                                                    Hot Bath</th>
+                                                <th colspan="2" class="bg-theme-primary border-light text-light">Picnic
+                                                    Table</th>
+                                                <th colspan="2" class="bg-theme-primary border-light text-light">
+                                                    Massage</th>
+                                                <th colspan="2" class="bg-theme-primary border-light text-light">
+                                                    Accommodation</th>
+                                                <th colspan="2" class="bg-theme-primary border-light text-light">Foods
+                                                </th>
+                                                <th colspan="2" class="bg-theme-primary border-light text-light">Drinks
+                                                </th>
                                             </tr>
                                             <tr>
                                                 @for ($i = 0; $i < 8; $i++)
@@ -371,6 +386,14 @@
                                                         <td class="text-center fw-bold">
                                                             ₱{{ number_format($grand_total, 2) }}
                                                         </td>
+                                                        <td class="text-center">
+                                                            <a href="#" class="btn btn-secondary btn-sm"
+                                                                data-bs-toggle="modal"
+                                                                data-bs-target="#viewBillModal_{{ $visitor->id }}"
+                                                                data-visitor="{{ $visitor->id }}">
+                                                                <i class="fas fa-eye"></i>
+                                                            </a>
+                                                        </td>
                                                     </tr>
                                                 @endforeach
                                             @else
@@ -388,6 +411,121 @@
                 </div>
             </div>
         </div>
+
+        @foreach ($visitorsWithUnpaidBills as $visitor)
+            <!-- View Bill Modal -->
+            <div class="modal fade" id="viewBillModal_{{ $visitor->id }}" tabindex="-1" role="dialog"
+                aria-labelledby="viewBillModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-md" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header p-3">
+                            <div class="col-12 p-2 pb-4 text-light bg-theme-primary">
+                                <div class="text-end">
+                                    <button type="button" class="btn-close btn-close-white btn-circle"
+                                        data-bs-dismiss="modal"></button>
+                                </div>
+                                <div class="d-flex align-items-center gap-2 justify-content-center">
+                                    <img src="{{ asset('public/img/logo.png') }}" width="70" alt="la-escapo-logo">
+                                    <div class="d-flex flex-column">
+                                        <b class="modal-title mt-2 h5 text-bold">La Escapo Mountain
+                                            Resort</b>
+                                        <span>Tuno, Tibiao, Antique</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-body ">
+                            <div class="row p-2">
+                                <div
+                                    class="bg-green-secondary d-flex align-items-center gap-2 justify-content-center text-light p-2">
+                                    <h3 class="m-0">BILL RECEIPT</h3>
+                                </div>
+                                <div class="visitor-name my-2 d-flex align-items-center gap-2">
+                                    <label class="col-3" for="visitorName">Name:</label>
+                                    <input type="text" class="form-control" id="visitorName"
+                                        value="{{ $visitor->first_name . ' ' . $visitor->middle_name . ' ' . $visitor->last_name }}"
+                                        readonly>
+                                </div>
+                                <div class="table-responsive p-0">
+                                    <table class="table table-bordered border-N/A m-0">
+                                        <thead class="bg-success text-light">
+                                            <tr>
+                                                <th style="border-width: 0px"
+                                                    class="text-start bg-green-tertiary text-light">
+                                                    AVAILED SERVICES</th>
+                                                <th style="border-width: 0px"
+                                                    class="text-start bg-green-tertiary text-light">
+                                                    FEE STATUS
+                                                </th>
+                                                <th style="border-width: 0px"
+                                                    class="text-center bg-green-tertiary text-light">
+                                                    AMOUNT
+                                                    FEE</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @php
+                                                $services = [
+                                                    'entrance' => 'Entrance Fee',
+                                                    'watertubing' => 'Water Tubing',
+                                                    'kawabath' => 'Kawa Hot Bath',
+                                                    'picnictable' => 'Picnic Table',
+                                                    'massage' => 'Massage',
+                                                    'accommodation' => 'Accommodation',
+                                                    'meal' => 'Foods',
+                                                    'beverage' => 'Drinks',
+                                                ];
+                                                $modal_total = 0;
+                                            @endphp
+                                            @foreach ($services as $key => $label)
+                                                @if ($visitor->$key)
+                                                    @php $modal_total += $visitor->$key->total_payment; @endphp
+
+                                                    @php
+                                                        $status =
+                                                            $visitor->$key->payment_status ??
+                                                            ($visitor->$key->status ?? 'Unpaid');
+                                                    @endphp
+
+                                                    <tr>
+                                                        <td style="border-width: 0px"
+                                                            class="{{ $status == 'Unpaid' ? 'text-danger' : 'text-dark' }}">
+                                                            {{ $label }}
+                                                        </td>
+
+                                                        <td style="border-width: 0px" class="text-center">
+                                                            <span
+                                                                class="badge {{ $status == 'Unpaid' ? 'bg-danger' : 'bg-success' }}">
+                                                                {{ $status }}
+                                                            </span>
+                                                        </td>
+
+                                                        <td style="border-width: 0px" class="text-center">
+                                                            ₱{{ number_format($visitor->$key->total_payment, 2) }}
+                                                        </td>
+                                                    </tr>
+                                                @endif
+                                            @endforeach
+
+                                            <!-- TOTAL ROW -->
+                                            <tr class="bg-dark text-light">
+                                                <td style="border-width: 0px" colspan="2" class="text-start fw-bold">
+                                                    TOTAL
+                                                    FEE
+                                                </td>
+                                                <td style="border-width: 0px" class="text-center fw-semibold">
+                                                    ₱{{ number_format($modal_total, 2) }}
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @endforeach
 
         <div class="col-12 mb-4">
             <div class="card shadow mb-0">
@@ -414,7 +552,7 @@
                             <!-- A-Z Filter -->
                             <div class="d-flex flex-wrap gap-1 mb-3">
                                 <a href="{{ request()->fullUrlWithQuery(['letter' => null]) }}"
-                                    class="btn btn-sm rounded-circle {{ request('letter') ? 'btn-dark' : 'btn-success' }}">
+                                    class="btn btn-sm rounded-circle {{ request('letter') ? 'btn-dark' : 'btn bg-green-tertiary text-light' }}">
                                     All
                                 </a>
 
