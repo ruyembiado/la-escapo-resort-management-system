@@ -141,7 +141,7 @@
                     @yield('content')
                 </div>
             </main>
-            <footer class="footer bg-dark py-3 shadow text-center">
+            <footer class="footer auth-footer py-3 shadow text-center">
                 <div class="d-flex justify-content-center px-3">
                     <div class="text-light">© {{ date('Y') }} LA ESCAPO. Developed by IS-SCRIPTED BOYZ. All rights reserved.</div>
                 </div>

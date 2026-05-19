@@ -452,3 +452,7 @@ table.dataTable>thead>tr>th {
     vertical-align: middle;
     white-space: nowrap;
 }
+
+.auth-footer {
+    background-color: #313131 !important;
+}
