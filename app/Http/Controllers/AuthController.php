@@ -128,7 +128,7 @@ class AuthController extends Controller
 
             foreach ($services as $service) {
                 if ($service) {
-                    $status = $service->payment_status ?? 'Unpaid';
+                     $status = $service->payment_status ?? $service->status ?? 'Unpaid';
 
                     if ($status !== 'Paid') {
                         return true;
@@ -166,7 +166,7 @@ class AuthController extends Controller
 
                 if ($service) {
 
-                    $status = $service->payment_status ?? 'Unpaid';
+                    $status = $service->payment_status ?? $service->status ?? 'Unpaid';
 
                     // TOTAL AMOUNT
                     $totalBills += $service->total_payment ?? 0;
