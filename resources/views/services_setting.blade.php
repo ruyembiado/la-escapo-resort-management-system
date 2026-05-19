@@ -79,14 +79,15 @@
                     @method('PUT')
                     <div class="modal-content">
                         <div class="modal-header">
-                            <div class="col-12">
+                            <div class="col-12 p-2 pb-4 text-light bg-theme-primary">
                                 <div class="text-end">
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                    <button type="button" class="btn-close btn-close-white btn-circle"
+                                        data-bs-dismiss="modal"></button>
                                 </div>
                                 <div class="d-flex align-items-center gap-2 justify-content-center">
                                     <img src="{{ asset('public/img/logo.png') }}" width="70" alt="la-escapo-logo">
                                     <div class="d-flex flex-column">
-                                        <b class="modal-title mt-2 text-bold">La Escapo Mountain
+                                        <b class="modal-title mt-2 h5 text-bold">La Escapo Mountain
                                             Resort</b>
                                         <span>Tuno, Tibiao, Antique</span>
                                     </div>
@@ -100,7 +101,13 @@
                                 <h3 class="m-0">UPDATE SERVICE</h3>
                             </div>
 
-                            @include('layouts.note')
+                            @if ($filter == 'entrance_fee')
+                                @include('layouts.note')
+                            @endif
+
+                            @if (!$filter)
+                                @include('layouts.note')
+                            @endif
 
                             <!-- Name + Service Type -->
                             <div class="form-group mb-2">
@@ -154,7 +161,7 @@
                             </div>
 
                             <!-- Food/Drink Fields -->
-                            <div class="form-group mb-2">
+                            <div class="form-group">
                                 <div class="d-flex flex-wrap align-items-center gap-2">
                                     <!-- Foods: Category + Type -->
                                     <div class="col-7" id="editFoodFields{{ $service->id }}"
@@ -238,14 +245,16 @@
                 @csrf
                 <div class="modal-content">
                     <div class="modal-header">
-                        <div class="col-12">
+                        <div class="col-12 p-2 pb-4 text-light bg-theme-primary">
                             <div class="text-end">
-                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                <button type="button" class="btn-close btn-close-white btn-circle"
+                                    data-bs-dismiss="modal"></button>
                             </div>
                             <div class="d-flex align-items-center gap-2 justify-content-center">
                                 <img src="{{ asset('public/img/logo.png') }}" width="70" alt="la-escapo-logo">
                                 <div class="d-flex flex-column">
-                                    <b class="modal-title mt-2 text-bold">La Escapo Mountain Resort</b>
+                                    <b class="modal-title mt-2 h5 text-bold">La Escapo Mountain
+                                        Resort</b>
                                     <span>Tuno, Tibiao, Antique</span>
                                 </div>
                             </div>
@@ -260,6 +269,10 @@
                         </div>
 
                         @if ($filter == 'entrance_fee')
+                            @include('layouts.note')
+                        @endif
+
+                        @if (!$filter)
                             @include('layouts.note')
                         @endif
 
@@ -280,10 +293,13 @@
                                         class="form-control" required>
                                         <option value="">Select type</option>
                                         <option value="entrance_fee"
-                                            {{ ($filter ?? '') == 'entrance_fee' ? 'selected' : '' }}>Entrance Fee</option>
-                                        <option value="foods" {{ ($filter ?? '') == 'foods' ? 'selected' : '' }}>Foods
+                                            {{ ($filter ?? '') == 'entrance_fee' ? 'selected' : '' }}>Entrance Fee
                                         </option>
-                                        <option value="drinks" {{ ($filter ?? '') == 'drinks' ? 'selected' : '' }}>Drinks
+                                        <option value="foods" {{ ($filter ?? '') == 'foods' ? 'selected' : '' }}>
+                                            Foods
+                                        </option>
+                                        <option value="drinks" {{ ($filter ?? '') == 'drinks' ? 'selected' : '' }}>
+                                            Drinks
                                         </option>
                                         <option value="accommodation"
                                             {{ ($filter ?? '') == 'accommodation' ? 'selected' : '' }}>Accommodation
@@ -291,18 +307,20 @@
                                         <option value="massage" {{ ($filter ?? '') == 'massage' ? 'selected' : '' }}>
                                             Massage</option>
                                         <option value="water_tubing"
-                                            {{ ($filter ?? '') == 'water_tubing' ? 'selected' : '' }}>Water Tubing</option>
+                                            {{ ($filter ?? '') == 'water_tubing' ? 'selected' : '' }}>Water Tubing
+                                        </option>
                                         <option value="kawa_hot_bath"
                                             {{ ($filter ?? '') == 'kawa_hot_bath' ? 'selected' : '' }}>Kawa Hot Bath
                                         </option>
                                         <option value="picnic_table"
-                                            {{ ($filter ?? '') == 'picnic_table' ? 'selected' : '' }}>Picnic Table</option>
+                                            {{ ($filter ?? '') == 'picnic_table' ? 'selected' : '' }}>Picnic Table
+                                        </option>
                                     </select>
                                 </div>
                             </div>
 
                             <!-- Food Fields -->
-                            <div class="form-group mb-2">
+                            <div class="form-group mb-3">
                                 <div class="d-flex flex-wrap align-items-center gap-2">
                                     <div class="col-7" id="foodFields" style="display:none;">
                                         <div class="d-flex flex-wrap align-items-center gap-3">
