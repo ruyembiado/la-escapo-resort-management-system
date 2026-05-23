@@ -56,20 +56,20 @@
                     style="min-width:2000px;">
                     <thead>
                         <tr>
-                            <th class="bg-theme-primary text-light text-center">NO.</th>
-                            <th class="bg-theme-primary text-light">NAME OF GUEST</th>
-                            <th class="bg-theme-primary text-light">ENTRANCE FEE</th>
-                            <th class="bg-theme-primary text-light">WATER TUBING</th>
-                            <th class="bg-theme-primary text-light">KAWA BATH</th>
-                            <th class="bg-theme-primary text-light">PICNIC TABLE</th>
-                            <th class="bg-theme-primary text-light">MASSAGE</th>
-                            <th class="bg-theme-primary text-light">ACCOMMODATION</th>
-                            <th class="bg-theme-primary text-light">FOODS</th>
-                            <th class="bg-theme-primary text-light">DRINKS</th>
-                            <th class="bg-theme-primary text-light">TOTAL FEE</th>
-                            <th class="bg-theme-primary text-light">STATUS</th>
-                            <th class="bg-theme-primary text-light">DATE CREATED</th>
-                            <th class="bg-theme-primary text-light sticky-action">ACTION</th>
+                            <th class="bg-green-secondary text-light text-center">NO.</th>
+                            <th class="bg-green-secondary text-light">NAME OF GUEST</th>
+                            <th class="bg-green-secondary text-light">ENTRANCE FEE</th>
+                            <th class="bg-green-secondary text-light">WATER TUBING</th>
+                            <th class="bg-green-secondary text-light">KAWA BATH</th>
+                            <th class="bg-green-secondary text-light">PICNIC TABLE</th>
+                            <th class="bg-green-secondary text-light">MASSAGE</th>
+                            <th class="bg-green-secondary text-light">ACCOMMODATION</th>
+                            <th class="bg-green-secondary text-light">FOODS</th>
+                            <th class="bg-green-secondary text-light">DRINKS</th>
+                            <th class="bg-green-secondary text-light">TOTAL FEE</th>
+                            <th class="bg-green-secondary text-light">STATUS</th>
+                            <th class="bg-green-secondary text-light">DATE CREATED</th>
+                            <th class="bg-green-secondary text-light sticky-action">ACTION</th>
                         </tr>
                     </thead>
                     <tbody>

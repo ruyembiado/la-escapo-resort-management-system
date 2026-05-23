@@ -1,8 +1,8 @@
 <div class="d-flex align-items-center justify-content-between bg-theme-primary p-4">
 
     <a href="{{ url()->current() }}"
-        class="btn btn-danger d-flex align-items-center gap-2">
-        <i class="fas fa-sync-alt"></i>
+        class="btn btn-reload d-flex align-items-center gap-2">
+        <i class="fas fa-sync-alt text-dark"></i>
         Reload
     </a>
 

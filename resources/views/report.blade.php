@@ -33,11 +33,7 @@
     <div class="row">
         <div class="card col-5 m-auto shadow mb-4 px-0">
             <div class="card-body">
-                <div class="col-12 p-2 pb-4 text-light bg-theme-primary">
-                    <div class="text-end">
-                        <button type="button" class="btn-close btn-close-white btn-circle"
-                            data-bs-dismiss="modal"></button>
-                    </div>
+                <div class="col-12 p-4 text-light bg-theme-primary">
                     <div class="d-flex align-items-center gap-2 justify-content-center">
                         <img src="{{ asset('public/img/logo.png') }}" width="70" alt="la-escapo-logo">
                         <div class="d-flex flex-column">

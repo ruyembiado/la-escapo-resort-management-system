@@ -1,4 +1,4 @@
-@extends('layouts.auth') 
+@extends('layouts.auth')
 
 @section('content')
     <!-- Start the content section -->
@@ -36,11 +36,11 @@
                     @foreach ($visitors as $visitor)
                         <div class="card visitor-card col-4 px-1 py-2 shadow-sm mb-0"
                             data-date="{{ \Carbon\Carbon::parse($visitor->created_at)->format('Y-m-d') }}">
-                            <div class="col-12">
+                            <div class="col-12 p-2 pb-4 text-light bg-theme-primary">
                                 <div class="d-flex align-items-center gap-2 justify-content-center">
                                     <img src="{{ asset('public/img/logo.png') }}" width="70" alt="la-escapo-logo">
                                     <div class="d-flex flex-column">
-                                        <b class="modal-title mt-2 text-bold">La Escapo Mountain
+                                        <b class="modal-title mt-2 h5 text-bold">La Escapo Mountain
                                             Resort</b>
                                         <span>Tuno, Tibiao, Antique</span>
                                     </div>

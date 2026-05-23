@@ -9,7 +9,7 @@
         <div class="card-body">
             <div class="d-flex justify-content-end align-items-start mb-4">
                 <div class="print-buttons d-flex gap-2">
-                    <button onclick="printReport()" class="btn btn-sm btn-primary d-print-none">
+                    <button onclick="printReport()" class="btn btn-sm btn-primary d-print-none print-btn">
                         <i class="fas fa-print"></i> Print Report
                     </button>
 

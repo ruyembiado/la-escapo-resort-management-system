@@ -66,14 +66,14 @@
                     style="min-width:2000px;">
                     <thead>
                         <tr>
-                            <th class="bg-theme-primary text-light">NO.</th>
-                            <th class="bg-theme-primary text-light">MAIN GUEST</th>
-                            <th width="10%" class="bg-theme-primary text-light text-center">TOTAL MEMBERS</th>
-                            <th class="bg-theme-primary text-light">SERVICE DETAILS</th>
-                            <th class="bg-theme-primary text-light">TOTAL FEE</th>
-                            <th class="bg-theme-primary text-light">STATUS</th>
-                            <th class="bg-theme-primary text-light">DATE CREATED</th>
-                            <th class="bg-theme-primary text-light sticky-action">ACTION</th>
+                            <th class="bg-green-secondary text-light">NO.</th>
+                            <th class="bg-green-secondary text-light">MAIN GUEST</th>
+                            <th width="10%" class="bg-green-secondary text-light text-center">TOTAL MEMBERS</th>
+                            <th class="bg-green-secondary text-light">SERVICE DETAILS</th>
+                            <th class="bg-green-secondary text-light">TOTAL FEE</th>
+                            <th class="bg-green-secondary text-light">STATUS</th>
+                            <th class="bg-green-secondary text-light">DATE CREATED</th>
+                            <th class="bg-green-secondary text-light sticky-action">ACTION</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -94,7 +94,7 @@
                                     $quantity = json_decode($meal->quantity, true) ?? [];
                                 @endphp
                                 <td style="padding: 0;">
-                                    <table class="table table-bordered border-dark m-0"
+                                    <table class="table table-bordered m-0"
                                         style="width: 100%; border-collapse: collapse;">
                                         <thead>
                                             <tr>
@@ -174,22 +174,7 @@
             <form action="{{ route('meal.store') }}" method="POST">
                 @csrf
                 <div class="modal-content">
-                    <div class="modal-header">
-                        <div class="col-12 p-2 pb-4 text-light bg-theme-primary">
-                            <div class="text-end">
-                                <button type="button" class="btn-close btn-close-white btn-circle"
-                                    data-bs-dismiss="modal"></button>
-                            </div>
-                            <div class="d-flex align-items-center gap-2 justify-content-center">
-                                <img src="{{ asset('public/img/logo.png') }}" width="70" alt="la-escapo-logo">
-                                <div class="d-flex flex-column">
-                                    <b class="modal-title mt-2 h5 text-bold">La Escapo Mountain
-                                        Resort</b>
-                                    <span>Tuno, Tibiao, Antique</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    @include('layouts.modal-header')
                     <div class="modal-body">
                         <div class="form-group mb-3">
                             <div class="d-flex align-items-start gap-1">
@@ -213,7 +198,7 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div
-                                    class="bg-green-secondary d-flex align-items-center gap-2 justify-content-center text-light p-2 mb-3">
+                                    class="bg-green-secondary d-flex align-items-center gap-2 justify-content-center text-light p-3 mb-3">
                                     <i class="fa fa-utensils fa-2x"></i>
                                     <h3 class="m-0">FOODS</h3>
                                 </div>
@@ -314,7 +299,7 @@
 
                             <div class="col-md-6">
                                 <div
-                                    class="bg-green-secondary d-flex align-items-center gap-2 justify-content-center text-light p-2 mb-3">
+                                    class="bg-green-secondary d-flex align-items-center gap-2 justify-content-center text-light p-3 mb-3">
                                     <i class="fa fa-glass-water fa-2x"></i>
                                     <h3 class="m-0">DRINKS</h3>
                                 </div>
@@ -411,25 +396,10 @@
                 <input type="hidden" name="meal_id" id="edit_meal_id">
                 <input type="hidden" name="visitor_id" id="edit_visitor_id_hidden">
                 <div class="modal-content">
-                    <div class="modal-header">
-                        <div class="col-12 p-2 pb-4 text-light bg-theme-primary">
-                            <div class="text-end">
-                                <button type="button" class="btn-close btn-close-white btn-circle"
-                                    data-bs-dismiss="modal"></button>
-                            </div>
-                            <div class="d-flex align-items-center gap-2 justify-content-center">
-                                <img src="{{ asset('public/img/logo.png') }}" width="70" alt="la-escapo-logo">
-                                <div class="d-flex flex-column">
-                                    <b class="modal-title mt-2 h5 text-bold">La Escapo Mountain
-                                        Resort</b>
-                                    <span>Tuno, Tibiao, Antique</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    @include('layouts.modal-header')
                     <div class="modal-body">
                         <div
-                            class="bg-green-secondary d-flex align-items-center gap-2 justify-content-center text-light p-2 mb-3">
+                            class="bg-green-secondary d-flex align-items-center gap-2 justify-content-center text-light p-3 mb-3">
                             <i class="fa fa-utensils fa-2x"></i>
                             <h3 class="m-0">FOODS</h3>
                         </div>

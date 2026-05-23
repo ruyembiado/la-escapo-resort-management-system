@@ -30,7 +30,7 @@
                 </form>
 
                 <div class="print-buttons d-flex gap-1">
-                    <button onclick="printReport()" class="btn btn-sm btn-primary d-print-none">
+                    <button onclick="printReport()" class="btn btn-sm btn-primary d-print-none print-btn">
                         <i class="fas fa-print"></i> Print Report
                     </button>
                     <button onclick="exportExcel()" class="btn btn-sm bg-green-tertiary text-light d-print-none">
@@ -66,7 +66,7 @@
                 </table>
 
                 <div class="table-responsive mt-3">
-                    <table class="table table-bordered border-dark" id="" width="100%" cellspacing="0">
+                    <table id="summary_report" class="table table-bordered border-dark" id="" width="100%" cellspacing="0">
                         <thead>
                             <tr>
                                 <th class="text-center bg-green-secondary text-light">NO.</th>
@@ -96,10 +96,10 @@
                                         </td>
                                         <td class="text-center">{{ $entrance->visitor->gender }}</td>
                                         <td class="text-center">{{ $entrance->visitor->age }}</td>
-                                        <td class="text-center px-0 pb-0">
+                                        <td class="text-center" style="padding: 2px;">
                                             {{ $entrance->visitor->members ?? 0 }}
                                             @if (!empty($entrance->companions))
-                                                <table class="table table-bordered border-dark mt-2 mb-0">
+                                                <table id="summary_report" class="table table-bordered border-dark mt-2 m-0">
                                                     <thead>
                                                         <tr>
                                                             <th class="text-center bg-green-tertiary text-light">No.</th>
@@ -154,9 +154,9 @@
                                     $totalVisitors = $entrances->sum(fn($e) => ($e->visitor->members ?? 0) + 1);
                                 @endphp
 
-                                <tr class="h6 bg-light">
-                                    <td colspan="5" class="text-center">GRAND TOTAL</td>
-                                    <td class="text-center">{{ $totalVisitors }}</td>
+                                <tr class="bg-light">
+                                    <td colspan="5" class="text-center fw-bold">GRAND TOTAL</td>
+                                    <td class="text-center fw-bold">{{ $totalVisitors }}</td>
                                     <td colspan="3"></td>
                                 </tr>
                             @endif

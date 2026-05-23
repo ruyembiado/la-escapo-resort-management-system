@@ -13,7 +13,7 @@
 
     <div class="card shadow mb-4">
         <div class="card-body">
-            <div class="d-flex justify-content-between align-items-center mb-4 bg-theme-primary p-2">
+            <div class="d-flex justify-content-between align-items-center mb-4 bg-theme-primary p-4">
                 <form method="GET" action="{{ route('daily.report') }}" class="d-print-none">
                     <div class="d-flex flex-column align-items-start" style="width: auto;">
                         <label for="date" class="mb-0 text-light">Select Date:</label>
@@ -23,7 +23,7 @@
                 </form>
 
                 <div class="print-buttons">
-                    <button onclick="printReport()" class="btn btn-sm btn-primary d-print-none">
+                    <button onclick="printReport()" class="btn btn-sm btn-primary d-print-none print-btn">
                         <i class="fas fa-print"></i> Print PDF
                     </button>
 
@@ -69,9 +69,9 @@
                     <table id="summary_report" class="table table-bordered border-dark" width="100%" cellspacing="0">
                         <thead>
                             <tr>
-                                <th rowspan="2" class="text-uppercase bg-green-tertiary text-light">No. of Visitors</th>
-                                <th colspan="8" class="text-uppercase bg-green-tertiary text-light text-center">Services</th>
-                                <th rowspan="2" class="text-uppercase bg-green-tertiary text-light">Total Bill Income</th>
+                                <th rowspan="2" class="text-uppercase bg-green-secondary text-light">No. of Visitors</th>
+                                <th colspan="8" class="text-uppercase bg-green-secondary text-light text-center">Services</th>
+                                <th rowspan="2" class="text-uppercase bg-green-secondary text-light">Total Bill Income</th>
                             </tr>
                             <tr>
                                 <th class="text-uppercase bg-green-tertiary text-light">Entrance Fee</th>

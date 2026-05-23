@@ -68,14 +68,14 @@
                 <table class="table table-bordered border-dark" id="dataTable1" width="100%" cellspacing="0"
                     style="min-width:2000px;">
                     <thead>
-                        <th class="bg-theme-primary text-light">NO.</th>
-                        <th class="bg-theme-primary text-light">MAIN GUEST</th>
-                        <th class="bg-theme-primary text-light">TOTAL MEMBERS</th>
-                        <th class="text-center bg-theme-primary text-light">SERVICE DETAILS</th>
-                        <th class="bg-theme-primary text-light">TOTAL FEE</th>
-                        <th class="bg-theme-primary text-light">STATUS</th>
-                        <th class="bg-theme-primary text-light">DATE CREATED</th>
-                        <th class="bg-theme-primary text-light sticky-action">ACTION</th>
+                        <th class="bg-green-secondary text-light">NO.</th>
+                        <th class="bg-green-secondary text-light">MAIN GUEST</th>
+                        <th class="bg-green-secondary text-light">TOTAL MEMBERS</th>
+                        <th class="text-center bg-green-secondary text-light">SERVICE DETAILS</th>
+                        <th class="bg-green-secondary text-light">TOTAL FEE</th>
+                        <th class="bg-green-secondary text-light">STATUS</th>
+                        <th class="bg-green-secondary text-light">DATE CREATED</th>
+                        <th class="bg-green-secondary text-light sticky-action">ACTION</th>
                     </thead>
                     <tbody>
                         @foreach ($kawaBaths as $kawabath)
@@ -93,7 +93,7 @@
                                     {{ $kawabath->visitor->companions()->count() + 1 }}
                                 </td>
                                 <td class="p-0">
-                                    <table class="table table-bordered border-dark m-0 mt-0" style="width:100%;">
+                                    <table class="table table-bordered m-0 mt-0" style="width:100%;">
                                         <thead>
                                             <tr>
                                                 <th class="bg-green-tertiary text-light">No.</th>
@@ -189,22 +189,7 @@
             <form action="{{ route('kawabath.store') }}" method="POST">
                 @csrf
                 <div class="modal-content">
-                    <div class="modal-header">
-                        <div class="col-12 p-2 pb-4 text-light bg-theme-primary">
-                            <div class="text-end">
-                                <button type="button" class="btn-close btn-close-white btn-circle"
-                                    data-bs-dismiss="modal"></button>
-                            </div>
-                            <div class="d-flex align-items-center gap-2 justify-content-center">
-                                <img src="{{ asset('public/img/logo.png') }}" width="70" alt="la-escapo-logo">
-                                <div class="d-flex flex-column">
-                                    <b class="modal-title mt-2 h5 text-bold">La Escapo Mountain
-                                        Resort</b>
-                                    <span>Tuno, Tibiao, Antique</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    @include('layouts.modal-header')
                     <div class="modal-body">
                         <div class="form-group mb-3">
                             <div class="d-flex align-items-start gap-1">
@@ -228,7 +213,7 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div
-                                    class="bg-green-secondary d-flex align-items-center gap-2 justify-content-center text-light p-2 mb-3">
+                                    class="bg-green-secondary d-flex align-items-center gap-2 justify-content-center text-light p-3 mb-3">
                                     <i class="fa fa-hot-tub-person fa-2x"></i>
                                     <h3 class="m-0">KAWA HOT BATH</h3>
                                 </div>
@@ -275,7 +260,7 @@
 
                             <div class="col-md-6">
                                 <div
-                                    class="bg-green-secondary d-flex align-items-center gap-2 justify-content-center text-light p-2 mb-3">
+                                    class="bg-green-secondary d-flex align-items-center gap-2 justify-content-center text-light p-3 mb-3">
                                     <i class="fa fa-table fa-2x"></i>
                                     <h3 class="m-0">PICNIC TABLE</h3>
                                 </div>
@@ -360,25 +345,10 @@
                 @csrf
                 @method('PUT')
                 <div class="modal-content">
-                    <div class="modal-header">
-                        <div class="col-12 p-2 pb-4 text-light bg-theme-primary">
-                            <div class="text-end">
-                                <button type="button" class="btn-close btn-close-white btn-circle"
-                                    data-bs-dismiss="modal"></button>
-                            </div>
-                            <div class="d-flex align-items-center gap-2 justify-content-center">
-                                <img src="{{ asset('public/img/logo.png') }}" width="70" alt="la-escapo-logo">
-                                <div class="d-flex flex-column">
-                                    <b class="modal-title mt-2 h5 text-bold">La Escapo Mountain
-                                        Resort</b>
-                                    <span>Tuno, Tibiao, Antique</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    @include('layouts.modal-header')
                     <div class="modal-body">
                         <div
-                            class="bg-green-secondary d-flex align-items-center gap-2 justify-content-center text-light p-2 mb-3">
+                            class="bg-green-secondary d-flex align-items-center gap-2 justify-content-center text-light p-3 mb-3">
                             <i class="fa fa-hot-tub-person fa-2x"></i>
                             <h3 class="m-0">KAWA HOT BATH</h3>
                         </div>

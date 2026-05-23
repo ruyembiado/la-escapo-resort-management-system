@@ -50,7 +50,7 @@
                 <b class="text-light ms-3">GUEST</b>
                 <li class="sidebar-item">
                     <a href="{{ url('/entrances') }}"
-                        class="sidebar-link {{ Request::is('entrances') || Request::is('water-tubings') || Request::is('kawa-hot-baths') || Request::is('picnic-tables') || Request::is('massages') || Request::is('accommodations') || Request::is('meals') || Request::is('beverages') ? 'active' : '' }}">
+                        class="sidebar-link {{ Request::is('entrances') || Request::is('water-tubings') || Request::is('kawa-hot-baths') || Request::is('picnic-tables') || Request::is('massages') || Request::is('accommodations') || Request::is('meals') || Request::is('beverages') || Request::is('bills') ? 'active' : '' }}">
                         <i class="fa fa-book"></i>
                         <span>Availed Services</span>
                     </a>

@@ -338,6 +338,10 @@ h1.home-title {
         width: 100%;
     }
 
+    table#summary_report th {
+        border: 1px solid #000 !important;
+    }
+
     #summary_report * {
         font-size: 1vw !important;
     }
@@ -399,11 +403,6 @@ table td:last-child {
     text-align: center !important;
 }
 
-table th.border-dark,
-table.dataTable>thead>tr>th {
-    border-color: #fff !important;
-}
-
 .fc .fc-button {
     background-color: #093a0d !important;
     border-color: #093a0d !important;
@@ -447,7 +446,8 @@ table.dataTable>thead>tr>th {
     box-shadow: 0 0 0 0.25rem rgba(9, 58, 13, 0.25) !important;
 }
 
-#dataTable1 table th {
+#dataTable1 table th,
+table th {
     padding: 9px !important;
     vertical-align: middle;
     white-space: nowrap;
@@ -455,4 +455,38 @@ table.dataTable>thead>tr>th {
 
 .auth-footer {
     background-color: #313131 !important;
+}
+
+table td {
+    text-align: center !important;
+}
+
+.btn-reload {
+    background-color: #b4b4b4 !important;
+    color: #000 !important;
+}
+
+.btn-reload:hover {
+    background-color: #e2e2e2 !important;
+    color: #000 !important;
+}
+
+table .form-control {
+    text-align: center !important;
+}
+
+.print-btn {
+    border: 1px solid #b4b4b4 !important;
+    background-color: #b4b4b4 !important;
+    color: #000 !important;
+}
+
+.print-btn:hover {
+    border: 1px solid #e2e2e2 !important;
+    background-color: #e2e2e2 !important;
+    color: #000 !important;
+}
+
+table:not(#summary_report) th {
+    border: 1px solid #fff !important;
 }

@@ -13,7 +13,7 @@
 
     <div class="card shadow mb-4">
         <div class="card-body">
-            <div class="d-flex justify-content-between align-items-center mb-4 bg-theme-primary p-2">
+            <div class="d-flex justify-content-between align-items-center mb-4 bg-theme-primary p-4">
                 <form method="GET" action="{{ route('monthly.report') }}" class="d-print-none col-md-3">
                     <div class="row g-2 align-items-center text-light">
                         <div class="d-flex flex-column col-md-6">
@@ -46,7 +46,7 @@
                 </form>
 
                 <div class="print-buttons">
-                    <button onclick="printReport()" class="btn btn-sm btn-primary d-print-none">
+                    <button onclick="printReport()" class="btn btn-sm btn-primary d-print-none print-btn">
                         <i class="fas fa-print"></i> Print Report
                     </button>
                     
@@ -92,10 +92,10 @@
                     <table id="summary_report" class="table table-bordered border-dark" width="100%" cellspacing="0">
                         <thead class="">
                             <tr class="text-uppercase">
-                                <th class="bg-green-tertiary text-light" rowspan="2">Week</th>
-                                <th class="bg-green-tertiary text-light" rowspan="2">No. of Visitors</th>
-                                <th class="bg-green-tertiary text-light" colspan="8" class="text-center">Services</th>
-                                <th class="bg-green-tertiary text-light" rowspan="2">Total Bill Income</th>
+                                <th class="bg-green-secondary text-light" rowspan="2">Week</th>
+                                <th class="bg-green-secondary text-light" rowspan="2">No. of Visitors</th>
+                                <th class="bg-green-secondary text-light" colspan="8" class="text-center">Services</th>
+                                <th class="bg-green-secondary text-light" rowspan="2">Total Bill Income</th>
                             </tr>
                             <tr class="text-uppercase">
                                 <th class="bg-green-tertiary text-light">Entrance Fee</th>

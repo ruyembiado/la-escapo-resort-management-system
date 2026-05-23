@@ -61,18 +61,18 @@
                     style="min-width:2000px;">
                     <thead>
                         <tr>
-                            <th class="bg-theme-primary text-light border-dark text-center">NO.</th>
-                            <th class="bg-theme-primary text-light border-dark">NAME OF GUEST</th>
-                            <th class="bg-theme-primary text-light border-dark">SEX</th>
-                            <th class="bg-theme-primary text-light border-dark text-center">AGE</th>
-                            <th class="bg-theme-primary text-light border-dark text-center">MEMBERS</th>
-                            <th class="bg-theme-primary text-light border-dark">TOTAL FEE</th>
-                            <th class="bg-theme-primary text-light border-dark">STATUS</th>
-                            <th class="bg-theme-primary text-light border-dark">CONTACT NO.</th>
-                            <th class="bg-theme-primary text-light border-dark">ADDRESS</th>
-                            <th class="bg-theme-primary text-light border-dark">CHECK-IN</th>
-                            <th class="bg-theme-primary text-light border-dark">DATE CREATED</th>
-                            <th class="bg-theme-primary text-light border-dark sticky-action">ACTION</th>
+                            <th class="bg-green-secondary text-light border-dark text-center">NO.</th>
+                            <th class="bg-green-secondary text-light border-dark">NAME OF GUEST</th>
+                            <th class="bg-green-secondary text-light border-dark">SEX</th>
+                            <th class="bg-green-secondary text-light border-dark text-center">AGE</th>
+                            <th class="bg-green-secondary text-light border-dark text-center">MEMBERS</th>
+                            <th class="bg-green-secondary text-light border-dark">TOTAL FEE</th>
+                            <th class="bg-green-secondary text-light border-dark">STATUS</th>
+                            <th class="bg-green-secondary text-light border-dark">CONTACT NO.</th>
+                            <th class="bg-green-secondary text-light border-dark">ADDRESS</th>
+                            <th class="bg-green-secondary text-light border-dark">CHECK-IN</th>
+                            <th class="bg-green-secondary text-light border-dark">DATE CREATED</th>
+                            <th class="bg-green-secondary text-light border-dark sticky-action">ACTION</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -190,86 +190,74 @@
             <form action="{{ route('entrance.store') }}" method="POST" id="entranceAddForm">
                 @csrf
                 <div class="modal-content">
-                    <div class="modal-header">
-                        <div class="col-12 p-2 pb-4 text-light bg-theme-primary">
-                            <div class="text-end">
-                                <button type="button" class="btn-close btn-close-white btn-circle" data-bs-dismiss="modal"></button>
-                            </div>
-                            <div class="d-flex align-items-center gap-2 justify-content-center">
-                                <img src="{{ asset('public/img/logo.png') }}" width="70" alt="la-escapo-logo">
-                                <div class="d-flex flex-column">
-                                    <b class="modal-title mt-2 h5 text-bold">La Escapo Mountain
-                                        Resort</b>
-                                    <span>Tuno, Tibiao, Antique</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    @include('layouts.modal-header')
                     <div class="modal-body">
                         <input type="hidden" name="date_visit" value="{{ now()->toDateString() }}"
                             class="form-control" required />
                         <div
-                            class="bg-green-secondary d-flex align-items-center gap-2 justify-content-center text-light p-2 mb-3">
+                            class="bg-green-secondary d-flex align-items-center gap-2 justify-content-center text-light p-3 mb-3">
                             <i class="fa fa-book fa-2x"></i>
                             <h3 class="m-0">ENTRANCE FEE</h3>
                         </div>
                         <b>GUEST INFORMATION</b>
-                        <div class="form-group mb-2">
-                            <div class="d-flex align-items-center gap-3 justify-content-between">
-                                <label style="min-width: 120px;">Complete Name:</label>
-                                <div class="col-3">
-                                    <input type="text" name="guest_first_name" class="form-control"
-                                        placeholder="First Name" required>
-                                </div>
-                                <div class="col-3">
-                                    <input type="text" name="guest_middle_name" class="form-control"
-                                        placeholder="Middle Name">
-                                </div>
-                                <div class="col-3">
-                                    <input type="text" name="guest_last_name" class="form-control"
-                                        placeholder="Last Name" required>
-                                </div>
+                        <div class="row mb-2">
+                            <div class="col-md-4">
+                                <label>Complete Name</label>
+                                <input type="text" name="guest_first_name" class="form-control mb-1"
+                                    placeholder="First Name" required>
+                            </div>
+
+                            <div class="col-md-4">
+                                <label>&nbsp;</label>
+                                <input type="text" name="guest_middle_name" class="form-control mb-1"
+                                    placeholder="Middle Name">
+                            </div>
+
+                            <div class="col-md-4">
+                                <label>&nbsp;</label>
+                                <input type="text" name="guest_last_name" class="form-control mb-1"
+                                    placeholder="Last Name" required>
                             </div>
                         </div>
-                        <div class="form-group mb-2">
-                            <div class="d-flex align-items-center gap-3 justify-content-between">
-                                <label style="min-width: 120px;">Contact Number:</label>
-                                <div class="col-3">
-                                    <input type="text" name="guest_contact_number" class="form-control" required>
-                                </div>
-                                <label>Age:</label>
-                                <div class="col-2">
-                                    <input type="number" name="guest_age" id="guest_age" class="form-control" required
-                                        onchange="calculateGuestFee()">
-                                </div>
-                                <label>Sex:</label>
-                                <div class="col-2">
-                                    <select name="guest_gender" class="form-control" required>
-                                        <option value="">Select sex</option>
-                                        <option value="Male">Male</option>
-                                        <option value="Female">Female</option>
-                                    </select>
-                                </div>
+                        <div class="row mb-2">
+                            <div class="col-md-4">
+                                <label>Contact Number</label>
+                                <input type="text" name="guest_contact_number" class="form-control">
+                            </div>
+
+                            <div class="col-md-4">
+                                <label>Age</label>
+                                <input type="number" name="guest_age" id="guest_age" class="form-control"
+                                    onchange="calculateGuestFee()">
+                            </div>
+
+                            <div class="col-md-4">
+                                <label>Sex</label>
+                                <select name="guest_gender" class="form-control">
+                                    <option value="">Select sex</option>
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
+                                </select>
                             </div>
                         </div>
-                        <div class="form-group mb-2">
-                            <div class="d-flex align-items-center gap-3 justify-content-between">
-                                <label style="min-width: 120px;">Address:</label>
-                                <div class="col-5">
-                                    <input type="text" name="guest_address" class="form-control" required>
-                                </div>
-                                <label style="min-width: 50px;">is PWD?</label>
-                                <div class="col-1">
-                                    <input type="checkbox" name="guest_is_pwd" id="guest_is_pwd" value="1"
-                                        class="form-check-input" onchange="calculateGuestFee()">
-                                </div>
-                                <label>Guest Fee:</label>
-                                <div class="col-2">
-                                    <div class="d-flex">
-                                        <span class="input-group-text bg-theme-primary text-light">₱</span>
-                                        <input type="number" readonly name="guest_fee" id="guest_fee" min="0"
-                                            value="0" class="form-control" required>
-                                    </div>
+                        <div class="row mb-2">
+                            <div class="col-md-4">
+                                <label>Address</label>
+                                <input type="text" name="guest_address" class="form-control">
+                            </div>
+
+                            <div class="col-md-4">
+                                <label>Is PWD?</label><br>
+                                <input type="checkbox" class="form-check-input" name="guest_is_pwd" id="guest_is_pwd"
+                                    value="1" onchange="calculateGuestFee()">
+                            </div>
+
+                            <div class="col-md-4">
+                                <label>Guest Fee</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-theme-primary text-light">₱</span>
+                                    <input type="number" readonly name="guest_fee" id="guest_fee" value="0"
+                                        class="form-control">
                                 </div>
                             </div>
                         </div>
@@ -339,86 +327,73 @@
                 @csrf
                 @method('PUT')
                 <div class="modal-content">
-                    <div class="modal-header">
-                        <div class="col-12 p-2 pb-4 text-light bg-theme-primary">
-                            <div class="text-end">
-                                <button type="button" class="btn-close btn-close-white btn-circle" data-bs-dismiss="modal"></button>
-                            </div>
-                            <div class="d-flex align-items-center gap-2 justify-content-center">
-                                <img src="{{ asset('public/img/logo.png') }}" width="70" alt="la-escapo-logo">
-                                <div class="d-flex flex-column">
-                                    <b class="modal-title mt-2 h5 text-bold">La Escapo Mountain
-                                        Resort</b>
-                                    <span>Tuno, Tibiao, Antique</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    @include('layouts.modal-header')
                     <div class="modal-body">
                         <input type="hidden" id="edit_date_visit" name="edit_date_visit" value=""
                             class="form-control" required />
                         <div
-                            class="bg-green-secondary d-flex align-items-center gap-2 justify-content-center text-light p-2 mb-3">
+                            class="bg-green-secondary d-flex align-items-center gap-2 justify-content-center text-light p-3 mb-3">
                             <i class="fa fa-book fa-2x"></i>
                             <h3 class="m-0">ENTRANCE FEE</h3>
                         </div>
                         <b>GUEST INFORMATION</b>
-                        <div class="form-group mb-2">
-                            <div class="d-flex align-items-center gap-3 justify-content-between">
-                                <label style="min-width: 120px;">Complete Name:</label>
-                                <div class="col-3">
-                                    <input type="text" name="edit_guest_first_name" class="form-control"
-                                        placeholder="First Name" required>
-                                </div>
-                                <div class="col-3">
-                                    <input type="text" name="edit_guest_middle_name" class="form-control"
-                                        placeholder="Middle Name">
-                                </div>
-                                <div class="col-3">
-                                    <input type="text" name="edit_guest_last_name" class="form-control"
-                                        placeholder="Last Name" required>
-                                </div>
+                        <div class="row mb-2">
+                            <div class="col-md-4">
+                                <label>Complete Name</label>
+                                <input type="text" name="edit_guest_first_name" class="form-control"
+                                    placeholder="First Name" required>
+                            </div>
+
+                            <div class="col-md-4">
+                                <label>&nbsp;</label>
+                                <input type="text" name="edit_guest_middle_name" class="form-control"
+                                    placeholder="Middle Name">
+                            </div>
+
+                            <div class="col-md-4">
+                                <label>&nbsp;</label>
+                                <input type="text" name="edit_guest_last_name" class="form-control"
+                                    placeholder="Last Name" required>
                             </div>
                         </div>
-                        <div class="form-group mb-2">
-                            <div class="d-flex align-items-center gap-3 justify-content-between">
-                                <label style="min-width: 120px;">Contact Number:</label>
-                                <div class="col-3">
-                                    <input type="text" name="edit_guest_contact_number" class="form-control" required>
-                                </div>
-                                <label>Age:</label>
-                                <div class="col-2">
-                                    <input type="number" name="edit_guest_age" id="edit_guest_age" class="form-control"
-                                        required onchange="calculateEditGuestFee()">
-                                </div>
-                                <label>Sex:</label>
-                                <div class="col-2">
-                                    <select name="edit_guest_gender" class="form-control" required>
-                                        <option value="">Select sex</option>
-                                        <option value="Male">Male</option>
-                                        <option value="Female">Female</option>
-                                    </select>
-                                </div>
+                        <div class="row mb-2">
+                            <div class="col-md-4">
+                                <label>Contact Number</label>
+                                <input type="text" name="edit_guest_contact_number" class="form-control" required>
+                            </div>
+
+                            <div class="col-md-4">
+                                <label>Age</label>
+                                <input type="number" name="edit_guest_age" id="edit_guest_age" class="form-control"
+                                    required onchange="calculateEditGuestFee()">
+                            </div>
+                            <div class="col-md-4">
+                                <label>Sex</label>
+                                <select name="edit_guest_gender" class="form-control" required>
+                                    <option value="">Select sex</option>
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
+                                </select>
                             </div>
                         </div>
-                        <div class="form-group mb-2">
-                            <div class="d-flex align-items-center gap-3 justify-content-between">
-                                <label style="min-width: 120px;">Address:</label>
-                                <div class="col-5">
-                                    <input type="text" name="edit_guest_address" class="form-control" required>
-                                </div>
-                                <label style="min-width: 50px;">is PWD?</label>
-                                <div class="col-1">
-                                    <input type="checkbox" name="edit_guest_is_pwd" id="edit_guest_is_pwd"
-                                        value="1" class="form-check-input" onchange="calculateEditGuestFee()">
-                                </div>
-                                <label>Guest Fee:</label>
-                                <div class="col-2">
-                                    <div class="d-flex">
-                                        <span class="input-group-text bg-theme-primary text-light">₱</span>
-                                        <input type="number" readonly name="edit_guest_fee" id="edit_guest_fee"
-                                            min="0" value="0" class="form-control" required>
-                                    </div>
+                        <div class="row mb-2">
+                            <div class="col-md-4">
+                                <label>Address</label>
+                                <input type="text" name="edit_guest_address" class="form-control" required>
+                            </div>
+
+                            <div class="col-md-4">
+                                <label>Is PWD?</label><br>
+                                <input type="checkbox" name="edit_guest_is_pwd" id="edit_guest_is_pwd" value="1"
+                                    class="form-check-input" onchange="calculateEditGuestFee()">
+                            </div>
+
+                            <div class="col-md-4">
+                                <label>Guest Fee</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-theme-primary text-light">₱</span>
+                                    <input type="number" readonly name="edit_guest_fee" id="edit_guest_fee"
+                                        min="0" value="0" class="form-control" required>
                                 </div>
                             </div>
                         </div>
@@ -777,7 +752,7 @@
 
                 // PWD checkbox
                 const pwdCheckbox = document.getElementById("edit_guest_is_pwd");
-                if (this.dataset.pwd == 1) {
+                if (pwdCheckbox.value == 1) {
                     pwdCheckbox.checked = true;
                 } else {
                     pwdCheckbox.checked = false;

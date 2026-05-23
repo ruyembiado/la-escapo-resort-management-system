@@ -21,16 +21,16 @@
                 <table class="table table-bordered" id="dataTable1" width="100%" cellspacing="0">
                     <thead>
                         <tr>
-                            <th class="bg-theme-primary text-light border-dark">No.</th>
-                            <th class="bg-theme-primary text-light border-dark">Name</th>
-                            <th class="bg-theme-primary text-light border-dark">Service Type</th>
+                            <th class="bg-green-secondary text-light border-dark">No.</th>
+                            <th class="bg-green-secondary text-light border-dark">Name</th>
+                            <th class="bg-green-secondary text-light border-dark">Service Type</th>
                             @if (($filter ?? '') == 'foods')
-                                <th class="bg-theme-primary text-light border-dark">Food Category</th>
+                                <th class="bg-green-secondary text-light border-dark">Food Category</th>
                             @endif
-                            {{-- <th class="bg-theme-primary text-light border-dark">Food/Drink Type</th> --}}
-                            <th class="bg-theme-primary text-light border-dark">Fee</th>
-                            <th class="bg-theme-primary text-light border-dark">Date Created</th>
-                            <th class="bg-theme-primary text-light border-dark">Action</th>
+                            {{-- <th class="bg-green-secondary text-light border-dark">Food/Drink Type</th> --}}
+                            <th class="bg-green-secondary text-light border-dark">Fee</th>
+                            <th class="bg-green-secondary text-light border-dark">Date Created</th>
+                            <th class="bg-green-secondary text-light border-dark">Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -96,7 +96,7 @@
                         </div>
                         <div class="modal-body">
                             <div
-                                class="bg-theme-primary d-flex align-items-center gap-2 justify-content-center text-light p-2 mb-3">
+                                class="bg-green-secondary d-flex align-items-center gap-2 justify-content-center text-light p-4 mb-3">
                                 <i class="fa fa-edit fa-2x"></i>
                                 <h3 class="m-0">UPDATE SERVICE</h3>
                             </div>
@@ -244,26 +244,11 @@
             <form action="{{ route('service.store') }}" method="POST" id="addServiceForm">
                 @csrf
                 <div class="modal-content">
-                    <div class="modal-header">
-                        <div class="col-12 p-2 pb-4 text-light bg-theme-primary">
-                            <div class="text-end">
-                                <button type="button" class="btn-close btn-close-white btn-circle"
-                                    data-bs-dismiss="modal"></button>
-                            </div>
-                            <div class="d-flex align-items-center gap-2 justify-content-center">
-                                <img src="{{ asset('public/img/logo.png') }}" width="70" alt="la-escapo-logo">
-                                <div class="d-flex flex-column">
-                                    <b class="modal-title mt-2 h5 text-bold">La Escapo Mountain
-                                        Resort</b>
-                                    <span>Tuno, Tibiao, Antique</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    @include('layouts.modal-header')
 
                     <div class="modal-body">
                         <div
-                            class="bg-theme-primary d-flex align-items-center gap-2 justify-content-center text-light p-2 mb-3">
+                            class="bg-green-secondary d-flex align-items-center gap-2 justify-content-center text-light p-4 mb-3">
                             <i class="fa fa-book fa-2x"></i>
                             <h3 class="m-0">ADD SERVICE</h3>
                         </div>
@@ -280,84 +265,74 @@
                             <input type="hidden" name="service_type" value="{{ $filter ?? '' }}">
                         @endif
 
-                        <div class="form-group mb-2">
-                            <div class="d-flex align-items-center gap-3 mb-2">
-                                <label>Name:</label>
-                                <div class="col-4">
-                                    <input type="text" name="service_name" class="form-control" placeholder="Name"
-                                        required>
+                        <div class="form-group mb-4">
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Name:</label>
+                                        <input type="text" name="service_name" class="form-control"
+                                            placeholder="Name" required>
+                                    </div>
                                 </div>
-                                <label>Service Type:</label>
-                                <div class="col-3">
-                                    <select name="service_type" {{ $filter ? 'disabled' : '' }} id="service_type"
-                                        class="form-control" required>
-                                        <option value="">Select type</option>
-                                        <option value="entrance_fee"
-                                            {{ ($filter ?? '') == 'entrance_fee' ? 'selected' : '' }}>Entrance Fee
-                                        </option>
-                                        <option value="foods" {{ ($filter ?? '') == 'foods' ? 'selected' : '' }}>
-                                            Foods
-                                        </option>
-                                        <option value="drinks" {{ ($filter ?? '') == 'drinks' ? 'selected' : '' }}>
-                                            Drinks
-                                        </option>
-                                        <option value="accommodation"
-                                            {{ ($filter ?? '') == 'accommodation' ? 'selected' : '' }}>Accommodation
-                                        </option>
-                                        <option value="massage" {{ ($filter ?? '') == 'massage' ? 'selected' : '' }}>
-                                            Massage</option>
-                                        <option value="water_tubing"
-                                            {{ ($filter ?? '') == 'water_tubing' ? 'selected' : '' }}>Water Tubing
-                                        </option>
-                                        <option value="kawa_hot_bath"
-                                            {{ ($filter ?? '') == 'kawa_hot_bath' ? 'selected' : '' }}>Kawa Hot Bath
-                                        </option>
-                                        <option value="picnic_table"
-                                            {{ ($filter ?? '') == 'picnic_table' ? 'selected' : '' }}>Picnic Table
-                                        </option>
-                                    </select>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Service Type:</label>
+                                        <select name="service_type" {{ $filter ? 'disabled' : '' }} id="service_type"
+                                            class="form-control" required>
+                                            <option value="">Select type</option>
+                                            <option value="entrance_fee"
+                                                {{ ($filter ?? '') == 'entrance_fee' ? 'selected' : '' }}>Entrance Fee
+                                            </option>
+                                            <option value="foods" {{ ($filter ?? '') == 'foods' ? 'selected' : '' }}>
+                                                Foods
+                                            </option>
+                                            <option value="drinks" {{ ($filter ?? '') == 'drinks' ? 'selected' : '' }}>
+                                                Drinks
+                                            </option>
+                                            <option value="accommodation"
+                                                {{ ($filter ?? '') == 'accommodation' ? 'selected' : '' }}>Accommodation
+                                            </option>
+                                            <option value="massage" {{ ($filter ?? '') == 'massage' ? 'selected' : '' }}>
+                                                Massage</option>
+                                            <option value="water_tubing"
+                                                {{ ($filter ?? '') == 'water_tubing' ? 'selected' : '' }}>Water Tubing
+                                            </option>
+                                            <option value="kawa_hot_bath"
+                                                {{ ($filter ?? '') == 'kawa_hot_bath' ? 'selected' : '' }}>Kawa Hot Bath
+                                            </option>
+                                            <option value="picnic_table"
+                                                {{ ($filter ?? '') == 'picnic_table' ? 'selected' : '' }}>Picnic Table
+                                            </option>
+                                        </select>
+                                    </div>
                                 </div>
                             </div>
 
                             <!-- Food Fields -->
-                            <div class="form-group mb-3">
-                                <div class="d-flex flex-wrap align-items-center gap-2">
-                                    <div class="col-7" id="foodFields" style="display:none;">
-                                        <div class="d-flex flex-wrap align-items-center gap-3">
-                                            <label>Food Category:</label>
-                                            <div class="col-7">
-                                                <select name="food_category" class="form-control" disabled>
-                                                    <option value="">Select Category</option>
-                                                    <option value="inasal">Inasal</option>
-                                                    <option value="namit_dishes">#Namit Dishes</option>
-                                                    <option value="breakfast">Breakfast</option>
-                                                    <option value="rice">Rice</option>
-                                                </select>
+                            <div class="row mb-2">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <div class="d-flex flex-wrap align-items-center gap-2">
+                                            <div class="col-12" id="foodFields" style="display:none;">
+                                                <div class="form-group">
+                                                    <label>Food Category:</label>
+                                                    <select name="food_category" class="form-control" disabled>
+                                                        <option value="">Select Category</option>
+                                                        <option value="inasal">Inasal</option>
+                                                        <option value="namit_dishes">#Namit Dishes</option>
+                                                        <option value="breakfast">Breakfast</option>
+                                                        <option value="rice">Rice</option>
+                                                    </select>
+                                                </div>
                                             </div>
-                                            {{-- <label>Food Type:</label>
-                                        <div class="col-4">
-                                            <select name="food_type" class="form-control" disabled>
-                                                <option value="">Select Type</option>
-                                                <option value="solo">Solo</option>
-                                                <option value="group">Group</option>
-                                            </select>
-                                        </div> --}}
                                         </div>
                                     </div>
-                                    {{-- <div class="col-5" id="drinkFields" style="display:none;">
-                                    <div class="d-flex align-items-center gap-3">
-                                        <label>Drink Type:</label>
-                                        <div class="col-8">
-                                            <select name="food_type" class="form-control" disabled>
-                                                <option value="">Select Type</option>
-                                                <option value="solo">Solo</option>
-                                                <option value="group">Group</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div> --}}
-                                    <label>Fee:</label>
-                                    <div class="col-2">
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Fee:</label>
                                         <input type="number" name="fee" class="form-control" min="0"
                                             placeholder="Amount" required>
                                     </div>
@@ -370,6 +345,7 @@
                             <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
                         </div>
                     </div>
+                </div>
             </form>
         </div>
     </div>
