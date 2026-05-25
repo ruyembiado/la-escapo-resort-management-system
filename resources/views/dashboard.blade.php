@@ -4,8 +4,13 @@
     <!-- Start the content section -->
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-start gap-2 mb-4">
-        <i class="fas fa-dashboard fa-2x text-dark"></i>
-        <h1 class="h3 mb-0 text">Dashboard</h1>
+        <div class="d-flex">
+            <i class="fas fa-dashboard fa-2x text-dark"></i>
+            <div class="d-flex flex-column ms-1">
+                <h1 class="h3 mb-0 text">Dashboard</h1>
+                <h6 class="mb-0">Automated Billing Record System</h6>
+            </div>
+        </div>
     </div>
 
     <!-- Content Row -->
@@ -63,7 +68,8 @@
                             </div>
                             <div class="d-flex justify-content-center align-items-center gap-2">
                                 <i class="fa fa-times-circle fa-2x text-danger"></i>
-                                <div class="h3 mb-0 font-weight-bold text-danger">{{ $unpaidBills }}</div>
+                                <div class="h3 mb-0 font-weight-bold text-danger">{{ count($visitorsWithUnpaidBills) }}
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -72,22 +78,24 @@
         </div>
 
         <div class="col-xl-3 col-md-6 mb-0">
-            <div class="card shadow py-2 bg-light">
-                <div class="card-body">
-                    <div class="row align-items-center justify-content-between flex-column gap-3">
-                        <div class="d-flex flex-column text-center">
-                            <b class="text-dash font-weight-bold text-success text-uppercase">
-                                Paid Bills
-                            </b>
-                            <span class="text-center text-success">(Complete)</span>
-                        </div>
-                        <div class="d-flex justify-content-center align-items-center gap-2">
-                            <i class="fa fa-check-circle fa-2x text-success"></i>
-                            <div class="h3 mb-0 font-weight-bold text-success">{{ $paidBills }}</div>
+            <a href="#" data-bs-toggle="modal" data-bs-target="#paidBill">
+                <div class="card shadow py-2 bg-light">
+                    <div class="card-body">
+                        <div class="row align-items-center justify-content-between flex-column gap-3">
+                            <div class="d-flex flex-column text-center">
+                                <b class="text-dash font-weight-bold text-success text-uppercase">
+                                    Paid Bills
+                                </b>
+                                <span class="text-center text-success">(Complete)</span>
+                            </div>
+                            <div class="d-flex justify-content-center align-items-center gap-2">
+                                <i class="fa fa-check-circle fa-2x text-success"></i>
+                                <div class="h3 mb-0 font-weight-bold text-success">{{ count($visitorsWithPaidBills) }}</div>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            </a>
         </div>
 
         <!-- Guests Statistics Modal -->
@@ -220,7 +228,8 @@
                                                 <th colspan="2" class="bg-green-secondary border-light text-light">
                                                     Water
                                                     Tubing</th>
-                                                <th colspan="2" class="bg-green-secondary border-light text-light">Kawa
+                                                <th colspan="2" class="bg-green-secondary border-light text-light">
+                                                    Kawa
                                                     Hot Bath</th>
                                                 <th colspan="2" class="bg-green-secondary border-light text-light">
                                                     Picnic
@@ -416,7 +425,366 @@
             </div>
         </div>
 
+        <div id="paidBill" class="modal fade" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered" style="max-width: 1520px;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Paid Bills</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body p-0">
+                        <div class="card mb-0">
+                            <div class="card-body p-1">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered border-dark m-0" width="100%">
+                                        <thead>
+                                            <tr>
+                                                <th rowspan="3"
+                                                    class="align-middle bg-theme-primary border-light text-light text-uppercase">
+                                                    No.
+                                                </th>
+                                                <th rowspan="3"
+                                                    class="align-middle bg-theme-primary border-light text-light text-uppercase">
+                                                    Name of
+                                                    Guest</th>
+                                                <th rowspan="3"
+                                                    class="align-middle bg-theme-primary border-light text-light text-uppercase">
+                                                    Members
+                                                </th>
+
+                                                <th colspan="16"
+                                                    class="text-center bg-theme-primary text-light border-bottom border-light text-uppercase">
+                                                    Availed Services
+                                                </th>
+
+                                                <th rowspan="3"
+                                                    class="align-middle bg-theme-primary border-light text-light text-uppercase">
+                                                    Total Fee
+                                                </th>
+                                                <th rowspan="3"
+                                                    class="align-middle bg-theme-primary border-light text-light text-uppercase">
+                                                    Action
+                                                </th>
+                                            </tr>
+                                            <tr class="text-center">
+                                                <th colspan="2" class="bg-green-secondary border-light text-light">
+                                                    Entrance Fee</th>
+                                                <th colspan="2" class="bg-green-secondary border-light text-light">
+                                                    Water
+                                                    Tubing</th>
+                                                <th colspan="2" class="bg-green-secondary border-light text-light">
+                                                    Kawa
+                                                    Hot Bath</th>
+                                                <th colspan="2" class="bg-green-secondary border-light text-light">
+                                                    Picnic
+                                                    Table</th>
+                                                <th colspan="2" class="bg-green-secondary border-light text-light">
+                                                    Massage</th>
+                                                <th colspan="2" class="bg-green-secondary border-light text-light">
+                                                    Accommodation</th>
+                                                <th colspan="2" class="bg-green-secondary border-light text-light">
+                                                    Foods
+                                                </th>
+                                                <th colspan="2" class="bg-green-secondary border-light text-light">
+                                                    Drinks
+                                                </th>
+                                            </tr>
+                                            <tr>
+                                                @for ($i = 0; $i < 8; $i++)
+                                                    <th class="bg-green-tertiary text-light border-light">Fee</th>
+                                                    <th class="bg-green-tertiary text-light border-light">Status</th>
+                                                @endfor
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @if ($visitorsWithPaidBills->isNotEmpty())
+                                                @foreach ($visitorsWithPaidBills as $visitor)
+                                                    <tr>
+                                                        <td class="text-center">{{ $loop->iteration }}</td>
+                                                        <td>
+                                                            {{ $visitor->first_name }}
+                                                            {{ $visitor->middle_name ? $visitor->middle_name . ' ' : '' }}
+                                                            {{ $visitor->last_name }}
+                                                        </td>
+                                                        <td class="text-center">{{ $visitor->members ?? 'N/A' }}</td>
+
+                                                        <!-- Entrance Fee -->
+                                                        <td class="text-end">
+                                                            {{ $visitor->entrance ? '₱' . number_format($visitor->entrance->total_payment, 2) : '₱0.00' }}
+                                                        </td>
+                                                        <td class="text-center">
+                                                            @if (isset($visitor->entrance->status))
+                                                                <span
+                                                                    class="badge {{ $visitor->entrance->status === 'Paid' ? 'bg-success' : 'bg-danger' }}">
+                                                                    {{ $visitor->entrance->status }}
+                                                                </span>
+                                                            @else
+                                                                <span class="badge bg-secondary">N/A</span>
+                                                            @endif
+                                                        </td>
+
+                                                        <!-- Water Tubing -->
+                                                        <td class="text-end">
+                                                            {{ $visitor->watertubing ? '₱' . number_format($visitor->watertubing->total_payment, 2) : '₱0.00' }}
+                                                        </td>
+                                                        <td class="text-center">
+                                                            @if (isset($visitor->watertubing->payment_status))
+                                                                <span
+                                                                    class="badge {{ $visitor->watertubing->payment_status === 'Paid' ? 'bg-success' : 'bg-danger' }}">
+                                                                    {{ $visitor->watertubing->payment_status }}
+                                                                </span>
+                                                            @else
+                                                                <span class="badge bg-secondary">N/A</span>
+                                                            @endif
+                                                        </td>
+
+                                                        <!-- Kawa hot bath -->
+                                                        <td class="text-end">
+                                                            {{ $visitor->kawabath ? '₱' . number_format($visitor->kawabath->total_payment, 2) : '₱0.00' }}
+                                                        </td>
+                                                        <td class="text-center">
+                                                            @if (isset($visitor->kawabath->payment_status))
+                                                                <span
+                                                                    class="badge {{ $visitor->kawabath->payment_status === 'Paid' ? 'bg-success' : 'bg-danger' }}">
+                                                                    {{ $visitor->kawabath->payment_status }}
+                                                                </span>
+                                                            @else
+                                                                <span class="badge bg-secondary">N/A</span>
+                                                            @endif
+                                                        </td>
+
+                                                        <!-- Picnic Table -->
+                                                        <td class="text-end">
+                                                            {{ $visitor->picnictable ? '₱' . number_format($visitor->picnictable->total_payment, 2) : '₱0.00' }}
+                                                        </td>
+                                                        <td class="text-center">
+                                                            @if (isset($visitor->picnictable->payment_status))
+                                                                <span
+                                                                    class="badge {{ $visitor->picnictable->payment_status === 'Paid' ? 'bg-success' : 'bg-danger' }}">
+                                                                    {{ $visitor->picnictable->payment_status }}
+                                                                </span>
+                                                            @else
+                                                                <span class="badge bg-secondary">N/A</span>
+                                                            @endif
+                                                        </td>
+
+                                                        <!-- Massage -->
+                                                        <td class="text-end">
+                                                            {{ $visitor->massage ? '₱' . number_format($visitor->massage->total_payment, 2) : '₱0.00' }}
+                                                        </td>
+                                                        <td class="text-center">
+                                                            @if (isset($visitor->massage->payment_status))
+                                                                <span
+                                                                    class="badge {{ $visitor->massage->payment_status === 'Paid' ? 'bg-success' : 'bg-danger' }}">
+                                                                    {{ $visitor->massage->payment_status }}
+                                                                </span>
+                                                            @else
+                                                                <span class="badge bg-secondary">N/A</span>
+                                                            @endif
+                                                        </td>
+
+                                                        <!-- Accommodation -->
+                                                        <td class="text-end">
+                                                            {{ $visitor->accommodation ? '₱' . number_format($visitor->accommodation->total_payment, 2) : '₱0.00' }}
+                                                        </td>
+                                                        <td class="text-center">
+                                                            @if (isset($visitor->accommodation->payment_status))
+                                                                <span
+                                                                    class="badge {{ $visitor->accommodation->payment_status === 'Paid' ? 'bg-success' : 'bg-danger' }}">
+                                                                    {{ $visitor->accommodation->payment_status }}
+                                                                </span>
+                                                            @else
+                                                                <span class="badge bg-secondary">N/A</span>
+                                                            @endif
+                                                        </td>
+
+                                                        <!-- Foods -->
+                                                        <td class="text-end">
+                                                            {{ $visitor->meal ? '₱' . number_format($visitor->meal->total_payment, 2) : '₱0.00' }}
+                                                        </td>
+                                                        <td class="text-center">
+                                                            @if (isset($visitor->meal->payment_status))
+                                                                <span
+                                                                    class="badge {{ $visitor->meal->payment_status === 'Paid' ? 'bg-success' : 'bg-danger' }}">
+                                                                    {{ $visitor->meal->payment_status }}
+                                                                </span>
+                                                            @else
+                                                                <span class="badge bg-secondary">N/A</span>
+                                                            @endif
+                                                        </td>
+
+                                                        <!-- Beverages -->
+                                                        <td class="text-end">
+                                                            {{ $visitor->beverage ? '₱' . number_format($visitor->beverage->total_payment, 2) : '₱0.00' }}
+                                                        </td>
+                                                        <td class="text-center">
+                                                            @if (isset($visitor->beverage->payment_status))
+                                                                <span
+                                                                    class="badge {{ $visitor->beverage->payment_status === 'Paid' ? 'bg-success' : 'bg-danger' }}">
+                                                                    {{ $visitor->beverage->payment_status }}
+                                                                </span>
+                                                            @else
+                                                                <span class="badge bg-secondary">N/A</span>
+                                                            @endif
+                                                        </td>
+
+                                                        <!-- Grand Total -->
+                                                        @php
+                                                            $grand_total =
+                                                                ($visitor->entrance->total_payment ?? 0) +
+                                                                ($visitor->accommodation->total_payment ?? 0) +
+                                                                ($visitor->watertubing->total_payment ?? 0) +
+                                                                ($visitor->picnictable->total_payment ?? 0) +
+                                                                ($visitor->massage->total_payment ?? 0) +
+                                                                ($visitor->kawabath->total_payment ?? 0) +
+                                                                ($visitor->meal->total_payment ?? 0) +
+                                                                ($visitor->beverage->total_payment ?? 0);
+                                                        @endphp
+                                                        <td class="text-center fw-bold">
+                                                            ₱{{ number_format($grand_total, 2) }}
+                                                        </td>
+                                                        <td class="text-center">
+                                                            <a href="#" class="btn btn-secondary btn-sm"
+                                                                data-bs-toggle="modal"
+                                                                data-bs-target="#viewBillModal_{{ $visitor->id }}"
+                                                                data-visitor="{{ $visitor->id }}">
+                                                                <i class="fas fa-eye"></i>
+                                                            </a>
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
+                                            @else
+                                                <tr>
+                                                    <td colspan="20" class="text-center text-muted py-4">No visitors
+                                                        with paid bills.</td>
+                                                </tr>
+                                            @endif
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         @foreach ($visitorsWithUnpaidBills as $visitor)
+            <!-- View Bill Modal -->
+            <div class="modal fade" id="viewBillModal_{{ $visitor->id }}" tabindex="-1" role="dialog"
+                aria-labelledby="viewBillModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-md" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header p-3">
+                            <div class="col-12 p-2 pb-4 text-light bg-theme-primary">
+                                <div class="text-end">
+                                    <button type="button" class="btn-close btn-close-white btn-circle"
+                                        data-bs-dismiss="modal"></button>
+                                </div>
+                                <div class="d-flex align-items-center gap-2 justify-content-center">
+                                    <img src="{{ asset('public/img/logo.png') }}" width="70" alt="la-escapo-logo">
+                                    <div class="d-flex flex-column">
+                                        <b class="modal-title mt-2 h5 text-bold">La Escapo Mountain
+                                            Resort</b>
+                                        <span>Tuno, Tibiao, Antique</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-body ">
+                            <div class="row p-2">
+                                <div
+                                    class="bg-green-secondary d-flex align-items-center gap-2 justify-content-center text-light p-2">
+                                    <h3 class="m-0">BILL RECEIPT</h3>
+                                </div>
+                                <div class="visitor-name my-2 d-flex align-items-center gap-2">
+                                    <label class="col-3" for="visitorName">Name:</label>
+                                    <input type="text" class="form-control" id="visitorName"
+                                        value="{{ $visitor->first_name . ' ' . $visitor->middle_name . ' ' . $visitor->last_name }}"
+                                        readonly>
+                                </div>
+                                <div class="table-responsive p-0">
+                                    <table class="table table-bordered border-N/A m-0">
+                                        <thead class="bg-success text-light">
+                                            <tr>
+                                                <th style="border-width: 0px"
+                                                    class="text-start bg-green-tertiary text-light">
+                                                    AVAILED SERVICES</th>
+                                                <th style="border-width: 0px"
+                                                    class="text-start bg-green-tertiary text-light">
+                                                    FEE STATUS
+                                                </th>
+                                                <th style="border-width: 0px"
+                                                    class="text-center bg-green-tertiary text-light">
+                                                    AMOUNT
+                                                    FEE</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @php
+                                                $services = [
+                                                    'entrance' => 'Entrance Fee',
+                                                    'watertubing' => 'Water Tubing',
+                                                    'kawabath' => 'Kawa Hot Bath',
+                                                    'picnictable' => 'Picnic Table',
+                                                    'massage' => 'Massage',
+                                                    'accommodation' => 'Accommodation',
+                                                    'meal' => 'Foods',
+                                                    'beverage' => 'Drinks',
+                                                ];
+                                                $modal_total = 0;
+                                            @endphp
+                                            @foreach ($services as $key => $label)
+                                                @if ($visitor->$key)
+                                                    @php $modal_total += $visitor->$key->total_payment; @endphp
+
+                                                    @php
+                                                        $status =
+                                                            $visitor->$key->payment_status ??
+                                                            ($visitor->$key->status ?? 'Unpaid');
+                                                    @endphp
+
+                                                    <tr>
+                                                        <td style="border-width: 0px"
+                                                            class="{{ $status == 'Unpaid' ? 'text-danger' : 'text-dark' }}">
+                                                            {{ $label }}
+                                                        </td>
+
+                                                        <td style="border-width: 0px" class="text-center">
+                                                            <span
+                                                                class="badge {{ $status == 'Unpaid' ? 'bg-danger' : 'bg-success' }}">
+                                                                {{ $status }}
+                                                            </span>
+                                                        </td>
+
+                                                        <td style="border-width: 0px" class="text-center">
+                                                            ₱{{ number_format($visitor->$key->total_payment, 2) }}
+                                                        </td>
+                                                    </tr>
+                                                @endif
+                                            @endforeach
+
+                                            <!-- TOTAL ROW -->
+                                            <tr class="bg-dark text-light">
+                                                <td style="border-width: 0px" colspan="2" class="text-start fw-bold">
+                                                    TOTAL
+                                                    FEE
+                                                </td>
+                                                <td style="border-width: 0px" class="text-center fw-semibold">
+                                                    ₱{{ number_format($modal_total, 2) }}
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @endforeach
+
+        @foreach ($visitorsWithPaidBills as $visitor)
             <!-- View Bill Modal -->
             <div class="modal fade" id="viewBillModal_{{ $visitor->id }}" tabindex="-1" role="dialog"
                 aria-labelledby="viewBillModalLabel" aria-hidden="true">
@@ -672,7 +1040,7 @@
                                                     data-gender="{{ $entrance->visitor->gender }}"
                                                     data-contact="{{ $entrance->visitor->contact_number }}"
                                                     data-address="{{ $entrance->visitor->address }}"
-                                                    data-pwd="{{ $entrance->visitor->isPWD ?? 0 }}"
+                                                    data-pwd="{{ $entrance->visitor->is_pwd ?? 0 }}"
                                                     data-fee="{{ $entrance->total_payment }}"
                                                     data-status="{{ $entrance->status }}"
                                                     data-companions="{{ json_encode($entrance->companions) }}"
@@ -695,6 +1063,37 @@
                                 @endforeach
                             </tbody>
                         </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 mb-4">
+            <div class="card shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="d-flex h-100 flex-column justify-content-between">
+                        <div class="row align-items-center justify-content-between">
+                            <div class="col mr-2">
+                                <div class="text-dash font-weight-bold text-dark text-uppercase mb-1">
+                                    Monthly Bill Data Chart</div>
+                            </div>
+                            <div class="col-auto">
+                                <form method="GET" action="{{ route('dashboard') }}">
+                                    <select name="year" class="form-select" onchange="this.form.submit()">
+                                        @for ($year = 2025; $year <= now()->year; $year++)
+                                            <option value="{{ $year }}"
+                                                {{ $selectedYear == $year ? 'selected' : '' }}>
+                                                {{ $year }}
+                                            </option>
+                                        @endfor
+                                    </select>
+                                </form>
+                            </div>
+                            <canvas id="billsChart" height="100"></canvas>
+                            <div class="text-center mt-3">
+                                <p>Year {{ $selectedYear }}</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1165,13 +1564,8 @@
                     .status ||
                     '';
 
-                // PWD checkbox
                 const pwdCheckbox = document.getElementById("edit_guest_is_pwd");
-                if (pwdCheckbox.value == 1) {
-                    pwdCheckbox.checked = true;
-                } else {
-                    pwdCheckbox.checked = false;
-                }
+                pwdCheckbox.checked = this.dataset.pwd === "1";
 
                 // Calculate guest fee
                 calculateEditGuestFee();
@@ -1251,6 +1645,35 @@
                         beginAtZero: true,
                         ticks: {
                             stepSize: 1
+                        }
+                    }
+                }
+            }
+        });
+
+        const ctxBills = document.getElementById('billsChart')?.getContext('2d');
+        if (!ctxBills) return;
+
+        const billsChart = new Chart(ctxBills, {
+            type: 'bar',
+            data: {
+                labels: {!! json_encode($months) !!},
+                datasets: [{
+                    label: 'Total Bills (₱)',
+                    data: {!! json_encode($billsPerMonth) !!},
+                    backgroundColor: '#084d00',
+                    borderRadius: 4,
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function(value) {
+                                return '₱' + value;
+                            }
                         }
                     }
                 }

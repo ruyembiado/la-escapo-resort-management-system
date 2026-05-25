@@ -155,7 +155,7 @@
                                             data-gender="{{ $entrance->visitor->gender }}"
                                             data-contact="{{ $entrance->visitor->contact_number }}"
                                             data-address="{{ $entrance->visitor->address }}"
-                                            data-pwd="{{ $entrance->visitor->isPWD ?? 0 }}"
+                                            data-pwd="{{ $entrance->visitor->is_pwd ?? 0 }}"
                                             data-fee="{{ $entrance->total_payment }}"
                                             data-status="{{ $entrance->status }}"
                                             data-date_visit="{{ $entrance->visitor->date_visit }}"
@@ -233,7 +233,7 @@
 
                             <div class="col-md-4">
                                 <label>Sex</label>
-                                <select name="guest_gender" class="form-control">
+                                <select name="guest_gender" class="form-control" required>
                                     <option value="">Select sex</option>
                                     <option value="Male">Male</option>
                                     <option value="Female">Female</option>
@@ -329,8 +329,6 @@
                 <div class="modal-content">
                     @include('layouts.modal-header')
                     <div class="modal-body">
-                        <input type="hidden" id="edit_date_visit" name="edit_date_visit" value=""
-                            class="form-control" required />
                         <div
                             class="bg-green-secondary d-flex align-items-center gap-2 justify-content-center text-light p-3 mb-3">
                             <i class="fa fa-book fa-2x"></i>
@@ -731,7 +729,7 @@
             button.addEventListener("click", function() {
                 // Basic information
                 document.getElementById("edit_entrance_id").value = this.dataset.id;
-                document.getElementById("edit_date_visit").value = this.dataset.date_visit;
+                // document.getElementById("edit_date_visit").value = this.dataset.date_visit;
                 document.querySelector("[name='edit_guest_first_name']").value = this.dataset
                     .first_name || '';
                 document.querySelector("[name='edit_guest_middle_name']").value = this.dataset
@@ -750,13 +748,8 @@
                     .status ||
                     '';
 
-                // PWD checkbox
                 const pwdCheckbox = document.getElementById("edit_guest_is_pwd");
-                if (pwdCheckbox.value == 1) {
-                    pwdCheckbox.checked = true;
-                } else {
-                    pwdCheckbox.checked = false;
-                }
+                pwdCheckbox.checked = this.dataset.pwd === "1";
 
                 // Calculate guest fee
                 calculateEditGuestFee();

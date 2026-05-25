@@ -170,7 +170,6 @@ class ServiceController extends Controller
             'age' => $request->edit_guest_age,
             'is_pwd' => $request->edit_guest_is_pwd ? 1 : 0,
             'address' => $request->edit_guest_address,
-            'date_visit' => $request->edit_date_visit,
             'members' => $request->edit_guest_members,
         ]);
 

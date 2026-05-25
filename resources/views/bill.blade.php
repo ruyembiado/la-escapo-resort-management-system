@@ -113,7 +113,8 @@
                                         ($visitor->kawabath->total_payment ?? 0) +
                                         ($visitor->watertubing->total_payment ?? 0) +
                                         ($visitor->picnictable->total_payment ?? 0) +
-                                        ($visitor->accommodation->total_payment ?? 0);
+                                        ($visitor->accommodation->total_payment ?? 0) +
+                                        ($visitor->massage->total_payment ?? 0);
                                 @endphp
                                 <td><b>₱{{ number_format($grand_total, 2) }}</b></td>
                                 @php

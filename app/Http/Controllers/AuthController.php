@@ -41,6 +41,8 @@ class AuthController extends Controller
 
         $selectedYear = $request->year ?? Carbon::now()->year;
 
+        $currentYear = Carbon::now()->year;
+
         /*
     |--------------------------------------------------------------------------
     | ENTRANCES
@@ -91,29 +93,18 @@ class AuthController extends Controller
             ->value('total') ?? 0;
 
         /*
-    |--------------------------------------------------------------------------
-    | VISITORS TABLE (MONTH)
-    |--------------------------------------------------------------------------
-    */
-        $visitorsMonth = Visitor::with([
-            'entrance',
-            'accommodation',
-            'meal',
-            'beverage',
-            'kawabath',
-            'watertubing',
-            'massage',
-            'picnictable',
-        ])
-            ->orderBy('created_at', 'desc')
-            ->get();
+        |--------------------------------------------------------------------------
+        | VISITORS TODAY
+        |--------------------------------------------------------------------------
+        */
 
+        $todayVisitors = Visitor::whereDate('date_visit', now())->get();
         /*
-    |--------------------------------------------------------------------------
-    | VISITORS WITH UNPAID BILLS
-    |--------------------------------------------------------------------------
-    */
-        $visitorsWithUnpaidBills = $visitorsMonth->filter(function ($visitor) {
+        |--------------------------------------------------------------------------
+        | VISITORS WITH UNPAID BILLS
+        |--------------------------------------------------------------------------
+        */
+        $visitorsWithUnpaidBills = $todayVisitors->filter(function ($visitor) {
 
             $services = [
                 $visitor->entrance,
@@ -128,7 +119,7 @@ class AuthController extends Controller
 
             foreach ($services as $service) {
                 if ($service) {
-                     $status = $service->payment_status ?? $service->status ?? 'Unpaid';
+                    $status = $service->payment_status ?? $service->status ?? 'Unpaid';
 
                     if ($status !== 'Paid') {
                         return true;
@@ -138,16 +129,65 @@ class AuthController extends Controller
 
             return false;
         });
+
         /*
-    |--------------------------------------------------------------------------
-    | BILL COMPUTATION
-    |--------------------------------------------------------------------------
-    */
+        |--------------------------------------------------------------------------
+        | VISITORS WITH FULLY PAID BILLS
+        |--------------------------------------------------------------------------
+        */
+        $visitorsWithPaidBills = $todayVisitors->filter(function ($visitor) {
+            $services = [
+                $visitor->entrance,
+                $visitor->accommodation,
+                $visitor->meal,
+                $visitor->beverage,
+                $visitor->kawabath,
+                $visitor->watertubing,
+                $visitor->massage,
+                $visitor->picnictable,
+            ];
+
+            foreach ($services as $service) {
+                if (!$service) {
+                    continue;
+                }
+
+                $status = $service->payment_status ?? $service->status ?? 'Unpaid';
+                if ($status !== 'Paid') {
+                    return false;
+                }
+            }
+            return true;
+        });
+
+        /*
+        |--------------------------------------------------------------------------
+        | VISITORS FOR TOTAL BILL COMPUTATION OF CURRENT YEAR
+        |--------------------------------------------------------------------------
+        */
+        $allVisitors = Visitor::with([
+            'entrance',
+            'accommodation',
+            'meal',
+            'beverage',
+            'kawabath',
+            'watertubing',
+            'massage',
+            'picnictable',
+        ])
+            ->whereYear('created_at', $currentYear)
+            ->orderBy('created_at', 'desc')
+            ->get();
+        /*
+        |--------------------------------------------------------------------------
+        | BILL COMPUTATION
+        |--------------------------------------------------------------------------
+        */
         $totalBills = 0;
         $paidBills = 0;
         $unpaidBills = 0;
 
-        $visitorsForBills = $visitorsMonth; // reuse (already eager loaded)
+        $visitorsForBills = $allVisitors;
 
         foreach ($visitorsForBills as $visitor) {
 
@@ -162,21 +202,34 @@ class AuthController extends Controller
                 $visitor->picnictable,
             ];
 
+            $hasUnpaid = false;
+            $hasService = false;
+
             foreach ($services as $service) {
 
-                if ($service) {
+                if (!$service) {
+                    continue;
+                }
 
-                    $status = $service->payment_status ?? $service->status ?? 'Unpaid';
+                $hasService = true;
 
-                    // TOTAL AMOUNT
-                    $totalBills += $service->total_payment ?? 0;
+                $status = $service->payment_status
+                    ?? $service->status
+                    ?? 'Unpaid';
 
-                    // COUNT STATUS
-                    if ($status === 'Paid') {
-                        $paidBills++;
-                    } else {
-                        $unpaidBills++;
-                    }
+                $totalBills += $service->total_payment ?? 0;
+
+                if ($status !== 'Paid') {
+                    $hasUnpaid = true;
+                }
+            }
+
+            if ($hasService) {
+
+                if ($hasUnpaid) {
+                    $unpaidBills++;
+                } else {
+                    $paidBills++;
                 }
             }
         }
@@ -224,6 +277,44 @@ class AuthController extends Controller
 
         /*
     |--------------------------------------------------------------------------
+    | MONTHLY BILL DATA 
+    |--------------------------------------------------------------------------
+    */
+        $monthlyBills = Visitor::with([
+            'entrance',
+            'accommodation',
+            'meal',
+            'beverage',
+            'kawabath',
+            'watertubing',
+            'massage',
+            'picnictable',
+        ])
+            ->whereYear('created_at', $currentYear)
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        $billsPerMonth = array_fill(0, 12, 0);
+
+        foreach ($monthlyBills as $visitor) {
+
+            $monthIndex = (int) date('m', strtotime($visitor->created_at)) - 1;
+
+            $total = 0;
+            
+            $total += optional($visitor->entrance)->total_payment ?? 0;
+            $total += optional($visitor->accommodation)->total_payment ?? 0;
+            $total += optional($visitor->meal)->total_payment ?? 0;
+            $total += optional($visitor->beverage)->total_payment ?? 0;
+            $total += optional($visitor->kawabath)->total_payment ?? 0;
+            $total += optional($visitor->watertubing)->total_payment ?? 0;
+            $total += optional($visitor->massage)->total_payment ?? 0;
+            $total += optional($visitor->picnictable)->total_payment ?? 0;
+
+            $billsPerMonth[$monthIndex] += $total;
+        }
+        /*
+    |--------------------------------------------------------------------------
     | RETURN VIEW
     |--------------------------------------------------------------------------
     */
@@ -237,13 +328,15 @@ class AuthController extends Controller
             'paidBills' => $paidBills,
             'unpaidBills' => $unpaidBills,
 
-            'visitors' => $visitorsMonth,
+            // 'visitors' => $visitorsMonth,
             'visitorsPerMonth' => $visitorsPerMonth,
             'months' => $months,
+            'billsPerMonth' => $billsPerMonth,
 
             'entrances' => $entrances,
             'selectedYear' => $selectedYear,
             'visitorsWithUnpaidBills' => $visitorsWithUnpaidBills,
+            'visitorsWithPaidBills' => $visitorsWithPaidBills,
             'entranceFees' => $entranceFees,
         ]);
     }

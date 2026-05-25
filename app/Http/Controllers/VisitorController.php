@@ -26,7 +26,7 @@ class VisitorController extends Controller
 
         $visitors = $query->get();
 
-        return view('logbook', compact('visitors', 'start_date', 'end_date'));
+        return view('entrances', compact('visitors', 'start_date', 'end_date'));
     }
 
     public function store(Request $request)
@@ -56,7 +56,7 @@ class VisitorController extends Controller
             Log::error('Error creating visitor: ' . $e->getMessage());
         }
 
-        return redirect()->route('logbook')->with('success', 'Visitor added successfully.');
+        return redirect()->route('entrances')->with('success', 'Visitor added successfully.');
     }
 
     public function update(Request $request)
@@ -91,14 +91,14 @@ class VisitorController extends Controller
         } catch (\Exception $e) {
             Log::error('Error updating visitor: ' . $e->getMessage());
         }
-        return redirect()->route('logbook')->with('success', 'Visitor updated successfully.');
+        return redirect()->route('entrances')->with('success', 'Visitor updated successfully.');
     }
 
     public function destroy($id)
     {
         $visitor = Visitor::findOrFail($id);
         $visitor->delete();
-        return redirect()->route('logbook')->with('success', 'Visitor deleted successfully.');
+        return redirect()->route('entrances')->with('success', 'Visitor deleted successfully.');
     }
 
     public function getVisitorMembers($visitor_id)
