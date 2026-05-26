@@ -52,7 +52,7 @@
                 </form>
             </div>
             <div class="table-responsive">
-                <table class="table table-bordered border-dark" id="dataTable1" width="100%" cellspacing="0"
+                <table class="table table-bordered" id="dataTable1" width="100%" cellspacing="0"
                     style="min-width:2000px;">
                     <thead>
                         <tr>

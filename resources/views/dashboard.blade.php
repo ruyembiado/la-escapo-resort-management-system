@@ -941,22 +941,22 @@
                     </div>
 
                     <div class="table-responsive" style="overflow-x:auto;">
-                        <table class="table table-bordered border-dark" id="dataTable1" width="100%" cellspacing="0"
+                        <table class="table table-bordered" id="dataTable1" width="100%" cellspacing="0"
                             style="min-width:2000px;">
                             <thead>
                                 <tr>
-                                    <th class="bg-green-secondary text-light border-dark">NO.</th>
-                                    <th class="bg-green-secondary text-light border-dark">NAME OF GUEST</th>
-                                    <th class="bg-green-secondary text-light border-dark">SEX</th>
-                                    <th class="bg-green-secondary text-light border-dark">AGE</th>
-                                    <th class="bg-green-secondary text-light border-dark">MEMBERS</th>
-                                    <th class="bg-green-secondary text-light border-dark">TOTAL FEE</th>
-                                    <th class="bg-green-secondary text-light border-dark">STATUS</th>
-                                    <th class="bg-green-secondary text-light border-dark">CONTACT NO.</th>
-                                    <th class="bg-green-secondary text-light border-dark">ADDRESS</th>
-                                    <th class="bg-green-secondary text-light border-dark">CHECK-IN</th>
-                                    <th class="bg-green-secondary text-light border-dark">DATE CREATED</th>
-                                    <th class="bg-green-secondary text-light border-dark sticky-action">ACTION</th>
+                                    <th class="bg-green-secondary text-light">NO.</th>
+                                    <th class="bg-green-secondary text-light">NAME OF GUEST</th>
+                                    <th class="bg-green-secondary text-light">SEX</th>
+                                    <th class="bg-green-secondary text-light">AGE</th>
+                                    <th class="bg-green-secondary text-light">MEMBERS</th>
+                                    <th class="bg-green-secondary text-light">TOTAL FEE</th>
+                                    <th class="bg-green-secondary text-light">STATUS</th>
+                                    <th class="bg-green-secondary text-light">CONTACT NO.</th>
+                                    <th class="bg-green-secondary text-light">ADDRESS</th>
+                                    <th class="bg-green-secondary text-light">CHECK-IN</th>
+                                    <th class="bg-green-secondary text-light">DATE CREATED</th>
+                                    <th class="bg-green-secondary text-light sticky-action">ACTION</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -973,7 +973,7 @@
                                         <td class="text-center px-0 pb-0">
                                             {{ $entrance->visitor->members ?? 0 }}
                                             @if (!empty($entrance->companions))
-                                                <table class="table table-bordered border-dark mt-2 mb-0">
+                                                <table class="table table-bordered mt-2 mb-0">
                                                     <thead>
                                                         <tr>
                                                             <th class="bg-green-tertiary text-light">No.</th>

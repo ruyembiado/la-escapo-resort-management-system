@@ -54,7 +54,7 @@
                 </form>
             </div>
             <div class="table-responsive">
-                <table class="table table-bordered border-dark" id="dataTable1" width="100%" cellspacing="0"
+                <table class="table table-bordered" id="dataTable1" width="100%" cellspacing="0"
                     style="min-width:2000px;">
                     <thead>
                         <tr>
@@ -80,7 +80,7 @@
                                 <td class="text-center">{{ $watertubing->visitor->age ?? 'N/A' }}</td>
                                 <td class="text-center px-0 pb-0">
                                     {{ $watertubing->visitor->members + 1 }}
-                                    <table class="border-dark table table-bordered m-0 mt-2"
+                                    <table class= table table-bordered m-0 mt-2"
                                         style="width: 100%; border-collapse: collapse;">
                                         <thead>
                                             <tr>
@@ -201,7 +201,7 @@
                         </div>
 
                         <div class="form-group mb-2">
-                            <table class="table table-bordered border-dark"
+                            <table class="table table-bordered"
                                 style="width: 100%; border-collapse: collapse;">
                                 <thead>
                                     <tr>
@@ -284,7 +284,7 @@
                         </div>
 
                         <div class="form-group mb-2">
-                            <table class="table table-bordered border-dark"
+                            <table class="table table-bordered"
                                 style="width: 100%; border-collapse: collapse;">
                                 <thead>
                                     <tr>

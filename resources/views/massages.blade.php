@@ -66,7 +66,7 @@
                 </a>
             </div>
             <div class="table-responsive">
-                <table class="table table-bordered border-dark" id="dataTable1" width="100%" cellspacing="0"
+                <table class="table table-bordered" id="dataTable1" width="100%" cellspacing="0"
                     style="min-width:2000px;">
                     <thead>
                         <tr>
@@ -224,7 +224,7 @@
                                     <h3 class="m-0">MASSAGE</h3>
                                 </div>
                                 <div class="table-responsive">
-                                    <table class="table table-bordered border-dark"
+                                    <table class="table table-bordered"
                                         style="width: 100%; border-collapse: collapse;">
                                         <thead>
                                             <tr>
@@ -279,7 +279,7 @@
                                         <h3 class="m-0">ACCOMMODATION</h3>
                                     </div>
                                     <div class="table-responsive">
-                                        <table class="table table-bordered border-dark"
+                                        <table class="table table-bordered"
                                             style="width: 100%; border-collapse: collapse;">
                                             <thead>
                                                 <tr>
@@ -396,7 +396,7 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="table-responsive">
-                                    <table class="table table-bordered border-dark" style="width:100%;">
+                                    <table class="table table-bordered" style="width:100%;">
                                         <thead>
                                             <tr>
                                                 <th class="bg-green-tertiary text-light">NO.</th>

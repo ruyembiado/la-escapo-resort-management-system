@@ -65,7 +65,7 @@
                 </a>
             </div>
             <div class="table-responsive">
-                <table class="table table-bordered border-dark" id="dataTable1" width="100%" cellspacing="0"
+                <table class="table table-bordered" id="dataTable1" width="100%" cellspacing="0"
                     style="min-width:2000px;">
                     <thead>
                         <th class="bg-green-secondary text-light">NO.</th>
@@ -219,7 +219,7 @@
                                 </div>
 
                                 <div class="table-responsive">
-                                    <table class="table table-bordered border-dark">
+                                    <table class="table table-bordered">
                                         <thead>
                                             <th class="bg-green-tertiary text-light">NO.</th>
                                             <th class="bg-green-tertiary text-light">GUEST</th>
@@ -266,7 +266,7 @@
                                 </div>
 
                                 <div class="table-responsive">
-                                    <table class="table table-bordered border-dark">
+                                    <table class="table table-bordered">
                                         <thead>
                                             <th class="bg-green-tertiary text-light text-center">NO.</th>
                                             <th class="bg-green-tertiary text-light">PICNIC TABLE</th>
@@ -372,7 +372,7 @@
                         </div>
 
                         <div class="form-group mb-2">
-                            <table class="table table-bordered border-dark"
+                            <table class="table table-bordered"
                                 style="width: 100%; border-collapse: collapse;">
                                 <thead>
                                     <th class="bg-green-tertiary text-light">NO.</th>

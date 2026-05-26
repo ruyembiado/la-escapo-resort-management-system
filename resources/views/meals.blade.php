@@ -62,7 +62,7 @@
                 </a>
             </div>
             <div class="table-responsive">
-                <table class="table table-bordered border-dark" id="dataTable1" width="100%" cellspacing="0"
+                <table class="table table-bordered" id="dataTable1" width="100%" cellspacing="0"
                     style="min-width:2000px;">
                     <thead>
                         <tr>
@@ -204,7 +204,7 @@
                                 </div>
 
                                 <div class="form-group mb-2">
-                                    <table class="table table-bordered border-dark"
+                                    <table class="table table-bordered"
                                         style="width: 100%; border-collapse: collapse;">
                                         <thead>
                                             <tr>
@@ -304,7 +304,7 @@
                                     <h3 class="m-0">DRINKS</h3>
                                 </div>
                                 <div class="form-group mb-2">
-                                    <table class="table table-bordered border-dark"
+                                    <table class="table table-bordered"
                                         style="width: 100%; border-collapse: collapse;">
                                         <thead>
                                             <tr>
@@ -423,7 +423,7 @@
                         </div>
 
                         <div class="form-group mb-2">
-                            <table class="table table-bordered border-dark"
+                            <table class="table table-bordered"
                                 style="width: 100%; border-collapse: collapse;">
                                 <thead>
                                     <tr>
