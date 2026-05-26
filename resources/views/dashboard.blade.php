@@ -192,7 +192,7 @@
                         <div class="card mb-0">
                             <div class="card-body p-1">
                                 <div class="table-responsive">
-                                    <table class="table table-bordered border-dark m-0" width="100%">
+                                    <table class="table table-bordered m-0" width="100%">
                                         <thead>
                                             <tr>
                                                 <th rowspan="3"
@@ -436,7 +436,7 @@
                         <div class="card mb-0">
                             <div class="card-body p-1">
                                 <div class="table-responsive">
-                                    <table class="table table-bordered border-dark m-0" width="100%">
+                                    <table class="table table-bordered m-0" width="100%">
                                         <thead>
                                             <tr>
                                                 <th rowspan="3"
@@ -1221,7 +1221,7 @@
                             </div>
                         </div>
 
-                        <table class="table table-bordered border-dark" width="100%" cellspacing="0">
+                        <table class="table table-bordered" width="100%" cellspacing="0">
                             <thead>
                                 <tr>
                                     <th class="bg-green-tertiary text-light">No.</th>
