@@ -973,7 +973,7 @@
                                         <td class="text-center px-0 pb-0">
                                             {{ $entrance->visitor->members ?? 0 }}
                                             @if (!empty($entrance->companions))
-                                                <table class="table table-bordered border-light mt-2 mb-0">
+                                                <table class="table table-bordered border-dark mt-2 mb-0">
                                                     <thead>
                                                         <tr>
                                                             <th class="bg-green-tertiary text-light">No.</th>
