@@ -80,7 +80,7 @@
                                 <td class="text-center">{{ $watertubing->visitor->age ?? 'N/A' }}</td>
                                 <td class="text-center px-0 pb-0">
                                     {{ $watertubing->visitor->members + 1 }}
-                                    <table class= table table-bordered m-0 mt-2"
+                                    <table class="table table-bordered m-0 mt-2"
                                         style="width: 100%; border-collapse: collapse;">
                                         <thead>
                                             <tr>
